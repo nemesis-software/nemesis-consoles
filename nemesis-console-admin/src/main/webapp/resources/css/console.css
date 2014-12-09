@@ -1,0 +1,174 @@
+.x-splash-icon {
+    /* Important required due to the loading symbols CSS selector */
+    background-color: #555 !important;
+}
+
+.x-html-editor-wrap {
+    border: 1px solid #b5b8c8;
+}
+
+.x-html-editor-wrap .x-toolbar {
+    border-top-width: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+}
+
+#app-header {
+    background: #555555;
+}
+
+.x-dashboard-body {
+    background-image: url(images/square.gif);
+}
+
+/* portlets */
+.x-panel-ghost {
+    z-index: 1;
+}
+
+.x-border-layout-ct {
+    background: #DFE8F6;
+}
+
+.x-portal-body {
+    padding: 0 0 0 8px;
+}
+
+.x-portal .x-portal-column {
+    /* columns must have vertical padding to avoid losing dimensions when empty */
+    padding: 8px 8px 0 0;
+}
+
+.x-portal .x-panel-dd-spacer {
+    border: 2px dashed #99bbe8;
+    background: #f6f6f6;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.x-portlet {
+    margin-bottom: 10px;
+    padding: 1px;
+}
+
+.x-portlet .x-panel-body {
+    background: #fff;
+}
+
+.portlet-content {
+    padding: 10px;
+    font-size: 11px;
+}
+
+#app-options .portlet-content {
+    padding: 5px;
+    font-size: 12px;
+}
+
+.x-toolbar .x-form-checkboxgroup .x-checkboxgroup-form-item {
+    margin-top: 3px;
+}
+
+#update-progress-log {
+    height: 100%;
+    overflow-y: scroll;
+}
+
+#update-progress-log > li {
+    list-style-type: none;
+}
+
+#init-progress-log {
+    height: 100%;
+    overflow-y: scroll;
+}
+
+#init-progress-log > li {
+    list-style-type: none;
+}
+
+.database-sql-image {
+    background-image: url(images/database-sql.png);
+}
+
+.database-csv-image {
+    background-image: url(images/excel-csv.png);
+}
+
+.disconnect {
+    background-image: url(images/plug-disconnect.png);
+}
+
+.connect {
+    background-image: url(images/plug-connect.png);
+}
+
+.validate-image {
+    background-image: url(images/tick.png);
+}
+
+.platform-update-image {
+    background-image: url(images/arrow-circle.png);
+}
+
+.platform-initialize-image {
+    background-image: url(images/exclamation.png);
+}
+
+.information {
+    background-image: url(images/information.png);
+}
+
+.logs {
+    background-image: url(images/logs.png);
+}
+
+.log-levels {
+    background-image: url(images/log-levels.png);
+}
+
+.thread-dump-image {
+    background-image: url(images/lightning.png);
+}
+
+.clear-cache-image {
+    background-image: url(images/drive-minus.png);
+}
+
+.run-image {
+    background-image: url(images/run.png);
+}
+
+.warning {
+    background-image: url(images/warning.png);
+}
+
+.system-monitor {
+    background-image: url(images/system-monitor.png);
+}
+
+.key {
+    background-image: url(images/key.png);
+}
+
+.property {
+    background-image: url(images/property.png);
+}
+
+.junit {
+    background-image: url(images/junit.gif);
+}
+
+/* TODO change next two correct background-image !!! */
+.disable-jdbc {
+    background-image: url(images/database.png);
+}
+
+.enable-jdbc {
+    background-image: url(images/database.png);
+}
+
+.x-htmleditor-iframe {
+    height: 100%;
+}

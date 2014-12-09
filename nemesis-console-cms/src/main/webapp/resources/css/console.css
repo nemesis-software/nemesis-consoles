@@ -1,0 +1,102 @@
+.x-splash-icon {
+    /* Important required due to the loading symbols CSS selector */
+    background-color: #A00000 !important;
+}
+
+/* carousels */
+div.top-carousel-item {
+    border: 1px solid #ddd;
+    cursor: default;
+    width: 100%;
+    padding: 4px;
+    float: left;
+    overflow: visible;
+}
+
+div.top-carousel-item.x-item-over {
+    border: 1px solid #dddddd;
+    background: #efefef repeat-x left top;
+}
+
+div.carousel-picture {
+    display: block;
+    float: left;
+}
+
+div.carousel-item {
+    width: 58%;
+    padding-left: 11px;
+    line-height: 18px;
+    overflow: visible;
+    float: left;
+    font-size: 11px;
+}
+
+div.carousel-item-header {
+    font-weight: bold;
+}
+
+#app-header {
+    background: #A00000;
+}
+
+.tablet-iframe-wrapper {
+    background-image: url('../img/ipad-frame.png');
+    background-repeat: no-repeat;
+    background-size: 75%;
+    background-position: 50% 50%;
+}
+
+#website-iframe-wrapper-body {
+    background: none;
+}
+
+.tablet-iframe {
+    width: 57.7%;
+    height: 79.5%;
+    left: 21.2%;
+    top: 10%;
+    position: absolute;
+    overflow-y: scroll;
+}
+
+.mobile-iframe-wrapper {
+    background-image: url('../img/iphone-frame.png');
+    background-repeat: no-repeat;
+    background-size: 30%;
+    background-position: 50% 50%;
+}
+
+.mobile-iframe {
+    width: 24%;
+    height: 65%;
+    left: 38%;
+    top: 18%;
+    position: absolute;
+    overflow-y: scroll;
+}
+
+.normal-iframe {
+    width: 100%;
+    height: 100%;
+}
+
+.content_slot_edit {
+    background-image: url(images/content_slot_edit.png);
+}
+
+.simple_cms_widget_add {
+    background-image: url(images/simple_cms_widget_add.png);
+}
+
+.simple_cms_widget_edit {
+    background-image: url(images/simple_cms_widget_edit.png);
+}
+
+.simple_cms_widget_remove {
+    background-image: url(images/simple_cms_widget_remove.png);
+}
+
+.email_template {
+    background-image: url(images/email_template.png);
+}

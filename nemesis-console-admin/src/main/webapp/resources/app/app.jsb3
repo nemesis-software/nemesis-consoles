@@ -1,0 +1,28 @@
+{
+    "projectName": "CMSConsole",
+    "licenseText": "Nemesis(c) 2013 Nemesis",
+    "builds": [
+        {
+            "name": "All Classes",
+            "target": "all-classes.js",
+            "options": {
+                "debug": true
+            },
+            "files": [
+                {
+                    "path": "app/controller/",
+                    "name": "Main.js"
+                },
+                {
+                    "path": "app/view/",
+                    "name": "Header.js"
+                },
+                {
+                    "path": "app/view/",
+                    "name": "Viewport.js"
+                }
+            ]
+        }
+    ],
+    "resources": []
+}

@@ -1,0 +1,12 @@
+.x-splash-icon {
+    /* Important required due to the loading symbols CSS selector */
+    background-color: #748024 !important;
+}
+
+#app-header {
+    background: #748024;
+}
+
+.ticket {
+    background-image: url(images/ticket.png);
+}
