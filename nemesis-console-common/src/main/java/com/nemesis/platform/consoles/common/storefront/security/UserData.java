@@ -45,11 +45,13 @@ public class UserData implements Serializable {
     }
 
     public String[] getAuthorities() {
-        return authorities;
+        return authorities != null ? authorities.clone() : null;
     }
 
     public void setAuthorities(String[] authorities) {
-        this.authorities = authorities;
+        if (authorities != null) {
+            this.authorities = authorities.clone();
+        }
     }
 
     public Long getExpiryTime() {

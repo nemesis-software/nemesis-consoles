@@ -69,7 +69,7 @@ public class WebSocketChatHandler extends AbstractReflectorAtmosphereHandler {
                 try {
                     LOG.info("Writing object to JSON outputstream with charset: " + getCharset().displayName());
                     final String payload = mapper.writeValueAsString(o);
-                    os.write(payload.getBytes());
+                    os.write(payload.getBytes(Charset.defaultCharset()));
                     os.flush();
                 } catch (final IOException ex) {
                     throw new IOException("Failed to serialize object to JSON", ex);
