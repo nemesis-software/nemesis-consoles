@@ -40,7 +40,7 @@ public class AdminConsoleMVCConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/**").setCachePeriod(31556926);
+        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(31556926);
         registry.addResourceHandler("/favicon.ico").addResourceLocations("/");
         registry.addResourceHandler("/robots.txt").addResourceLocations("/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("/webjars/");

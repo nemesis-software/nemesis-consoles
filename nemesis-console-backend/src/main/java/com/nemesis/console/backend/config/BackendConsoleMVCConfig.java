@@ -27,7 +27,7 @@ public class BackendConsoleMVCConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/**").setCachePeriod(new Integer(31556926));
+        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(31556926);
         registry.addResourceHandler("/webjars/**").addResourceLocations("/webjars/");
         registry.addResourceHandler("/favicon.ico").addResourceLocations("/");
         registry.addResourceHandler("/robots.txt").addResourceLocations("/");

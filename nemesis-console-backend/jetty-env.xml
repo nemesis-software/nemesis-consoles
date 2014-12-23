@@ -15,13 +15,13 @@
 <Configure class="org.eclipse.jetty.webapp.WebAppContext">
     <New id="websiteBaseUrl" class="org.eclipse.jetty.plus.jndi.EnvEntry">
         <Arg>websiteBaseUrl</Arg>
-        <Arg type="java.lang.String">http://localhost:8111/storefront/</Arg>
+        <Arg type="java.lang.String">http://solarapparel.com:8111/storefront/</Arg>
         <Arg type="boolean">true</Arg>
     </New>
 
     <New id="restBaseUrl" class="org.eclipse.jetty.plus.jndi.EnvEntry">
         <Arg>restBaseUrl</Arg>
-        <Arg type="java.lang.String">https://localhost:8112/storefront/rest/</Arg>
+        <Arg type="java.lang.String">http://solarapparel.com:8111/storefront/rest/</Arg>
         <Arg type="boolean">true</Arg>
     </New>
 </Configure>
