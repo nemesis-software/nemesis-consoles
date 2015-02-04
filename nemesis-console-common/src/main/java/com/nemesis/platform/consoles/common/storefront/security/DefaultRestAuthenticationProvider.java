@@ -14,9 +14,14 @@ package com.nemesis.platform.consoles.common.storefront.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.conn.ssl.TrustStrategy;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,6 +35,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 
 import javax.annotation.Resource;
 import java.nio.charset.Charset;
+import java.security.cert.CertificateException;
 
 /**
  * @version $Id$
@@ -49,21 +55,18 @@ public class DefaultRestAuthenticationProvider implements AuthenticationProvider
 
         final UserData userData;
         try {
-//            TrustStrategy acceptingTrustStrategy = new TrustStrategy() {
-//                @Override
-//                public boolean isTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-//                    return true;
-//                }
-//            };
-//            SSLSocketFactory sf = new SSLSocketFactory(acceptingTrustStrategy,
-//                SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-//            SchemeRegistry registry = new SchemeRegistry();
-//            registry.register(new Scheme("http", 8111, sf));
-//            ClientConnectionManager ccm = new PoolingClientConnectionManager(registry);
+            TrustStrategy acceptingTrustStrategy = new TrustStrategy() {
+                @Override
+                public boolean isTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+                    return true;
+                }
+            };
+            SSLSocketFactory sf = new SSLSocketFactory(acceptingTrustStrategy, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+            SchemeRegistry registry = new SchemeRegistry();
+            registry.register(new Scheme("https", 8112, sf));
+            ClientConnectionManager ccm = new PoolingClientConnectionManager(registry);
 
-
-
-            HttpClient httpclient = HttpClientBuilder.create().build();
+            DefaultHttpClient httpclient = new DefaultHttpClient(ccm);
 
             /**
              * It can't be POST because the CSRF is triggered.
@@ -85,7 +88,8 @@ public class DefaultRestAuthenticationProvider implements AuthenticationProvider
                 throw new BadCredentialsException("Invalid username/password");
             }
 
-            final ConsoleUserPrincipal principal = new ConsoleUserPrincipal(userData.getUsername(), password, AuthorityUtils.createAuthorityList(userData.getAuthorities()));
+            final ConsoleUserPrincipal principal =
+                            new ConsoleUserPrincipal(userData.getUsername(), password, AuthorityUtils.createAuthorityList(userData.getAuthorities()));
             principal.setExpiryTime(userData.getExpiryTime());
             principal.setToken(userData.getToken());
 
