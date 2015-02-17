@@ -11,14 +11,12 @@
  */
 package com.nemesis.platform.console.admin.js.portlet;
 
-import com.nemesis.platform.util.test.IntegrationTest;
+import com.nemesis.platform.console.admin.AbstractAdminConsoleBaseIntegrationTest;
 import com.thoughtworks.selenium.Selenium;
 import com.thoughtworks.selenium.webdriven.WebDriverBackedSelenium;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -33,8 +31,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * @version $Id$
  */
-@Category(value = IntegrationTest.class)
-public class SystemLoggersPortletIntegrationTest {
+public class SystemLoggersPortletIntegrationTest extends AbstractAdminConsoleBaseIntegrationTest {
 
     private Selenium selenium;
 
@@ -52,7 +49,6 @@ public class SystemLoggersPortletIntegrationTest {
     }
 
     @Test
-    @Ignore
     public void testAdminConsole() throws Exception {
         getSelenium().open("/admin/console");
         assertEquals("Login Page", getSelenium().getTitle());
@@ -133,12 +129,11 @@ public class SystemLoggersPortletIntegrationTest {
     }
 
     private void waitForLoad() {
-        ExpectedCondition<Boolean> pageLoadCondition = new
-            ExpectedCondition<Boolean>() {
-                public Boolean apply(WebDriver driver) {
-                    return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
-                }
-            };
+        ExpectedCondition<Boolean> pageLoadCondition = new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
+            }
+        };
         WebDriverWait wait = new WebDriverWait(driver, 30);
         wait.until(pageLoadCondition);
     }
