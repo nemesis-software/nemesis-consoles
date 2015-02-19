@@ -14,12 +14,12 @@
 
     <link rel="shortcut icon" href="resources/img/favicon.ico" type="image/x-icon"/>
     <c:set var="currentLocale" value="${not empty param.lang ? param.lang : 'en'}"/>
-    <link href="webjars/extjs/5.0.1/build/packages/ext-theme-gray/build/resources/ext-theme-gray-all.css"
+    <link href="webjars/extjs/5.1.0/build/packages/ext-theme-gray/build/resources/ext-theme-gray-all.css"
           rel="stylesheet"/>
-    <script type="text/javascript" src="webjars/extjs/5.0.1/build/ext-all.js"></script>
+    <script type="text/javascript" src="webjars/extjs/5.1.0/build/ext-all.js"></script>
     <script type="text/javascript"
-            src="webjars/extjs/5.0.1/build/packages/ext-locale/build/ext-locale-${currentLocale}.js"></script>
-    <script type="text/javascript" src="webjars/extjs/5.0.1/build/packages/ext-charts/build/ext-charts.js"></script>
+            src="webjars/extjs/5.1.0/build/packages/ext-locale/build/ext-locale-${currentLocale}.js"></script>
+    <script type="text/javascript" src="webjars/extjs/5.1.0/build/packages/ext-charts/build/ext-charts.js"></script>
 
     <script src="webjars/jquery/1.10.2/jquery.min.js"></script>
     <script src="webjars/jquery-atmosphere/2.1.6/jquery.atmosphere.js"></script>
