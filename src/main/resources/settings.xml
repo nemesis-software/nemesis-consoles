@@ -16,19 +16,24 @@
                           http://maven.apache.org/xsd/settings-1.0.0.xsd">
 	<servers>
 		<server>
+			<id>nemesis-docs</id>
+			<username>root</username>
+			<password>${env.NEMESIS_DOCS_SSH_ROOT_PASSWORD}</password>
+		</server>
+		<server>
 		  <id>nemesis-repository</id>
 		  <username>admin</username>
-		  <password>${env.artifactorypassword}</password>
+		  <password>${env.NEMESIS_REPOSITORY_HTTP_PASSWORD}</password>
 		</server>
 		<server>
 		  <id>nemesis-repository-releases</id>
 		  <username>admin</username>
-		  <password>${env.artifactorypassword}</password>
+		  <password>${env.NEMESIS_REPOSITORY_HTTP_PASSWORD}</password>
 		</server>
 		<server>
 		  <id>nemesis-repository-snapshots</id>
 		  <username>admin</username>
-		  <password>${env.artifactorypassword}</password>
+		  <password>${env.NEMESIS_REPOSITORY_HTTP_PASSWORD}</password>
 		</server>
 	</servers>
 </settings>
