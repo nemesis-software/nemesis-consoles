@@ -9,15 +9,18 @@
  * Information and shall use it only in accordance with the terms of the
  * license agreement you entered into with nemesis.
  */
-package com.nemesis.platform.console.admin;
+package com.nemesis.console.common;
 
 import com.nemesis.platform.util.test.IntegrationTest;
 import org.junit.experimental.categories.Category;
 
 /**
- * @version $Id$
+ * Base selenium tests for all consoles.
+ *
+ * @author Petar Tahchiev
+ * @since 0.6
  */
 @Category(value = IntegrationTest.class)
-public abstract class AbstractAdminConsoleBaseIntegrationTest {
+public abstract class AbstractCommonConsoleSeleniumInterationTest {
 
 }

@@ -11,16 +11,17 @@
  */
 package com.nemesis.platform.console.admin.js.portlet;
 
-import com.nemesis.platform.console.admin.AbstractAdminConsoleBaseIntegrationTest;
+import com.nemesis.console.common.AbstractCommonConsoleSeleniumInterationTest;
+import com.nemesis.platform.util.test.IntegrationTest;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -31,26 +32,16 @@ import static org.junit.Assert.assertTrue;
 /**
  * @version $Id$
  */
-public class SystemLoggersPortletIntegrationTest extends AbstractAdminConsoleBaseIntegrationTest {
+@Category(value = IntegrationTest.class)
+public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSeleniumInterationTest {
 
-    private static RemoteWebDriver driver;
+    public static RemoteWebDriver driver;
 
     @BeforeClass
     public static void setUp() throws Exception {
-
-        //System.setProperty("webdriver.chrome.driver", "/home/petar/Downloads/chromedriver");
-
-        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-
-        //        driver = new ChromeDriver(
-        //                        new ChromeDriverService.Builder().usingPort(7000).usingDriverExecutable(new File("/home/petar/Downloads/chromedriver")).build());
-
         driver = new FirefoxDriver();
 
         driver.get("http://localhost:8080/admin");
-        //        driver.setJavascriptEnabled(true);
-
-        //driver.waitForBackgroundJavaScriptStartingBefore(2 * DEFAULT_WAIT_TIME);
 
         assertEquals("Login Page", driver.getTitle());
 
@@ -61,15 +52,37 @@ public class SystemLoggersPortletIntegrationTest extends AbstractAdminConsoleBas
         // Wait for the page to load, timeout after 10 seconds
         (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
-                return d.getTitle().startsWith("Admin Console | Nemesis");
+                return d.getTitle().toLowerCase().startsWith("admin console | nemesis");
             }
         });
 
-        assertEquals("Admin Console | Nemesis", driver.getTitle());
+        assertEquals("admin console | nemesis", driver.getTitle().toLowerCase());
 
         waitForDom();
         waitForLoad();
+    }
 
+    protected static void waitForDom() {
+        driver.executeScript("Ext.onReady(function () {});");
+    }
+
+    protected static void waitForLoad() {
+        ExpectedCondition<Boolean> pageLoadCondition = new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
+            }
+        };
+        WebDriverWait wait = new WebDriverWait(driver, 30);
+        wait.until(pageLoadCondition);
+    }
+
+    @AfterClass
+    public static void tearDown() throws Exception {
+        driver.findElementById("app-header-logout").click();
+        Thread.sleep(500);
+        assertEquals("Login Page", driver.getTitle());
+
+        driver.quit();
     }
 
     @Test
@@ -149,28 +162,5 @@ public class SystemLoggersPortletIntegrationTest extends AbstractAdminConsoleBas
 
         assertEquals("Изход", driver.findElementById("app-header-logout").getText());
 
-    }
-
-    private static void waitForDom() {
-        driver.executeScript("Ext.onReady(function () {});");
-    }
-
-    private static void waitForLoad() {
-        ExpectedCondition<Boolean> pageLoadCondition = new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver driver) {
-                return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
-            }
-        };
-        WebDriverWait wait = new WebDriverWait(driver, 30);
-        wait.until(pageLoadCondition);
-    }
-
-    @AfterClass
-    public static void tearDown() throws Exception {
-        driver.findElementById("app-header-logout").click();
-        Thread.sleep(500);
-        assertEquals("Login Page", driver.getTitle());
-
-        driver.quit();
     }
 }

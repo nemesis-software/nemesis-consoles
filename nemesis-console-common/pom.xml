@@ -32,5 +32,10 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.nemesis.platform</groupId>
+            <artifactId>nemesis-platform-util</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

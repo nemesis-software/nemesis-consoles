@@ -28,14 +28,16 @@
     <url>http://docs.nemesis.bg/platform/console/admin</url>
     <dependencies>
         <dependency>
-            <groupId>com.nemesis.platform</groupId>
-            <artifactId>nemesis-platform-util</artifactId>
+            <groupId>com.nemesis.platform.console</groupId>
+            <artifactId>nemesis-console-common</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.nemesis.platform.console</groupId>
             <artifactId>nemesis-console-common</artifactId>
             <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
