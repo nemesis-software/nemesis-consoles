@@ -1,0 +1,13 @@
+^/\*\s*$
+^ \* nemesis Platform - NExt-generation Multichannel E-commerce SYStem\s*$
+^ \*\s*$
+^ \* Copyright \(c\) 2010 - 2014 nemesis\s*$
+^ \* All rights reserved\.\s*$
+^ \*\s*$
+^ \* This software is the confidential and proprietary information of nemesis\s*$
+^ \* \("Confidential Information"\)\. You shall not disclose such Confidential\s*$
+^ \* Information and shall use it only in accordance with the terms of the\s*$
+^ \* license agreement you entered into with nemesis\.\s*$
+^ \*/\s*$
+^package 
+^\s*$
