@@ -1,0 +1,94 @@
+= Onboarding New Developers
+Petar Tahchiev
+:doctype: book
+:sectanchors:
+:sectlinks:
+:toclevels: 4
+:source-highlighter: coderay
+:icons: font
+:last-update-label!:
+
+This is a short guide of what to do if you are new in the team.
+
+== Install a git client
+Download the latest version of any Git client and install it.
+
+=== Clone the project
+The project resides on github, so issue the following command to clone it: 
+[source,bash]
+----
+git clone https://github.com/paranoiabla/nemesis-consoles.git
+----
+
+=== Configure the console you want to use.
+Each console speaks to a REST endpoint. To configure the address where the REST endpoint is, simply change the file `jetty-end.xml` in the root folder of the console:
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+    <New id="websiteBaseUrl" class="org.eclipse.jetty.plus.jndi.EnvEntry">
+        <Arg>websiteBaseUrl</Arg>
+        <Arg type="java.lang.String">https://localhost:8112/storefront/</Arg>
+        <Arg type="boolean">true</Arg>
+    </New>
+
+    <New id="restBaseUrl" class="org.eclipse.jetty.plus.jndi.EnvEntry">
+        <Arg>restBaseUrl</Arg>
+        <Arg type="java.lang.String">https://localhost:8112/storefront/rest/</Arg>
+        <Arg type="boolean">true</Arg>
+    </New>
+</Configure>
+----
+By default the two properties point to localhost, but if you don't have the REST endpoint running locally, you can also point them at `https://solarapparel.com:8112/storefront` and `https://solarapparel.com:8112/storefront/rest`.
+
+== Install Java
+At the moment the nemesis platform requires version of the JDK at least `1.7.0`, so go to the Oracle website and download the latest version of the JDK. Please note that we use `maven-enforcer-plugin` so smaller version will simply not build the project.
+
+== Install Maven
+The platform needs maven in order to build the project. Required version is at least `3.0.0-alpha-1`. Please note that we use `maven-enforcer-plugin` so smaller version will simply not build the project.
+
+=== Configure Maven
+To be able to run build the consoles you will need access to the Nemesis company repository. Simply add the following servers to your `~/.m2/settings.xml` file:
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+	<servers>
+		<server>
+		  <id>nemesis-repository</id>
+		  <username>admin</username>
+		  <password>nimda</password>
+		</server>
+		<server>
+		  <id>nemesis-repository-releases</id>
+		  <username>admin</username>
+		  <password>nimda</password>
+		</server>
+		<server>
+		  <id>nemesis-repository-snapshots</id>
+		  <username>admin</username>
+		  <password>nimda</password>
+		</server>
+	</servers>
+</settings>
+----
+
+== Build the project.
+To build the project simply run
+[source,bash]
+----
+ $ mvn clean install
+----
+from the top of the project.
+
+NOTE: Please be patient - the first build might take even an hour, as Maven is downloading all the missing artifacts. Subsequent builds, however, should build relatively fast.
+
+== Give it a try
+Now that you have all this configured you can go to any of the consoles and start it with the following command:
+[source,bash]
+----
+ $ mvn jetty:run
+----
+
+after a few seconds the console will be up and running on link:http://localhost:8080/admin[http://localhost:8080/{console_id}] (username: admin, password: nimda).

@@ -26,7 +26,8 @@
     <packaging>pom</packaging>
 
     <name>Platform Consoles</name>
-    <url>http://docs.nemesis.bg/platform/console</url>
+    <description>Parent Project for the Nemesis Consoles</description>
+    <url>http://docs.nemesis.bg/console</url>
 
     <modules>
         <module>nemesis-console-admin</module>

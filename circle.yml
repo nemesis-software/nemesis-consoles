@@ -1,0 +1,14 @@
+machine:
+   java:
+      version: oraclejdk7
+dependencies:
+   override:
+      - mvn dependency:resolve -s src/main/resources/settings.xml
+test:
+   override:
+      - mvn clean install -Ptest -s src/main/resources/settings.xml | tee $CIRCLE_ARTIFACTS/mvn-clean-install.log
+   post:
+      - mvn coveralls:report
+      - mvn site:site -s src/main/resources/settings.xml
+      - ssh-keyscan -t rsa www.nemesis.bg >> ~/.ssh/known_hosts
+      - mvn site:deploy -s src/main/resources/settings.xml
