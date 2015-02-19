@@ -26,8 +26,9 @@ Ext.application({
             //add an extra parameter to the request to denote that ext ajax is sending it
             request: function (options) {
                 var me = this;
-                if (!options.params)
+                if (!options.params) {
                     options.params = {};
+                }
                 options.params = {
                     'nemesis-username': Ext.get('username').dom.getAttribute('value'),
                     'nemesis-token': Ext.get('token').dom.getAttribute('value'),
@@ -48,12 +49,16 @@ Ext.application({
                     var mask = Ext.get('splash-screen'),
                         parent = Ext.get('splash-background');
                     ;
-                    mask.fadeOut({callback: function () {
-                        mask.destroy();
-                    }});
-                    parent.fadeOut({callback: function () {
-                        parent.destroy();
-                    }});
+                    mask.fadeOut({
+                        callback: function () {
+                            mask.destroy();
+                        }
+                    });
+                    parent.fadeOut({
+                        callback: function () {
+                            parent.destroy();
+                        }
+                    });
 
                     Ext.getCmp('app-header-logout').getEl().on('click', function () {
                         Ext.getCmp('logout-form-csrf-param').setValue(Ext.get('security').dom.getAttribute('token'));
@@ -96,7 +101,8 @@ Ext.application({
         });
 
         //check if the rest API is accessible
-        Ext.Ajax.request({ url: Ext.get('rest-base-url').dom.getAttribute('url') + '?username=admin&expiryTime=1412957430914&token=$2a$10$4tS7gLPRvM.O8eQce9W9AeMDISUpOg8P2moRZDv7iDJ2G9arDySoG',
+        Ext.Ajax.request({
+            url: Ext.get('rest-base-url').dom.getAttribute('url') + '?username=admin&expiryTime=1412957430914&token=$2a$10$4tS7gLPRvM.O8eQce9W9AeMDISUpOg8P2moRZDv7iDJ2G9arDySoG',
             loadMask: true,
             method: 'GET',
             success: function (responseObject) {

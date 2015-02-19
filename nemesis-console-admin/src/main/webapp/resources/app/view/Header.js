@@ -63,13 +63,13 @@ Ext.define('AdminConsole.view.Header', {
                 typeAhead: true,
                 listeners: {
                     select: {
-                        fn: function (cb, records) {
-                            var record = records[0];
-                            window.location.search = Ext.urlEncode({"lang": record.get("isoCode")});
-                        },
-                        scope: this
-                    }
+                        fn: function (cb, record) {
+                            window.location.search = Ext.urlEncode({"lang": record.isoCode});
+                        }
+                    },
+                    scope: this
                 }
+
             }
         ];
 

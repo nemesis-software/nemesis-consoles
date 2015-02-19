@@ -12,135 +12,165 @@
 package com.nemesis.platform.console.admin.js.portlet;
 
 import com.nemesis.platform.console.admin.AbstractAdminConsoleBaseIntegrationTest;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @version $Id$
  */
 public class SystemLoggersPortletIntegrationTest extends AbstractAdminConsoleBaseIntegrationTest {
 
-    //    private Selenium selenium;
-    //
-    //    private FirefoxDriver driver;
-    //
-    //    @Before
-    //    public void setUp() throws Exception {
-    //        driver = new FirefoxDriver();
-    //        //        driver.setJavascriptEnabled(true);
-    //
-    //        //driver.waitForBackgroundJavaScriptStartingBefore(2 * DEFAULT_WAIT_TIME);
-    //
-    //        String baseUrl = "http://localhost:8080/admin/";
-    //        selenium = new WebDriverBackedSelenium(driver, baseUrl);
-    //    }
-    //
-    //    @Test
-    //    public void testAdminConsole() throws Exception {
-    //        getSelenium().open("/admin/console");
-    //        assertEquals("Login Page", getSelenium().getTitle());
-    //
-    //        getSelenium().open("/admin/");
-    //        assertEquals("Login Page", getSelenium().getTitle());
-    //
-    //        getSelenium().type("name=username", "admin");
-    //        getSelenium().type("name=password", "nimda");
-    //        getSelenium().click("name=submit");
-    //
-    //        getSelenium().waitForPageToLoad("3000");
-    //
-    //        assertEquals("Admin Console | Nemesis", getSelenium().getTitle());
-    //
-    //        waitForDom();
-    //        waitForLoad();
-    //
-    //        System.out.println(driver.getPageSource());
-    //
-    //        // Header link
-    //        getDriver().findElement(By.cssSelector("a#app-header-title")).click();
-    //        //        getSelenium().click("css=a#app-header-title");
-    //        getSelenium().waitForPageToLoad("5000");
-    //
-    //        // System Properties
-    //        assertEquals(4, getSelenium().getCssCount("div#system-properties-grid-body table.x-grid-item"));
-    //        getSelenium().click("css=input[id^='system-properties-filter-input']");
-    //        getSelenium().typeKeys("css=input[id^='system-properties-filter-input']", "one");
-    //        Thread.sleep(500);
-    //        assertEquals(1, getSelenium().getCssCount("table.x-grid-item"));
-    //        getSelenium().click("id=system-properties-filter-trigger-clear");
-    //        Thread.sleep(500);
-    //        assertEquals(4, getSelenium().getCssCount("table.x-grid-item"));
-    //        getSelenium().click("css=div#system-properties-grid-body table.x-grid-item td.x-grid-cell");
-    //        getSelenium().click("css=span[id^='system-properties-delete-btn']");
-    //        assertEquals(3, getSelenium().getCssCount("table.x-grid-item"));
-    //        getSelenium().click("css=span[id^='system-properties-save-btn']");
-    //        assertEquals(3, getSelenium().getCssCount("table.x-grid-item"));
-    //        // Log Levels
-    //        getSelenium().click("css=span.x-tab-inner-default:contains('Levels')");
-    //        assertEquals(6, getSelenium().getCssCount("table.x-grid-item"));
-    //        getSelenium().click("css=span.x-tab-inner-default:contains('Levels')");
-    //        assertEquals(3, getSelenium().getCssCount("div#system-loggers-grid-body table.x-grid-item"));
-    //        getSelenium().click("css=input[id^='system-loggers-filter-input']");
-    //        getSelenium().typeKeys("css=input[id^='system-loggers-filter-input']", "one");
-    //        Thread.sleep(500);
-    //        assertEquals(1, getSelenium().getCssCount("div#system-loggers-grid-body table.x-grid-item"));
-    //        getSelenium().click("id=system-loggers-filter-trigger-clear");
-    //        getSelenium().click("css=div#system-loggers-grid-body table.x-grid-item td.x-grid-cell");
-    //        getSelenium().click("id=system-loggers-delete-btn");
-    //        assertEquals(2, getSelenium().getCssCount("div#system-loggers-grid-body table.x-grid-item"));
-    //        // PKAnalyzer portlet.
-    //        getSelenium().typeKeys("id=pk-input-field-inputEl", "123456");
-    //        getSelenium().click("id=decode-pk-button");
-    //        Thread.sleep(500);
-    //        assertEquals("100", getSelenium().getValue("id=pk-input-field-inputEl"));
-    //        // Thread dump
-    //        getSelenium().click("id=platform-actions-thread-dump");
-    //        Thread.sleep(500);
-    //        assertTrue(getSelenium().isElementPresent("id=threadDumpResultWindow"));
-    //        assertEquals("thread dump", getSelenium().getValue("id=threaddumpResultArea-inputEl"));
-    //        getSelenium().click("css=div#threadDumpResultWindow img.x-tool-close");
-    //        Thread.sleep(500);
-    //        assertFalse(getSelenium().isElementPresent("id=threadDumpResultWindow"));
-    //        // Change locale
-    //        //getSelenium().runScript("var c = Ext.getCmp('app-header-language-selector'); c.setValue({'isoCode':'bg'}); c.fireEvent('select', c, {'isoCode':'bg'});");
-    //        //getSelenium().waitForPageToLoad("5000");
-    //        //assertEquals("Изход", getSelenium().getText("id=app-header-logout"));
-    //        // Logout Link
-    //        getSelenium().click("id=app-header-logout");
-    //        Thread.sleep(500);
-    //        assertEquals("Login Page", getSelenium().getTitle());
-    //    }
-    //
-    //    private void waitForDom() {
-    //        getDriver().executeScript("Ext.onReady(function () {});");
-    //    }
-    //
-    //    private void waitForLoad() {
-    //        ExpectedCondition<Boolean> pageLoadCondition = new ExpectedCondition<Boolean>() {
-    //            public Boolean apply(WebDriver driver) {
-    //                return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
-    //            }
-    //        };
-    //        WebDriverWait wait = new WebDriverWait(driver, 30);
-    //        wait.until(pageLoadCondition);
-    //    }
-    //
-    //    //    protected HtmlPage getPage(final String example, final String htmlName) throws Exception {
-    //    //        final String resource = "libraries/ExtJS/" + getVersion() + "/examples/" + example + "/" + htmlName + ".html";
-    //    //        final URL url = getClass().getClassLoader().getResource(resource);
-    //    //        assertNotNull(url);
-    //    //        webClient_ = getWebClient();
-    //    //        return webClient_.getPage(url);
-    //    //    }
-    //
-    //    @After
-    //    public void tearDown() throws Exception {
-    //        selenium.stop();
-    //    }
-    //
-    //    public Selenium getSelenium() {
-    //        return selenium;
-    //    }
-    //
-    //    public FirefoxDriver getDriver() {
-    //        return driver;
-    //    }
+    private static RemoteWebDriver driver;
+
+    @BeforeClass
+    public static void setUp() throws Exception {
+
+        //System.setProperty("webdriver.chrome.driver", "/home/petar/Downloads/chromedriver");
+
+        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+
+        //        driver = new ChromeDriver(
+        //                        new ChromeDriverService.Builder().usingPort(7000).usingDriverExecutable(new File("/home/petar/Downloads/chromedriver")).build());
+
+        driver = new FirefoxDriver();
+
+        driver.get("http://localhost:8080/admin");
+        //        driver.setJavascriptEnabled(true);
+
+        //driver.waitForBackgroundJavaScriptStartingBefore(2 * DEFAULT_WAIT_TIME);
+
+        assertEquals("Login Page", driver.getTitle());
+
+        driver.findElement(By.cssSelector("input[name=username]")).sendKeys("admin");
+        driver.findElement(By.cssSelector("input[name=password]")).sendKeys("nimda");
+        driver.findElement(By.cssSelector("input[name=submit]")).click();
+
+        // Wait for the page to load, timeout after 10 seconds
+        (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getTitle().startsWith("Admin Console | Nemesis");
+            }
+        });
+
+        assertEquals("Admin Console | Nemesis", driver.getTitle());
+
+        waitForDom();
+        waitForLoad();
+
+    }
+
+    @Test
+    public void testPkAnalyzerPortlet() throws Exception {
+        driver.findElementById("pk-input-field-inputEl").sendKeys("563567378827168");
+        driver.findElementById("decode-pk-button").click();
+        Thread.sleep(500);
+        assertEquals("2", driver.findElementById("pk-input-field-inputEl").getAttribute("value"));
+    }
+
+    @Test
+    public void testThreadDumpPortlet() throws InterruptedException {
+        driver.findElementById("platform-actions-thread-dump").click();
+        Thread.sleep(1500);
+        driver.findElementByCssSelector("div#threadDumpResultWindow img.x-tool-close").click();
+        Thread.sleep(500);
+        assertTrue(driver.findElementsById("threadDumpResultWindow").size() == 0);
+    }
+
+    @Test
+    @Ignore("Not implemented yet")
+    public void testSystemPropertiesPortlet() throws InterruptedException {
+        // System Properties
+        assertEquals(4, driver.findElements(By.cssSelector("div#system-properties-grid-body table.x-grid-item")).size());
+        driver.findElementByCssSelector("input[id^='system-properties-filter-input']").sendKeys("one");
+        Thread.sleep(500);
+        assertEquals(1, driver.findElementsByCssSelector("table.x-grid-item").size());
+        driver.findElementById("system-properties-filter-trigger-clear").click();
+        Thread.sleep(500);
+        assertEquals(4, driver.findElementsByCssSelector("table.x-grid-item").size());
+        driver.findElementByCssSelector("div#system-properties-grid-body table.x-grid-item td.x-grid-cell").click();
+        driver.findElementByCssSelector("span[id^='system-properties-delete-btn']").click();
+        assertEquals(3, driver.findElementsByCssSelector("table.x-grid-item").size());
+        driver.findElementByCssSelector("span[id^='system-properties-save-btn']").click();
+        assertEquals(3, driver.findElementsByCssSelector("table.x-grid-item").size());
+    }
+
+    @Test
+    @Ignore("Not implemented yet")
+    public void testLogLevelsPortlet() throws InterruptedException {
+        driver.findElementByCssSelector("span.x-tab-inner-default:contains('Levels')").click();
+        assertEquals(6, driver.findElementsByCssSelector("table.x-grid-item").size());
+        driver.findElementByCssSelector("span.x-tab-inner-default:contains('Levels')").click();
+        assertEquals(3, driver.findElementsByCssSelector("div#system-loggers-grid-body table.x-grid-item").size());
+        driver.findElementByCssSelector("input[id^='system-loggers-filter-input']").click();
+        driver.findElementByCssSelector("input[id^='system-loggers-filter-input']").sendKeys("one");
+        Thread.sleep(500);
+        assertEquals(1, driver.findElementsByCssSelector("div#system-loggers-grid-body table.x-grid-item").size());
+        driver.findElementById("system-loggers-filter-trigger-clear").click();
+        driver.findElementByCssSelector("div#system-loggers-grid-body table.x-grid-item td.x-grid-cell").click();
+        driver.findElementById("system-loggers-delete-btn").click();
+        assertEquals(2, driver.findElementsByCssSelector("div#system-loggers-grid-body table.x-grid-item").size());
+    }
+
+    @Test
+    public void testHeaderLinkReloadsPage() {
+        driver.findElement(By.cssSelector("a#app-header-title")).click();
+        // Wait for the page to load, timeout after 10 seconds
+        (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getTitle().startsWith("Admin Console | Nemesis");
+            }
+        });
+    }
+
+    @Test
+    public void testChangeLocale() {
+        //Change locale
+        driver.executeScript("var c = Ext.getCmp('app-header-language-selector'); c.setValue({'isoCode':'bg'}); c.fireEvent('select', c, {'isoCode':'bg'});");
+
+        // Wait for the page to load, timeout after 5 seconds
+        (new WebDriverWait(driver, 5)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getTitle().startsWith("Admin Console | Nemesis");
+            }
+        });
+
+        assertEquals("Изход", driver.findElementById("app-header-logout").getText());
+
+    }
+
+    private static void waitForDom() {
+        driver.executeScript("Ext.onReady(function () {});");
+    }
+
+    private static void waitForLoad() {
+        ExpectedCondition<Boolean> pageLoadCondition = new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
+            }
+        };
+        WebDriverWait wait = new WebDriverWait(driver, 30);
+        wait.until(pageLoadCondition);
+    }
+
+    @AfterClass
+    public static void tearDown() throws Exception {
+        driver.findElementById("app-header-logout").click();
+        Thread.sleep(500);
+        assertEquals("Login Page", driver.getTitle());
+
+        driver.quit();
+    }
 }
