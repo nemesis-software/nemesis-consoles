@@ -3,7 +3,8 @@ machine:
       version: oraclejdk7
 dependencies:
    override:
-      - mvn dependency:resolve -s src/main/resources/settings.xml -pl .
+      - mvn dependency:resolve -s src/main/resources/settings.xml
+      - mvn dependency:resolve-plugins -s src/main/resources/settings.xml
 test:
    override:
       - set -o pipefail && mvn clean deploy -Ptest -s src/main/resources/settings.xml | tee $CIRCLE_ARTIFACTS/mvn-clean-install.log
