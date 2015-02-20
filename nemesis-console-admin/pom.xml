@@ -152,18 +152,28 @@
                     </webApp>
                     <stopKey>1</stopKey>
                     <stopPort>9000</stopPort>
+                    <daemon>true</daemon>
                 </configuration>
                 <executions>
                     <execution>
                         <id>start-jetty</id>
                         <phase>pre-integration-test</phase>
                         <goals>
-                            <goal>run</goal>
+                            <goal>stop</goal>
+                            <goal>start</goal>
                         </goals>
                         <configuration>
                             <scanIntervalSeconds>0</scanIntervalSeconds>
-                            <daemon>true</daemon>
+                            <stopKey>1</stopKey>
+                            <stopPort>9000</stopPort>
                         </configuration>
+                    </execution>
+                    <execution>
+                        <id>stop-jetty</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
                     </execution>
                 </executions>
                 <dependencies>
