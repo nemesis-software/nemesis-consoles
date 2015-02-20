@@ -21,6 +21,7 @@ Ext.define('console.view.Menu', {
                 region: 'north',
                 emptyText: this.filterEmptyText,
                 xtype: 'customtrigger',
+                id: 'navigation-menu-filter',
                 width: 150,
                 enableKeyEvents: true,
                 triggers: {

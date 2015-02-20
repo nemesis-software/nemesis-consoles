@@ -152,7 +152,7 @@
                     </webApp>
                     <stopKey>1</stopKey>
                     <stopPort>9000</stopPort>
-                    <daemon>true</daemon>
+
                 </configuration>
                 <executions>
                     <execution>
@@ -160,10 +160,11 @@
                         <phase>pre-integration-test</phase>
                         <goals>
                             <goal>stop</goal>
-                            <goal>start</goal>
+                            <goal>run</goal>
                         </goals>
                         <configuration>
                             <scanIntervalSeconds>0</scanIntervalSeconds>
+                            <daemon>true</daemon>
                             <stopKey>1</stopKey>
                             <stopPort>9000</stopPort>
                         </configuration>
