@@ -12,12 +12,10 @@
 package com.nemesis.platform.console.admin.js.portlet;
 
 import com.nemesis.console.common.AbstractCommonConsoleSeleniumInterationTest;
-import com.nemesis.platform.util.test.IntegrationTest;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -30,9 +28,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
+ * Master selenium test-case for the admin console.
+ *
  * @version $Id$
  */
-@Category(value = IntegrationTest.class)
 public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSeleniumInterationTest {
 
     public static RemoteWebDriver driver;
@@ -121,20 +120,19 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
     }
 
     @Test
-    @Ignore("Not implemented yet")
     public void testLogLevelsPortlet() throws InterruptedException {
-        driver.findElementByCssSelector("span.x-tab-inner-default:contains('Levels')").click();
-        assertEquals(6, driver.findElementsByCssSelector("table.x-grid-item").size());
-        driver.findElementByCssSelector("span.x-tab-inner-default:contains('Levels')").click();
-        assertEquals(3, driver.findElementsByCssSelector("div#system-loggers-grid-body table.x-grid-item").size());
+        driver.findElementByXPath("//span[@class='x-tab-inner-default']|//span[contains(text(),'Levels')]").click();
+        assertTrue(driver.findElementsByCssSelector("div#system-loggers-grid-body table.x-grid-item").size() > 0);
         driver.findElementByCssSelector("input[id^='system-loggers-filter-input']").click();
-        driver.findElementByCssSelector("input[id^='system-loggers-filter-input']").sendKeys("one");
+        driver.findElementByCssSelector("input[id^='system-loggers-filter-input']").sendKeys("someloggerthatdoesnotexist");
         Thread.sleep(500);
-        assertEquals(1, driver.findElementsByCssSelector("div#system-loggers-grid-body table.x-grid-item").size());
+        assertEquals(0, driver.findElementsByCssSelector("div#system-loggers-grid-body table.x-grid-item").size());
         driver.findElementById("system-loggers-filter-trigger-clear").click();
+        assertTrue(driver.findElementsByCssSelector("div#system-loggers-grid-body table.x-grid-item").size() > 0);
+        int size = driver.findElementsByCssSelector("div#system-loggers-grid-body table.x-grid-item").size();
         driver.findElementByCssSelector("div#system-loggers-grid-body table.x-grid-item td.x-grid-cell").click();
         driver.findElementById("system-loggers-delete-btn").click();
-        assertEquals(2, driver.findElementsByCssSelector("div#system-loggers-grid-body table.x-grid-item").size());
+        assertEquals(size - 1, driver.findElementsByCssSelector("div#system-loggers-grid-body table.x-grid-item").size());
     }
 
     @Test
