@@ -149,7 +149,8 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
     @Test
     public void testChangeLocale() {
         //Change locale
-        driver.executeScript("var c = Ext.getCmp('app-header-language-selector'); c.setValue({'isoCode':'bg'}); c.fireEvent('select', c, {'isoCode':'bg'});");
+        driver.executeScript(
+                        "var c = Ext.getCmp('app-header-language-selector'); c.setValue({'isoCode':'bg'}); c.fireEvent('select', c, {data : {'isoCode':'bg'}});");
 
         // Wait for the page to load, timeout after 5 seconds
         (new WebDriverWait(driver, 5)).until(new ExpectedCondition<Boolean>() {
