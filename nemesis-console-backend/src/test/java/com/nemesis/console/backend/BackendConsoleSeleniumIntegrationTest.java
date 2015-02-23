@@ -98,7 +98,8 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     @Test
     public void testChangeLocale() {
         //Change locale
-        driver.executeScript("var c = Ext.getCmp('app-header-language-selector'); c.setValue({'isoCode':'bg'}); c.fireEvent('select', c, {'isoCode':'bg'});");
+        driver.executeScript(
+                        "var c = Ext.getCmp('app-header-language-selector'); c.setValue({'isoCode':'bg'}); c.fireEvent('select', c, {data: {'isoCode':'bg'}});");
 
         // Wait for the page to load, timeout after 5 seconds
         (new WebDriverWait(driver, 5)).until(new ExpectedCondition<Boolean>() {
@@ -116,28 +117,66 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         assertTrue(driver.findElementsByCssSelector("div#navigation-tree .x-grid-item").size() > 0);
 
-        driver.findElementByCssSelector("input[id^='navigation-menu-filter']").sendKeys("media");
+        driver.findElementByCssSelector("input[id^='navigation-menu-filter-input']").sendKeys("media_format");
 
-        Thread.sleep(500);
+        Thread.sleep(1500);
 
-        assertEquals(1, driver.findElementsByCssSelector("div#navigationTree .x-grid-item").size());
+        assertEquals(2, driver.findElementsByCssSelector("div#navigation-tree .x-grid-item").size());
 
         driver.findElement(By.id("navigation-menu-filter-trigger-clear")).click();
 
-        assertTrue(driver.findElementsByCssSelector("div#navigationTree .x-grid-item").size() > 0);
+        assertTrue(driver.findElementsByCssSelector("div#navigation-tree .x-grid-item").size() > 0);
+    }
 
-        //        driver.findElement(By.xpath("(//img[contains(@src,'data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')])[3]")).click();
-        //        driver.findElement(By.xpath("//table[@id='treeview-1016-record-17']/tbody/tr/td/div/span")).click();
-        //        driver.findElement(By.id("button-1036-btnIconEl")).click();
-        //        driver.findElement(By.id("button-1036-btnIconEl")).click();
-        //        driver.findElement(By.cssSelector("#ext-element-17 > div.x-grid-cell-inner.")).click();
-        //        driver.findElement(By.id("menuitem-1058-iconEl")).click();
-        //        driver.findElement(By.id("tool-1100-toolEl")).click();
-        //        driver.findElement(By.id("button-1007-btnEl")).click();
-        //        driver.findElement(By.cssSelector("#ext-element-36 > div.x-grid-cell-inner.")).click();
-        //        driver.findElement(By.cssSelector("#ext-element-36 > div.x-grid-cell-inner.")).click();
-        //        driver.findElement(By.id("tool-1146-toolEl")).click();
-        //        driver.findElement(By.id("button-1007-btnEl")).click();
+    @Test
+    public void testSelectMediaContainer() throws InterruptedException {
+
+        assertTrue(driver.findElementsByCssSelector("div#navigation-tree table.x-grid-item").size() > 0);
+
+        driver.findElementByCssSelector("input[id^='navigation-menu-filter-input']").sendKeys("media_container");
+
+        Thread.sleep(1500);
+
+        assertEquals(2, driver.findElementsByCssSelector("div#navigation-tree table.x-grid-item").size());
+
+        driver.findElementsByCssSelector("div#navigation-tree table.x-grid-item div.x-grid-cell-inner").get(1).click();
+
+        assertEquals(1, driver.findElementsByCssSelector("div#tab-panel a.x-tab").size());
+
+        driver.findElementByCssSelector("span.x-tab-close-btn").click();
+
+        assertEquals(0, driver.findElementsByCssSelector("div#tab-panel a.x-tab").size());
+
+        driver.findElement(By.id("navigation-menu-filter-trigger-clear")).click();
+    }
+
+    @Test
+    public void testFilterMediaContainer() throws InterruptedException {
+        assertTrue(driver.findElementsByCssSelector("div#navigation-tree table.x-grid-item").size() > 0);
+
+        driver.findElementByCssSelector("input[id^='navigation-menu-filter-input']").sendKeys("media_container");
+
+        Thread.sleep(1500);
+
+        assertEquals(2, driver.findElementsByCssSelector("div#navigation-tree table.x-grid-item").size());
+
+        driver.findElementsByCssSelector("div#navigation-tree table.x-grid-item div.x-grid-cell-inner").get(1).click();
+
+        assertEquals(1, driver.findElementsByCssSelector("div#tab-panel a.x-tab").size());
+
+        Thread.sleep(1500);
+
+        assertEquals(1, driver.findElementsByCssSelector("div#media_container-searchform-fieldset-body div.x-form-item").size());
+
+        assertEquals(10, driver.findElementsByCssSelector("div#media_container-search-result-body table.x-grid-item").size());
+
+        //driver.executeScript("var c = Ext.getCmp('app-header-language-selector'); c.setValue({'isoCode':'bg'}); c.fireEvent('select', c, {'isoCode':'bg'});");
+
+        driver.findElementByCssSelector("div#media_container-searchform-fieldset-body div.x-form-item input[type='text']").sendKeys("default");
+
+        driver.findElementsByCssSelector("div#media_container-search-form-fieldset-body div.x-toolbar a.x-btn").iterator().next().click();
+
+        assertEquals(10, driver.findElementsByCssSelector("div#media_container-search-result-body table.x-grid-item").size());
     }
 
 }

@@ -57,8 +57,8 @@
             display: block;
         }
 
-        input {
-            width: 230px;
+        input[type='text'], input[type='password'] {
+            width: 95%;
             background: #FFFFFF;
             padding: 6px;
             margin-bottom: 10px;
@@ -67,6 +67,9 @@
 
         input.submit {
             width: 100px;
+            padding: 6px;
+            margin-bottom: 10px;
+            border: 1px solid #000;
             color: #000;
             text-transform: uppercase;
             margin-top: 10px;
