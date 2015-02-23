@@ -14,6 +14,7 @@ package com.nemesis.console.backend;
 import com.nemesis.console.common.AbstractCommonConsoleSeleniumInterationTest;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -151,6 +152,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     }
 
     @Test
+    @Ignore("https://github.com/paranoiabla/nemesis-consoles/issues/15")
     public void testFilterMediaContainer() throws InterruptedException {
         assertTrue(driver.findElementsByCssSelector("div#navigation-tree table.x-grid-item").size() > 0);
 
