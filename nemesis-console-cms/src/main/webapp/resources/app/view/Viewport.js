@@ -48,6 +48,14 @@ Ext.define('console.view.Viewport', {
     ],
     createWindow: function (config) {
         var me = this;
-        return Ext.create('console.view.content.EntityPopupWindow', {id: config.id, title: config.title, iconCls: config.iconCls, entity: config.entity, entityFields: config.sections, modal: true});
+        console.log(config.sections);
+        return Ext.create('console.view.content.EntityPopupWindow', {
+            id: config.id,
+            title: config.title,
+            iconCls: config.iconCls,
+            entity: config.entity,
+            entityFields: config.sections,
+            modal: true
+        });
     }
 });

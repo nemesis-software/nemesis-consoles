@@ -107,7 +107,18 @@ Ext.define('console.view.field.NemesisCollectionField', {
                                 if (!window) {
                                     var entityConfiguration = Ext.create("console.markup." + this.entity.data.id);
                                     console.log(record);
-                                    window = Ext.getCmp('backend-viewport').createWindow({id: record, title: '[' + record + ' - ' + this.entity.data.name + ']', iconCls: this.entity.data.id, entity: Ext.create('console.model.Entity', {id: this.entity.data.id, name: this.entity.data.name, className: null, url: record.data.url}), sections: entityConfiguration.sections});
+                                    window = Ext.getCmp('backend-viewport').createWindow({
+                                        id: record,
+                                        title: '[' + record + ' - ' + this.entity.data.name + ']',
+                                        iconCls: this.entity.data.id,
+                                        entity: Ext.create('console.model.Entity', {
+                                            id: this.entity.data.id,
+                                            name: this.entity.data.name,
+                                            className: null,
+                                            url: record.data.url
+                                        }),
+                                        sections: entityConfiguration.sections
+                                    });
                                 }
                                 Ext.getCmp('backend-viewport').restoreWindow(window);
                             },
@@ -235,7 +246,7 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
                                 //save the input value (in case it was changed)
                                 var lang = me.fieldSet.items.items[0].getValue();
                                 var value = me.fieldSet.items.items[1].getValue();
-                                me.langValuePairs [lang] = { "value": value};
+                                me.langValuePairs [lang] = {"value": value};
                             }
                         },
                         select: function (cb, records) {
@@ -285,7 +296,7 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
         } else {
             var lang = this.fieldSet.items.items[0].getValue();
             var value = this.fieldSet.items.items[1].getValue();
-            me.langValuePairs [lang] = { "value": value};
+            me.langValuePairs [lang] = {"value": value};
             return me.langValuePairs;
         }
     }
@@ -396,7 +407,13 @@ Ext.define('console.view.field.NemesisEntityField', {
                     var window = Ext.getCmp('backend-viewport').getWindow(this.entity.data.id);
                     if (!window) {
                         var entityConfiguration = Ext.create("console.markup." + me.entityId);
-                        window = Ext.getCmp('backend-viewport').createWindow({id: me.jsonValue, title: '[' + me.jsonValue + ' - ' + this.entity.data.name + ']', iconCls: me.entityId, entity: this.entity, sections: entityConfiguration.sections});
+                        window = Ext.getCmp('backend-viewport').createWindow({
+                            id: me.jsonValue,
+                            title: '[' + me.jsonValue + ' - ' + this.entity.data.name + ']',
+                            iconCls: me.entityId,
+                            entity: this.entity,
+                            sections: entityConfiguration.sections
+                        });
                     }
                     Ext.getCmp('backend-viewport').restoreWindow(window);
                 }
@@ -503,6 +520,12 @@ Ext.define('console.view.field.NemesisEntityField', {
     }
 });
 
+Ext.define('console.view.field.NemesisMediaField', {
+    extend: 'console.view.field.NemesisEntityField',
+    xtype: 'nemesisMediaField',
+    tooltip: 'This is media'
+});
+
 Ext.define('console.view.field.NemesisEnumerationField', {
     extend: 'Ext.form.field.ComboBox',
     xtype: 'nemesisEnumField',
@@ -592,7 +615,7 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
                             if (me.fieldSet) {
                                 var lang = me.fieldSet.items.items[0].getValue();
                                 var value = me.fieldSet.items.items[1].getValue();
-                                me.langValuePairs [lang] = { "value": value};
+                                me.langValuePairs [lang] = {"value": value};
                             }
                         },
                         select: function (cb, records) {
@@ -646,7 +669,7 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
         } else {
             var lang = this.fieldSet.items.items[0].getValue();
             var value = this.fieldSet.items.items[1].getValue();
-            me.langValuePairs [lang] = { "value": value};
+            me.langValuePairs [lang] = {"value": value};
             return me.langValuePairs;
         }
     }

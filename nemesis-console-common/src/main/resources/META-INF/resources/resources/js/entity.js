@@ -69,7 +69,7 @@ Ext.define('console.view.content.entity.EntityPopupForm', {
     method: 'PUT',
     frame: false,
     border: false,
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
     fieldDefaults: {
         labelAlign: 'left',
         msgTarget: 'side'
@@ -89,7 +89,8 @@ Ext.define('console.view.content.entity.EntityPopupForm', {
 
         this.on('afterrender', function () {
             if (me.entity != null) {
-                Ext.Ajax.request({ url: me.entity.data.url,
+                Ext.Ajax.request({
+                    url: me.entity.data.url,
                     method: 'GET',
                     params: {},
                     success: function (responseObject) {
@@ -172,7 +173,8 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                 disabled: me.entity == null,
                 handler: function () {
                     console.log(me.entity.data.url);
-                    Ext.Ajax.request({ url: me.entity.data.url,
+                    Ext.Ajax.request({
+                        url: me.entity.data.url,
                         method: 'GET',
                         params: {},
                         success: function (responseObject) {
@@ -202,7 +204,8 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                     console.log(me.entity.data.url);
                     me.up().up().setLoading(true);
                     var pk = me.entity.data.url.substring(me.entity.data.url.lastIndexOf(me.entity.data.id) + me.entity.data.id.length + 1);
-                    Ext.Ajax.request({ url: Ext.get('rest-base-url').dom.getAttribute('url') + "backend/synchronize",
+                    Ext.Ajax.request({
+                        url: Ext.get('rest-base-url').dom.getAttribute('url') + "backend/synchronize",
                         method: 'GET',
                         params: {
                             entityName: me.entity.data.id,
@@ -246,9 +249,10 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
     },
     onsaveClicked: function (entity, entityPopupForm) {
         var me = this;
-        Ext.Ajax.request({ url: entity.data.url,
+        Ext.Ajax.request({
+            url: entity.data.url,
             method: entityPopupForm.method,
-            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            headers: {'Content-Type': 'application/json', Accept: 'application/json'},
             params: this.prepareValues(entityPopupForm.getForm().getValues()),
             success: function (responseObject) {
                 var searchRes = Ext.getCmp(entity.data.id + '-search-result');
@@ -270,9 +274,10 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
     },
     onsaveandcloseClicked: function (entity, entityPopupForm) {
         var me = this;
-        Ext.Ajax.request({ url: entity.data.url,
+        Ext.Ajax.request({
+            url: entity.data.url,
             method: entityPopupForm.method,
-            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            headers: {'Content-Type': 'application/json', Accept: 'application/json'},
             params: this.prepareValues(entityPopupForm.getForm().getValues()),
             success: function (responseObject) {
                 me.up('window').close();
@@ -296,7 +301,8 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
 
     ondeleteClicked: function (entity) {
         var me = this;
-        Ext.Ajax.request({ url: entity.data.url,
+        Ext.Ajax.request({
+            url: entity.data.url,
             method: 'DELETE',
             params: {},
             success: function (responseObject) {

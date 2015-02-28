@@ -105,7 +105,7 @@ Ext.define('console.view.Menu', {
                                 '<tpl for=".">',
                                 '<div id="page-{uid}" class="top-carousel-item">',
                                 '<div class="carousel-picture">',
-                                    '<a><img src="' + Ext.get('website-base-url').dom.getAttribute('url') + 'media/content/{uid}/{uid}.png"></a>',
+                                '<a><img src="' + Ext.get('website-base-url').dom.getAttribute('url') + 'media/content/{uid}/{uid}.png"></a>',
                                 '<rect width="124" height="185" fill = "none" stroke-width = "1" stroke = "#000000" />',
                                 '{[this.getPageCanvas()]}',
                                 '{previewCanvas}',
@@ -312,7 +312,7 @@ Ext.define('console.view.Menu', {
                                 '<tpl for=".">',
                                 '<div id="page-{uid}" class="top-carousel-item">',
                                 '<div class="carousel-picture">',
-                                    '<a><img src="' + Ext.get('website-base-url').dom.getAttribute('url') + 'media/content/{uid}/{uid}.png"></a>',
+                                '<a><img src="' + Ext.get('website-base-url').dom.getAttribute('url') + 'media/content/{uid}/{uid}.png"></a>',
                                 '</div>',
                                 '<div class="carousel-item">',
                                 '<div class="widget-description">{name}</div>',
@@ -352,7 +352,7 @@ Ext.define('console.view.Menu', {
                             ),
                             listeners: {
                                 itemclick: function (view, record, item, index, e, eOpts) {
-                                    Ext.get('website-iframe').dom.src = Ext.get('website-base-url').dom.getAttribute('url') + "email/" + record.raw.uid + "?site=polar&live-edit-view=true";
+                                    Ext.get('website-iframe').dom.src = Ext.get('website-base-url').dom.getAttribute('url') + "email/" + record.raw.uid + "?site=solar&live_edit_view=true";
                                     view.el.setStyle('background', '#DDDDDD');
                                     view.el.setStyle('border-color', '#000');
                                 }

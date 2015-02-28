@@ -30,7 +30,7 @@
 <div id="rest-base-url" style="display:none" url="${restBaseUrl}" locale="${currentLocale}">${restBaseUrl}</div>
 <div id="contextPath" style="display:none"
      ctxPath="${pageContext.request.contextPath}">${pageContext.request.contextPath}</div>
-<div id="security" style="display:none" username="<sec:authentication property="principal" />"
+<div id="security" style="display:none" username="<sec:authentication property="principal.username" />"
      token="${_csrf.token}"></div>
 
 <div class="x-mask splashscreen" style="top:0;left:0;" id="splash-background"></div>

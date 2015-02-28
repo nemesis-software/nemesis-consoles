@@ -57,8 +57,7 @@ Ext.define('console.view.ContentPanel', {
                                 value: 'normal',
                                 listeners: {
                                     select: {
-                                        fn: function (cb, records) {
-                                            var record = records[0];
+                                        fn: function (cb, record) {
 
                                             Ext.getCmp('website-iframe-wrapper').removeCls('normal-iframe-wrapper');
                                             Ext.getCmp('website-iframe-wrapper').removeCls('tablet-iframe-wrapper');
@@ -75,6 +74,8 @@ Ext.define('console.view.ContentPanel', {
                                             var currentQuery = currentUrl.split('?')[1];
                                             var params = Ext.urlDecode(currentQuery);
                                             params.site_preference = record.get('id');
+                                            params.clear = true;
+                                            params.live_edit_view = true;
                                             var newQuery = Ext.Object.toQueryString(params);
 
                                             Ext.get('website-iframe').dom.src = Ext.get('website-base-url').dom.getAttribute('url') + '?' + newQuery;
@@ -99,7 +100,7 @@ Ext.define('console.view.ContentPanel', {
                         cls: 'normal-iframe',
                         autoEl: {
                             tag: "iframe",
-                            src: Ext.get('website-base-url').dom.getAttribute('url') + '?site=solar&live-edit-view=true&site_preference=normal',
+                            src: Ext.get('website-base-url').dom.getAttribute('url') + '?site=solar&live_edit_view=true&site_preference=normal',
                             allowtransparency: true
                         },
                         listeners: {
