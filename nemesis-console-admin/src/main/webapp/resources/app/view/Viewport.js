@@ -17,39 +17,34 @@ Ext.define('AdminConsole.view.Viewport', {
         'AdminConsole.view.portlet.DBSearchPortlet'
     ],
     layout: 'border',
-    getTools: function () {
-        return [
-            {
-                xtype: 'tool',
-                type: 'refresh',
-                tooltip: 'Reload portlet',
-                callback: function (owner, tool, event) {
-                    var portlet = panel.ownerCt;
-                    portlet.setLoading('Loading...');
-                    Ext.defer(function () {
-                        portlet.setLoading(false);
-                    }, 2000);
-                }
-            },
-            {
-                xtype: 'tool',
-                type: 'unpin',
-                tooltip: 'Pin portlet to position'
-            },
-            {
-                xtype: 'tool',
-                type: 'maximize',
-                tooltip: 'Maximize portlet',
-                callback: function (event, toolEl, panelHeader) {
-                    // refresh logic
-                    console.log('ccccc');
-                    alert('aaa');
-                },
-                handler: function (a, b, c) {
-                    alert('bbbb');
-                }
+    getTools: function() {
+        return [{
+            xtype: 'tool',
+            type: 'refresh',
+            tooltip: 'Reload portlet',
+            callback: function(owner, tool, event) {
+                owner.setLoading('Loading...');
+                Ext.defer(function() {
+                    owner.setLoading(false);
+                }, 2000);
             }
-        ];
+        }, {
+            xtype: 'tool',
+            type: 'unpin',
+            tooltip: 'Pin portlet to position'
+        }, {
+            xtype: 'tool',
+            type: 'maximize',
+            tooltip: 'Maximize portlet',
+            callback: function(event, toolEl, panelHeader) {
+                // refresh logic
+                // console.log('ccccc');
+                // alert('aaa');
+            }
+            // handler: function(a, b, c) {
+            //     alert('bbbb');
+            // }
+        }];
     },
     contentCookieName: "nemesis-admin-portlets-layout",
     storeInCookie: function (cookieValue) {
@@ -70,7 +65,9 @@ Ext.define('AdminConsole.view.Viewport', {
                     for (i = 1; i < portletsArray.length; i++) { //skip first since it is ""
                         var id = portletsArray[i].substring(0, portletsArray[i].indexOf("="));
                         var position = portletsArray[i].substring(portletsArray[i].indexOf("=") + 1, portletsArray[i].indexOf("#"));
-                        var column = portletsArray[i].substring(portletsArray[i].indexOf("#") + 1, portletsArray[i].indexOf("$"));
+                        var column = portletsArray[i].substring(portletsArray[i].indexOf("#") + 1, portletsArray[i].indexOf("*"));
+                        var isHidden = portletsArray[i].substring(portletsArray[i].indexOf("*") + 1, portletsArray[i].indexOf("$"));
+                        console.log(isHidden);
                         result[id] = {
                             id: id,
                             position: position,
@@ -84,7 +81,6 @@ Ext.define('AdminConsole.view.Viewport', {
         return [];
     },
     getDefaultContent: function (persistedState) {
-
         var defaultContent = new Array(7); //TODO change to 9 ones you uncomment the last two  bellow
 
         defaultContent[parseInt("portlet-sys-properties" in persistedState ? persistedState["portlet-sys-properties"].position : 0)] = {
@@ -141,7 +137,11 @@ Ext.define('AdminConsole.view.Viewport', {
 //            height: 300
 //        };
 
-
+        for (var i = defaultContent.length; i >= 0; i--) {
+            if (typeof defaultContent[i] === 'undefined') {
+                defaultContent.splice(i, 1);
+            }
+        }
         return defaultContent;
     },
     initComponent: function () {
@@ -163,13 +163,15 @@ Ext.define('AdminConsole.view.Viewport', {
                     id: 'app-dashboard',
                     xtype: 'dashboard',
                     reference: 'dashboard',
+                    itemId: 'adminDashboard',
                     region: 'center',
                     listeners: {
                         afterlayout: function (store, operation, eOpts) {
                             var cookieValue = "";
                             var portletsArray = Ext.getCmp("app-dashboard").getState().items;
                             for (i = 0; i < portletsArray.length; i++) {
-                                cookieValue = cookieValue + "^" + portletsArray[i].id + "=" + i + "#" + portletsArray[i].columnIndex + "$"
+                                var isHidden = Ext.getCmp(portletsArray[i].id).isHidden();
+                                cookieValue = cookieValue + "^" + portletsArray[i].id + "=" + i + "#" + portletsArray[i].columnIndex + "*" + isHidden + "$";
                             }
                             self.storeInCookie(cookieValue);
                         }
@@ -208,11 +210,20 @@ Ext.define('AdminConsole.view.Viewport', {
                                 id: 'portlet-memory-usage',
                                 title: 'Resource Usage',
                                 iconCls: 'system-monitor',
+                                closeAction: 'hide',
                                 items: [
                                     {
                                         xtype: 'memoryUsagePortlet'
                                     }
-                                ]
+                                ],
+                                listeners: {
+                                    close: function(panel, eOpts) {
+                                        if (Ext.getCmp('momoryUsagePortletBtn')) {
+                                            var btn = Ext.getCmp('momoryUsagePortletBtn');
+                                            btn.enable();
+                                        }
+                                    }
+                                }
                             }
                         },
 
@@ -221,12 +232,21 @@ Ext.define('AdminConsole.view.Viewport', {
                                 id: 'portlet-pk-analyzer',
                                 title: 'PK Analyzer',
                                 iconCls: 'key',
+                                closeAction: 'hide',
                                 tools: this.getTools(),
                                 items: [
                                     {
                                         xtype: 'pkAnalyzerPortlet'
                                     }
-                                ]
+                                ],
+                                listeners: {
+                                    close: function(panel, eOpts) {
+                                        if (Ext.getCmp('pkAnalyzerPortletBtn')) {
+                                            var btn = Ext.getCmp('pkAnalyzerPortletBtn');
+                                            btn.enable();
+                                        }
+                                    }
+                                }
                             }
                         },
 
@@ -235,12 +255,21 @@ Ext.define('AdminConsole.view.Viewport', {
                                 id: 'portlet-platform-actions',
                                 title: 'Platform Actions',
                                 iconCls: 'warning',
+                                closeAction: 'hide',
                                 tools: this.getTools(),
                                 items: [
                                     {
                                         xtype: 'platformActionsPortlet'
                                     }
-                                ]
+                                ],
+                                listeners: {
+                                    close: function(panel, eOpts) {
+                                        if (Ext.getCmp('platformActionsPortletBtn')) {
+                                            var btn = Ext.getCmp('platformActionsPortletBtn');
+                                            btn.enable();
+                                        }
+                                    }
+                                }
                             }
                         },
 
@@ -249,12 +278,19 @@ Ext.define('AdminConsole.view.Viewport', {
                                 id: 'portlet-platform-info',
                                 title: 'Platform Info',
                                 iconCls: 'information',
+                                closeAction: 'hide',
                                 tools: this.getTools(),
-                                items: [
-                                    {
-                                        xtype: 'platformInfoPortlet'
+                                items: [{
+                                    xtype: 'platformInfoPortlet'
+                                }],
+                                listeners: {
+                                    close: function(panel, eOpts) {
+                                        if (Ext.getCmp('platformInfoPortletBtn')) {
+                                            var btn = Ext.getCmp('platformInfoPortletBtn');
+                                            btn.enable();
+                                        }
                                     }
-                                ]
+                                }
                             }
                         },
 
@@ -263,12 +299,21 @@ Ext.define('AdminConsole.view.Viewport', {
                                 id: 'portlet-platform-tests',
                                 title: 'Platform tests',
                                 iconCls: 'junit',
+                                closeAction: 'hide',
                                 tools: this.getTools(),
                                 items: [
                                     {
                                         xtype: 'platformTestsPortlet'
                                     }
-                                ]
+                                ],
+                                listeners: {
+                                    close: function(panel, eOpts) {
+                                        if (Ext.getCmp('platformTestsPortletBtn')) {
+                                            var btn = Ext.getCmp('platformTestsPortletBtn');
+                                            btn.enable();
+                                        }
+                                    }
+                                }
                             }
                         },
 
@@ -277,6 +322,7 @@ Ext.define('AdminConsole.view.Viewport', {
                                 id: 'portlet-log4j-levels',
                                 title: 'Log4J',
                                 iconCls: 'logs',
+                                closeAction: 'hide',
                                 tools: this.getTools(),
                                 items: [
                                     {
@@ -305,7 +351,15 @@ Ext.define('AdminConsole.view.Viewport', {
                                             }
                                         ]
                                     }
-                                ]
+                                ],
+                                listeners: {
+                                    close: function(panel, eOpts) {
+                                        if (Ext.getCmp('systemLoggersPortletBtn')) {
+                                            var btn = Ext.getCmp('systemLoggersPortletBtn');
+                                            btn.enable();
+                                        }
+                                    }
+                                }
                             }
                         },
 
@@ -314,12 +368,21 @@ Ext.define('AdminConsole.view.Viewport', {
                                 id: 'portlet-sys-properties',
                                 title: 'System Properties',
                                 iconCls: 'property',
+                                closeAction: 'hide',
                                 tools: this.getTools(),
                                 items: [
                                     {
                                         xtype: 'systemPropertiesPortlet'
                                     }
-                                ]
+                                ],
+                                listeners: {
+                                    close: function(panel, eOpts) {
+                                        if (Ext.getCmp('systemPropertiesPortletBtn')) {
+                                            var btn = Ext.getCmp('systemPropertiesPortletBtn');
+                                            btn.enable();
+                                        }
+                                    }
+                                }
                             }
                         }
                     },

@@ -12,7 +12,8 @@ Ext.application({
     ],
 
     controllers: [
-        'Main'
+        'Main',
+        'PortletsSelectionMenuController'
     ],
 
     views: [
@@ -48,7 +49,7 @@ Ext.application({
                 afterrender: function () {
                     var mask = Ext.get('splash-screen'),
                         parent = Ext.get('splash-background');
-                    ;
+                    
                     mask.fadeOut({
                         callback: function () {
                             mask.destroy();

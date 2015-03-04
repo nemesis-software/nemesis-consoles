@@ -6,6 +6,7 @@ Ext.define('AdminConsole.controller.Main', {
 
     views: [
         'Viewport',
-        'Header'
+        'Header',
+        'PortletsSelectionMenu'
     ]
 });

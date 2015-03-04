@@ -11,7 +11,10 @@
  */
 package com.nemesis.platform.console.admin.js.portlet;
 
+import java.util.List;
+
 import com.nemesis.console.common.AbstractCommonConsoleSeleniumInterationTest;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -19,6 +22,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -161,5 +165,38 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
 
         assertEquals("Изход", driver.findElementById("app-header-logout").getText());
 
+    }
+    
+    @Test
+    public void testPortletsDropdownMenu() throws InterruptedException {
+    	List<WebElement> closeButtons = (List<WebElement>) driver.findElementsByClassName("x-tool-close");
+    	List<WebElement> portlets = (List<WebElement>) driver.findElementsByClassName("x-dashboard-panel");
+    	
+    	// close some portlets & check that they are not visible
+    	closeButtons.get(0).click();
+    	closeButtons.get(3).click();
+    	closeButtons.get(4).click();
+    	Thread.sleep(500);
+
+    	assertEquals("none", portlets.get(0).getCssValue("display"));
+    	assertEquals("block", portlets.get(1).getCssValue("display"));
+    	assertEquals("block", portlets.get(2).getCssValue("display"));
+    	assertEquals("none", portlets.get(3).getCssValue("display"));
+    	assertEquals("none", portlets.get(4).getCssValue("display"));
+    	
+    	// open the closed portlets one by one & check that they are visible now
+    	driver.findElementById("dropDownMenu").click();
+    	driver.findElementById("systemPropertiesPortletBtn").click();
+    	Thread.sleep(500);
+    	driver.findElementById("dropDownMenu").click();
+    	driver.findElementById("platformActionsPortletBtn").click();
+    	Thread.sleep(500);
+    	driver.findElementById("dropDownMenu").click();
+    	driver.findElementById("pkAnalyzerPortletBtn").click();
+    	Thread.sleep(500);
+    	
+    	assertEquals("block", portlets.get(0).getCssValue("display"));
+    	assertEquals("block", portlets.get(3).getCssValue("display"));
+    	assertEquals("block", portlets.get(4).getCssValue("display"));
     }
 }

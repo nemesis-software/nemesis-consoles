@@ -9,6 +9,7 @@ Ext.define('AdminConsole.view.Header', {
         align: 'middle'
     },
     initComponent: function () {
+        var myMenu = Ext.create('AdminConsole.view.PortletsSelectionMenu');
         this.items = [
             {
                 xtype: 'component',
@@ -47,6 +48,13 @@ Ext.define('AdminConsole.view.Header', {
                 }
             },
             {
+                xtype: 'button',
+                id: 'dropDownMenu',
+                text: 'Please select portlet',
+                margin: '0 5 0 5',
+                menu: myMenu
+            },
+            {
                 xtype: 'combobox',
                 listConfig: {
                     getInnerTpl: function (displayField) {
@@ -54,7 +62,7 @@ Ext.define('AdminConsole.view.Header', {
                     }
                 },
                 id: 'app-header-language-selector',
-                margins: '0, 5, 0, 0',
+                margin: '0 5 0 0',
                 cls: 'x-language-selector',
                 store: Ext.create('AdminConsole.store.Languages'),
                 valueField: 'isoCode',
