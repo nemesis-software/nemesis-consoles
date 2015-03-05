@@ -24,11 +24,13 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -199,4 +201,52 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
     	assertEquals("block", portlets.get(3).getCssValue("display"));
     	assertEquals("block", portlets.get(4).getCssValue("display"));
     }
+    
+	@Test
+	public void testPortletsStateIsSavedToCookie() throws InterruptedException {
+		List<WebElement> closeButtons = (List<WebElement>) driver.findElementsByClassName("x-tool-close");
+		List<WebElement> portlets = (List<WebElement>) driver.findElementsByClassName("x-dashboard-panel");
+		List<WebElement> portletHeaders = (List<WebElement>) driver.findElementsByClassName("x-header-draggable");
+		List<WebElement> columns = (List<WebElement>) driver.findElementsByClassName("x-dashboard-column");		
+		
+		// close portlets
+		closeButtons.get(0).click();
+		closeButtons.get(1).click();
+		closeButtons.get(2).click();
+		Thread.sleep(500);
+
+		// check that PK Analyzer Portlet is on its default position (second column) 
+		assertNotNull(columns.get(1).findElement(By.id("portlet-pk-analyzer")));
+		
+		// move PK Analyzer Portlet above Resource Usage Portlet (in third column)
+		(new Actions(driver)).dragAndDrop(portletHeaders.get(4), portletHeaders.get(6)).perform();
+		
+		// Refresh page
+		driver.navigate().refresh();
+		
+		//reinitialize objects after page refresh
+		portlets = (List<WebElement>) driver.findElementsByClassName("x-dashboard-panel");
+		columns = (List<WebElement>) driver.findElementsByClassName("x-dashboard-column");	
+		
+		// Check that closed portlets are not visible after page is reloaded (& others are visible)
+		assertEquals("none", portlets.get(0).getCssValue("display"));
+		assertEquals("none", portlets.get(1).getCssValue("display"));
+		assertEquals("none", portlets.get(2).getCssValue("display"));
+		assertEquals("block", portlets.get(3).getCssValue("display"));
+		assertEquals("block", portlets.get(4).getCssValue("display"));
+		
+		// Check that PK Analyzer Portlet is still in third column after page has reloaded
+		assertNotNull(columns.get(2).findElement(By.id("portlet-pk-analyzer")));
+		
+		// open the closed portlets one by one before test is finished
+		driver.findElementById("dropDownMenu").click();
+		driver.findElementById("systemPropertiesPortletBtn").click();
+		Thread.sleep(500);
+		driver.findElementById("dropDownMenu").click();
+		driver.findElementById("systemLoggersPortletBtn").click();
+		Thread.sleep(500);
+		driver.findElementById("dropDownMenu").click();
+		driver.findElementById("platformTestsPortletBtn").click();
+		Thread.sleep(500);
+	}
 }

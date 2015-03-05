@@ -9,7 +9,7 @@ Ext.define('AdminConsole.controller.PortletsSelectionMenuController', {
 	init: function() {
 		this.control({
 			'#app-header #dropDownMenu': {
-				beforerender: this.onDropDownClick
+				beforerender: this.loadDropdownMenu
 			},
 			'#app-header #dropDownMenu #momoryUsagePortletBtn': {
 				click: this.openMemoryUsagePortlet
@@ -35,59 +35,21 @@ Ext.define('AdminConsole.controller.PortletsSelectionMenuController', {
 		});
 	},
 
-	onDropDownClick: function() {
+	loadDropdownMenu: function() {
 		var dashboard = Ext.ComponentQuery.query('#adminDashboard');
 		var parts = dashboard[0].parts.items;
-		var visibleParts = dashboard[0].defaultContent;
 		var menu = this.getMenu();
 		for (var i = 0; i < parts.length; i++) {
 			var name = parts[i]._viewTemplate.template.title;
-			var icon = this.iconSelector(parts[i]._id);
-			if (this.containsElement(visibleParts, parts[i]._id)) {
-				menu.add({
-					id: parts[i]._id + 'Btn',
-					text: name,
-					disabled: true,
-					iconCls: icon
-				});
-			} else {
-				menu.add({
-					id: parts[i]._id + 'Btn',
-					text: name,
-					disabled: false,
-					iconCls: icon
-				});
-			}
-		}
-	},
+			var icon = parts[i]._viewTemplate.template.iconCls;
 
-	iconSelector: function(id) {
-		var icon = '';
-		if (id == 'momoryUsagePortlet') {
-			icon = 'system-monitor';
-		} else if (id == 'pkAnalyzerPortlet'){
-			icon = 'key';
-		} else if (id == 'platformActionsPortlet'){
-			icon = 'warning';
-		} else if (id == 'platformInfoPortlet'){
-			icon = 'information';
-		} else if (id == 'platformTestsPortlet'){
-			icon = 'junit';
-		} else if (id == 'systemLoggersPortlet'){
-			icon = 'logs';
-		} else if (id == 'systemPropertiesPortlet'){
-			icon = 'property';
+			menu.add({
+				id: parts[i]._id + 'Btn',
+				text: name,
+				disabled: true,
+				iconCls: icon
+			});
 		}
-		return icon;
-	},
-
-	containsElement: function(array, element) {
-		for (var i = 0; i < array.length; i++) {
-			if (array[i].type == element) {
-				return true;
-			}
-		}
-		return false
 	},
 
 	openPlatformInfoPortlet: function(self) {
