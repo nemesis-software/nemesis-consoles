@@ -12,6 +12,8 @@
 package com.nemesis.console.backend;
 
 import com.nemesis.console.common.AbstractCommonConsoleSeleniumInterationTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -34,6 +36,8 @@ import static org.junit.Assert.assertTrue;
  * @since 0.6
  */
 public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSeleniumInterationTest {
+
+    protected final Logger LOG = LogManager.getLogger(getClass());
 
     public static RemoteWebDriver driver;
 
@@ -86,7 +90,8 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     }
 
     @Test
-    public void testHeaderLinkReloadsPage() {
+    public void testHeaderLinkReloadsPage() throws InterruptedException {
+        LOG.info("testHeaderLinkReloadsPage");
         driver.findElement(By.cssSelector("a#app-header-title")).click();
         // Wait for the page to load, timeout after 10 seconds
         (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
@@ -94,10 +99,13 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
                 return d.getTitle().startsWith("Backend Console | Nemesis");
             }
         });
+        waitForDom();
+        waitForLoad();
     }
 
     @Test
     public void testChangeLocale() {
+        LOG.info("testChangeLocale");
         //Change locale
         driver.executeScript(
                         "var c = Ext.getCmp('app-header-language-selector'); c.setValue({'isoCode':'bg'}); c.fireEvent('select', c, {data: {'isoCode':'bg'}});");
@@ -115,6 +123,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     @Test
     public void testFilterNavigation() throws InterruptedException {
+        LOG.info("testFilterNavigation");
 
         assertTrue(driver.findElementsByCssSelector("div#navigation-tree .x-grid-item").size() > 0);
 
@@ -131,6 +140,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     @Test
     public void testSelectMediaContainer() throws InterruptedException {
+        LOG.info("testSelectMediaContainer");
 
         assertTrue(driver.findElementsByCssSelector("div#navigation-tree table.x-grid-item").size() > 0);
 
@@ -154,6 +164,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     @Test
     @Ignore("https://github.com/paranoiabla/nemesis-consoles/issues/15")
     public void testFilterMediaContainer() throws InterruptedException {
+        LOG.info("testFilterMediaContainer");
         assertTrue(driver.findElementsByCssSelector("div#navigation-tree table.x-grid-item").size() > 0);
 
         driver.findElementByCssSelector("input[id^='navigation-menu-filter-input']").sendKeys("media_container");
