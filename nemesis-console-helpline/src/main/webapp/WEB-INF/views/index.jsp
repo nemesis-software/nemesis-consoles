@@ -22,7 +22,7 @@
     <script type="text/javascript" src="resources/app/locale/app-${currentLocale}.js"></script>
     <script type="text/javascript" src="resources/app/app.js"></script>
 
-    <script src="webjars/jquery/1.10.2/jquery.min.js"></script>
+    <script src="webjars/jquery/1.11.2/jquery.min.js"></script>
     <script src="webjars/jquery-atmosphere/2.1.6/jquery.atmosphere.js"></script>
     <script src="webjars/soundmanager2/2.97a.20131201/script/soundmanager2-nodebug-jsmin.js"></script>
 </head>
