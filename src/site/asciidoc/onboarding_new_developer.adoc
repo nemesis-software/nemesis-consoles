@@ -17,7 +17,7 @@ Download the latest version of any Git client and install it.
 The project resides on github, so issue the following command to clone it: 
 [source,bash]
 ----
-git clone https://github.com/paranoiabla/nemesis-consoles.git
+git clone https://github.com/nemesis-software/nemesis-consoles.git
 ----
 
 === Configure the console you want to use.
