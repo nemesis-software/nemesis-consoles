@@ -13,7 +13,8 @@ Ext.application({
 
     controllers: [
         'Main',
-        'PortletsSelectionMenuController'
+        'PortletsSelectionMenuController',
+        'portlets.PlatformHealthPortletController'
     ],
 
     views: [

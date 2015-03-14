@@ -8,6 +8,7 @@ Ext.define('AdminConsole.view.Viewport', {
         'AdminConsole.view.portlet.MemoryUsagePortlet',
         'AdminConsole.view.portlet.PlatformActionsPortlet',
         'AdminConsole.view.portlet.PlatformInfoPortlet',
+        'AdminConsole.view.portlet.PlatformHealthPortlet',
         'AdminConsole.view.portlet.PlatformTestsPortlet',
         'AdminConsole.view.portlet.SystemLoggersPortlet',
         'AdminConsole.view.portlet.LogViewerPortlet',
@@ -67,7 +68,7 @@ Ext.define('AdminConsole.view.Viewport', {
                         var position = portletsArray[i].substring(portletsArray[i].indexOf("=") + 1, portletsArray[i].indexOf("#"));
                         var column = portletsArray[i].substring(portletsArray[i].indexOf("#") + 1, portletsArray[i].indexOf("*"));
                         var isHidden = portletsArray[i].substring(portletsArray[i].indexOf("*") + 1, portletsArray[i].indexOf("$"));
-                        isHidden = (isHidden === 'true');
+                        isHidden = (isHidden === 'true'); // convert to boolean, otherwise it true/false are strings
                         result[id] = {
                             id: id,
                             position: position,
@@ -83,7 +84,7 @@ Ext.define('AdminConsole.view.Viewport', {
     },
     getDefaultContent: function(persistedState) {
         var self = this;
-        var defaultContent = new Array(7); //TODO change to 9 ones you uncomment the last two  bellow
+        var defaultContent = new Array(8); //TODO change to 9 ones you uncomment the last two  bellow
 
         defaultContent[parseInt("portlet-sys-properties" in persistedState ? persistedState["portlet-sys-properties"].position : 0)] = {
             type: 'systemPropertiesPortlet',
@@ -139,6 +140,14 @@ Ext.define('AdminConsole.view.Viewport', {
             height: 300,
             hidden: "portlet-memory-usage" in persistedState ? persistedState["portlet-memory-usage"].hidden : false,
             id: "portlet-memory-usage"
+        };
+
+        defaultContent[parseInt("portlet-platform-health" in persistedState ? persistedState["portlet-platform-health"].position : 7)] = {
+            type: 'platformHealthPortlet',
+            columnIndex: parseInt("portlet-platform-health" in persistedState ? persistedState["portlet-platform-health"].column : 2),
+            height: 120,
+            hidden: "portlet-platform-health" in persistedState ? persistedState["portlet-platform-health"].hidden : false,
+            id: "portlet-platform-health"
         };
 
         //        defaultContent[parseInt(persistedState["portlet-db-search"].position || 7)] = {
@@ -297,6 +306,26 @@ Ext.define('AdminConsole.view.Viewport', {
                                 close: function(panel, eOpts) {
                                     if (Ext.getCmp('platformInfoPortletBtn')) {
                                         var btn = Ext.getCmp('platformInfoPortletBtn');
+                                        btn.enable();
+                                    }
+                                }
+                            }
+                        }
+                    },
+
+                    platformHealthPortlet: {
+                        viewTemplate: {
+                            id: 'portlet-platform-health',
+                            title: 'Platform Health',
+                            closeAction: 'hide',
+                            tools: this.getTools(),
+                            items: [{
+                                xtype: 'platformHealthPortlet'
+                            }],
+                            listeners: {
+                                close: function(panel, eOpts) {
+                                    if (Ext.getCmp('platformHealthPortletBtn')) {
+                                        var btn = Ext.getCmp('platformHealthPortletBtn');
                                         btn.enable();
                                     }
                                 }

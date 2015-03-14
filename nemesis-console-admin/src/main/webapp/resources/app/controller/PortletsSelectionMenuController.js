@@ -23,6 +23,9 @@ Ext.define('AdminConsole.controller.PortletsSelectionMenuController', {
 			'#app-header #dropDownMenu #platformInfoPortletBtn': {
 				click: this.openPlatformInfoPortlet
 			},
+			'#app-header #dropDownMenu #platformHealthPortletBtn': {
+				click: this.openPlatformHealthPortlet
+			},
 			'#app-header #dropDownMenu #platformTestsPortletBtn': {
 				click: this.openPlatformTestsPortlet
 			},
@@ -52,11 +55,6 @@ Ext.define('AdminConsole.controller.PortletsSelectionMenuController', {
 		}
 	},
 
-	openPlatformInfoPortlet: function(self) {
-		Ext.getCmp('portlet-platform-info').show();
-		self.disable();
-	},
-
 	openMemoryUsagePortlet: function(self) {
 		Ext.getCmp('portlet-memory-usage').show();
 		self.disable();
@@ -69,6 +67,16 @@ Ext.define('AdminConsole.controller.PortletsSelectionMenuController', {
 
 	openPlatformActionsPortlet: function(self) {
 		Ext.getCmp('portlet-platform-actions').show();
+		self.disable();
+	},
+	
+	openPlatformInfoPortlet: function(self) {
+		Ext.getCmp('portlet-platform-info').show();
+		self.disable();
+	},
+
+	openPlatformHealthPortlet: function(self) {
+		Ext.getCmp('portlet-platform-health').show();
 		self.disable();
 	},
 
