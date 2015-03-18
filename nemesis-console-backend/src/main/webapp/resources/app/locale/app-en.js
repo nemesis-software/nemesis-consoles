@@ -1,7 +1,7 @@
 Ext.define("console.locale.en.view.Header", {
     override: "console.view.Header",
     appTitleName: "Backend Console",
-    logoutLinkName: 'Logout'
+    logoutLinkName: '${Logout}'
 });
 
 Ext.define("console.locale.en.view.Menu", {

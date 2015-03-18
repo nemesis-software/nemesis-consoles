@@ -3,7 +3,7 @@ Ext.define('console.view.Header', {
     xtype: 'appHeader',
     id: 'app-header',
     appTitleName: 'Backend Console',
-    logoutLinkName: 'Logout',
+    logoutLinkName: '${Logout}',
     height: 35,
     layout: {
         type: 'hbox',
@@ -20,7 +20,7 @@ Ext.define('console.view.Header', {
                 autoEl: {
                     tag: 'a',
                     href: Ext.get('contextPath').dom.getAttribute('ctxPath'),
-                    html: this.appTitleName
+                    text: this.appTitleName
                 }
             },
             {
