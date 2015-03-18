@@ -160,30 +160,33 @@ Ext.define('AdminConsole.view.portlet.MemoryUsagePortlet', {
             padding: '5',
             html: 'Advanced charting on this browser is not currently supported in this release.'
         };
-
-        var intr = setInterval(function () {
-            var gs = generateData();
-            var toDate = chart.axes[1].toDate,
-                lastDate = gs[gs.length - 1].date,
-                markerIndex = chart.markerIndex || 0;
-
-            if (+toDate < +lastDate) {
-                markerIndex = 1;
-                chart.axes[1].toDate = lastDate;
-                chart.axes[1].fromDate = Ext.Date.add(Ext.Date.clone(chart.axes[1].fromDate), Ext.Date.DAY, 1);
-                chart.markerIndex = markerIndex;
-            }
-
-            store.loadData(gs);
-        }, 2000);
-
+	
         Ext.apply(this, {
             layout: 'fit',
             height: 300,
             items: chart
         });
+		this.callParent(arguments);
+		chart = this.down('chart');
 
+        var intr = setInterval(function () {
+			timeAxis = chart.axes.get(1);
+            var gs = generateData();
+			if (!gs.length) {
+				return;
+			}
+            var toDate = timeAxis.toDate,
+                lastDate = gs[gs.length - 1].date,
+                markerIndex = chart.markerIndex || 0;
 
-        this.callParent(arguments);
+            if (+toDate < +lastDate) {
+                markerIndex = 1;
+                timeAxis.toDate = lastDate;
+                timeAxis.fromDate = Ext.Date.add(Ext.Date.clone(timeAxis.fromDate), Ext.Date.DAY, 1);
+                chart.markerIndex = markerIndex;
+            }
+
+            store.loadData(gs);
+        }, 2000);
     }
 });
