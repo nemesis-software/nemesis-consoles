@@ -20,7 +20,7 @@ Ext.define('console.view.Header', {
                 autoEl: {
                     tag: 'a',
                     href: Ext.get('contextPath').dom.getAttribute('ctxPath'),
-                    text: this.appTitleName
+                    html: this.appTitleName
                 }
             },
             {
