@@ -17,7 +17,6 @@ import com.nemesis.console.common.AbstractCommonConsoleSeleniumInterationTest;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -108,21 +107,28 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
     }
 
     @Test
-    @Ignore("Not implemented yet")
     public void testSystemPropertiesPortlet() throws InterruptedException {
-        // System Properties
-        assertEquals(4, driver.findElements(By.cssSelector("div#system-properties-grid-body table.x-grid-item")).size());
-        driver.findElementByCssSelector("input[id^='system-properties-filter-input']").sendKeys("one");
-        Thread.sleep(500);
-        assertEquals(1, driver.findElementsByCssSelector("table.x-grid-item").size());
-        driver.findElementById("system-properties-filter-trigger-clear").click();
+    	int itemsInitialSize = driver.findElements(By.cssSelector("div#system-properties-grid-body table.x-grid-item")).size();
+    	
+    	// assure that items have loaded from back-end
+    	assertTrue(itemsInitialSize>0);
+    	
+    	// find items by key & test their size
+        driver.findElementByCssSelector("input[id^='system-properties-filter-input']").sendKeys("project.home");
         Thread.sleep(500);
         assertEquals(4, driver.findElementsByCssSelector("table.x-grid-item").size());
-        driver.findElementByCssSelector("div#system-properties-grid-body table.x-grid-item td.x-grid-cell").click();
-        driver.findElementByCssSelector("span[id^='system-properties-delete-btn']").click();
-        assertEquals(3, driver.findElementsByCssSelector("table.x-grid-item").size());
-        driver.findElementByCssSelector("span[id^='system-properties-save-btn']").click();
-        assertEquals(3, driver.findElementsByCssSelector("table.x-grid-item").size());
+        
+        // remove filter & assure that size of items shown is the same as before
+        driver.findElementById("system-properties-filter-trigger-clear").click();
+        Thread.sleep(500);
+        assertEquals(itemsInitialSize, driver.findElementsByCssSelector("table.x-grid-item").size());
+        
+        // TODO test add/save/delete functionality when ready
+        // driver.findElementByCssSelector("div#system-properties-grid-body table.x-grid-item td.x-grid-cell").click();
+        // driver.findElementByCssSelector("span[id^='system-properties-delete-btn']").click();
+        // assertEquals(3, driver.findElementsByCssSelector("table.x-grid-item").size());
+        // driver.findElementByCssSelector("span[id^='system-properties-save-btn']").click();
+        // assertEquals(3, driver.findElementsByCssSelector("table.x-grid-item").size());
     }
 
     @Test

@@ -60,7 +60,7 @@ Ext.define('AdminConsole.controller.portlets.PlatformHealthPortletController', {
 					}
 				}
 			} else {
-				//console.log("General status: " property + " = " + object[property]);
+				//console.log("General status: " + property + " = " + object[property]);
 			}
 		}
 
