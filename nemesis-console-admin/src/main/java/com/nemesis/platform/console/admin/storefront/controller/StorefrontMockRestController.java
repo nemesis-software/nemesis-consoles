@@ -58,14 +58,13 @@ public class StorefrontMockRestController {
     @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/property/{key}", method = RequestMethod.GET, produces = "application/json")
     public String getSystemProperty(@PathVariable(value = "key") final String key) {
-        for (java.util.Map.Entry<String, String> e : PROPERTIES) {
+        for (Map.Entry<String, String> e : PROPERTIES) {
             if (e.getKey().equals(key)) {
                 return e.getValue();
             }
         }
         return null;
     }
-
 
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @RequestMapping(value = "/property/{property_id}", method = RequestMethod.PUT, consumes = "application/json")
