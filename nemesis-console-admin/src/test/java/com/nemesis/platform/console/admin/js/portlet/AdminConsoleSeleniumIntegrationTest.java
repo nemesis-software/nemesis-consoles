@@ -44,7 +44,7 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
     @BeforeClass
     public static void setUp() throws Exception {
         driver = new FirefoxDriver();
-
+        driver.manage().window().maximize();
         driver.get("http://localhost:8080/admin");
 
         assertEquals("Login Page", driver.getTitle());
