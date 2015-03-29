@@ -44,7 +44,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     @BeforeClass
     public static void setUp() throws Exception {
         driver = new FirefoxDriver();
-
+        driver.manage().window().maximize();
         driver.get("http://localhost:8080/backend");
 
         assertEquals("Login Page", driver.getTitle());

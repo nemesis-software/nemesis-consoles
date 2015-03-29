@@ -38,7 +38,7 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
     @BeforeClass
     public static void setUp() throws Exception {
         driver = new FirefoxDriver();
-
+        driver.manage().window().maximize();
         driver.get("http://localhost:8080/cms");
 
         assertEquals("Login Page", driver.getTitle());
