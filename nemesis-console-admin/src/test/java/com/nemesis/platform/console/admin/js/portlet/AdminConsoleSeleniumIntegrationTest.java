@@ -108,7 +108,7 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
 
     @Test
     public void testSystemPropertiesPortlet() throws InterruptedException {
-    	int itemsInitialSize = driver.findElements(By.cssSelector("div#system-properties-grid-body table.x-grid-item")).size();
+    	int itemsInitialSize = driver.findElementsByCssSelector("div#system-properties-grid-body table.x-grid-item").size();
     	
     	// assure that items have loaded from back-end
     	assertTrue(itemsInitialSize>0);
@@ -116,12 +116,12 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
     	// find items by key & test their size
         driver.findElementByCssSelector("input[id^='system-properties-filter-input']").sendKeys("project.home");
         Thread.sleep(500);
-        assertEquals(4, driver.findElementsByCssSelector("table.x-grid-item").size());
+        assertEquals(4, driver.findElementsByCssSelector("div#system-properties-grid-body table.x-grid-item").size());
         
         // remove filter & assure that size of items shown is the same as before
         driver.findElementById("system-properties-filter-trigger-clear").click();
         Thread.sleep(500);
-        assertEquals(itemsInitialSize, driver.findElementsByCssSelector("table.x-grid-item").size());
+        assertEquals(itemsInitialSize, driver.findElementsByCssSelector("div#system-properties-grid-body table.x-grid-item").size());
         
         // TODO test add/save/delete functionality when ready
         // driver.findElementByCssSelector("div#system-properties-grid-body table.x-grid-item td.x-grid-cell").click();
@@ -131,6 +131,24 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
         // assertEquals(3, driver.findElementsByCssSelector("table.x-grid-item").size());
     }
 
+    @Test
+    public void testSpringBeansPortlet() throws InterruptedException {
+    	int itemsInitialSize = driver.findElementsByCssSelector("div#spring-beans-body table.x-grid-item").size();
+    	
+    	// assure that items have loaded from back-end
+    	assertTrue(itemsInitialSize>0);
+    	
+    	// find items by bean name & test their size
+        driver.findElementByCssSelector("input[id^='spring-beans-filter-inputEl']").sendKeys("storefrontSecurity");
+        Thread.sleep(500);
+        assertEquals(3, driver.findElementsByCssSelector("div#spring-beans-body table.x-grid-item").size());
+        
+        // remove filter & assure that size of items shown is the same as before
+        driver.findElementById("spring-beans-filter-trigger-clear").click();
+        Thread.sleep(500);
+        assertEquals(itemsInitialSize, driver.findElementsByCssSelector("div#spring-beans-body table.x-grid-item").size());
+    }
+    
     @Test
     public void testLogLevelsPortlet() throws InterruptedException {
         driver.findElementByXPath("//span[@class='x-tab-inner-default']|//span[contains(text(),'Levels')]").click();

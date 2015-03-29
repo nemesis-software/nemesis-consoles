@@ -3,7 +3,7 @@ Ext.define('AdminConsole.view.portlet.SystemPropertiesPortlet', {
     alias: 'widget.syspropertiesportlet',
     xtype: 'systemPropertiesPortlet',
     itemId: 'systemPropertiesPortletId',
-    id: 'system-properties-grid', // check selenuim tests
+    id: 'system-properties-grid',
     frame: false,
     height: 300,
     requires: [
@@ -72,13 +72,13 @@ Ext.define('AdminConsole.view.portlet.SystemPropertiesPortlet', {
                     weight: 1, // controls display order
                     handler: function() {
                         this.setRawValue('');
-                        this.up('tablepanel').store.clearFilter();
+                        this.up('systemPropertiesPortlet').store.clearFilter();
                     }
                 }
             },
             listeners: {
                 keyup: function() {
-                    var store = this.up('tablepanel').store;
+                    var store = this.up('systemPropertiesPortlet').store;
                     store.clearFilter();
                     if (this.value) {
                         store.filter({

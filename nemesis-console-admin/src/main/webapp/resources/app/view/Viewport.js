@@ -15,7 +15,8 @@ Ext.define('AdminConsole.view.Viewport', {
         'AdminConsole.view.portlet.JdbcLogPortlet',
         'AdminConsole.view.portlet.SystemPropertiesPortlet',
         'AdminConsole.view.portlet.ImportCSVPortlet',
-        'AdminConsole.view.portlet.DBSearchPortlet'
+        'AdminConsole.view.portlet.DBSearchPortlet',
+        'AdminConsole.view.portlet.SpringBeansPortlet'
     ],
     layout: 'border',
     getTools: function() {
@@ -148,6 +149,14 @@ Ext.define('AdminConsole.view.Viewport', {
             height: 120,
             hidden: "portlet-platform-health" in persistedState ? persistedState["portlet-platform-health"].hidden : false,
             id: "portlet-platform-health"
+        };
+
+        defaultContent[parseInt("portlet-spring-beans" in persistedState ? persistedState["portlet-spring-beans"].position : 8)] = {
+            type: 'springBeansPortlet',
+            columnIndex: parseInt("portlet-spring-beans" in persistedState ? persistedState["portlet-spring-beans"].column : 2),
+            height: 300,
+            hidden: "portlet-spring-beans" in persistedState ? persistedState["portlet-spring-beans"].hidden : false,
+            id: "portlet-spring-beans"
         };
 
         //        defaultContent[parseInt(persistedState["portlet-db-search"].position || 7)] = {
@@ -408,6 +417,27 @@ Ext.define('AdminConsole.view.Viewport', {
                                 close: function(panel, eOpts) {
                                     if (Ext.getCmp('systemPropertiesPortletBtn')) {
                                         var btn = Ext.getCmp('systemPropertiesPortletBtn');
+                                        btn.enable();
+                                    }
+                                }
+                            }
+                        }
+                    },
+
+                    springBeansPortlet: {
+                        viewTemplate: {
+                            id: 'portlet-spring-beans',
+                            title: 'Spring Beans',
+                            iconCls: 'beans',
+                            closeAction: 'hide',
+                            tools: this.getTools(),
+                            items: [{
+                                xtype: 'springBeansPortlet'
+                            }],
+                            listeners: {
+                                close: function(panel, eOpts) {
+                                    if (Ext.getCmp('springBeansPortletBtn')) {
+                                        var btn = Ext.getCmp('springBeansPortletBtn');
                                         btn.enable();
                                     }
                                 }

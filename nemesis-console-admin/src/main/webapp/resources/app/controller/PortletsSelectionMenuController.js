@@ -29,6 +29,9 @@ Ext.define('AdminConsole.controller.PortletsSelectionMenuController', {
 			'#app-header #dropDownMenu #platformTestsPortletBtn': {
 				click: this.openPlatformTestsPortlet
 			},
+			'#app-header #dropDownMenu #springBeansPortletBtn': {
+				click: this.openSpringBeansPortlet
+			},
 			'#app-header #dropDownMenu #systemLoggersPortletBtn': {
 				click: this.openSystemLoggersPortlet
 			},
@@ -82,6 +85,11 @@ Ext.define('AdminConsole.controller.PortletsSelectionMenuController', {
 
 	openPlatformTestsPortlet: function(self) {
 		Ext.getCmp('portlet-platform-tests').show();
+		self.disable();
+	},
+
+	openSpringBeansPortlet: function(self) {
+		Ext.getCmp('portlet-spring-beans').show();
 		self.disable();
 	},
 
