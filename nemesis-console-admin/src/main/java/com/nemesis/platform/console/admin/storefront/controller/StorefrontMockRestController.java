@@ -36,7 +36,7 @@ import java.util.Map;
 @RequestMapping(value = "/mock/storefront/rest/platform/")
 public class StorefrontMockRestController {
 
-    protected static final List<Map.Entry<String, String>> PROPERTIES = new ArrayList<>();
+    static final List<Map.Entry<String, String>> PROPERTIES = new ArrayList<>();
 
     static {
         PROPERTIES.add(new AbstractMap.SimpleEntry<>("one", "1"));
