@@ -41,6 +41,7 @@ function translateObj(obj) {
     if (!obj.orgEmptyText) obj.orgEmptyText = obj.emptyText;
     obj.emptyText = _t(obj.orgEmptyText);
     setTimeout(function() { obj.setValue(obj.getValue()); },1);
+    //obj.setValue(obj.getValue());
   }
   
   if (obj.text && obj.setText) {
@@ -50,18 +51,24 @@ function translateObj(obj) {
       if ((!obj.tooltip)&&((obj.initialConfig)&&(!obj.initialConfig.tooltip))) {
         obj.orgTooltip = obj.orgText;
         setTimeout(function() { obj.setTooltip(_t(obj.orgText)); },1);
+	//obj.setTooltip(_t(obj.orgText));
       }
     }
   }
 
   if (obj.title && obj.setTitle) {
+    console.log('obj title',obj.title,obj);
     if (!obj.orgTitle) obj.orgTitle = obj.title;
-    setTimeout(function() { obj.setTitle(_t(obj.orgTitle));},1);
+    var t = obj.orgTitle;
+    if (typeof t == 'object' && t.text) t = t.text;
+    setTimeout(function() { obj.setTitle(_t(t));},1);
+    //obj.setTitle(_t(obj.orgTitle));
   }
 
   if (obj.getFieldLabel && obj.fieldLabel) {
     if (!obj.orgFieldLabel) obj.orgFieldLabel = obj.getFieldLabel();
     setTimeout(function() { obj.setFieldLabel(_t(obj.orgFieldLabel));},1);
+    //obj.setFieldLabel(_t(obj.orgFieldLabel));
   }
 
   if (obj.tooltip || obj.orgTooltip || ((obj.initialConfig)&&(obj.initialConfig.tooltip))) {
@@ -72,6 +79,7 @@ function translateObj(obj) {
   if (obj.config && obj.config.autoEl && obj.config.autoEl.html && obj.setHtml) {
     //console.log(_t(obj.config.autoEl.html));
     setTimeout(function() { obj.setHtml(_t(obj.config.autoEl.html));},1);
+    //obj.setHtml(_t(obj.config.autoEl.html));
   }
 }
 
