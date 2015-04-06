@@ -172,6 +172,14 @@
     background-image: url(images/beans.png);
 }
 
+.platform-info-application {
+    background-image: url(images/application-browser.png);
+}
+
+.platform-info-platform {
+    background-image: url(images/application-detail.png);
+}
+
 .icon-style {
     height: 10px;
     width: 10px;

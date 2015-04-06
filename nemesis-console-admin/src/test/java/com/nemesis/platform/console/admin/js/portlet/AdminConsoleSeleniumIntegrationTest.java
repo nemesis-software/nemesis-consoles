@@ -107,6 +107,30 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
     }
 
     @Test
+    public void testPlatformInfoPortlet() throws Exception {
+    	// get the size of elements in both columns of application tab
+    	int applicationTabProperties = driver.findElementsByCssSelector("div#portlet-platform-info-body #applicationTabPropertyColumnId label").size();
+    	int applicationTabValues = driver.findElementsByCssSelector("div#portlet-platform-info-body #applicationTabValueColumnId label").size();
+    	
+    	// assert that there are one or more items and the number of properties is equal to the number of values for them
+    	assertTrue(applicationTabProperties > 0);
+    	assertTrue(applicationTabValues > 0);
+    	assertEquals(applicationTabProperties, applicationTabValues);
+    	
+    	driver.findElementByXPath("//span[@class='x-tab-inner-default']|//span[contains(text(),'Platform')]").click();
+    	Thread.sleep(500);
+    	
+    	// get the size of elements in both columns of platform tab
+    	int platformTabProperties = driver.findElementsByCssSelector("div#portlet-platform-info-body #platformTabPropertyColumnId label").size();
+    	int platformTabValues = driver.findElementsByCssSelector("div#portlet-platform-info-body #platformTabValueColumnId label").size();
+    	
+    	// assert that there are one or more items and the number of properties is equal to the number of values for them
+    	assertTrue(platformTabProperties > 0);
+    	assertTrue(platformTabValues > 0);
+    	assertEquals(platformTabProperties, platformTabValues);
+    }
+    
+    @Test
     public void testSystemPropertiesPortlet() throws InterruptedException {
     	int itemsInitialSize = driver.findElementsByCssSelector("div#system-properties-grid-body table.x-grid-item").size();
     	

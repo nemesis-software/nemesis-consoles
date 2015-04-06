@@ -15,6 +15,7 @@ Ext.application({
         'Main',
         'PortletsSelectionMenuController',
         'portlets.PlatformHealthPortletController',
+        'portlets.PlatformInfoPortletController',
         'portlets.SystemPropertiesPortletController',
         'portlets.SpringBeansPortletController'
     ],
