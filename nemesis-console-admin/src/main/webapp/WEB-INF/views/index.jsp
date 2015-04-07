@@ -24,8 +24,8 @@
     <script src="webjars/jquery/1.11.2/jquery.min.js"></script>
     <script src="webjars/jquery-atmosphere/2.2.3/jquery.atmosphere.js"></script>
 
-    <script type="text/javascript" src="webjars/codemirror/4.4/lib/codemirror.js"></script>
-    <link rel="stylesheet" type="text/css" href="webjars/codemirror/4.4/lib/codemirror.css"></link>
+    <script type="text/javascript" src="webjars/codemirror/5.1/lib/codemirror.js"></script>
+    <link rel="stylesheet" type="text/css" href="webjars/codemirror/5.1/lib/codemirror.css"></link>
 
     <link rel="stylesheet" type="text/css" href="resources/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="resources/css/console.css"/>
