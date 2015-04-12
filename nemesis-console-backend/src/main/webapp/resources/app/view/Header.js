@@ -65,7 +65,7 @@ Ext.define('console.view.Header', {
                 listeners: {
                     select: {
                         fn: function (cb, record) {
-                            window.location.search = Ext.urlEncode({"lang": record.data.isoCode});
+                        	setLanguage(record.data.isoCode, true);
                         },
                         scope: this
                     }

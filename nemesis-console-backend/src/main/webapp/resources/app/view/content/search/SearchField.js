@@ -14,18 +14,19 @@ Ext.define('console.view.content.search.SearchField', {
     submitValue: true,
     afterRender: function () {
         this.callParent();
-
         this.fieldSet = Ext.create('Ext.form.FieldSet', {
             items: [
                 {
                     isFormField: false,
                     submitValue: false,
                     xtype: 'combobox',
+                    labelWidth: 5,
                     store: Ext.create('Ext.data.ArrayStore',
                         {
                             model: 'console.model.SearchRestriction',
-                            storeId: 'searchRestrictions',
-                            data: this.searchRestrictions
+                            storeId: 'searchRestrictions_' + this.initialConfig.emptyTxt,
+                            data: this.searchRestrictions,
+                            translate: true
                         }),
                     valueField: 'value',
                     displayField: 'displayName',
@@ -35,7 +36,7 @@ Ext.define('console.view.content.search.SearchField', {
                 {
                     isFormField: false,
                     submitValue: false,
-                    emptyText: this.emptyText,
+                    emptyText: this.emptyTxt,
                     xtype: 'textfield',
                     width: '30%'
                 }

@@ -27,7 +27,7 @@
 
     <script type="text/javascript" src="resources/app/locale/app-${currentLocale}.js"></script>
 
-    <!--<script type="text/javascript" src="resources/app/locale/translate.js"></script>-->
+    <script type="text/javascript" src="resources/app/locale/translate.js"></script>
 
     <script type="text/javascript" src="resources/app/app.js"></script>
 

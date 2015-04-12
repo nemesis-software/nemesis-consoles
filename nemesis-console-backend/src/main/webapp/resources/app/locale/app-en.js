@@ -4,7 +4,7 @@ Ext.define("console.locale.en.view.Header", {
     logoutLinkName: 'Logout'
 });
 
-Ext.define("console.locale.en.view.Menu", {
+/*Ext.define("console.locale.en.view.Menu", {
     override: "console.view.Menu",
     title: "Navigation",
     filterEmptyText: 'Filter...'
@@ -86,7 +86,7 @@ Ext.define("console.locale.en.view.NavigationTree", {
 
     },
     entityNames: new console.locale.en.navigation.EntityNames()
-});
+});*/
 
 Ext.define("console.locale.en.view.content.search.SearchResults", {
     override: "console.view.content.search.SearchResults",
