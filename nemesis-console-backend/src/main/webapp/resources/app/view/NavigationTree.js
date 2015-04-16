@@ -9,8 +9,6 @@ Ext.define('console.view.NavigationTree', function () {
         cls: 'tree-list',
         layout: 'anchor',
         margins: '0, 0, 5, 0',
-        entityNames: {},
-        folderNames: {},
         lines: true,
         border: true,
         frame: false,
@@ -18,6 +16,15 @@ Ext.define('console.view.NavigationTree', function () {
         useArrows: false,
         ctxMenu: null,
         requires: ['console.model.TreeModel'],
+        columns: [{
+            xtype: 'treecolumn',
+            dataIndex: 'text',
+            flex: 1,
+            renderer: function(value){
+                return translate(value);
+            }
+        }],
+        hideHeaders: true,
         constructor: function () {
             self = this;  // Here you store "this" in the closure
             self.callParent(arguments);
@@ -31,14 +38,13 @@ Ext.define('console.view.NavigationTree', function () {
                 this.ctxMenu.showAt(eventObj.getXY());
             },
             itemclick: function (view, record, item, index, eventObj) {
-                console.log(1);
                 if (record.get('leaf')) {
                     var tabCmpId = 'tab-panel';
                     if (!Ext.getCmp(tabCmpId).getComponent(record.get('id'))) {
 
                         console.log(2);
 
-                        var entity = Ext.create("console.model.Entity", {id: record.get('id'), name: this.entityNames[record.get('id')], url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('id'), className: ''});
+                        var entity = Ext.create("console.model.Entity", {id: record.get('id'), name: translate(record.get('id')), url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('id'), className: ''});
 
                         console.log(3);
 
@@ -67,28 +73,6 @@ Ext.define('console.view.NavigationTree', function () {
                     url: Ext.get('rest-base-url').dom.getAttribute('url') + 'backend/navigation',
                     reader: {
                         type: 'json'
-                    }
-                },
-                listeners: {
-                    append: function (parent, node, index, options) {
-                        console.log('appending');
-                        if (!node.isRoot()) {
-                            var newtext = node.get('text');
-                            console.log(newtext);
-                            if (node.isLeaf()) {
-                                if (typeof self.entityNames[newtext] !== 'undefined') {
-                                    newtext = self.entityNames[newtext];
-                                }
-                            } else {
-                                if (typeof self.folderNames[newtext] !== 'undefined') {
-                                    newtext = self.folderNames[newtext];
-                                }
-                            }
-
-                            node.set('text', newtext);
-
-                            node.commit();
-                        }
                     }
                 },
                 applyFilter: function (filter, value) {
