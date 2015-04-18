@@ -110,23 +110,19 @@ function translateObj(obj) {
   }*/
 }
 
-function setLoading(w, loading) {
-	w.setLoading(loading);
-}
-
 function getRootCmp() {
 	return Ext.ComponentQuery.query('viewport')[0];
 }
 
 function retranslate(lang, w) {
 	globalLang = lang;
-	setLoading(w, true);
+	w.setLoading(true);
   
 	Ext.each(Ext.StoreManager.getRange(),function(n) {
-		if (n.translate) {
-			translateArrayStore(n);
+		if (n instanceof Nemesis.LocalizedArrayStore) {
+			n.translate();
 		}
-        if (n.getProxy() && n.getProxy().getReader().type == 'transjson') n.load(); // Reload the store, so retranslation could happen
+		else if (n.getProxy() && n.getProxy().getReader().type == 'transjson') n.load(); // Reload the store, so retranslation could happen
     });
     
     Ext.each(w.query('button,displayfield,textfield,tabpanel,tab,gridpanel,fieldset,treepanel,gridcolumn,window,backendconsoleMenu,contentSearchForm'),function(n) {
@@ -155,24 +151,71 @@ function retranslate(lang, w) {
     Ext.getCmp('navigation-tree').getView().refresh();
 
     setTimeout(function() {
-    	setLoading(w, false);
+    	w.setLoading(false);
     },100);
 }
 
-function translateArrayStore(store) {
-	var initialData = store.config.data;
-	var items = store.data.items;
-	var fields = store.model.fields;
-	for(var i=0; i<items.length; i++) {
-		for(var j=0; j<fields.length; j++) {
-			if (fields[j].name == 'name') {
-				items[i].set(fields[j].name, translate(initialData[i][j]));
-			}
-		}
-		items[i].commit();
-	}
-	//store.reload();
-}
+Ext.define('Nemesis.LocalizedArrayStore', {
+    extend: 'Ext.data.ArrayStore',
+    constructor: function(config) {
+    	this.callParent([config]);
+    	if (this.data) {
+    		this.translate();
+    	}
+    },
+    translate: function() {
+    	var items = this.data.items;
+    	var fields = this.model.fields;
+    	for(var i=0; i<items.length; i++) {
+    		for(var j=0; j<fields.length; j++) {
+    			if (fields[j].translate) {
+    				var initialDataField = 'initial_' + fields[j].name;
+    				if (!Ext.isDefined(items[i].data[initialDataField])) {
+    					items[i].data[initialDataField] = items[i].data[fields[j].name];
+    				}
+    				items[i].set(fields[j].name, translate(items[i].data[initialDataField]));
+    			}
+    		}
+    		items[i].commit();
+    	}
+    }
+});
+
+Ext.define('Nemesis.reader.JsonReader', {
+    extend: 'Ext.data.reader.Json',
+    alias : 'reader.transjson',
+    getResponseData: function(response) {
+       var o;
+       try {
+          o = Ext.decode(response.responseText);
+       } catch (ex) {
+          Ext.Logger.warn('TRANSJSON: Unable to parse the JSON returned by the server');
+          return this.createReadError(ex.message);   
+       }
+       
+       function doTran(o) {
+          var i;
+          if (Ext.isArray(o)) {
+             for (i=o.length-1;i>=0;i--) {
+                if (Ext.isString(o[i])) o[i]=_t(o[i]);
+                if (Ext.isArray(o[i])) doTrans(o[i]);
+                if (Ext.isObject(o[i])) doTrans(o[i]);
+             }
+             return;
+          }
+          if (Ext.isObject(o)) {
+             for (i in o) {
+                if (Ext.isString(o[i])) o[i]=_t(o[i]);
+                if (Ext.isArray(o[i])) doTrans(o[i]);
+                if (Ext.isObject(o[i])) doTrans(o[i]);
+             }
+          }
+       }
+       
+       doTrans(o);
+       return o;
+    }
+});
 
 Ext.onReady(function() {
    // Overwrite some components
@@ -193,41 +236,4 @@ Ext.onReady(function() {
                                                   
    Ext.override(Ext.Window,{ initComponent: function() { this.callParent(); translateObj(this); retranslate(globalLang,this); } });
    Ext.override(Ext.Component,{ initComponent: function() { this.callParent(); translateObj(this); } }); // Translate inline all the new components
-
-   Ext.define('Nemesis.reader.JsonReader', {
-     extend: 'Ext.data.reader.Json',
-     alias : 'reader.transjson',
-     getResponseData: function(response) {
-        var o;
-        try {
-           o = Ext.decode(response.responseText);
-        } catch (ex) {
-           Ext.Logger.warn('TRANSJSON: Unable to parse the JSON returned by the server');
-           return this.createReadError(ex.message);   
-        }
-        
-        function doTran(o) {
-           var i;
-           if (Ext.isArray(o)) {
-              for (i=o.length-1;i>=0;i--) {
-                 if (Ext.isString(o[i])) o[i]=_t(o[i]);
-                 if (Ext.isArray(o[i])) doTrans(o[i]);
-                 if (Ext.isObject(o[i])) doTrans(o[i]);
-              }
-              return;
-           }
-           if (Ext.isObject(o)) {
-              for (i in o) {
-                 if (Ext.isString(o[i])) o[i]=_t(o[i]);
-                 if (Ext.isArray(o[i])) doTrans(o[i]);
-                 if (Ext.isObject(o[i])) doTrans(o[i]);
-              }
-           }
-        }
-        
-        doTrans(o);
-        return o;
-     }
-   });
-   
 });

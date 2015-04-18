@@ -1,5 +1,5 @@
 Ext.define('console.store.Languages', {
-    extend: 'Ext.data.ArrayStore',
+    extend: 'Nemesis.LocalizedArrayStore',
 
     model: 'console.model.Language',
 
@@ -11,6 +11,5 @@ Ext.define('console.store.Languages', {
         ['de', 'German'],
         ['fr', 'French'],
         ['sp', 'Spanish']
-    ],
-    translate: true
+    ]
 });

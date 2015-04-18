@@ -20,13 +20,12 @@ Ext.define('console.view.content.search.SearchField', {
                     isFormField: false,
                     submitValue: false,
                     xtype: 'combobox',
-                    labelWidth: 5,
-                    store: Ext.create('Ext.data.ArrayStore',
+                    labelWidth: 5, // there's no label
+                    store: Ext.create('Nemesis.LocalizedArrayStore',
                         {
                             model: 'console.model.SearchRestriction',
-                            storeId: 'searchRestrictions_' + this.initialConfig.emptyTxt,
-                            data: this.searchRestrictions,
-                            translate: true
+                            storeId: 'searchRestrictions_' + this.initialConfig.fieldLabel,
+                            data: this.searchRestrictions
                         }),
                     valueField: 'value',
                     displayField: 'displayName',
