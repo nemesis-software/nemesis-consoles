@@ -45,7 +45,9 @@ public class BackendConsoleWebConfig implements WebApplicationInitializer {
 
         /* Spring Security Delegating Filter */
         FilterRegistration springSecurityFilterChainReg = servletContext.addFilter("springSecurityFilterChain", DelegatingFilterProxy.class);
-        springSecurityFilterChainReg.addMappingForServletNames(EnumSet.<DispatcherType>of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ERROR, DispatcherType.ASYNC), false, dispatcherServletReg.getName());
+        springSecurityFilterChainReg.addMappingForServletNames(
+                        EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ERROR, DispatcherType.ASYNC), false,
+                        dispatcherServletReg.getName());
 
         /* Session timeout filter */
         FilterRegistration sessionTimeoutFilterChainReg = servletContext.addFilter("sessionTimeoutFilterChain", SessionTimeoutCookieFilter.class);

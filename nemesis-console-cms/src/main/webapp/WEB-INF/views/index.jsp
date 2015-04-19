@@ -12,11 +12,11 @@
 
     <link rel="shortcut icon" href="resources/img/favicon.ico" type="image/x-icon"/>
     <c:set var="currentLocale" value="${not empty param.lang ? param.lang : 'en'}"/>
-    <link href="webjars/extjs/5.1.0/build/packages/ext-theme-gray/build/resources/ext-theme-gray-all.css"
+    <link href="webjars/extjs/5.2.0-SNAPSHOT/build/packages/ext-theme-gray/build/resources/ext-theme-gray-all.css"
           rel="stylesheet"/>
-    <script type="text/javascript" src="webjars/extjs/5.1.0/build/ext-all.js"></script>
+    <script type="text/javascript" src="webjars/extjs/5.2.0-SNAPSHOT/build/ext-all.js"></script>
     <script type="text/javascript"
-            src="webjars/extjs/5.1.0/build/packages/ext-locale/build/ext-locale-${currentLocale}.js"></script>
+            src="webjars/extjs/5.2.0-SNAPSHOT/build/packages/ext-locale/build/ext-locale-${currentLocale}.js"></script>
 
     <link rel="stylesheet" type="text/css" href="resources/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="resources/css/console.css"/>
