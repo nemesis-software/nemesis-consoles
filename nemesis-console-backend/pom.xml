@@ -91,7 +91,6 @@
                             <scanIntervalSeconds>0</scanIntervalSeconds>
                             <stopKey>1</stopKey>
                             <stopPort>9000</stopPort>
-                            <daemon>true</daemon>
                         </configuration>
                     </execution>
                     <execution>
