@@ -1,6 +1,6 @@
 machine:
    java:
-      version: oraclejdk7
+      version: oraclejdk8
 dependencies:
    override:
       - mvn dependency:resolve -Ptest -s src/main/resources/settings.xml
