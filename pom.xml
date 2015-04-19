@@ -202,7 +202,7 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>extjs</artifactId>
-            <version>5.2.0-SNAPSHOT</version>
+            <version>${extjs.webjars.version}</version>
         </dependency>
     </dependencies>
 </project>
