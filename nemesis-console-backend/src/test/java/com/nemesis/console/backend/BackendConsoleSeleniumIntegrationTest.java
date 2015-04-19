@@ -125,6 +125,9 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     public void testFilterNavigation() throws InterruptedException {
         LOG.info("testFilterNavigation");
 
+        waitForDom();
+        waitForLoad();
+
         assertTrue(driver.findElementsByCssSelector("div#navigation-tree .x-grid-item").size() > 0);
 
         driver.findElementByCssSelector("input[id^='navigation-menu-filter-input']").sendKeys("media_format");
