@@ -1,6 +1,7 @@
 Ext.define('console.view.content.Page', {
     extend: 'Ext.panel.Panel',
     xtype: 'contentPageTab',
+    closable: true,
     layout: 'border',
     requires: [
         'console.view.content.search.SearchForm',

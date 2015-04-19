@@ -39,26 +39,20 @@ Ext.define('console.view.NavigationTree', function () {
             },
             itemclick: function (view, record, item, index, eventObj) {
                 if (record.get('leaf')) {
-                    var tabCmpId = 'tab-panel';
-                    if (!Ext.getCmp(tabCmpId).getComponent(record.get('id'))) {
-
-                        console.log(2);
+                    var tabCmp = Ext.getCmp('tab-panel');
+                    if (!tabCmp.getComponent(record.get('id'))) {
 
                         var entity = Ext.create("console.model.Entity", {id: record.get('id'), name: translate(record.get('id')), url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('id'), className: ''});
 
-                        console.log(3);
-
-                        Ext.getCmp(tabCmpId).add(Ext.create("console.view.content.Page", {
+                        tabCmp.add(Ext.create("console.view.content.Page", {
                             itemId: entity.data.id,
                             title: entity.data.name,
                             iconCls: record.get('iconCls'),
-                            closable: true,
                             entity: entity,
                             contentPanel: this.contentPanel
                         })).show();
                     } else {
-                        console.log(4);
-                        Ext.getCmp(tabCmpId).setActiveTab(record.get('id'));
+                        tabCmp.setActiveTab(record.get('id'));
                     }
                 }
             }

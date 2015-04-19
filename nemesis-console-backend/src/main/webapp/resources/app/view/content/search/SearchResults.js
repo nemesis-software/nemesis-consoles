@@ -8,28 +8,6 @@ Ext.define('console.view.content.search.SearchResults', {
     multiSelect: true,
     margins: '0, 5, 5, 5',
     entity: null,
-    pageSizeCombo: new Ext.form.ComboBox({
-        name: 'pageSize',
-        width: 55,
-        store: new Ext.data.ArrayStore({
-            fields: ['id'],
-            data: [
-                ['10'],
-                ['50'],
-                ['100'],
-                ['1000']
-            ]
-        }),
-        mode: 'local',
-        value: '10',
-
-        listWidth: 40,
-        triggerAction: 'all',
-        displayField: 'id',
-        valueField: 'id',
-        editable: false,
-        forceSelection: true
-    }),
     requires: [
         'console.view.field.NemesisTextField',
         'console.view.field.NemesisHtmlEditor'
@@ -85,7 +63,7 @@ Ext.define('console.view.content.search.SearchResults', {
                 }
             }
         });
-
+        
         Ext.apply(this, {
             height: this.height,
             store: store,
@@ -100,24 +78,46 @@ Ext.define('console.view.content.search.SearchResults', {
                 items: [
                     '-',
                     'Page size: ',
-                    me.pageSizeCombo
+                    new Ext.form.ComboBox({
+                        name: 'pageSize',
+                        width: 55,
+                        store: new Ext.data.ArrayStore({
+                            fields: ['id'],
+                            data: [
+                                ['10'],
+                                ['50'],
+                                ['100'],
+                                ['1000']
+                            ]
+                        }),
+                        mode: 'local',
+                        value: '10',
+
+                        listWidth: 40,
+                        triggerAction: 'all',
+                        displayField: 'id',
+                        valueField: 'id',
+                        editable: false,
+                        forceSelection: true,
+                        listeners: {
+                        	'select': function (combo, records) {
+                                var bbar = combo.up();
+                                var newPageSize = parseInt(records[0].get('id'), 10);
+                                bbar.up().getStore().pageSize = newPageSize;
+                                store.load({
+                                    params: {
+                                        start: 0,
+                                        limit: newPageSize
+                                    }
+                                });
+                                //I guess this is a bug.. the reload indeed fixes the pager .. however it doesn't fetch or update the data so only load() works
+                                //bbar.up().getStore().reload({pageSize: bbar.up().getStore().pageSize});
+                            }
+                        }
+                    })
                 ]
             })
         });
-
-        this.pageSizeCombo.on('select', function (combo, records) {
-            var bbar = combo.up();
-            var newPageSize = parseInt(records[0].get('id'), 10);
-            bbar.up().getStore().pageSize = newPageSize;
-            store.load({
-                params: {
-                    start: 0,
-                    limit: newPageSize
-                }
-            });
-            //I guess this is a bug.. the reload indeed fixes the pager .. however it doesn't fetch or update the data so only load() works
-            //bbar.up().getStore().reload({pageSize: bbar.up().getStore().pageSize});
-        }, this);
 
         this.callParent(arguments);
     },
