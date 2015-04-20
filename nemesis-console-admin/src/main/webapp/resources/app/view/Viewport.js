@@ -127,15 +127,7 @@ Ext.define('AdminConsole.view.Viewport', {
             id: "portlet-pk-analyzer"
         };
 
-        defaultContent[parseInt("portlet-csv-import" in persistedState ? persistedState["portlet-csv-import"].position : 5)] = {
-            type: 'importCSVPortlet',
-            columnIndex: parseInt("portlet-csv-import" in persistedState ? persistedState["portlet-csv-import"].column : 1),
-            height: 300,
-            hidden: "portlet-csv-import" in persistedState ? persistedState["portlet-csv-import"].hidden : false,
-            id: "portlet-csv-import"
-        };
-
-        defaultContent[parseInt("portlet-platform-info" in persistedState ? persistedState["portlet-platform-info"].position : 6)] = {
+        defaultContent[parseInt("portlet-platform-info" in persistedState ? persistedState["portlet-platform-info"].position : 5)] = {
             type: 'platformInfoPortlet',
             columnIndex: parseInt("portlet-platform-info" in persistedState ? persistedState["portlet-platform-info"].column : 1),
             height: 340,
@@ -143,7 +135,7 @@ Ext.define('AdminConsole.view.Viewport', {
             id: "portlet-platform-info"
         };
 
-        defaultContent[parseInt("portlet-memory-usage" in persistedState ? persistedState["portlet-memory-usage"].position : 7)] = {
+        defaultContent[parseInt("portlet-memory-usage" in persistedState ? persistedState["portlet-memory-usage"].position : 6)] = {
             type: 'momoryUsagePortlet',
             columnIndex: parseInt("portlet-memory-usage" in persistedState ? persistedState["portlet-memory-usage"].column : 2),
             height: 300,
@@ -151,7 +143,7 @@ Ext.define('AdminConsole.view.Viewport', {
             id: "portlet-memory-usage"
         };
 
-        defaultContent[parseInt("portlet-platform-health" in persistedState ? persistedState["portlet-platform-health"].position : 8)] = {
+        defaultContent[parseInt("portlet-platform-health" in persistedState ? persistedState["portlet-platform-health"].position : 7)] = {
             type: 'platformHealthPortlet',
             columnIndex: parseInt("portlet-platform-health" in persistedState ? persistedState["portlet-platform-health"].column : 2),
             height: 120,
@@ -159,12 +151,20 @@ Ext.define('AdminConsole.view.Viewport', {
             id: "portlet-platform-health"
         };
 
-        defaultContent[parseInt("portlet-spring-beans" in persistedState ? persistedState["portlet-spring-beans"].position : 9)] = {
+        defaultContent[parseInt("portlet-spring-beans" in persistedState ? persistedState["portlet-spring-beans"].position : 8)] = {
             type: 'springBeansPortlet',
             columnIndex: parseInt("portlet-spring-beans" in persistedState ? persistedState["portlet-spring-beans"].column : 2),
             height: 300,
             hidden: "portlet-spring-beans" in persistedState ? persistedState["portlet-spring-beans"].hidden : false,
             id: "portlet-spring-beans"
+        };
+        
+        defaultContent[parseInt("portlet-csv-import" in persistedState ? persistedState["portlet-csv-import"].position : 9)] = {
+            type: 'importCSVPortlet',
+            columnIndex: parseInt("portlet-csv-import" in persistedState ? persistedState["portlet-csv-import"].column : 2),
+            height: 300,
+            hidden: "portlet-csv-import" in persistedState ? persistedState["portlet-csv-import"].hidden : false,
+            id: "portlet-csv-import"
         };
 
         // defaultContent[parseInt("portlet-db-search" in persistedState ? persistedState["portlet-db-search"].position : 10)] = {
