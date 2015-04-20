@@ -23,14 +23,14 @@
     <script type="text/javascript" src="resources/app/app.js"></script>
 
     <script src="webjars/jquery/1.11.2/jquery.min.js"></script>
-    <script src="webjars/jquery-atmosphere/2.2.7/jquery.atmosphere.js"></script>
+    <script src="webjars/jquery-atmosphere/2.2.3/jquery.atmosphere.js"></script>
     <script src="webjars/soundmanager2/2.97a.20131201/script/soundmanager2-nodebug-jsmin.js"></script>
 </head>
 <body>
 <div id="rest-base-url" style="display:none" url="${restBaseUrl}" locale="${currentLocale}">${restBaseUrl}</div>
 <div id="contextPath" style="display:none"
      ctxPath="${pageContext.request.contextPath}">${pageContext.request.contextPath}</div>
-<div id="security" style="display:none" username="<sec:authentication property="principal.username" />"
+<div id="security" style="display:none" username="admin"
      token="${_csrf.token}"></div>
 
 <div class="x-mask splashscreen" style="top:0;left:0;" id="splash-background"></div>

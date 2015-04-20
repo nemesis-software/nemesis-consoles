@@ -85,7 +85,7 @@ Ext.define('AdminConsole.view.Viewport', {
     },
     getDefaultContent: function(persistedState) {
         var self = this;
-        var defaultContent = new Array(8); //TODO change to 9 ones you uncomment the last two  bellow
+        var defaultContent = new Array(8); //TODO change to the final number of elements
 
         defaultContent[parseInt("portlet-sys-properties" in persistedState ? persistedState["portlet-sys-properties"].position : 0)] = {
             type: 'systemPropertiesPortlet',
@@ -127,7 +127,15 @@ Ext.define('AdminConsole.view.Viewport', {
             id: "portlet-pk-analyzer"
         };
 
-        defaultContent[parseInt("portlet-platform-info" in persistedState ? persistedState["portlet-platform-info"].position : 5)] = {
+        defaultContent[parseInt("portlet-csv-import" in persistedState ? persistedState["portlet-csv-import"].position : 5)] = {
+            type: 'importCSVPortlet',
+            columnIndex: parseInt("portlet-csv-import" in persistedState ? persistedState["portlet-csv-import"].column : 1),
+            height: 300,
+            hidden: "portlet-csv-import" in persistedState ? persistedState["portlet-csv-import"].hidden : false,
+            id: "portlet-csv-import"
+        };
+
+        defaultContent[parseInt("portlet-platform-info" in persistedState ? persistedState["portlet-platform-info"].position : 6)] = {
             type: 'platformInfoPortlet',
             columnIndex: parseInt("portlet-platform-info" in persistedState ? persistedState["portlet-platform-info"].column : 1),
             height: 340,
@@ -135,7 +143,7 @@ Ext.define('AdminConsole.view.Viewport', {
             id: "portlet-platform-info"
         };
 
-        defaultContent[parseInt("portlet-memory-usage" in persistedState ? persistedState["portlet-memory-usage"].position : 6)] = {
+        defaultContent[parseInt("portlet-memory-usage" in persistedState ? persistedState["portlet-memory-usage"].position : 7)] = {
             type: 'momoryUsagePortlet',
             columnIndex: parseInt("portlet-memory-usage" in persistedState ? persistedState["portlet-memory-usage"].column : 2),
             height: 300,
@@ -143,7 +151,7 @@ Ext.define('AdminConsole.view.Viewport', {
             id: "portlet-memory-usage"
         };
 
-        defaultContent[parseInt("portlet-platform-health" in persistedState ? persistedState["portlet-platform-health"].position : 7)] = {
+        defaultContent[parseInt("portlet-platform-health" in persistedState ? persistedState["portlet-platform-health"].position : 8)] = {
             type: 'platformHealthPortlet',
             columnIndex: parseInt("portlet-platform-health" in persistedState ? persistedState["portlet-platform-health"].column : 2),
             height: 120,
@@ -151,7 +159,7 @@ Ext.define('AdminConsole.view.Viewport', {
             id: "portlet-platform-health"
         };
 
-        defaultContent[parseInt("portlet-spring-beans" in persistedState ? persistedState["portlet-spring-beans"].position : 8)] = {
+        defaultContent[parseInt("portlet-spring-beans" in persistedState ? persistedState["portlet-spring-beans"].position : 9)] = {
             type: 'springBeansPortlet',
             columnIndex: parseInt("portlet-spring-beans" in persistedState ? persistedState["portlet-spring-beans"].column : 2),
             height: 300,
@@ -159,17 +167,13 @@ Ext.define('AdminConsole.view.Viewport', {
             id: "portlet-spring-beans"
         };
 
-        //        defaultContent[parseInt(persistedState["portlet-db-search"].position || 7)] = {
-        //            type: 'sqlSearchPortlet',
-        //            columnIndex: parseInt(persistedState["portlet-db-search"].column || 2),
-        //            height: 300
-        //        };
-        //
-        //        defaultContent[parseInt(persistedState["portlet-csv-import"].position || 8)] = {
-        //            type: 'importCSVPortlet',
-        //            columnIndex: parseInt(persistedState["portlet-csv-import"].column || 2),
-        //            height: 300
-        //        };
+        // defaultContent[parseInt("portlet-db-search" in persistedState ? persistedState["portlet-db-search"].position : 10)] = {
+        //     type: 'sqlSearchPortlet',
+        //     columnIndex: parseInt(persistedState["portlet-db-search"].column || 2),
+        //     height: 300,
+        //     hidden: false,
+        //     id: ''
+        // };
 
         return defaultContent;
     },
@@ -218,26 +222,37 @@ Ext.define('AdminConsole.view.Viewport', {
                     0.35
                 ],
                 parts: {
-                    /*
-                     sqlSearchPortlet: {
-                     viewTemplate: {
-                     id: 'portlet-db-search',
-                     title: 'Database Search',
-                     iconCls: 'database-sql-image',
-                     tools: this.getTools(),
-                     items: Ext.create('AdminConsole.view.portlet.DBSearchPortlet')
-                     }
-                     },
 
-                     importCSVPortlet: {
-                     viewTemplate: {
-                     id: 'portlet-csv-import',
-                     iconCls: 'database-csv-image',
-                     title: 'CSV Import',
-                     tools: this.getTools(),
-                     items: Ext.create('AdminConsole.view.portlet.ImportCSVPortlet')
-                     }
-                     },*/
+                    // sqlSearchPortlet: {
+                    //     viewTemplate: {
+                    //         id: 'portlet-db-search',
+                    //         title: 'Database Search',
+                    //         iconCls: 'database-sql-image',
+                    //         tools: this.getTools(),
+                    //         items: Ext.create('AdminConsole.view.portlet.DBSearchPortlet')
+                    //     }
+                    // },
+
+                    importCSVPortlet: {
+                        viewTemplate: {
+                            id: 'portlet-csv-import',
+                            title: 'CSV Import',
+                            iconCls: 'database-csv-image',
+                            closeAction: 'hide',
+                            tools: this.getTools(),
+                            items: [{
+                                xtype: 'importCSVPortlet'
+                            }],
+                            listeners: {
+                                close: function(panel, eOpts) {
+                                    if (Ext.getCmp('importCSVPortletBtn')) {
+                                        var btn = Ext.getCmp('importCSVPortletBtn');
+                                        btn.enable();
+                                    }
+                                }
+                            }
+                        }
+                    },
 
                     momoryUsagePortlet: {
                         viewTemplate: {
@@ -446,53 +461,6 @@ Ext.define('AdminConsole.view.Viewport', {
                     }
                 },
                 defaultContent: self.getDefaultContent(persistedState)
-                    //                    defaultContent: [
-                    //                        {
-                    //                            type: 'systemPropertiesPortlet',
-                    //                            columnIndex:  persistedState["portlet-sys-properties"].column || 0,
-                    //                            height: 300
-                    //                        },
-                    //                        {
-                    //                            type: 'systemLoggersPortlet',
-                    //                            columnIndex: 0,
-                    //                            height: 300
-                    //                        },
-                    //                        {
-                    //                            type: 'platformTestsPortlet',
-                    //                            columnIndex: 0,
-                    //                            height: 300
-                    //                        },
-                    //                        {
-                    //                            type: 'platformActionsPortlet',
-                    //                            columnIndex: 1,
-                    //                            height: 20
-                    //                        },
-                    //                        {
-                    //                            type: 'pkAnalyzerPortlet',
-                    //                            columnIndex: 1,
-                    //                            height: 20
-                    //                        },
-                    //                        {
-                    //                            type: 'platformInfoPortlet',
-                    //                            columnIndex: 1,
-                    //                            height: 340
-                    //                        },
-                    //                        {
-                    //                            type: 'momoryUsagePortlet',
-                    //                            columnIndex: 2,
-                    //                            height: 300
-                    //                        }/*,
-                    //                        {
-                    //                            type: 'sqlSearchPortlet',
-                    //                            columnIndex: 2,
-                    //                            height: 300
-                    //                        },
-                    //                        {
-                    //                            type: 'importCSVPortlet',
-                    //                            columnIndex: 2,
-                    //                            height: 300
-                    //                        }*/
-                    //                    ]
             }]
         });
 
