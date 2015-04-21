@@ -11,6 +11,9 @@ Ext.define('AdminConsole.controller.PortletsSelectionMenuController', {
 			'#app-header #dropDownMenu': {
 				beforerender: this.loadDropdownMenu
 			},
+			'#app-header #dropDownMenu #importCSVPortletBtn': {
+				click: this.openImportCSVPortlet
+			},
 			'#app-header #dropDownMenu #momoryUsagePortletBtn': {
 				click: this.openMemoryUsagePortlet
 			},
@@ -58,6 +61,11 @@ Ext.define('AdminConsole.controller.PortletsSelectionMenuController', {
 		}
 	},
 
+	openImportCSVPortlet: function(self) {
+		Ext.getCmp('portlet-csv-import').show();
+		self.disable();
+	},
+
 	openMemoryUsagePortlet: function(self) {
 		Ext.getCmp('portlet-memory-usage').show();
 		self.disable();
@@ -72,7 +80,7 @@ Ext.define('AdminConsole.controller.PortletsSelectionMenuController', {
 		Ext.getCmp('portlet-platform-actions').show();
 		self.disable();
 	},
-	
+
 	openPlatformInfoPortlet: function(self) {
 		Ext.getCmp('portlet-platform-info').show();
 		self.disable();

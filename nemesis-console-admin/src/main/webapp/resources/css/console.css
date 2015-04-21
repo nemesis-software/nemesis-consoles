@@ -199,3 +199,8 @@
 .x-htmleditor-iframe {
     height: 100%;
 }
+
+/* border for CVS Portlet textarea*/
+.cm-s-default {
+    border: 1px solid #b5b8c8;
+}
