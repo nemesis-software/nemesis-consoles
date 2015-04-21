@@ -26,7 +26,7 @@
 
     <name>Platform Consoles</name>
     <description>Parent Project for the Nemesis Consoles</description>
-    <url>http://docs.nemesis.bg/console</url>
+    <url>http://docs.nemesis.io/console</url>
 
     <modules>
         <module>nemesis-console-admin</module>
@@ -41,7 +41,7 @@
         <repository>
             <id>nemesis-repository-releases</id>
             <name>nemesis-repository-releases</name>
-            <url>http://repository.nemesis.bg/artifactory/ext-release-local</url>
+            <url>http://repository.nemesis.io/artifactory/ext-release-local</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -52,7 +52,7 @@
         <repository>
             <id>nemesis-repository-snapshots</id>
             <name>nemesis-repository-snapshots</name>
-            <url>http://repository.nemesis.bg/artifactory/ext-snapshot-local</url>
+            <url>http://repository.nemesis.io/artifactory/ext-snapshot-local</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
