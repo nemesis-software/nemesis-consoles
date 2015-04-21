@@ -66,6 +66,12 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         waitForLoad();
     }
 
+    @Test
+    public void before() {
+        waitForDom();
+        waitForLoad();
+    }
+
     protected static void waitForDom() {
         driver.executeScript("Ext.onReady(function () {});");
     }
@@ -124,9 +130,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     @Test
     public void testFilterNavigation() throws InterruptedException {
         LOG.info("testFilterNavigation");
-
-        waitForDom();
-        waitForLoad();
 
         assertTrue(driver.findElementsByCssSelector("div#navigation-tree .x-grid-item").size() > 0);
 
