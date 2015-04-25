@@ -14,6 +14,7 @@ Ext.application({
     controllers: [
         'Main',
         'PortletsSelectionMenuController',
+        'portlets.DBSearchPortletController',
         'portlets.ImportCSVPortletController',
         'portlets.PlatformHealthPortletController',
         'portlets.PlatformInfoPortletController',

@@ -27,6 +27,7 @@
     <script type="text/javascript" src="webjars/codemirror/5.1/lib/codemirror.js"></script>
     <link rel="stylesheet" type="text/css" href="webjars/codemirror/5.1/lib/codemirror.css"></link>
     <script src="webjars/codemirror/5.1/mode/q/q.js"></script>
+    <script src="webjars/codemirror/5.1/mode/sql/sql.js"></script>
 
     <link rel="stylesheet" type="text/css" href="resources/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="resources/css/console.css"/>

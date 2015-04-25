@@ -32,20 +32,9 @@ Ext.define('AdminConsole.view.Viewport', {
             }
         }, {
             xtype: 'tool',
-            type: 'unpin',
-            tooltip: 'Pin portlet to position'
-        }, {
-            xtype: 'tool',
             type: 'maximize',
             tooltip: 'Maximize portlet',
-            callback: function(event, toolEl, panelHeader) {
-                    // refresh logic
-                    // console.log('ccccc');
-                    // alert('aaa');
-                }
-                // handler: function(a, b, c) {
-                //     alert('bbbb');
-                // }
+            callback: function(event, toolEl, panelHeader) {}
         }];
     },
     contentCookieName: "nemesis-admin-portlets-layout",
@@ -84,8 +73,7 @@ Ext.define('AdminConsole.view.Viewport', {
         return [];
     },
     getDefaultContent: function(persistedState) {
-        var self = this;
-        var defaultContent = new Array(8); //TODO change to the final number of elements
+        var defaultContent = new Array();
 
         defaultContent[parseInt("portlet-sys-properties" in persistedState ? persistedState["portlet-sys-properties"].position : 0)] = {
             type: 'systemPropertiesPortlet',
@@ -158,7 +146,7 @@ Ext.define('AdminConsole.view.Viewport', {
             hidden: "portlet-spring-beans" in persistedState ? persistedState["portlet-spring-beans"].hidden : false,
             id: "portlet-spring-beans"
         };
-        
+
         defaultContent[parseInt("portlet-csv-import" in persistedState ? persistedState["portlet-csv-import"].position : 9)] = {
             type: 'importCSVPortlet',
             columnIndex: parseInt("portlet-csv-import" in persistedState ? persistedState["portlet-csv-import"].column : 2),
@@ -167,13 +155,13 @@ Ext.define('AdminConsole.view.Viewport', {
             id: "portlet-csv-import"
         };
 
-        // defaultContent[parseInt("portlet-db-search" in persistedState ? persistedState["portlet-db-search"].position : 10)] = {
-        //     type: 'sqlSearchPortlet',
-        //     columnIndex: parseInt(persistedState["portlet-db-search"].column || 2),
-        //     height: 300,
-        //     hidden: false,
-        //     id: ''
-        // };
+        defaultContent[parseInt("portlet-db-search" in persistedState ? persistedState["portlet-db-search"].position : 2)] = {
+            type: 'sqlSearchPortlet',
+            columnIndex: parseInt("portlet-db-search" in persistedState ? persistedState["portlet-db-search"].column : 10),
+            height: 300,
+            hidden: "portlet-db-search" in persistedState ? persistedState["portlet-db-search"].hidden : false,
+            id: "portlet-db-search"
+        };
 
         return defaultContent;
     },
@@ -222,16 +210,26 @@ Ext.define('AdminConsole.view.Viewport', {
                     0.35
                 ],
                 parts: {
-
-                    // sqlSearchPortlet: {
-                    //     viewTemplate: {
-                    //         id: 'portlet-db-search',
-                    //         title: 'Database Search',
-                    //         iconCls: 'database-sql-image',
-                    //         tools: this.getTools(),
-                    //         items: Ext.create('AdminConsole.view.portlet.DBSearchPortlet')
-                    //     }
-                    // },
+                    sqlSearchPortlet: {
+                        viewTemplate: {
+                            id: 'portlet-db-search',
+                            title: 'Database Search',
+                            iconCls: 'database-sql-image',
+                            closeAction: 'hide',
+                            tools: this.getTools(),
+                            items: [{
+                                xtype: 'sqlSearchPortlet'
+                            }],
+                            listeners: {
+                                close: function(panel, eOpts) {
+                                    if (Ext.getCmp('sqlSearchPortletBtn')) {
+                                        var btn = Ext.getCmp('sqlSearchPortletBtn');
+                                        btn.enable();
+                                    }
+                                }
+                            }
+                        }
+                    },
 
                     importCSVPortlet: {
                         viewTemplate: {

@@ -35,6 +35,9 @@ Ext.define('AdminConsole.controller.PortletsSelectionMenuController', {
 			'#app-header #dropDownMenu #springBeansPortletBtn': {
 				click: this.openSpringBeansPortlet
 			},
+			'#app-header #dropDownMenu #sqlSearchPortletBtn': {
+				click: this.openSqlSearchPortlet
+			},
 			'#app-header #dropDownMenu #systemLoggersPortletBtn': {
 				click: this.openSystemLoggersPortlet
 			},
@@ -98,6 +101,11 @@ Ext.define('AdminConsole.controller.PortletsSelectionMenuController', {
 
 	openSpringBeansPortlet: function(self) {
 		Ext.getCmp('portlet-spring-beans').show();
+		self.disable();
+	},
+
+	openSqlSearchPortlet: function(self) {
+		Ext.getCmp('portlet-db-search').show();
 		self.disable();
 	},
 

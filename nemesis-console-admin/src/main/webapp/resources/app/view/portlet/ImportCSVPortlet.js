@@ -37,7 +37,7 @@ Ext.define('AdminConsole.view.portlet.ImportCSVPortlet', {
         text: 'Validate',
         iconCls: 'validate-image',
         itemId: 'validateCsvBtn'
-    }],
+    }]
     // TODO: remove after file upload is implemented; left to be used as a reference
     // importContent: function(validate) {
     //     var stringContent = Ext.getCmp('csvContent').getValue();

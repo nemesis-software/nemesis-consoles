@@ -14,24 +14,24 @@ Ext.define('AdminConsole.controller.portlets.ImportCSVPortletController', {
 		});
 	},
 
-	codeMirrorTextArea: undefined,
+	codeMirrorCSVTextArea: undefined,
 
 	applyCodeMirror: function() {
 		var textArea = Ext.ComponentQuery.query('#csvContent')[0];
 		var height = textArea.getHeight();
 
-		codeMirrorTextArea = CodeMirror(document.getElementById("csvContent-bodyEl"), {
+		codeMirrorCSVTextArea = CodeMirror(document.getElementById("csvContent-bodyEl"), {
 			lineNumbers: true,
 			mode: 'q'
 		});
 
 		// dirty hack to hide textareafield & display codemirror window with its height; otherwise both windows are shown - no idea why 
-		codeMirrorTextArea.setSize(null, height);
+		codeMirrorCSVTextArea.setSize(null, height);
 		document.getElementById("csvContent-inputWrap").style.display = "none";
 	},
 
 	importContent: function() {
-		var stringContent = codeMirrorTextArea.getValue();
+		var stringContent = codeMirrorCSVTextArea.getValue();
 		var data = {
 			"csv": stringContent
 		};
@@ -47,7 +47,7 @@ Ext.define('AdminConsole.controller.portlets.ImportCSVPortletController', {
 					var result = Ext.decode(responseObject.responseText);
 					if (result.message === 'success') {
 						Ext.toast({
-							html: 'Content is valid!',
+							html: 'Import started',
 							closable: false,
 							align: 't',
 							slideInDuration: 400,
@@ -55,7 +55,7 @@ Ext.define('AdminConsole.controller.portlets.ImportCSVPortletController', {
 						});
 					} else {
 						Ext.toast({
-							html: 'Invalid content!',
+							html: 'Import failed to start',
 							closable: false,
 							align: 't',
 							slideInDuration: 400,
