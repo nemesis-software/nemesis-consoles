@@ -46,7 +46,7 @@ Ext.define('console.view.NavigationTree', function () {
 
                         tabCmp.add(Ext.create("console.view.content.Page", {
                             itemId: entity.data.id,
-                            title: entity.data.name,
+                            title: entity.data.id,
                             iconCls: record.get('iconCls'),
                             entity: entity,
                             contentPanel: this.contentPanel

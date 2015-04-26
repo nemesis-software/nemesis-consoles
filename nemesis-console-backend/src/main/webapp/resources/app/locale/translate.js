@@ -22,6 +22,9 @@ function setLanguage(lang, translate) {
 	    	  globalLangHash[lang] = langData;
 	    	  if (translate) {
 	    		  retranslate(lang, getRootCmp());
+	    		  Ext.each(Ext.ComponentQuery.query('window'), function(n) {
+	    			  translateObj(n); retranslate(globalLang,n);
+	    		  });
 	    	  }
 	      },
 	      failure: function() {
@@ -32,6 +35,9 @@ function setLanguage(lang, translate) {
 	} else {
 		if (translate) {
         	retranslate(lang, getRootCmp());
+        	Ext.each(Ext.ComponentQuery.query('window'), function(n) {
+  			    translateObj(n); retranslate(globalLang,n);
+  		  	});
         }
 	}
 	
@@ -62,6 +68,8 @@ function translate(textId) {
 
 	if (globalLangHash[globalLang][textId]) {
 		return globalLangHash[globalLang][textId];
+	} else if (globalLangHash[globalLang][textId.toLowerCase()]) {
+		return globalLangHash[globalLang][textId.toLowerCase()];
 	} else {
 		console.log('missing localization for textId:',textId);
 		return textId;
@@ -73,9 +81,15 @@ function setTitle(obj, title) {
 }
 
 function translateObj(obj) {
-  if (obj.initialConfig && obj.initialConfig.emptyText && obj.setValue) {
-    obj.emptyText = translate(obj.initialConfig.emptyText);
-    obj.setValue(obj.getValue());
+  if (obj.emptyText) {
+	  if (!obj.orig_emptyText) {
+		  obj.orig_emptyText = obj.emptyText;
+	  }
+	  obj.emptyText = translate(obj.orig_emptyText);
+	  
+	  if (obj.applyEmptyText) {
+		  obj.applyEmptyText();
+	  }
   }
   
   if (obj.initialConfig && obj.initialConfig.text && obj.setText) {
@@ -87,27 +101,38 @@ function translateObj(obj) {
   }
   if (obj.constructTitle) {
 	  setTitle(obj, obj.constructTitle());
-  } else if (obj.initialConfig && obj.title && obj.setTitle) {
-	  if (!obj.initialConfig.title) {
-		  obj.initialConfig.title = obj.title;
+  } else if (obj.title) {
+	  if (!obj.orig_title) {
+		  obj.orig_title = obj.title;
 	  }
-	  setTitle(obj, obj.initialConfig.title);
+	  if (obj.setTitle) {
+		  setTitle(obj, obj.orig_title);
+	  } else if (obj.xtype == 'tab') {
+		  obj.setText(translate(obj.orig_title));
+	  }
+  }
+  
+  if (obj.initialConfig && obj.xtype =='tbtext') {
+	  obj.text = translate(obj.initialConfig.text);
+  }
+  else if (obj.xtype == 'pagingtoolbar') {
+	  obj.afterPageText = translate('of {0}');
+	  obj.displayMsg = translate('Displaying {0} - {1} of {2}');
+	  obj.emptyMsg = translate('No data to display');
+	  if (obj.rendered) {
+		  obj.doRefresh();
+	  }
   }
 
   if (obj.getFieldLabel && obj.fieldLabel) {
-    if (!obj.orgFieldLabel) obj.orgFieldLabel = obj.getFieldLabel();
-    obj.setFieldLabel(translate(obj.orgFieldLabel));
-    //obj.setFieldLabel(_t(obj.orgFieldLabel));
+    if (!obj.orig_fieldLabel) obj.orig_fieldLabel = obj.getFieldLabel();
+    obj.setFieldLabel(translate(obj.orig_fieldLabel));
   }
 
-  if (obj.tooltip || obj.orgTooltip || ((obj.initialConfig)&&(obj.initialConfig.tooltip))) {
-    if (!obj.orgTooltip) obj.orgTooltip = obj.tooltip;
-    if (obj.setTooltip) obj.setTooltip(_t(obj.orgTooltip)); else obj.tooltip = _t(obj.orgTooltip);
+  if (obj.tooltip || obj.orig_tooltip) {
+    if (!obj.orig_tooltip) obj.orig_tooltip = obj.tooltip;
+    if (obj.setTooltip) obj.setTooltip(_t(obj.orig_tooltip)); else obj.tooltip = _t(obj.orig_tooltip);
   }
-  
-  /*if (obj.config && obj.config.autoEl && obj.config.autoEl.html && obj.setHtml) {
-    setTimeout(function() { obj.setHtml(_t(obj.config.autoEl.html));},1);
-  }*/
 }
 
 function getRootCmp() {
@@ -125,7 +150,7 @@ function retranslate(lang, w) {
 		else if (n.getProxy() && n.getProxy().getReader().type == 'transjson') n.load(); // Reload the store, so retranslation could happen
     });
     
-    Ext.each(w.query('button,displayfield,textfield,tabpanel,tab,gridpanel,fieldset,treepanel,gridcolumn,window,backendconsoleMenu,contentSearchForm'),function(n) {
+    Ext.each(w.query('button,displayfield,textfield,tbtext,pagingtoolbar,tabpanel,tab,gridpanel,fieldset,treepanel,gridcolumn,backendconsoleMenu,contentSearchForm,nemesisBooleanField,nemesisTextField,nemesisCollectionField,nemesisDateField,nemesisDecimalField,nemesisEntityField,nemesisMediaField,nemesisEnumField,nemesisHtmlEditor,nemesisIntegerField,nemesisPasswordField'),function(n) {
     	translateObj(n);
     });
     
@@ -138,8 +163,8 @@ function retranslate(lang, w) {
     Ext.each(w.query('actioncolumn'),function(n) {
     	Ext.each(n.items,function(n) {
     		if (!n.tooltip) return;
-    		if (!n.orgTooltip) n.orgTooltip = n.tooltip;
-    		n.tooltip = _t(n.orgTooltip);
+    		if (!n.orig_tooltip) n.orig_tooltip = n.tooltip;
+    		n.tooltip = _t(n.orig_tooltip);
     	});
     });
     
@@ -225,15 +250,15 @@ Ext.onReady(function() {
       
    Ext.override(Ext.MessageBox,{
        alert: function(cfg,msg,fn,scope,x,y,z) {
-           if (Ext.isString(cfg)) { cfg = _t(cfg); msg = _t(msg); } else { cfg.msg = _t(cfg.msg); cfg.title = _t(cfg.title); }
+           cfg = translate(cfg); msg = translate(msg);
            return refAlert.call(this,cfg,msg,fn,scope,x,y,z);
        },
        confirm: function(cfg,msg,fn,scope,x,y,z) {
-           if (Ext.isString(cfg)) { cfg = _t(cfg); msg = _t(msg); } else { cfg.msg = _t(cfg.msg); cfg.title = _t(cfg.title); }
+    	   cfg = translate(cfg); msg = translate(msg);
            return refConfirm.call(this,cfg,msg,fn,scope,x,y,z);
        }
    });
-                                                  
-   Ext.override(Ext.Window,{ initComponent: function() { this.callParent(); translateObj(this); retranslate(globalLang,this); } });
+
    Ext.override(Ext.Component,{ initComponent: function() { this.callParent(); translateObj(this); } }); // Translate inline all the new components
+   Ext.override(Ext.Window,{ initComponent: function() { this.callParent(); retranslate(globalLang,this); } });
 });

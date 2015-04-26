@@ -13,7 +13,7 @@ Ext.define('console.view.content.search.SearchResults', {
         'console.view.field.NemesisHtmlEditor'
     ],
     viewConfig: {
-        emptyText: 'No data to display'
+        //emptyText: 'No data to display'
     },
     constructor: function () {
         me = this;  // Here you store "this" in the closure
@@ -239,7 +239,6 @@ Ext.define('console.view.content.search.SearchResults', {
             var window = Ext.getCmp(parentCmpId).getWindow(record.data.uid);
             if (!window) {
                 var entityConfiguration = Ext.create("console.markup." + this.entity.data.id);
-                console.log('petar');
                 console.log(record);
                 window = Ext.getCmp(parentCmpId).createWindow({
                     id: record.data.uid,
