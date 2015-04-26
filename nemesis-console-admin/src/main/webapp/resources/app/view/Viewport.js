@@ -155,9 +155,9 @@ Ext.define('AdminConsole.view.Viewport', {
             id: "portlet-csv-import"
         };
 
-        defaultContent[parseInt("portlet-db-search" in persistedState ? persistedState["portlet-db-search"].position : 2)] = {
+        defaultContent[parseInt("portlet-db-search" in persistedState ? persistedState["portlet-db-search"].position : 10)] = {
             type: 'sqlSearchPortlet',
-            columnIndex: parseInt("portlet-db-search" in persistedState ? persistedState["portlet-db-search"].column : 10),
+            columnIndex: parseInt("portlet-db-search" in persistedState ? persistedState["portlet-db-search"].column : 2),
             height: 300,
             hidden: "portlet-db-search" in persistedState ? persistedState["portlet-db-search"].hidden : false,
             id: "portlet-db-search"
