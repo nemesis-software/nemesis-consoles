@@ -131,7 +131,7 @@ function translateObj(obj) {
 
   if (obj.tooltip || obj.orig_tooltip) {
     if (!obj.orig_tooltip) obj.orig_tooltip = obj.tooltip;
-    if (obj.setTooltip) obj.setTooltip(_t(obj.orig_tooltip)); else obj.tooltip = _t(obj.orig_tooltip);
+    if (obj.setTooltip) obj.setTooltip(translate(obj.orig_tooltip)); else obj.tooltip = translate(obj.orig_tooltip);
   }
 }
 
@@ -144,7 +144,7 @@ function retranslate(lang, w) {
 	w.setLoading(true);
   
 	Ext.each(Ext.StoreManager.getRange(),function(n) {
-		if (n instanceof Nemesis.LocalizedArrayStore) {
+		if (n.translate) {
 			n.translate();
 		}
 		else if (n.getProxy() && n.getProxy().getReader().type == 'transjson') n.load(); // Reload the store, so retranslation could happen
@@ -179,32 +179,6 @@ function retranslate(lang, w) {
     	w.setLoading(false);
     },100);
 }
-
-Ext.define('Nemesis.LocalizedArrayStore', {
-    extend: 'Ext.data.ArrayStore',
-    constructor: function(config) {
-    	this.callParent([config]);
-    	if (this.data) {
-    		this.translate();
-    	}
-    },
-    translate: function() {
-    	var items = this.data.items;
-    	var fields = this.model.fields;
-    	for(var i=0; i<items.length; i++) {
-    		for(var j=0; j<fields.length; j++) {
-    			if (fields[j].translate) {
-    				var initialDataField = 'initial_' + fields[j].name;
-    				if (!Ext.isDefined(items[i].data[initialDataField])) {
-    					items[i].data[initialDataField] = items[i].data[fields[j].name];
-    				}
-    				items[i].set(fields[j].name, translate(items[i].data[initialDataField]));
-    			}
-    		}
-    		items[i].commit();
-    	}
-    }
-});
 
 Ext.define('Nemesis.reader.JsonReader', {
     extend: 'Ext.data.reader.Json',
@@ -261,4 +235,29 @@ Ext.onReady(function() {
 
    Ext.override(Ext.Component,{ initComponent: function() { this.callParent(); translateObj(this); } }); // Translate inline all the new components
    Ext.override(Ext.Window,{ initComponent: function() { this.callParent(); retranslate(globalLang,this); } });
+   
+   Ext.override(Ext.data.ArrayStore, {
+	    constructor: function(config) {
+	    	this.callParent(arguments);
+	    	if (this.data && this.translate) {
+	    		this.translate();
+	    	}
+	    },
+	    translate: function() {
+	    	var items = this.data.items;
+	    	var fields = this.model.fields;
+	    	for(var i=0; i<items.length; i++) {
+	    		for(var j=0; j<fields.length; j++) {
+	    			if (fields[j].translate) {
+	    				var initialDataField = 'initial_' + fields[j].name;
+	    				if (!Ext.isDefined(items[i].data[initialDataField])) {
+	    					items[i].data[initialDataField] = items[i].data[fields[j].name];
+	    				}
+	    				items[i].set(fields[j].name, translate(items[i].data[initialDataField]));
+	    			}
+	    		}
+	    		items[i].commit();
+	    	}
+	    }
+	});
 });
