@@ -100,9 +100,9 @@ Ext.define('console.view.content.search.SearchResults', {
                         editable: false,
                         forceSelection: true,
                         listeners: {
-                        	'select': function (combo, records) {
+                        	'select': function (combo, record) {
                                 var bbar = combo.up();
-                                var newPageSize = parseInt(records[0].get('id'), 10);
+                                var newPageSize = parseInt(record.get('id'), 10);
                                 bbar.up().getStore().pageSize = newPageSize;
                                 store.load({
                                     params: {
