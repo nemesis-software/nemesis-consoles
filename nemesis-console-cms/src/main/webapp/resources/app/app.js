@@ -179,7 +179,12 @@ Ext.application({
                     widget.setStyle('border-color', '#000');
                 }
 
-                var contextMenu = Ext.create('Ext.menu.Menu', {
+                if(!!window.widgetContextMenu){
+                  Ext.destroy(widgetContextMenu);;
+                  delete window.widgetContextMenu;
+                }
+
+                window.widgetContextMenu = Ext.create('Ext.menu.Menu', {
                     items: [
                         {
                             itemId: 'edit-widget',
@@ -227,7 +232,9 @@ Ext.application({
                 });
 
 
-                contextMenu.showAt(event.data.offsetX + Ext.get('website-iframe').getX(), event.data.offsetY + Ext.get('website-iframe').getY(), true);
+
+
+                widgetContextMenu.showAt(event.data.offsetX + Ext.get('website-iframe').getX(), event.data.offsetY + Ext.get('website-iframe').getY(), true);
 
                 if (this.previousContentElementId) {
                     var previousContentEl = Ext.get(this.previousContentElementId);
