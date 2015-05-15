@@ -211,9 +211,40 @@ Ext.application({
                             text: 'Add Another Widget',
                             iconCls: 'simple_cms_widget_add',
                             handler: function () {
+
+                               var rest =  document.getElementById('rest-base-url').getAttribute('url'),
+                               var url = rest + 'simple_cms_widget';
+                                Ext.Ajax.request({
+                                    url: url,
+                                    method:'GET',
+                                    headers: {'Content-Type' : 'application/json' },
+                                    params: {
+
+                                    },
+                                    success: function(response){
+                                        var modal = new Ext.Window({
+                                          height : 400,
+                                          width : 530
+                                        });
+                                        var lang = document.getElementById('rest-base-url').getAttribute('locale');
+                                        var json = JSON.parse(response.responseText), x, html = '';
+
+                                        for(x in json._embedded){
+                                          var item = json._embedded[x];
+                                          var i = 0, l = item.length;
+                                          for( ; i < l ; i++ ){
+                                            html += '<li>' + item[i].name + '</li>';
+                                          }
+                                        }
+                                        var html = '<ul>' + html +  '</ul>';
+                                        modal.setHtml(html);
+                                        modal.show();
+                                    }
+                                });
+                                /*
                                 var entityConfiguration = Ext.create("console.markup." + record.get('id'));
                                 var window = Ext.getCmp('backend-viewport').createWindow({id: null, title: '[' + record.get('text') + ']', iconCls: record.get('id'), entity: Ext.create('console.model.Entity', {name: record.get('text'), url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('id')}), sections: entityConfiguration.sections});
-                                Ext.getCmp('backend-viewport').restoreWindow(window);
+                                Ext.getCmp('backend-viewport').restoreWindow(window); */
                             }
                         },
                         '-',
