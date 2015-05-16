@@ -89,6 +89,9 @@ Ext.define('console.view.field.NemesisCollectionField', {
         deferEmptyText: false,
         emptyText: 'No records'
     },
+    search: {
+    	field: 'uid'
+    },
     listeners: {
         el: {
             contextmenu: function (event, ui, ctxmenu) {
@@ -183,6 +186,15 @@ Ext.define('console.view.field.NemesisCollectionField', {
                 }
             }
         });
+        /*me.search.store = Ext.create('Ext.data.ArrayStore', {
+        	autoLoad: true,
+            fields: ['uid', 'price'],
+            data: [
+                ['3m Co',71.72],
+                ['Alcoa Inc',29.01],
+                ['Boeing Co.',75.43]
+            ]
+        });*/
 
         me.callParent(arguments);
     },
@@ -493,10 +505,11 @@ Ext.define('console.view.field.NemesisEntityField', {
             //this.setRawValue(entity.data.url);
             Ext.Ajax.request({
                 url: entityUrl,
+                method: 'GET',
                 success: function (res) {
                     var result = Ext.decode(res.responseText);
-                    me.jsonValue = result.uid;
-                    me.setRawValue(result.uid);
+                    me.jsonValue = result.content.uid;
+                    me.setRawValue(result.content.uid);
                 },
                 failure: function (responseObject) {
                     if (responseObject.status != 404) {
