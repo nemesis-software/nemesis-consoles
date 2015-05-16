@@ -256,7 +256,7 @@ Ext.onReady(function() {
 	    				items[i].set(fields[j].name, translate(items[i].data[initialDataField]));
 	    			}
 	    		}
-	    		items[i].commit();
+	    		items[i].commit(true);
 	    	}
 	    }
 	});
