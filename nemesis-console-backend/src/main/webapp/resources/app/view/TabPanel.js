@@ -39,7 +39,7 @@ Ext.define('console.view.TabPanel', {
                     var recordId = decodeURIComponent(parts[1]);
                     var iconCls = decodeURIComponent(parts[2]);
                     if (!Ext.getCmp(cmpId).getComponent(recordId)) {
-                        var entity = Ext.create("console.model.Entity", {id: recordId, name: this.entityNames[recordId], url: Ext.get('rest-base-url').dom.getAttribute('url') + recordId, className: ''});
+                        var entity = Ext.create("console.model.Entity", {id: recordId, name: recordId, url: Ext.get('rest-base-url').dom.getAttribute('url') + recordId, className: ''});
 
                         Ext.getCmp(cmpId).add(Ext.create("console.view.content.Page", {
                             itemId: entity.data.id,
