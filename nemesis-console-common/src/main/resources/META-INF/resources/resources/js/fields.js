@@ -508,8 +508,8 @@ Ext.define('console.view.field.NemesisEntityField', {
                 method: 'GET',
                 success: function (res) {
                     var result = Ext.decode(res.responseText);
-                    me.jsonValue = result.content.uid;
-                    me.setRawValue(result.content.uid);
+                    me.jsonValue = Ext.isDefined(result.uid) ? result.uid : result.content.uid;
+                    me.setRawValue(me.jsonValue);
                 },
                 failure: function (responseObject) {
                     if (responseObject.status != 404) {
@@ -546,7 +546,19 @@ Ext.define('console.view.field.NemesisEnumerationField', {
     width: '95%',
     initComponent: function () {
         var me = this;
-        me.emptyText = me.name;
+        var data = [];
+        for(var i=0;i<me.values.length; i++) {
+        	data.push([me.values[i]]);
+        }
+        Ext.apply(me, {
+        	emptyText: me.name,
+        	displayField: 'id',
+        	valueField: 'id',
+        	store: new Ext.data.ArrayStore({
+                fields: ['id'],
+                data: data
+            })
+        })
         me.callParent(arguments);
     }
 });
