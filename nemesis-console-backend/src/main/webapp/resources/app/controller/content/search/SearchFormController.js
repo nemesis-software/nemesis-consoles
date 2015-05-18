@@ -36,7 +36,7 @@ Ext.define('console.controller.content.search.SearchFormController', {
 
                 if (typeof restriction !== 'undefined' && value) {
                     search_conditions = true;
-                    var field = fields.items[i].emptyText;
+                    var field = fields.items[i].emptyTxt;
                     //for UID searches use the not unique method which is without Equals suffix
                     if (field === 'uid' && restriction === 'Equals') {
                         restriction = '';
