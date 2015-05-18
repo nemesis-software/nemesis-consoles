@@ -10,30 +10,42 @@ Ext.define('AdminConsole.view.portlet.MemoryUsagePortlet', {
         'Ext.chart.series.Line',
         'Ext.chart.axis.Numeric'
     ],
-    initComponent: function() {
+    initComponent: function () {
         var me = this;
         var chart;
-        var generateData = (function() {
+        var memory;
+        Ext.Ajax.request({
+            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/metrics/mem',
+            method: 'GET',
+            success: function (responseObject) {
+                memory = Ext.decode(responseObject.responseText);
+            },
+            failure: function (responseObject) {
+                var error = Ext.decode(responseObject.responseText);
+                Ext.Msg.alert('Error', 'Error: ' + error);
+            }
+        });
+        var generateData = (function () {
             var data = [],
                 date = new Date(2011, 1, 1),
                 i = 0;
 
-            return function() {
+            return function () {
                 data = data.slice();
 
                 Ext.Ajax.request({
-                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/metrics',
+                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/metrics/mem.free',
                     method: 'GET',
-                    success: function(responseObject) {
+                    success: function (responseObject) {
                         var result = Ext.decode(responseObject.responseText);
-                        var percentageMemoryUsage = (result['mem.free'] / result.mem) * 100;
+                        var percentageMemoryUsage = (result / memory) * 100;
                         data.push({
                             date: Ext.Date.add(date, Ext.Date.DAY, i++),
                             //cpu: result.percentageCPUUsage,
                             memoryHeap: percentageMemoryUsage
                         });
                     },
-                    failure: function(responseObject) {
+                    failure: function (responseObject) {
                         var error = Ext.decode(responseObject.responseText);
                         Ext.Msg.alert('Error', 'Error: ' + error);
                     }
@@ -68,7 +80,7 @@ Ext.define('AdminConsole.view.portlet.MemoryUsagePortlet', {
                         'stroke-width': 0.5
                     }
                 },
-                renderer: function(v) {
+                renderer: function (v) {
                     return v >> 0;
                 },
                 label: {
@@ -85,19 +97,19 @@ Ext.define('AdminConsole.view.portlet.MemoryUsagePortlet', {
                 aggregateOp: 'sum',
                 fromDate: new Date(2011, 1, 1),
                 toDate: new Date(2011, 1, 10)
-                    // }, {
-                    //     type: 'numeric',
-                    //     position: 'right',
-                    //     minimum: 0,
-                    //     maximum: 100,
-                    //     fields: ['cpu'],
-                    //     title: 'CPU Usage (%)',
-                    //     renderer: function(v) {
-                    //         return v >> 0;
-                    //     },
-                    //     label: {
-                    //         font: '11px Arial'
-                    //     }
+                // }, {
+                //     type: 'numeric',
+                //     position: 'right',
+                //     minimum: 0,
+                //     maximum: 100,
+                //     fields: ['cpu'],
+                //     title: 'CPU Usage (%)',
+                //     renderer: function(v) {
+                //         return v >> 0;
+                //     },
+                //     label: {
+                //         font: '11px Arial'
+                //     }
             }],
             series: [{
                 type: 'line',
@@ -111,17 +123,17 @@ Ext.define('AdminConsole.view.portlet.MemoryUsagePortlet', {
                     'stroke-width': 1,
                     stroke: 'rgb(148, 174, 10)'
                 }
-            // }, {
-            //     type: 'line',
-            //     lineWidth: 1,
-            //     showMarkers: false,
-            //     axis: 'right',
-            //     xField: 'date',
-            //     yField: 'cpu',
-            //     style: {
-            //         'stroke-width': 1,
-            //         stroke: 'rgb(17, 95, 166)'
-            //     }
+                // }, {
+                //     type: 'line',
+                //     lineWidth: 1,
+                //     showMarkers: false,
+                //     axis: 'right',
+                //     xField: 'date',
+                //     yField: 'cpu',
+                //     style: {
+                //         'stroke-width': 1,
+                //         stroke: 'rgb(17, 95, 166)'
+                //     }
             }]
         } : {
             xtype: 'component',
@@ -135,7 +147,7 @@ Ext.define('AdminConsole.view.portlet.MemoryUsagePortlet', {
         this.callParent(arguments);
         chart = this.down('chart');
 
-        var intr = setInterval(function() {
+        var intr = setInterval(function () {
             timeAxis = chart.axes.get(1);
             var gs = generateData();
             if (!gs.length) {
