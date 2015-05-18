@@ -140,7 +140,7 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
     	// find items by key & test their size
         driver.findElementByCssSelector("input[id^='system-properties-filter-input']").sendKeys("project.home");
         Thread.sleep(500);
-        assertEquals(4, driver.findElementsByCssSelector("div#system-properties-grid-body table.x-grid-item").size());
+        assertEquals(2, driver.findElementsByCssSelector("div#system-properties-grid-body table.x-grid-item").size());
         
         // remove filter & assure that size of items shown is the same as before
         driver.findElementById("system-properties-filter-trigger-clear").click();

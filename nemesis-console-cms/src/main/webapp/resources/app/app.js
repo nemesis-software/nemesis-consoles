@@ -47,12 +47,16 @@ Ext.application({
                     var mask = Ext.get('splash-screen'),
                         parent = Ext.get('splash-background');
                     ;
-                    mask.fadeOut({callback: function () {
-                        mask.destroy();
-                    }});
-                    parent.fadeOut({callback: function () {
-                        parent.destroy();
-                    }});
+                    mask.fadeOut({
+                        callback: function () {
+                            mask.destroy();
+                        }
+                    });
+                    parent.fadeOut({
+                        callback: function () {
+                            parent.destroy();
+                        }
+                    });
 
                     Ext.getCmp('app-header-logout').getEl().on('click', function () {
                         Ext.getCmp('logout-form-csrf-param').setValue(Ext.get('security').dom.getAttribute('token'));
@@ -78,7 +82,8 @@ Ext.application({
             if (Ext.get('website-base-url').dom.getAttribute('url').indexOf(event.origin) !== 0) return;
             if (event.data.type === 'PAGE_LOADED') {
 
-                Ext.Ajax.request({ url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByPkEqualsAndCatalogVersionEquals?catalogVersion=' + event.data.page.catalog_version + '&pk=' + event.data.page.pk,
+                Ext.Ajax.request({
+                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByPkEqualsAndCatalogVersionEquals?catalogVersion=' + event.data.page.catalog_version + '&pk=' + event.data.page.pk,
                     method: 'GET',
                     params: {},
                     success: function (responseObject) {
@@ -131,19 +136,24 @@ Ext.application({
                 Ext.get('catalogVersion').dom.setAttribute('value', event.data.page.catalog_version);
 
                 Ext.getCmp('content-panel-status-bar').updateContent(event.data.page);
-                Ext.getCmp('page-slot-store').items.items[0].store.proxy.extraParams = {'abstract_page': event.data.page.pk, 'page_template': event.data.page.template};
+                Ext.getCmp('page-slot-store').items.items[0].store.proxy.extraParams = {
+                    'abstract_page': event.data.page.pk,
+                    'page_template': event.data.page.template
+                };
                 Ext.getCmp('page-slot-store').items.items[0].store.reload();
 
                 var canvases = "";
 
-                Ext.Ajax.request({ url: Ext.get('rest-base-url').dom.getAttribute('url') + 'page_template/' + event.data.page.template,
+                Ext.Ajax.request({
+                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'page_template/' + event.data.page.template,
                     method: 'GET',
                     params: {},
                     success: function (responseObject) {
                         var result = Ext.decode(responseObject.responseText);
                         canvases = result.previewCanvas;
 
-                        Ext.Ajax.request({ url: Ext.get('rest-base-url').dom.getAttribute('url') + 'abstract_page/' + event.data.page.pk,
+                        Ext.Ajax.request({
+                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'abstract_page/' + event.data.page.pk,
                             method: 'GET',
                             params: {},
                             success: function (responseObject) {
@@ -179,9 +189,10 @@ Ext.application({
                     widget.setStyle('border-color', '#000');
                 }
 
-                if(!!window.widgetContextMenu){
-                  Ext.destroy(widgetContextMenu);;
-                  delete window.widgetContextMenu;
+                if (!!window.widgetContextMenu) {
+                    Ext.destroy(widgetContextMenu);
+                    ;
+                    delete window.widgetContextMenu;
                 }
 
                 window.widgetContextMenu = Ext.create('Ext.menu.Menu', {
@@ -192,7 +203,16 @@ Ext.application({
                             iconCls: 'simple_cms_widget_edit',
                             handler: function () {
                                 var entityConfiguration = Ext.create("console.markup." + event.data.selection.contentElementEntityName);
-                                var window = Ext.getCmp('cms-viewport').createWindow({id: null, title: '[SimpleCMSWidget]', iconCls: event.data.selection.contentElementEntityName, entity: Ext.create('console.model.Entity', {name: null, url: Ext.get('rest-base-url').dom.getAttribute('url') + event.data.selection.contentElementEntityName + '/' + event.data.selection.contentElement}), sections: entityConfiguration.sections});
+                                var window = Ext.getCmp('cms-viewport').createWindow({
+                                    id: null,
+                                    title: '[SimpleCMSWidget]',
+                                    iconCls: event.data.selection.contentElementEntityName,
+                                    entity: Ext.create('console.model.Entity', {
+                                        name: null,
+                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + event.data.selection.contentElementEntityName + '/' + event.data.selection.contentElement
+                                    }),
+                                    sections: entityConfiguration.sections
+                                });
                                 window.show();
                             }
                         },
@@ -202,7 +222,16 @@ Ext.application({
                             iconCls: 'simple_cms_widget_remove',
                             handler: function () {
                                 var entityConfiguration = Ext.create("console.markup." + record.get('id'));
-                                var window = Ext.getCmp('backend-viewport').createWindow({id: null, title: '[' + record.get('text') + ']', iconCls: record.get('id'), entity: Ext.create('console.model.Entity', {name: record.get('text'), url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('id')}), sections: entityConfiguration.sections});
+                                var window = Ext.getCmp('backend-viewport').createWindow({
+                                    id: null,
+                                    title: '[' + record.get('text') + ']',
+                                    iconCls: record.get('id'),
+                                    entity: Ext.create('console.model.Entity', {
+                                        name: record.get('text'),
+                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('id')
+                                    }),
+                                    sections: entityConfiguration.sections
+                                });
                                 Ext.getCmp('backend-viewport').restoreWindow(window);
                             }
                         },
@@ -212,39 +241,37 @@ Ext.application({
                             iconCls: 'simple_cms_widget_add',
                             handler: function () {
 
-                               var rest =  document.getElementById('rest-base-url').getAttribute('url'),
-                               var url = rest + 'simple_cms_widget';
+                                var rest = document.getElementById('rest-base-url').getAttribute('url');
+                                var url = rest + 'simple_cms_widget';
                                 Ext.Ajax.request({
                                     url: url,
-                                    method:'GET',
-                                    headers: {'Content-Type' : 'application/json' },
-                                    params: {
-
-                                    },
-                                    success: function(response){
+                                    method: 'GET',
+                                    headers: {'Content-Type': 'application/json'},
+                                    params: {},
+                                    success: function (response) {
                                         var modal = new Ext.Window({
-                                          height : 400,
-                                          width : 530
+                                            height: 400,
+                                            width: 530
                                         });
                                         var lang = document.getElementById('rest-base-url').getAttribute('locale');
                                         var json = JSON.parse(response.responseText), x, html = '';
 
-                                        for(x in json._embedded){
-                                          var item = json._embedded[x];
-                                          var i = 0, l = item.length;
-                                          for( ; i < l ; i++ ){
-                                            html += '<li>' + item[i].name + '</li>';
-                                          }
+                                        for (x in json._embedded) {
+                                            var item = json._embedded[x];
+                                            var i = 0, l = item.length;
+                                            for (; i < l; i++) {
+                                                html += '<li>' + item[i].name + '</li>';
+                                            }
                                         }
-                                        var html = '<ul>' + html +  '</ul>';
+                                        var html = '<ul>' + html + '</ul>';
                                         modal.setHtml(html);
                                         modal.show();
                                     }
                                 });
                                 /*
-                                var entityConfiguration = Ext.create("console.markup." + record.get('id'));
-                                var window = Ext.getCmp('backend-viewport').createWindow({id: null, title: '[' + record.get('text') + ']', iconCls: record.get('id'), entity: Ext.create('console.model.Entity', {name: record.get('text'), url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('id')}), sections: entityConfiguration.sections});
-                                Ext.getCmp('backend-viewport').restoreWindow(window); */
+                                 var entityConfiguration = Ext.create("console.markup." + record.get('id'));
+                                 var window = Ext.getCmp('backend-viewport').createWindow({id: null, title: '[' + record.get('text') + ']', iconCls: record.get('id'), entity: Ext.create('console.model.Entity', {name: record.get('text'), url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('id')}), sections: entityConfiguration.sections});
+                                 Ext.getCmp('backend-viewport').restoreWindow(window); */
                             }
                         },
                         '-',
@@ -254,15 +281,22 @@ Ext.application({
                             iconCls: 'content_slot_edit',
                             handler: function () {
                                 var entityConfiguration = Ext.create("console.markup.content_slot");
-                                var window = Ext.getCmp('cms-viewport').createWindow({id: null, title: '[ContentSlot]', iconCls: 'content_slot', entity: Ext.create('console.model.Entity', {name: null, url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/' + event.data.selection.contentSlot}), sections: entityConfiguration.sections});
+                                var window = Ext.getCmp('cms-viewport').createWindow({
+                                    id: null,
+                                    title: '[ContentSlot]',
+                                    iconCls: 'content_slot',
+                                    entity: Ext.create('console.model.Entity', {
+                                        name: null,
+                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/' + event.data.selection.contentSlot
+                                    }),
+                                    sections: entityConfiguration.sections
+                                });
                                 window.show();
 
                             }
                         }
                     ]
                 });
-
-
 
 
                 widgetContextMenu.showAt(event.data.offsetX + Ext.get('website-iframe').getX(), event.data.offsetY + Ext.get('website-iframe').getY(), true);
