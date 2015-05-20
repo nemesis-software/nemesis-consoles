@@ -16,14 +16,14 @@ Ext.define('console.view.content.Page', {
                 collapsible: true,
                 split: true,
                 id: this.entity.data.id + '-search-form',
-                entity: this.entity,
+                entity: this.entity
             },
             {
                 region: 'center',
                 xtype: 'contentSearchResults',
                 collapsible: false,
                 id: this.entity.data.id + '-search-result',
-                entity: this.entity,
+                entity: this.entity
             }
         ];
 

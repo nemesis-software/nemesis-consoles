@@ -20,14 +20,15 @@ Ext.define('console.view.content.search.SearchForm', function () {
             anchor: '100%'
         },
         fieldDefaults: {
-        	labelWidth: 200
+            labelWidth: 200
         },
         constructor: function () {
             self = this;  // Here you store "this" in the closure
             self.callParent(arguments);
         },
         initComponent: function () {
-            Ext.Ajax.request({ url: Ext.get('rest-base-url').dom.getAttribute('url') + self.entity.data.id + '/search/',
+            Ext.Ajax.request({
+                url: Ext.get('rest-base-url').dom.getAttribute('url') + self.entity.data.id + '/search/',
                 loadMask: true,
                 method: 'GET',
                 params: {},
@@ -91,9 +92,16 @@ Ext.define('console.view.content.search.SearchForm', function () {
 
                         var backendSearchFields = [];
                         for (var key in searchfields) {
-                            backendSearchFields.push(Ext.create("console.view.content.search.SearchField", {fieldLabel: key, emptyTxt: key.charAt(0).toLowerCase() + key.slice(1), searchRestrictions: searchfields[key]}));
+                            console.log(key.charAt(0).toLowerCase() + key.slice(1));
+                            backendSearchFields.push(Ext.create("console.view.content.search.SearchField", {
+                                fieldLabel: key,
+                                entity: self.entity,
+                                emptyTxt: key.charAt(0).toLowerCase() + key.slice(1),
+                                searchRestrictions: searchfields[key]
+                            }));
                         }
 
+                        console.log(backendSearchFields);
                         Ext.getCmp(self.entity.data.id + '-searchform-fieldset').add(backendSearchFields);
                     }
                 },
@@ -106,10 +114,10 @@ Ext.define('console.view.content.search.SearchForm', function () {
             this.items = [
                 {
                     xtype: 'fieldset',
-                    constructTitle: function() {
-                    	var searchForm = this.up('contentSearchForm');
-                    	var searchTitle = searchForm.initialConfig && searchForm.initialConfig.title || searchForm.title;
-                    	return translate(searchTitle) + ' ' + translate(searchForm.entity.data.id);
+                    constructTitle: function () {
+                        var searchForm = this.up('contentSearchForm');
+                        var searchTitle = searchForm.initialConfig && searchForm.initialConfig.title || searchForm.title;
+                        return translate(searchTitle) + ' ' + translate(searchForm.entity.data.id);
                     },
                     defaultType: 'textfield',
                     margin: '10%',
@@ -117,8 +125,7 @@ Ext.define('console.view.content.search.SearchForm', function () {
                     defaults: {
                         anchor: '100%'
                     },
-                    items: [
-                    ]
+                    items: []
                 }
             ];
 

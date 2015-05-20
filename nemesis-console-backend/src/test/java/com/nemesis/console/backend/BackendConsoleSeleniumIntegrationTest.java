@@ -16,7 +16,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -172,7 +171,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     }
 
     @Test
-    @Ignore("https://github.com/paranoiabla/nemesis-consoles/issues/15")
     public void testFilterMediaContainer() throws InterruptedException {
         LOG.info("testFilterMediaContainer");
         assertTrue(driver.findElementsByCssSelector("div#navigation-tree table.x-grid-item").size() > 0);
@@ -189,15 +187,17 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         Thread.sleep(1500);
 
-        assertEquals(1, driver.findElementsByCssSelector("div#media_container-searchform-fieldset-body div.x-form-item").size());
+        assertEquals(1, driver.findElementsByCssSelector("div#media_container-searchform-fieldset-body div.x-form-item .field-restriction").size());
 
         assertEquals(10, driver.findElementsByCssSelector("div#media_container-search-result-body table.x-grid-item").size());
 
-        //driver.executeScript("var c = Ext.getCmp('app-header-language-selector'); c.setValue({'isoCode':'bg'}); c.fireEvent('select', c, {'isoCode':'bg'});");
+        driver.executeScript(
+                        "var c = Ext.getCmp('media_container-searchform-fieldset-restriction_uid'); c.setValue({'value':'Equals'}); c.fireEvent('select', c, {'value':'Equals'});");
 
-        driver.findElementByCssSelector("div#media_container-searchform-fieldset-body div.x-form-item input[type='text']").sendKeys("default");
+        driver.findElementByCssSelector("div#media_container-searchform-fieldset-body div.x-form-item input[type='text'][id^='textfield-']").sendKeys(
+                        "default");
 
-        driver.findElementsByCssSelector("div#media_container-search-form-fieldset-body div.x-toolbar a.x-btn").iterator().next().click();
+        driver.findElementsByCssSelector("div#media_container-search-form div.x-toolbar a.x-btn").iterator().next().click();
 
         assertEquals(10, driver.findElementsByCssSelector("div#media_container-search-result-body table.x-grid-item").size());
     }
