@@ -18,7 +18,7 @@ Ext.define('console.view.content.search.SearchField', {
         this.fieldSet = Ext.create('Ext.form.FieldSet', {
             items: [
                 {
-                    id: this.entity.data.id + '-searchform-fieldset-restriction_' + this.emptyTxt,
+                    itemId: this.entity.data.id + '-searchform-fieldset-restriction_' + this.emptyTxt,
                     isFormField: false,
                     submitValue: false,
                     xtype: 'combobox',
@@ -34,7 +34,7 @@ Ext.define('console.view.content.search.SearchField', {
                     formItemCls: 'field-restriction'
                 },
                 {
-                    id: this.entity.data.id + '-searchform-fieldset-query_' + this.emptyTxt,
+                    itemId: this.entity.data.id + '-searchform-fieldset-query_' + this.emptyTxt,
                     isFormField: false,
                     submitValue: false,
                     emptyText: this.emptyTxt,

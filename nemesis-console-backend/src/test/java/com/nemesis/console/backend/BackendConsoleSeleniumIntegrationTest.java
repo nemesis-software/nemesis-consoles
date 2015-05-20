@@ -192,14 +192,14 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertEquals(10, driver.findElementsByCssSelector("div#media_container-search-result-body table.x-grid-item").size());
 
         driver.executeScript(
-                        "var c = Ext.getCmp('media_container-searchform-fieldset-restriction_uid'); c.setValue({'value':'Equals'}); c.fireEvent('select', c, {'value':'Equals'});");
+                        "var c = Ext.ComponentQuery.query('#media_container-searchform-fieldset-restriction_uid')[0]; c.setValue({'value':'Equals'}); c.fireEvent('select', c, {'value':'Equals'});");
 
         driver.findElementByCssSelector("div#media_container-searchform-fieldset-body div.x-form-item input[type='text'][id^='textfield-']").sendKeys(
                         "default");
 
         driver.findElementsByCssSelector("div#media_container-search-form div.x-toolbar a.x-btn").iterator().next().click();
 
-        assertEquals(10, driver.findElementsByCssSelector("div#media_container-search-result-body table.x-grid-item").size());
+        assertEquals(1, driver.findElementsByCssSelector("div#media_container-search-result-body table.x-grid-item").size());
     }
 
 }
