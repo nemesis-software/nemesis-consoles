@@ -198,6 +198,8 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         driver.findElementsByCssSelector("div#media_container-search-form div.x-toolbar a.x-btn").iterator().next().click();
 
+        Thread.sleep(1500);
+        
         assertEquals(1, driver.findElementsByCssSelector("div#media_container-search-result-body table.x-grid-item").size());
     }
 
