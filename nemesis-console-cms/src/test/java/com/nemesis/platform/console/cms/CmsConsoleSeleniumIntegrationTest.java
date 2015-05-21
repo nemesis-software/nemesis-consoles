@@ -12,6 +12,8 @@
 package com.nemesis.platform.console.cms;
 
 import com.nemesis.console.common.AbstractCommonConsoleSeleniumInterationTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -32,6 +34,8 @@ import static org.junit.Assert.assertEquals;
  * @since 0.6
  */
 public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSeleniumInterationTest {
+
+    protected final Logger LOG = LogManager.getLogger(getClass());
 
     public static RemoteWebDriver driver;
 
@@ -85,6 +89,7 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
 
     @Test
     public void testHeaderLinkReloadsPage() {
+        LOG.info("Header link reloads page");
         driver.findElement(By.cssSelector("a#app-header-title")).click();
         // Wait for the page to load, timeout after 10 seconds
         (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
@@ -95,7 +100,9 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
     }
 
     @Test
-    public void testChangeLocale() {
+    public void testChangeLocale() throws InterruptedException {
+        Thread.sleep(500);
+        LOG.info("Change locale");
         //Change locale
         driver.executeScript(
                         "var c = Ext.getCmp('app-header-language-selector'); c.setValue({'isoCode':'bg'}); c.fireEvent('select', c, {data : {'isoCode':'bg'}});");
