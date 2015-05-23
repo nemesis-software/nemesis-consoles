@@ -87,8 +87,8 @@ Ext.define('console.view.content.entity.EntityPopupForm', {
             }
         ];
 
-        this.on('afterrender', function () {
-            if (me.entity != null) {
+        if (me.entity != null) {
+        	this.on('afterrender', function () {
                 Ext.Ajax.request({
                     url: me.entity.data.url,
                     method: 'GET',
@@ -96,19 +96,22 @@ Ext.define('console.view.content.entity.EntityPopupForm', {
                     success: function (responseObject) {
                         var result = Ext.decode(responseObject.responseText);
                         console.log(result);
-                        me.populateForm(result);
+                        me.populateForm(me.convertResult(result));
                     },
                     failure: function (responseObject) {
                         Ext.Msg.alert('Error', 'Error: ' + responseObject.responseText);
                     }
                 });
-            }
-        });
+            });
+        }
 
         this.callParent();
     },
     populateForm: function (result) {
-        this.getForm().setValues(this.convertResult(result));
+        this.getForm().setValues(result);
+        Ext.each(this.query('nemesisCollectionField'), function(field) {
+        	field.initStore(result[field.name]);
+        })
     },
     convertResult: function (p) {
         var result = p;

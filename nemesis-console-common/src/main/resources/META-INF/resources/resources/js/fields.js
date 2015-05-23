@@ -79,7 +79,6 @@ Ext.define('console.view.field.NemesisCollectionField', {
     xtype: 'nemesisCollectionField',
     width: '95%',
     colspan: 2,
-    name: 'collection',
     entity: null,
     ddReorder: true,
     //isFormField: true,
@@ -163,29 +162,6 @@ Ext.define('console.view.field.NemesisCollectionField', {
         var me = this;
         me.title = me.fieldLabel;
         me.iconCls = me.entityId;
-        me.store = Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            autoSync: false,
-            fields: ['uid'],
-            proxy: {
-                type: 'rest',
-                url: null,
-                useDefaultXhrHeader: false,
-                cors: true,
-                reader: {
-                    type: 'json',
-                    rootProperty: function (o) {
-                        var data = [];
-                        for (var key in o._embedded) {
-                            for (inner in o._embedded[key]) {
-                                data = data.concat({'uid': o._embedded[key][inner].uid});
-                            }
-                        }
-                        return data;
-                    }
-                }
-            }
-        });
         /*me.search.store = Ext.create('Ext.data.ArrayStore', {
         	autoLoad: true,
             fields: ['uid', 'price'],
@@ -198,14 +174,41 @@ Ext.define('console.view.field.NemesisCollectionField', {
 
         me.callParent(arguments);
     },
-    setValue: function (entity) {
+    initStore: function (entity) {
         var me = this;
         if (typeof entity !== "undefined") {
             if (entity.data) {
                 //list of entities
                 me.entity = entity;
-                me.store.proxy.url = entity.data.url;
-                me.store.load();
+
+                me.setStore(Ext.create('Ext.data.ArrayStore', {
+                    autoLoad: true,
+                    autoSync: false,
+                    fields: ['uid'],
+                    proxy: {
+                        type: 'rest',
+                        url: entity.data.url,
+                        useDefaultXhrHeader: false,
+                        cors: true,
+                        reader: {
+                            type: 'json',
+                            rootProperty: function (o) {
+                                var data = [];
+                                for (var key in o._embedded) {
+                                    for (inner in o._embedded[key]) {
+                                        data = data.concat({'uid': o._embedded[key][inner].uid});
+                                    }
+                                }
+                                return data;
+                            }
+                        }
+                    },
+                    listeners: {
+                    	load: function() {
+                    		//me.setData();
+                    	}
+                    }
+                }));
             } else {
                 // list of primitives
                 //me.store.data = entity.data;
@@ -413,7 +416,6 @@ Ext.define('console.view.field.NemesisEntityField', {
         edit: {
             handler: function () {
                 var me = this;
-                alert(me.entityId);
                 if (me.entity) {
                     console.log(me.entity.data); //you need to initialize the entity from the url
                     var window = Ext.getCmp('backend-viewport').getWindow(this.entity.data.id);
