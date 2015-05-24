@@ -13,7 +13,8 @@ Ext.application({
     ],
 
     controllers: [
-        'Main'
+        'Main',
+        'MenuController'
     ],
 
     launch: function () {
