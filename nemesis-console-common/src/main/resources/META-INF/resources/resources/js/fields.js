@@ -83,7 +83,6 @@ Ext.define('console.view.field.NemesisCollectionField', {
     ddReorder: true,
     //isFormField: true,
     fieldName: 'uid',
-    store: null,
     viewConfig: {
         deferEmptyText: false,
         emptyText: 'No records'

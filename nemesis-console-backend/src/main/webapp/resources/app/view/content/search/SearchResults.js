@@ -242,7 +242,6 @@ Ext.define('console.view.content.search.SearchResults', {
                 console.log(record);
                 window = Ext.getCmp(parentCmpId).createWindow({
                     id: record.data.uid,
-                    title: '[' + record.data.uid + ' - ' + this.entity.data.name + ']',
                     iconCls: this.entity.data.id,
                     entity: Ext.create('console.model.Entity', {
                         id: this.entity.data.id,

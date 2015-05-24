@@ -119,7 +119,7 @@ Ext.define('console.view.Viewport', {
 
     createWindow: function (config) {
         var me = this;
-        var win = Ext.create('console.view.content.EntityPopupWindow', {id: 'w_id_' + config.id, title: config.title, iconCls: config.iconCls, entity: config.entity, entityFields: config.sections});
+        var win = Ext.create('console.view.content.EntityPopupWindow', {id: 'w_id_' + config.id, iconCls: config.iconCls, entity: config.entity, entityFields: config.sections});
         me.windows.add(win);
         win.taskButton = Ext.getCmp('taskbar').addTaskButton(win);
         win.animateTarget = win.taskButton.el;

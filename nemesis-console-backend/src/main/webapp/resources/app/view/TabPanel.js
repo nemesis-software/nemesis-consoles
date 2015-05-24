@@ -63,7 +63,6 @@ Ext.define('console.view.TabPanel', {
                         var entityConfiguration = Ext.create("console.markup." + entityDataId);
                         window = Ext.getCmp(cmpId).createWindow({
                             id: recordUid,
-                            title: '[' + recordUid + ' - ' + entityDataName + ']',
                             iconCls: entityDataId,
                             entity: Ext.create('console.model.Entity', {
                                 id: entityDataId,

@@ -77,7 +77,11 @@ function translate(textId) {
 }
 
 function setTitle(obj, title) {
-	setTimeout(function() {obj.setTitle(translate(title))},1);
+	title = translate(Ext.isObject(title) ? title.text : title);
+	if (obj.xtype == 'entityPopupWindow' && !obj.title) {
+		obj.title = title;
+	}
+	setTimeout(function() {obj.setTitle(title)},1);
 }
 
 function translateObj(obj) {

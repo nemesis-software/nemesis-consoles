@@ -15,6 +15,9 @@ Ext.define('console.view.content.EntityPopupWindow', {
     stateful: false,
     isWindow: true,
     constrainHeader: true,
+    constructTitle: function() { 
+    	return '[' + this.id.substring(5) + ' - ' + translate(this.entity.data.name) + ']';
+    },
     minimizable: true,
     maximizable: true,
     width: 800,
