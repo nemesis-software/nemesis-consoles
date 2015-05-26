@@ -95,7 +95,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     }
 
     @Test
-    @Ignore
     public void testHeaderLinkReloadsPage() throws InterruptedException {
         LOG.info("testHeaderLinkReloadsPage");
         driver.findElement(By.cssSelector("a#app-header-title")).click();
@@ -110,7 +109,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     }
 
     @Test
-    @Ignore
     public void testChangeLocale() {
         LOG.info("testChangeLocale");
         //Change locale
@@ -129,7 +127,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     }
 
     @Test
-    @Ignore
     public void testFilterNavigation() throws InterruptedException {
         LOG.info("testFilterNavigation");
 
@@ -149,7 +146,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     }
 
     @Test
-    @Ignore
     public void testSelectMediaContainer() throws InterruptedException {
         LOG.info("testSelectMediaContainer");
 
@@ -175,7 +171,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     }
 
     @Test
-    @Ignore
     public void testFilterMediaContainer() throws InterruptedException {
         LOG.info("testFilterMediaContainer");
         assertTrue(driver.findElementsByCssSelector("div#navigation-tree table.x-grid-item").size() > 0);
@@ -210,6 +205,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     // #41
     @Test
+    @Ignore // for now the selenium double click action doesnt open again the window, this has to be checked why
     public void testReopenEntityWindow() throws InterruptedException {
         LOG.info("testReopenEntityWindow");
         String entityId = "product";
