@@ -122,7 +122,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
             }
         });
 
-        assertEquals("Ð˜Ð·Ñ…Ð¾Ð´", driver.findElementById("app-header-logout").getText());
+        assertEquals("Изход", driver.findElementById("app-header-logout").getText());
 
     }
 
