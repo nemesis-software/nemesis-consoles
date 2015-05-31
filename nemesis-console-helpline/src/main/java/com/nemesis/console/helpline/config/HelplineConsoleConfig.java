@@ -50,10 +50,11 @@ public class HelplineConsoleConfig extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-            .antMatchers("/resources/img/**").permitAll()
-            .antMatchers("/chat/**").permitAll()
-            .antMatchers("/console/**").hasRole("EMPLOYEEGROUP")
-            .and()
+                .antMatchers("/resources/img/**").permitAll()
+                .antMatchers("/chat/**").permitAll()
+                .antMatchers("/console/**").hasRole("EMPLOYEEGROUP")
+            .anyRequest()
+                .authenticated().and()
             .formLogin()
                 .loginProcessingUrl("/j_spring_security_check")
                 .loginPage("/login")
