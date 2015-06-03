@@ -250,6 +250,39 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertTrue(!existsElement("div[id^='w_id_']"));
     }
     
+
+
+    // #29
+    @Test
+    public void testEnumField() throws InterruptedException {
+        LOG.info("testEnumField");
+        String entityId = "watermark";
+        String entityFullId = "media_watermark";
+        assertTrue(navTreeItems().size() > 0);
+
+        filterNavTree(entityId);
+
+        Thread.sleep(1500);
+
+        assertEquals(2, navTreeItems().size());
+
+        navTreeInnerItems().get(1).click();
+
+        assertEquals(1, openedTabs().size());
+
+        Thread.sleep(1500);
+
+        assertTrue(1 <= resultsGridItems(entityFullId).size());
+        
+        doubleClick(resultsGridInnerItems(entityFullId).get(0));
+        
+        Thread.sleep(1500);
+        assertTrue(1 <= (Long)driver.executeScript("return Ext.ComponentQuery.query('nemesisEnumField')[0].getStore().totalCount;"));
+        
+        closeEntityWindow();
+        
+    }
+    
     private boolean existsElement(String selector) {
 		try {
 			driver.findElementByCssSelector(selector);
