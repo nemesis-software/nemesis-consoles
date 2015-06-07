@@ -16,7 +16,7 @@ Ext.define('console.view.content.EntityPopupWindow', {
     isWindow: true,
     constrainHeader: true,
     constructTitle: function() { 
-    	return '[' + this.id.substring(5) + ' - ' + translate(this.entity.data.name) + ']';
+    	return '[' + this.id.substring(5) + ' - ' + translate(this.entity.data.id) + ']';
     },
     minimizable: true,
     maximizable: true,

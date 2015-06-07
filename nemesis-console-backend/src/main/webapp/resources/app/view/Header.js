@@ -60,6 +60,7 @@ Ext.define('console.view.Header', {
                 store: Ext.create('console.store.Languages'),
                 valueField: 'isoCode',
                 displayField: 'name',
+                forceSelection: true,
                 value: 'en',
                 typeAhead: true,
                 listeners: {
