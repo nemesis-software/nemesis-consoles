@@ -21,7 +21,7 @@ function setLanguage(lang, translate) {
 	    	  }
 	    	  globalLangHash[lang] = langData;
 	    	  if (translate) {
-	    		  retranslate(lang, getRootCmp());
+	    		  retranslate(lang, getRootCmp(), true);
 	    		  Ext.each(Ext.ComponentQuery.query('window'), function(n) {
 	    			  translateObj(n); retranslate(globalLang,n);
 	    		  });
@@ -34,7 +34,7 @@ function setLanguage(lang, translate) {
 	    });
 	} else {
 		if (translate) {
-        	retranslate(lang, getRootCmp());
+        	retranslate(lang, getRootCmp(), true);
         	Ext.each(Ext.ComponentQuery.query('window'), function(n) {
   			    translateObj(n); retranslate(globalLang,n);
   		  	});
@@ -143,16 +143,17 @@ function getRootCmp() {
 	return Ext.ComponentQuery.query('viewport')[0];
 }
 
-function retranslate(lang, w) {
-	globalLang = lang;
-	w.setLoading(true);
-  
-	Ext.each(Ext.StoreManager.getRange(),function(n) {
-		if (n.translate) {
-			n.translate();
-		}
-		else if (n.getProxy() && n.getProxy().getReader().type == 'transjson') n.load(); // Reload the store, so retranslation could happen
-    });
+function retranslate(lang, w, isRootCmp) {
+	if (isRootCmp) {
+		globalLang = lang;
+		w.setLoading(true);
+		Ext.each(Ext.StoreManager.getRange(),function(n) {
+			if (n.translate) {
+				n.translate();
+			}
+			else if (n.getProxy() && n.getProxy().getReader().type == 'transjson') n.load(); // Reload the store, so retranslation could happen
+	    });
+	}
     
     Ext.each(w.query('button,displayfield,textfield,tbtext,pagingtoolbar,tabpanel,tab,gridpanel,fieldset,treepanel,gridcolumn,backendconsoleMenu,contentSearchForm,nemesisBooleanField,nemesisTextField,nemesisCollectionField,nemesisDateField,nemesisDecimalField,nemesisEntityField,nemesisMediaField,nemesisEnumField,nemesisHtmlEditor,nemesisIntegerField,nemesisPasswordField'),function(n) {
     	translateObj(n);
@@ -261,7 +262,9 @@ Ext.onReady(function() {
 	    				if (!Ext.isDefined(items[i].data[initialDataField])) {
 	    					items[i].data[initialDataField] = items[i].data[fields[j].name];
 	    				}
-	    				items[i].set(fields[j].name, translate(items[i].data[initialDataField]));
+	    				var displayValue = translate(items[i].data[initialDataField]);
+	    				items[i].set(fields[j].name, displayValue);
+	    				items[i].raw[j] = displayValue;
 	    			}
 	    		}
 	    		items[i].commit(true);
