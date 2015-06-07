@@ -160,7 +160,11 @@ function retranslate(lang, w) {
     
     Ext.each(w.query('component'), function(c) {
     	if (c.initialConfig && c.initialConfig.autoEl && c.initialConfig.autoEl.html) {
-    		c.update(translate(c.initialConfig.autoEl.html));
+    		if (!c.rendered) {
+    			c.autoEl.html = translate(c.initialConfig.autoEl.html);
+    		} else {
+    			c.update(translate(c.initialConfig.autoEl.html));
+    		}
     	}
     });
 

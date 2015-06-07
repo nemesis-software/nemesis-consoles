@@ -140,7 +140,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         assertEquals(2, driver.findElementsByCssSelector("div#navigation-tree .x-grid-item").size());
 
-        driver.findElement(By.id("navigation-menu-filter-trigger-clear")).click();
+        clearNavTreeFilter();
 
         assertTrue(driver.findElementsByCssSelector("div#navigation-tree .x-grid-item").size() > 0);
     }
@@ -167,7 +167,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         assertEquals(0, driver.findElementsByCssSelector("div#tab-panel a.x-tab").size());
 
-        driver.findElement(By.id("navigation-menu-filter-trigger-clear")).click();
+        clearNavTreeFilter();
     }
 
     @Test
@@ -201,6 +201,8 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         Thread.sleep(1500);
         
         assertEquals(1, driver.findElementsByCssSelector("div#media_container-search-result-body table.x-grid-item").size());
+        
+        clearNavTreeFilter();
     }
 
     // #41
@@ -215,13 +217,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         Thread.sleep(1500);
 
-        assertEquals(3, navTreeItems().size());
-
-        navTreeInnerItems().get(2).click();
-
-        assertEquals(1, openedTabs().size());
-
-        Thread.sleep(1500);
+        openNavTreeItem(3);
 
         assertTrue(1 <= resultsGridItems(entityId).size());
         
@@ -250,6 +246,58 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertTrue(!existsElement("div[id^='w_id_']"));
     }
     
+    // #29
+    @Test
+    public void testEnumField() throws InterruptedException {
+        LOG.info("testEnumField");
+        String entityId = "watermark";
+        String entityFullId = "media_watermark";
+        assertTrue(navTreeItems().size() > 0);
+
+        filterNavTree(entityId);
+
+        Thread.sleep(1500);
+
+        openNavTreeItem(1);
+        
+        openSearchGridItem(0, entityFullId);
+
+        Thread.sleep(1500);
+        assertTrue(1 <= (Long)driver.executeScript("return Ext.ComponentQuery.query('nemesisEnumField')[0].getStore().totalCount;"));
+        
+        closeEntityWindow();
+        
+        clearNavTreeFilter();
+    }
+    
+    // #42
+    @Test
+    public void testEntityWindowTitle() throws InterruptedException {
+        LOG.info("testEntityWindowTitle");
+        String entityId = "unit";
+        String entityFullId = "unit";
+        assertTrue(navTreeItems().size() > 0);
+
+        filterNavTree(entityId);
+
+        Thread.sleep(1500);
+        
+        openNavTreeItem(2);
+
+        assertTrue(1 <= resultsGridItems(entityFullId).size());
+        
+        doubleClick(resultsGridInnerItems(entityFullId).get(0));
+        
+        Thread.sleep(1500);
+        
+        // the header title should contain at least '[' and ']'
+        assertTrue(2 <= driver.findElementByCssSelector("div.x-window div.x-window-header-title div.x-title-text").getText().length());
+        
+        closeEntityWindow();
+        
+        clearNavTreeFilter();
+    }
+    
     private boolean existsElement(String selector) {
 		try {
 			driver.findElementByCssSelector(selector);
@@ -258,6 +306,22 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 			return false;
 		}
 	}
+    
+    private void openNavTreeItem(int itemIndex) throws InterruptedException {
+        assertEquals(itemIndex+1, navTreeItems().size());
+
+        navTreeInnerItems().get(itemIndex).click();
+
+        assertEquals(1, openedTabs().size());
+
+        Thread.sleep(1500);
+    }
+    
+    private void openSearchGridItem(int itemIndex, String entityFullId) {
+    	assertTrue(itemIndex+1 <= resultsGridItems(entityFullId).size());
+        
+        doubleClick(resultsGridInnerItems(entityFullId).get(0));
+    }
 
 	private void closeEntityWindow() {
     	driver.findElementByCssSelector("div.x-window img.x-tool-close").click();
@@ -266,6 +330,10 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 	private void filterNavTree(String filterText) {
     	driver.findElementByCssSelector("input[id^='navigation-menu-filter-input']").sendKeys(filterText);
     }
+	
+	private void clearNavTreeFilter() {
+		driver.findElement(By.id("navigation-menu-filter-trigger-clear")).click();
+	}
     
     private List<WebElement> navTreeItems() {
     	return driver.findElementsByCssSelector("div#navigation-tree table.x-grid-item");
