@@ -264,7 +264,9 @@ Ext.onReady(function() {
 	    				}
 	    				var displayValue = translate(items[i].data[initialDataField]);
 	    				items[i].set(fields[j].name, displayValue);
-	    				items[i].raw[j] = displayValue;
+	    				if (items[i].raw) {
+	    					items[i].raw[j] = displayValue;
+	    				}
 	    			}
 	    		}
 	    		items[i].commit(true);
