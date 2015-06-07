@@ -3,9 +3,7 @@ Ext.define('HelplineConsole.view.Menu', {
     xtype: 'helplineconsoleMenu',
 
     requires: [
-        'Ext.layout.container.Accordion',
-        'HelplineConsole.model.User',
-        'HelplineConsole.model.Order'
+        'Ext.layout.container.Accordion'
     ],
     title: 'Search',
     cls: 'examples-list',
