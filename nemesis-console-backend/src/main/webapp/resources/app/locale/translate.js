@@ -269,7 +269,7 @@ Ext.onReady(function() {
 	    				}
 	    			}
 	    		}
-	    		items[i].commit(true);
+	    		items[i].commit();
 	    	}
 	    }
 	});
