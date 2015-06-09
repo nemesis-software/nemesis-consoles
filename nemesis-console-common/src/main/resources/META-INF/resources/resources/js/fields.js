@@ -88,7 +88,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
         emptyText: 'No records'
     },
     search: {
-    	field: 'uid'
+        field: 'uid'
     },
     listeners: {
         el: {
@@ -162,14 +162,14 @@ Ext.define('console.view.field.NemesisCollectionField', {
         me.title = me.fieldLabel;
         me.iconCls = me.entityId;
         /*me.search.store = Ext.create('Ext.data.ArrayStore', {
-        	autoLoad: true,
-            fields: ['uid', 'price'],
-            data: [
-                ['3m Co',71.72],
-                ['Alcoa Inc',29.01],
-                ['Boeing Co.',75.43]
-            ]
-        });*/
+         autoLoad: true,
+         fields: ['uid', 'price'],
+         data: [
+         ['3m Co',71.72],
+         ['Alcoa Inc',29.01],
+         ['Boeing Co.',75.43]
+         ]
+         });*/
 
         me.callParent(arguments);
     },
@@ -203,9 +203,9 @@ Ext.define('console.view.field.NemesisCollectionField', {
                         }
                     },
                     listeners: {
-                    	load: function() {
-                    		//me.setData();
-                    	}
+                        load: function () {
+                            //me.setData();
+                        }
                     }
                 }));
             } else {
@@ -548,14 +548,14 @@ Ext.define('console.view.field.NemesisEnumerationField', {
     initComponent: function () {
         var me = this;
         var data = [];
-        for(var i=0;i<me.values.length; i++) {
-        	data.push([me.values[i]]);
+        for (var i = 0; i < me.values.length; i++) {
+            data.push([me.values[i]]);
         }
         Ext.apply(me, {
-        	emptyText: me.name,
-        	displayField: 'id',
-        	valueField: 'id',
-        	store: new Ext.data.ArrayStore({
+            emptyText: me.name,
+            displayField: 'id',
+            valueField: 'id',
+            store: new Ext.data.ArrayStore({
                 fields: ['id'],
                 data: data
             })
@@ -679,7 +679,7 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
         this.fieldSet.render(this.inputEl);
     },
     setValue: function (langValuePairs) {
-        if (typeof langValuePairs !== "undefined") {
+        if (typeof langValuePairs !== "undefined" && langValuePairs !== null) {
             this.langValuePairs = langValuePairs;
             var val = langValuePairs[Ext.get('rest-base-url').dom.getAttribute('locale')];
             if (val) {
