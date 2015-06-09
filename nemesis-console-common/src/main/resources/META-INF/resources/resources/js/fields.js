@@ -243,10 +243,6 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
                 pack: 'start',
                 align: 'stretch'
             },
-            defaults: {
-                frame: true,
-                bodyPadding: 10
-            },
             items: [
                 {
                     isFormField: false,
@@ -277,7 +273,7 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
                     typeAhead: false,
                     formItemCls: 'field-restriction',
                     cls: 'localized-iso-dropdown',
-                    width: 60,
+                    width: 50,
                     value: Ext.get('rest-base-url').dom.getAttribute('locale')
                 },
                 {
