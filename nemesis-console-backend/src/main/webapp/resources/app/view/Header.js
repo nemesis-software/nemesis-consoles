@@ -61,12 +61,12 @@ Ext.define('console.view.Header', {
                 valueField: 'isoCode',
                 displayField: 'name',
                 forceSelection: true,
-                value: 'en',
+                value: 'en_GB',
                 typeAhead: true,
                 listeners: {
                     select: {
                         fn: function (cb, record) {
-                        	setLanguage(record.data.isoCode, true);
+                            setLanguage(record.data.isoCode, true);
                         },
                         scope: this
                     }

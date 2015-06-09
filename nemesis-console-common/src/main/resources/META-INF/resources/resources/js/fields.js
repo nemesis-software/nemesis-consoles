@@ -243,16 +243,15 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
                 pack: 'start',
                 align: 'stretch'
             },
+            defaults: {
+                frame: true,
+                bodyPadding: 10
+            },
             items: [
                 {
                     isFormField: false,
                     submitValue: false,
                     xtype: 'combobox',
-                    listConfig: {
-                        getInnerTpl: function (displayField) {
-                            return '<img src="resources/img/flag-{isoCode}.gif" class="icon"/> {' + displayField + '}';
-                        }
-                    },
                     store: Ext.create('console.store.Languages'),
                     listeners: {
                         beforeselect: function (cb, record, index) {
@@ -631,7 +630,7 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
                     cls: "align-top",
                     listConfig: {
                         getInnerTpl: function (displayField) {
-                            return '<img src="resources/images/flag-{isoCode}.gif" class="icon"/> {' + displayField + '}';
+                            return '<img src="resources/images/flag-{uid}.gif" class="icon"/> {' + displayField + '}';
                         }
                     },
                     store: Ext.create('console.store.Languages'),
@@ -647,14 +646,14 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
                         select: function (cb, records) {
                             //update the text field value
                             var textValue = "";
-                            if (me.langValuePairs[records[0].data.isoCode] !== undefined) {
-                                textValue = me.langValuePairs[records[0].data.isoCode].value;
+                            if (me.langValuePairs[records[0].data.uid] !== undefined) {
+                                textValue = me.langValuePairs[records[0].data.uid].value;
                             }
                             me.fieldSet.items.items[1].setValue(textValue);
                         }
                     },
-                    valueField: 'isoCode',
-                    displayField: 'isoCode',
+                    valueField: 'uid',
+                    displayField: 'uid',
                     typeAhead: false,
                     formItemCls: 'field-restriction',
                     cls: 'localized-iso-dropdown',

@@ -111,6 +111,14 @@
     background-image: url(images/employee.png);
 }
 
+.abstract_filter {
+    background-image: url(images/abstract_filter.png);
+}
+
+.product_reference {
+    background-image: url(images/product_reference.png);
+}
+
 .usergroup {
     background-image: url(images/usergroup.png);
 }
