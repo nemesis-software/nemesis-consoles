@@ -319,7 +319,7 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
 Ext.define('console.view.field.NemesisDateField', {
     extend: 'Ext.form.DateField',
     xtype: 'nemesisDateField',
-    format: 'd/m/Y',
+    format: 'd-m-Y H:i:s',
     width: '95%',
     columnWidth: .5,
     initComponent: function () {
