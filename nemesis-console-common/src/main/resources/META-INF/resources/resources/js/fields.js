@@ -239,7 +239,7 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
 
         me.fieldSet = Ext.create('Ext.form.FieldSet', {
             layout: {
-                type: 'hbox',
+                type: 'vbox',
                 pack: 'start',
                 align: 'stretch'
             },
@@ -258,10 +258,10 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
                                 me.langValuePairs [lang] = {"value": value};
                             }
                         },
-                        select: function (cb, records) {
+                        select: function (cb, record) {
                             var textValue = "";
-                            if (me.langValuePairs[records[0].data.isoCode] !== undefined) {
-                                textValue = me.langValuePairs[records[0].data.isoCode].value;
+                            if (me.langValuePairs[record.data.isoCode] !== undefined) {
+                                textValue = me.langValuePairs[record.data.isoCode].value;
                             }
                             if (me.fieldSet) {
                                 me.fieldSet.items.items[1].setRawValue(textValue);
@@ -613,7 +613,7 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
                 anchor: '100% 100%'
             },
             layout: {
-                type: 'hbox',
+                type: 'vbox',
                 pack: 'start',
                 align: 'stretch'
             },
@@ -622,13 +622,13 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
                     isFormField: false,
                     submitValue: false,
                     xtype: 'combobox',
-                    bodyStyle: 'vertical-align: top',
-                    cls: "align-top",
-                    listConfig: {
-                        getInnerTpl: function (displayField) {
-                            return '<img src="resources/images/flag-{uid}.gif" class="icon"/> {' + displayField + '}';
-                        }
-                    },
+                    //bodyStyle: 'vertical-align: top',
+                    //cls: "align-top",
+                    //listConfig: {
+                    //    getInnerTpl: function (displayField) {
+                    //        return '<img src="resources/images/flag-{uid}.gif" class="icon"/> {' + displayField + '}';
+                    //    }
+                    //},
                     store: Ext.create('console.store.Languages'),
                     listeners: {
                         beforeselect: function (cb, record, index) {
@@ -639,17 +639,17 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
                                 me.langValuePairs [lang] = {"value": value};
                             }
                         },
-                        select: function (cb, records) {
+                        select: function (cb, record) {
                             //update the text field value
                             var textValue = "";
-                            if (me.langValuePairs[records[0].data.uid] !== undefined) {
-                                textValue = me.langValuePairs[records[0].data.uid].value;
+                            if (me.langValuePairs[record.data.isoCode] !== undefined) {
+                                textValue = me.langValuePairs[record.data.isoCode].value;
                             }
                             me.fieldSet.items.items[1].setValue(textValue);
                         }
                     },
-                    valueField: 'uid',
-                    displayField: 'uid',
+                    valueField: 'isoCode',
+                    displayField: 'isoCode',
                     typeAhead: false,
                     formItemCls: 'field-restriction',
                     cls: 'localized-iso-dropdown',
