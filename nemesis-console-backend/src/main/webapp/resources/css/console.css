@@ -151,6 +151,10 @@
     background-image: url(images/voucher.png);
 }
 
+.voucher_invalidation {
+    background-image: url(images/voucher_invalidation.png);
+}
+
 .customer_review {
     background-image: url(images/customer_review.png);
 }
@@ -195,6 +199,10 @@
     background-image: url(images/cms_site.png);
 }
 
+.site_theme {
+    background-image: url(images/site_theme.png);
+}
+
 .simple_banner_widget {
     background-image: url(images/simple_banner_widget.png);
 }
@@ -219,6 +227,14 @@
     background-image: url(images/abstract_order.png);
 }
 
+.cookie_policy_widget {
+    background-image: url(images/cookie.png);
+}
+
+.category_lister_widget {
+    background-image: url(images/categories.png);
+}
+
 .navbar_cms_widget {
     background-image: url(images/navbar_cms_widget.png);
 }
@@ -229,6 +245,30 @@
 
 .wishlist_cms_widget {
     background-image: url(images/wishlist_cms_widget.png);
+}
+
+.sitemap_config {
+    background-image: url(images/sitemap.png);
+}
+
+.sitemap_page {
+    background-image: url(images/sitemap_page.png);
+}
+
+.wishlist {
+    background-image: url(images/wishlist.png);
+}
+
+.promotion {
+    background-image: url(images/promotion.png);
+}
+
+.promotion_group {
+    background-image: url(images/promotion_group.png);
+}
+
+.promotion_result {
+    background-image: url(images/promotion_result.png);
 }
 
 .cronjob {
