@@ -53,15 +53,16 @@ Ext.define('console.view.TabPanel', {
                         Ext.getCmp(cmpId).setActiveTab(recordId);
                     }
                 } else if (cmpId === 'backend-viewport') {
+                	var viewport = Ext.getCmp(cmpId);
                     var recordUid = decodeURIComponent(parts[1]);
                     var entityDataName = decodeURIComponent(parts[2]);
                     var entityDataId = decodeURIComponent(parts[3]);
                     var entityClassName = decodeURIComponent(parts[4]);
                     var entityHref = !Ext.isGecko ? decodeURIComponent(parts[5]) : token.substring(token.lastIndexOf(':http')+1);
-                    var window = Ext.getCmp(cmpId).getWindow(recordUid);
+                    var window = viewport.getWindow(recordUid);
                     if (!window) {
                         var entityConfiguration = Ext.create("console.markup." + entityDataId);
-                        window = Ext.getCmp(cmpId).createWindow({
+                        window = viewport.createWindow({
                             id: recordUid,
                             iconCls: entityDataId,
                             entity: Ext.create('console.model.Entity', {
@@ -72,7 +73,7 @@ Ext.define('console.view.TabPanel', {
                                 synchronizable: entityConfiguration.synchronizable}),
                             sections: entityConfiguration.sections});
                     }
-                    Ext.getCmp(cmpId).restoreWindow(window);
+                    viewport.restoreWindow(window);
                 }
             } catch (err) {
                 console.warn(err);
