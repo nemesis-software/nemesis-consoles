@@ -18,7 +18,13 @@
   i18nfolder: 'Internationalization',
   marketingfolder: 'Marketing',
   locationfolder: 'Location',
-  cmsfolder: 'CMS',
+  cmsmodule: 'CMS',
+  sitemapmodule: 'Sitemap',
+  vouchermodule: 'Voucher',
+  storelocatormodule: 'Store Locator',
+  customerreviewmodule: 'Customer review',
+  wishlistmodule: 'Wishlist',
+  promotionmodule: 'Promotion',
   widgetsfolder: 'Widgets',
   settingsfolder: 'Settings',
   product: 'Product',
@@ -31,6 +37,16 @@
   stock_level: 'Stock level',
   keyword: 'Keyword',
   price: 'Price',
+  //wishlist
+  wishlist: 'Wishlist',
+  wishlist_entry: 'Wishlist entry',
+  //sitemap
+  sitemap_config: 'Sitemap Config',
+  sitemap_page: 'Sitemap Page',
+  //promotion
+  promotion: 'Promotion',
+  promotion_group: 'Promotion Group',
+  promotion_result: 'Promotion Result',
   //price
   discount: 'Discount',
   tax: 'Tax',
@@ -63,6 +79,7 @@
   country: 'Country',
   region: 'Region',
   voucher: 'Voucher',
+  voucher_invalidation: 'Voucher invalidation',
   //marketing
   customer_review: 'Customer review',
   newsletter_subscriber: 'Newsletter subscriber',
@@ -77,6 +94,7 @@
   content_slot: 'Content slot',
   cms_site: 'Site',
   simple_cms_widget: 'CMS Widget',
+  site_theme: 'Themes',
   cronjob: 'Cronjob',
   //settings
   email_configuration: 'Email',
