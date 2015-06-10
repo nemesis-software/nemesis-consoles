@@ -298,8 +298,8 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         doubleClick(resultsGridInnerItems(entityFullId).get(0));
 
         Thread.sleep(1500);
-
-        // the header title should contain at least '[' and ']'
+        
+        // #42: test the title is not empty - the header title should contain at least '[' and ']'
         assertTrue(2 <= driver.findElementByCssSelector("div.x-window div.x-window-header-title div.x-title-text").getText().length());
 
         closeEntityWindow();
@@ -308,7 +308,41 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         clearNavTreeFilter();
     }
+    
+    // #43, #46
+    @Test
+    public void testEntityWindowUrl() throws InterruptedException {
+        LOG.info("testEntityWindowUrl");
+        String entityId = "unit";
+        String entityFullId = "unit";
+        assertTrue(navTreeItems().size() > 0);
 
+        filterNavTree(entityId);
+
+        Thread.sleep(1500);
+
+        openNavTreeItem(2);
+
+        assertTrue(1 <= resultsGridItems(entityFullId).size());
+
+        doubleClick(resultsGridInnerItems(entityFullId).get(0));
+
+        Thread.sleep(1500);
+        
+        // #43: test the url is not 'https'
+        String url = driver.findElementByCssSelector("div.x-window div[id^='entityPopupToolbar-'] a[id^='url-']").getText(); // e.g. https://
+        assertTrue(!"https".equals(url));
+        
+        //#46: test the url is not duplicated
+        String urlPrefix = url.substring(0, 9); // e.g. https://x
+        assertTrue(-1 == url.indexOf(urlPrefix, 9));
+        closeEntityWindow();
+
+        closeEntityTab(0);
+
+        clearNavTreeFilter();
+    }
+    
     private boolean existsElement(String selector) {
         try {
             driver.findElementByCssSelector(selector);

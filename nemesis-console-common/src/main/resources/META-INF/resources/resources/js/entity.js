@@ -244,6 +244,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
             '->',
             {
                 xtype: 'component',
+                id: 'url-' + this.id, 
                 autoEl: {
                     tag: 'a',
                     href: me.entity != null ? me.entity.data.url : '',
