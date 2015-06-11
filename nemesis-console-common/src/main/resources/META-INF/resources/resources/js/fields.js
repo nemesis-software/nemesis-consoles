@@ -239,7 +239,7 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
 
         me.fieldSet = Ext.create('Ext.form.FieldSet', {
             layout: {
-                type: 'vbox',
+                type: 'hbox',
                 pack: 'start',
                 align: 'stretch'
             },
@@ -270,6 +270,7 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
                     },
                     valueField: 'isoCode',
                     displayField: 'isoCode',
+                    labelWidth:0,
                     typeAhead: false,
                     formItemCls: 'field-restriction',
                     cls: 'localized-iso-dropdown',
@@ -613,7 +614,7 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
                 anchor: '100% 100%'
             },
             layout: {
-                type: 'vbox',
+                type: 'hbox',
                 pack: 'start',
                 align: 'stretch'
             },
@@ -650,6 +651,7 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
                     },
                     valueField: 'isoCode',
                     displayField: 'isoCode',
+                    labelWidth:0,
                     typeAhead: false,
                     formItemCls: 'field-restriction',
                     cls: 'localized-iso-dropdown',
@@ -665,8 +667,7 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
                     enableAlignments: true,
                     enableLists: true,
                     enableSourceEdit: true,
-                    flex: 1,
-                    columnWidth: .95
+                    flex: 1
                 }
             ],
             border: 0

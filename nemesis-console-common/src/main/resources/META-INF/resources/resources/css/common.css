@@ -157,12 +157,7 @@
     background-repeat: no-repeat;
 }
 
-.nemesisLocalizedField > fieldset {
-    margin: 0;
-    padding: 0;
-}
-
-.nemesisLocalizedRichtextField > fieldset {
+.nemesisLocalizedField > fieldset, .nemesisLocalizedRichtextField > fieldset {
     margin: 0;
     padding: 0;
 }
@@ -170,6 +165,10 @@
 .field-restriction {
     float: left;
     margin-right: 10px;
+}
+
+.nemesisLocalizedField .field-restriction {
+	margin-right: 20px;
 }
 
 .search-btn {
