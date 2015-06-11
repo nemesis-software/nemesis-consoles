@@ -207,13 +207,14 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         Thread.sleep(1500);
 
         assertEquals(1, driver.findElementsByCssSelector("div#media_container-search-result-body table.x-grid-item").size());
+        
+        closeEntityTab(0);
 
         clearNavTreeFilter();
     }
 
     // #41
     @Test
-    @Ignore // for now the selenium double click action doesnt open again the window, this has to be checked why
     public void testReopenEntityWindow() throws InterruptedException {
         LOG.info("testReopenEntityWindow");
         String entityId = "product";
@@ -223,7 +224,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         Thread.sleep(1500);
 
-        openNavTreeItem(3);
+        openNavTreeItem(2);
 
         assertTrue(1 <= resultsGridItems(entityId).size());
 
@@ -250,6 +251,8 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         Thread.sleep(1500);
 
         assertTrue(!existsElement("div[id^='w_id_']"));
+        
+        closeEntityTab(0);
     }
 
     // #29
@@ -274,7 +277,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         Thread.sleep(1500);
         assertTrue(1 <= (Long) driver.executeScript("return Ext.ComponentQuery.query('nemesisEnumField')[0].getStore().totalCount;"));
 
-        closeEntityWindow();
+        closeWindowAndTab();
 
         clearNavTreeFilter();
     }
@@ -302,9 +305,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         // #42: test the title is not empty - the header title should contain at least '[' and ']'
         assertTrue(2 <= driver.findElementByCssSelector("div.x-window div.x-window-header-title div.x-title-text").getText().length());
 
-        closeEntityWindow();
-
-        closeEntityTab(0);
+        closeWindowAndTab();
 
         clearNavTreeFilter();
     }
@@ -336,9 +337,8 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         //#46: test the url is not duplicated
         String urlPrefix = url.substring(0, 9); // e.g. https://x
         assertTrue(-1 == url.indexOf(urlPrefix, 9));
-        closeEntityWindow();
-
-        closeEntityTab(0);
+        
+        closeWindowAndTab();
 
         clearNavTreeFilter();
     }
@@ -388,6 +388,11 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertEquals(total - 1, openedTabs().size());
 
         Thread.sleep(1500);
+    }
+    
+    private void closeWindowAndTab() throws InterruptedException {
+        closeEntityWindow();
+        closeEntityTab(0);
     }
 
     private List<WebElement> navTreeItems() {
