@@ -65,7 +65,7 @@
                 <configuration>
                     <webApp>
                         <contextPath>/cms</contextPath>
-                        <jettyEnvXml>${basedir}/jetty-env.xml</jettyEnvXml>
+                        <jettyEnvXml>${basedir}/jetty-env-${env}.xml</jettyEnvXml>
                     </webApp>
                     <stopKey>1</stopKey>
                     <stopPort>9000</stopPort>
