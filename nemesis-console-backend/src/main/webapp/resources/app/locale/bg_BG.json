@@ -94,6 +94,9 @@
   opening_schedule: 'Работно време',
   storefinder_configuration: 'Конфигурация магазинлокатор',
   abstract_page: 'Страница',
+  //deeplink
+  deeplink_url: 'Връзка',
+  deeplink_url_rule: 'Правило за връзка',
   //cms
   abstract_template: 'Макет',
   content_slot: 'Процеп',

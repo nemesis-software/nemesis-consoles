@@ -89,6 +89,9 @@
   opening_schedule: 'Opening schedule',
   storefinder_configuration: 'Storefinder configuration',
   abstract_page: 'Page',
+  //deeplink
+  deeplink_url: 'Deeplink Url',
+  deeplink_url_rule: 'Deeplink Url Rule',
   //cms
   abstract_template: 'Page template',
   content_slot: 'Content slot',
