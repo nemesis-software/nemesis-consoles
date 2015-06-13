@@ -48,6 +48,7 @@ Ext.define('console.view.content.search.SearchResults', {
                 type: 'rest',
                 url: Ext.get('rest-base-url').dom.getAttribute('url') + this.entity.data.id,
                 limitParam: 'size',
+                startParam: '',
                 useDefaultXhrHeader: false,
                 cors: true,
                 reader: {
@@ -106,8 +107,8 @@ Ext.define('console.view.content.search.SearchResults', {
                                 bbar.up().getStore().pageSize = newPageSize;
                                 store.load({
                                     params: {
-                                        start: 0,
-                                        limit: newPageSize
+                                        page: 1,
+                                        size: newPageSize
                                     }
                                 });
                                 //I guess this is a bug.. the reload indeed fixes the pager .. however it doesn't fetch or update the data so only load() works
