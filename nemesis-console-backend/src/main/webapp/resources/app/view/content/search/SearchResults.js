@@ -40,6 +40,7 @@ Ext.define('console.view.content.search.SearchResults', {
             autoLoad: true,
             autoSync: false,
             pageSize: 10,
+            remoteSort: true,
             model: Ext.define('name', {
                 extend: 'Ext.data.Model',
                 fields: searchData[this.entity.data.id + 'SearchResultMarkupStore']
@@ -49,6 +50,7 @@ Ext.define('console.view.content.search.SearchResults', {
                 url: Ext.get('rest-base-url').dom.getAttribute('url') + this.entity.data.id,
                 limitParam: 'size',
                 startParam: '',
+                simpleSortMode: true,
                 useDefaultXhrHeader: false,
                 cors: true,
                 reader: {
