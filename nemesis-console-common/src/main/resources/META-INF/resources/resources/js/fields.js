@@ -95,7 +95,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
             contextmenu: function (event, ui, ctxmenu) {
                 var me = this;
                 event.stopEvent();
-                var selected = Ext.getCmp(me.id).getSelection();
+                var selected = Ext.getCmp(this.id).getSelection();
                 this.ctxMenu = Ext.create('Ext.menu.Menu', {
                     items: [
                         {
@@ -106,23 +106,22 @@ Ext.define('console.view.field.NemesisCollectionField', {
                                 console.log(Ext.getCmp(me.id).entity);
                                 var window = Ext.getCmp('backend-viewport').getWindow(record.data.uid);
                                 if (!window) {
-                                    var entityConfiguration = Ext.create("console.markup." + this.entity.data.id);
+                                    var entityConfiguration = Ext.create("console.markup." + this.entityId);
                                     console.log(record);
                                     window = Ext.getCmp('backend-viewport').createWindow({
-                                        id: record,
-                                        title: '[' + record + ' - ' + this.entity.data.name + ']',
-                                        iconCls: this.entity.data.id,
+                                        id: record.data.uid,
+                                        iconCls: this.entityId,
                                         entity: Ext.create('console.model.Entity', {
-                                            id: this.entity.data.id,
-                                            name: this.entity.data.name,
-                                            className: null,
+                                            id: this.entityId,
+                                            name: record.data.name,
+                                            className: this.entityId,
                                             url: record.data.url
                                         }),
                                         sections: entityConfiguration.sections
                                     });
                                 }
                                 Ext.getCmp('backend-viewport').restoreWindow(window);
-                            },
+                            }.bind(this.component),
                             text: "Edit",
                             iconCls: 'edit',
                             disabled: selected.length == 0
@@ -183,7 +182,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                 me.setStore(Ext.create('Ext.data.ArrayStore', {
                     autoLoad: true,
                     autoSync: false,
-                    fields: ['uid'],
+                    fields: ['uid', 'name', 'url'],
                     proxy: {
                         type: 'rest',
                         url: entity.data.url,
@@ -195,8 +194,9 @@ Ext.define('console.view.field.NemesisCollectionField', {
                                 var data = [];
                                 for (var key in o._embedded) {
                                     for (inner in o._embedded[key]) {
-                                        data = data.concat({'uid': o._embedded[key][inner].uid});
-                                    }
+                                    	var record = o._embedded[key][inner];
+                                        data = data.concat({'id': record.id, 'uid': record.uid, 'name': record.entityName, 'url': record._links.self.href});
+                                    } 
                                 }
                                 return data;
                             }
