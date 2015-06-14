@@ -194,9 +194,9 @@ Ext.define('console.view.field.NemesisCollectionField', {
                                 var data = [];
                                 for (var key in o._embedded) {
                                     for (inner in o._embedded[key]) {
-                                    	var record = o._embedded[key][inner];
+                                        var record = o._embedded[key][inner];
                                         data = data.concat({'id': record.id, 'uid': record.uid, 'name': record.entityName, 'url': record._links.self.href});
-                                    } 
+                                    }
                                 }
                                 return data;
                             }
@@ -270,7 +270,7 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
                     },
                     valueField: 'isoCode',
                     displayField: 'isoCode',
-                    labelWidth:0,
+                    labelWidth: 0,
                     typeAhead: false,
                     formItemCls: 'field-restriction',
                     cls: 'localized-iso-dropdown',
@@ -651,7 +651,7 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
                     },
                     valueField: 'isoCode',
                     displayField: 'isoCode',
-                    labelWidth:0,
+                    labelWidth: 0,
                     typeAhead: false,
                     formItemCls: 'field-restriction',
                     cls: 'localized-iso-dropdown',

@@ -10,9 +10,12 @@
   'German': 'Немски',
   'French': 'Френски',
   'Spanish': 'Испански',
+  core: 'Основни',
   catalogfolder: 'Каталог',
   commercefolder: 'Търговия',
   commercecatalogfolder: 'Каталог',
+  cms: 'Съдържание',
+  batch: 'Бач',
   pricefolder: 'Цена',
   orderfolder: 'Поръчки',
   mediafolder: 'Медия',
@@ -36,6 +39,7 @@
   //catalog
   category: 'Категория',
   catalog: 'Каталог',
+  product_reference: 'Продуктови Референции',
   catalog_version: 'Каталожна Версия',
   unit: 'Единица',
   stock_level: 'Наличност',
@@ -94,6 +98,15 @@
   opening_schedule: 'Работно време',
   storefinder_configuration: 'Конфигурация магазинлокатор',
   abstract_page: 'Страница',
+  //blog
+  blog: 'Блог',
+  blog_entry: 'Блог',
+  blog_category: 'Блог Категория',
+  //classification
+  classification: 'Класификация',
+  classification_category: 'Класификационна категория',
+  classification_feature: 'Класификационно поле',
+  classification_system: 'Класификационна система',
   //deeplink
   deeplink_url: 'Връзка',
   deeplink_url_rule: 'Правило за връзка',

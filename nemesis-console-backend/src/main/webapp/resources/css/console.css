@@ -247,6 +247,14 @@
     background-image: url(images/wishlist_cms_widget.png);
 }
 
+.blog_entry {
+    background-image: url(images/blog_entry.png);
+}
+
+.blog_category {
+    background-image: url(images/blog_category.png);
+}
+
 .sitemap_config {
     background-image: url(images/sitemap.png);
 }
@@ -257,6 +265,10 @@
 
 .wishlist {
     background-image: url(images/wishlist.png);
+}
+
+.wishlist_entry {
+    background-image: url(images/wishlist_entry.png);
 }
 
 .promotion {

@@ -5,10 +5,13 @@
   'Clear': 'Clear',
   'Navigation': 'Navigation',
   'Filter...': 'Filter...',
+  core: 'Core',
   catalogfolder: 'Catalog',
   commercefolder: 'Commerce',
   commercecatalogfolder: 'Catalog',
   commercei18nfolder: 'Internationalization',
+  cms: 'CMS',
+  batch: 'Batch',
   pricefolder: 'Price',
   orderfolder: 'Order',
   mediafolder: 'Media',
@@ -35,6 +38,7 @@
   catalog_version: 'Catalog Version',
   unit: 'Unit',
   stock_level: 'Stock level',
+  product_reference: 'Product Reference',
   keyword: 'Keyword',
   price: 'Price',
   //wishlist
@@ -89,6 +93,15 @@
   opening_schedule: 'Opening schedule',
   storefinder_configuration: 'Storefinder configuration',
   abstract_page: 'Page',
+  //blog
+  blog: 'Blog',
+  blog_entry: 'Blog Entry',
+  blog_category: 'Blog Category',
+  //classification
+  classification: 'Classification',
+  classification_category: 'Classification Category',
+  classification_feature: 'Classification Feature',
+  classification_system: 'Classification System',
   //deeplink
   deeplink_url: 'Deeplink Url',
   deeplink_url_rule: 'Deeplink Url Rule',
