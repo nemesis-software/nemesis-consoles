@@ -324,6 +324,9 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     @Test
     public void testEntityWindowUrl() throws InterruptedException {
         LOG.info("testEntityWindowUrl");
+        
+        clearNavTreeFilter();
+
         String entityId = "unit";
         String entityFullId = "unit";
         assertTrue(navTreeItems().size() > 0);
