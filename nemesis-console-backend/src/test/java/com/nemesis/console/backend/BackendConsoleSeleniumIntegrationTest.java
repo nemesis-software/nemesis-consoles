@@ -99,7 +99,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         driver.quit();
     }
-
+    
     @Test
     public void testHeaderLinkReloadsPage() throws InterruptedException {
         LOG.info("testHeaderLinkReloadsPage");
@@ -343,6 +343,61 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         clearNavTreeFilter();
     }
     
+    // #44
+    // Note: I can't find a way to test resize of the window, so  I test only maximize and minimize
+    @Test
+    public void testMaximizeEntityWindow() throws InterruptedException {
+        LOG.info("testMaximizeEntityWindow");
+        String entityId = "unit";
+        String entityFullId = "unit";
+        assertTrue(navTreeItems().size() > 0);
+
+        filterNavTree(entityId);
+
+        sleep();
+
+        openNavTreeItem(2);
+
+        assertTrue(1 <= resultsGridItems(entityFullId).size());
+
+        doubleClick(resultsGridInnerItems(entityFullId).get(0));
+
+        sleep();
+        
+        assertTrue(!(Boolean) driver.executeScript("return Ext.ComponentQuery.query('entityPopupWindow')[0].maximized == true"));
+        
+        maximizeEntityWindow();
+        
+        sleep();
+
+        // I can't find css selector-based way to assert the window is maximized
+        assertTrue((Boolean) driver.executeScript("return Ext.ComponentQuery.query('entityPopupWindow')[0].maximized == true"));
+        
+        minimizeEntityWindow();
+        
+        sleep();
+        
+        assertTrue(!driver.findElementByCssSelector("div[id^='w_id_']").isDisplayed()); // asert the window is hidden
+
+        List<WebElement> minimizedEntities = driver.findElementsByCssSelector("a.x-toolbar-item span." + entityFullId);
+        assertEquals(1, minimizedEntities.size());
+        
+        minimizedEntities.get(0).click();
+        
+        sleep();
+        
+        assertTrue(existsElement("div[id^='w_id_']"));
+        assertTrue((Boolean) driver.executeScript("return Ext.ComponentQuery.query('entityPopupWindow')[0].maximized = true"));
+        
+        closeWindowAndTab();
+
+        clearNavTreeFilter();
+    }
+    
+    private void sleep() throws InterruptedException {
+    	Thread.sleep(1500);
+    }
+    
     private boolean existsElement(String selector) {
         try {
             driver.findElementByCssSelector(selector);
@@ -370,6 +425,14 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     private void closeEntityWindow() {
         driver.findElementByCssSelector("div.x-window img.x-tool-close").click();
+    }
+
+    private void minimizeEntityWindow() {
+        driver.findElementByCssSelector("div.x-window img.x-tool-minimize").click();
+    }
+
+    private void maximizeEntityWindow() {
+        driver.findElementByCssSelector("div.x-window img.x-tool-maximize").click();
     }
 
     private void filterNavTree(String filterText) {
