@@ -113,7 +113,7 @@
   //cms
   abstract_template: 'Макет',
   content_slot: 'Процеп',
-  cms_site: 'Сайт',
+  site: 'Сайт',
   simple_cms_widget: 'Джиджафки',
   site_theme: 'Теми',
   cronjob: 'Крон задачи',

@@ -79,6 +79,10 @@
     background-image: url(images/payment_mode.png);
 }
 
+.payment_transaction {
+    background-image: url(images/payment_transaction.png);
+}
+
 .search_facet_config {
     background-image: url(images/search_facet_config.png);
 }
@@ -195,8 +199,16 @@
     background-image: url(images/product_page.png);
 }
 
-.cms_site {
-    background-image: url(images/cms_site.png);
+.email_page {
+    background-image: url(images/email_page.png);
+}
+
+.invoice_page {
+    background-image: url(images/invoice_page.png);
+}
+
+.site {
+    background-image: url(images/site.png);
 }
 
 .site_theme {

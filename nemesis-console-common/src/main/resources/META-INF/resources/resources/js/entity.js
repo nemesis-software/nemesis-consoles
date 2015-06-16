@@ -15,8 +15,8 @@ Ext.define('console.view.content.EntityPopupWindow', {
     stateful: false,
     isWindow: true,
     constrainHeader: true,
-    constructTitle: function() { 
-    	return '[' + this.id.substring(5) + ' - ' + translate(this.entity.data.id) + ']';
+    constructTitle: function () {
+        return '[' + this.id.substring(5) + ' - ' + translate(this.entity.data.id) + ']';
     },
     minimizable: true,
     maximizable: true,
@@ -33,7 +33,7 @@ Ext.define('console.view.content.EntityPopupWindow', {
     initComponent: function () {
         var method = 'POST';
         if (this.id !== 'w_id_') {
-            method = 'PUT';
+            method = 'PATCH';
         }
 
         var entityPopupForm = Ext.create("console.view.content.entity.EntityPopupForm", {
@@ -68,6 +68,7 @@ Ext.define('console.view.content.entity.EntityPopupForm', {
         align: 'stretch'
     },
     entityFields: null,
+    trackResetOnLoad: true,
     entity: null,
     method: 'PUT',
     frame: false,
@@ -91,7 +92,7 @@ Ext.define('console.view.content.entity.EntityPopupForm', {
         ];
 
         if (me.entity != null) {
-        	this.on('afterrender', function () {
+            this.on('afterrender', function () {
                 Ext.Ajax.request({
                     url: me.entity.data.url,
                     method: 'GET',
@@ -112,8 +113,8 @@ Ext.define('console.view.content.entity.EntityPopupForm', {
     },
     populateForm: function (result) {
         this.getForm().setValues(result);
-        Ext.each(this.query('nemesisCollectionField'), function(field) {
-        	field.initStore(result[field.name]);
+        Ext.each(this.query('nemesisCollectionField'), function (field) {
+            field.initStore(result[field.name]);
         })
     },
     convertResult: function (p) {
@@ -244,7 +245,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
             '->',
             {
                 xtype: 'component',
-                id: 'url-' + this.id, 
+                id: 'url-' + this.id,
                 autoEl: {
                     tag: 'a',
                     href: me.entity != null ? me.entity.data.url : '',
@@ -260,7 +261,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
             url: entity.data.url,
             method: entityPopupForm.method,
             headers: {'Content-Type': 'application/json', Accept: 'application/json'},
-            params: this.prepareValues(entityPopupForm.getForm().getValues()),
+            params: this.prepareValues(entityPopupForm.getForm().getValues(false, true, false, false)),
             success: function (responseObject) {
                 var searchRes = Ext.getCmp(entity.data.id + '-search-result');
                 if (searchRes) {

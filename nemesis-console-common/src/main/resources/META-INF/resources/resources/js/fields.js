@@ -64,6 +64,7 @@ Ext.define('console.view.field.NemesisTextField', {
     extend: 'Ext.form.field.Text',
     xtype: 'nemesisTextField',
     emptyText: this.name,
+    dirtyCls: 'dirty',
     name: null,
     width: '95%',
     columnWidth: .5,
@@ -299,7 +300,7 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
             return this;
         }
     },
-    getSubmitValue: function () {
+    getSubmitData: function () {
         var me = this;
         if (me.langValuePairs == null) {
             return me.langValuePairs;
