@@ -127,7 +127,7 @@ Ext.define('HelplineConsole.controller.MenuController', {
 		// TODO: figure out how to test if objects are found & remove the ajax call in the previous function
 		if (object['_embedded']) {
 			var orders = object['_embedded']['cartModels'];
-			var pageSize = orders.length < 10 ? 0 : 10;
+			var pageSize = orders == undefined || orders.length < 10 ? 0 : 10;
 			var displayInfo = pageSize != 0 ? true : false;
 			var store = Ext.create('Ext.data.Store', {
 				autoLoad: true,
