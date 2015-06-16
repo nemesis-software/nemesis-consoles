@@ -372,7 +372,8 @@ Ext.define('console.view.field.NemesisEntityField', {
             pageSize: 10,
             model: Ext.define('name', {
                 extend: 'Ext.data.Model',
-                fields: ['uid']
+                fields: ['uid'],
+                idProperty: 'uid'
             }),
             proxy: {
                 type: 'rest',
@@ -397,6 +398,7 @@ Ext.define('console.view.field.NemesisEntityField', {
 
         this.on('beforequery', this.beforequery);
         this.on('render', this.render);
+        //this.on('change', function() {alert(this.getValue())})
 
         me.callParent(arguments);
     },
@@ -523,10 +525,11 @@ Ext.define('console.view.field.NemesisEntityField', {
         return me;
     },
 
-    getRawValue: function () {
-        if (this.entity && typeof this.entity.data !== 'undefined') {
+    getValue: function () {
+    	var record = this.store.getById(this.rawValue);
+        if (this.entity && typeof this.entity.data !== 'undefined' && record) {
             // we must return something in the form of {"theme" : "https://localhost:8112/storefront/rest/site_theme/70933224484926368"}
-            return '{rel: "' + this.entity.id + '", href: "' + this.entity.data.url + '"}';
+            return '{' + this.entity.id + ': "' + record.data._links.self.href + '"}';
         } else {
             return "";
         }
