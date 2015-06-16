@@ -300,7 +300,7 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
             return this;
         }
     },
-    getSubmitData: function () {
+    getValue: function () {
         var me = this;
         if (me.langValuePairs == null) {
             return me.langValuePairs;
@@ -351,6 +351,7 @@ Ext.define('console.view.field.NemesisEntityField', {
     displayField: 'uid',
     valueField: 'uid',
     minChars: 1,
+    isFormField: true,
     multiSelect: false,
     hideTrigger: true,
     typeAhead: true,
@@ -524,6 +525,7 @@ Ext.define('console.view.field.NemesisEntityField', {
 
     getRawValue: function () {
         if (this.entity && typeof this.entity.data !== 'undefined') {
+            // we must return something in the form of {"theme" : "https://localhost:8112/storefront/rest/site_theme/70933224484926368"}
             return '{rel: "' + this.entity.id + '", href: "' + this.entity.data.url + '"}';
         } else {
             return "";
@@ -556,7 +558,7 @@ Ext.define('console.view.field.NemesisEnumerationField', {
                 fields: ['id'],
                 data: data
             })
-        })
+        });
         me.callParent(arguments);
     }
 });
@@ -685,7 +687,7 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
             return this;
         }
     },
-    getRawValue: function () {
+    getValue: function () {
         var me = this;
         if (this.langValuePairs == null) {
             return me.langValuePairs;

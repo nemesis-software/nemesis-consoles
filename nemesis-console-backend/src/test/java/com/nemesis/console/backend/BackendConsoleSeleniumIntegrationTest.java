@@ -16,7 +16,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -27,6 +26,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
@@ -99,7 +99,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         driver.quit();
     }
-    
+
     @Test
     public void testHeaderLinkReloadsPage() throws InterruptedException {
         LOG.info("testHeaderLinkReloadsPage");
@@ -136,15 +136,17 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     public void testFilterNavigation() throws InterruptedException {
         LOG.info("testFilterNavigation");
 
-        Thread.sleep(1500);
+        Thread.sleep(2500);
 
         assertTrue(driver.findElementsByCssSelector("div#navigation-tree .x-grid-item").size() > 0);
 
         driver.findElementByCssSelector("input[id^='navigation-menu-filter-input']").sendKeys("media_format");
 
-        Thread.sleep(1500);
+        sleep();
 
-        assertEquals(2, driver.findElementsByCssSelector("div#navigation-tree .x-grid-item").size());
+        int size = driver.findElementsByCssSelector("div#navigation-tree .x-grid-item").size();
+
+        assertTrue(size < 10 && size > 0);
 
         clearNavTreeFilter();
 
@@ -163,9 +165,11 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         Thread.sleep(1500);
 
-        assertEquals(2, driver.findElementsByCssSelector("div#navigation-tree table.x-grid-item").size());
+        int size = driver.findElementsByCssSelector("div#navigation-tree table.x-grid-item").size();
 
-        driver.findElementsByCssSelector("div#navigation-tree table.x-grid-item div.x-grid-cell-inner").get(1).click();
+        assertTrue(size > 1);
+
+        driver.findElementsByCssSelector("div#navigation-tree table.x-grid-item div.x-grid-cell-inner").get(size - 1).click();
 
         assertEquals(1, driver.findElementsByCssSelector("div#tab-panel a.x-tab").size());
 
@@ -178,6 +182,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     @Test
     public void testFilterMediaContainer() throws InterruptedException {
+
         LOG.info("testFilterMediaContainer");
         assertTrue(driver.findElementsByCssSelector("div#navigation-tree table.x-grid-item").size() > 0);
 
@@ -185,17 +190,22 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         Thread.sleep(1500);
 
-        assertEquals(2, driver.findElementsByCssSelector("div#navigation-tree table.x-grid-item").size());
+        int size = driver.findElementsByCssSelector("div#navigation-tree table.x-grid-item").size();
 
-        driver.findElementsByCssSelector("div#navigation-tree table.x-grid-item div.x-grid-cell-inner").get(1).click();
+        assertTrue(size > 0);
+
+        driver.findElementsByCssSelector("div#navigation-tree table.x-grid-item div.x-grid-cell-inner").get(size - 1).click();
 
         assertEquals(1, driver.findElementsByCssSelector("div#tab-panel a.x-tab").size());
 
-        Thread.sleep(1500);
+        Thread.sleep(2500);
 
         assertEquals(1, driver.findElementsByCssSelector("div#media_container-searchform-fieldset-body div.x-form-item .field-restriction").size());
 
-        assertEquals(10, driver.findElementsByCssSelector("div#media_container-search-result-body table.x-grid-item").size());
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOfAllElements(
+                        driver.findElementsByCssSelector("div#media_container-search-result-body table.x-grid-item")));
+
+        assertTrue(driver.findElementsByCssSelector("div#media_container-search-result-body table.x-grid-item").size() > 0);
 
         driver.executeScript(
                         "var c = Ext.getCmp('media_container-searchform-fieldset-restriction_uid'); c.setValue('Equals'); c.fireEvent('select', c, 'Equals');");
@@ -207,7 +217,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         Thread.sleep(1500);
 
         assertEquals(1, driver.findElementsByCssSelector("div#media_container-search-result-body table.x-grid-item").size());
-        
+
         closeEntityTab(0);
 
         clearNavTreeFilter();
@@ -251,7 +261,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         Thread.sleep(1500);
 
         assertTrue(!existsElement("div[id^='w_id_']"));
-        
+
         closeEntityTab(0);
     }
 
@@ -270,7 +280,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         Thread.sleep(1500);
 
-        openNavTreeItem(1);
+        openNavTreeItem(null);
 
         openSearchGridItem(0, entityFullId);
 
@@ -294,14 +304,14 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         Thread.sleep(1500);
 
-        openNavTreeItem(2);
+        openNavTreeItem(null);
 
         assertTrue(1 <= resultsGridItems(entityFullId).size());
 
         doubleClick(resultsGridInnerItems(entityFullId).get(0));
 
         Thread.sleep(1500);
-        
+
         // #42: test the title is not empty - the header title should contain at least '[' and ']'
         assertTrue(2 <= driver.findElementByCssSelector("div.x-window div.x-window-header-title div.x-title-text").getText().length());
 
@@ -309,7 +319,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         clearNavTreeFilter();
     }
-    
+
     // #43, #46
     @Test
     public void testEntityWindowUrl() throws InterruptedException {
@@ -322,27 +332,27 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         Thread.sleep(1500);
 
-        openNavTreeItem(2);
+        openNavTreeItem(null);
 
         assertTrue(1 <= resultsGridItems(entityFullId).size());
 
         doubleClick(resultsGridInnerItems(entityFullId).get(0));
 
         Thread.sleep(1500);
-        
+
         // #43: test the url is not 'https'
         String url = driver.findElementByCssSelector("div.x-window div[id^='entityPopupToolbar-'] a[id^='url-']").getText(); // e.g. https://
         assertTrue(!"https".equals(url));
-        
+
         //#46: test the url is not duplicated
         String urlPrefix = url.substring(0, 9); // e.g. https://x
         assertTrue(-1 == url.indexOf(urlPrefix, 9));
-        
+
         closeWindowAndTab();
 
         clearNavTreeFilter();
     }
-    
+
     // #44
     // Note: I can't find a way to test resize of the window, so  I test only maximize and minimize
     @Test
@@ -356,48 +366,48 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         sleep();
 
-        openNavTreeItem(2);
+        openNavTreeItem(null);
 
         assertTrue(1 <= resultsGridItems(entityFullId).size());
 
         doubleClick(resultsGridInnerItems(entityFullId).get(0));
 
         sleep();
-        
+
         assertTrue(!(Boolean) driver.executeScript("return Ext.ComponentQuery.query('entityPopupWindow')[0].maximized == true"));
-        
+
         maximizeEntityWindow();
-        
+
         sleep();
 
         // I can't find css selector-based way to assert the window is maximized
         assertTrue((Boolean) driver.executeScript("return Ext.ComponentQuery.query('entityPopupWindow')[0].maximized == true"));
-        
+
         minimizeEntityWindow();
-        
+
         sleep();
-        
+
         assertTrue(!driver.findElementByCssSelector("div[id^='w_id_']").isDisplayed()); // asert the window is hidden
 
         List<WebElement> minimizedEntities = driver.findElementsByCssSelector("a.x-toolbar-item span." + entityFullId);
         assertEquals(1, minimizedEntities.size());
-        
+
         minimizedEntities.get(0).click();
-        
+
         sleep();
-        
+
         assertTrue(existsElement("div[id^='w_id_']"));
         assertTrue((Boolean) driver.executeScript("return Ext.ComponentQuery.query('entityPopupWindow')[0].maximized = true"));
-        
+
         closeWindowAndTab();
 
         clearNavTreeFilter();
     }
-    
+
     private void sleep() throws InterruptedException {
-    	Thread.sleep(1500);
+        Thread.sleep(1500);
     }
-    
+
     private boolean existsElement(String selector) {
         try {
             driver.findElementByCssSelector(selector);
@@ -407,10 +417,11 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         }
     }
 
-    private void openNavTreeItem(int itemIndex) throws InterruptedException {
-        assertEquals(itemIndex + 1, navTreeItems().size());
+    private void openNavTreeItem(Integer position) throws InterruptedException {
+        assertTrue(navTreeItems().size() > 0);
 
-        navTreeInnerItems().get(itemIndex).click();
+        position = position != null ? position : navTreeItems().size() - 1;
+        navTreeInnerItems().get(position).click();
 
         assertEquals(1, openedTabs().size());
 
@@ -452,7 +463,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         Thread.sleep(1500);
     }
-    
+
     private void closeWindowAndTab() throws InterruptedException {
         closeEntityWindow();
         closeEntityTab(0);
