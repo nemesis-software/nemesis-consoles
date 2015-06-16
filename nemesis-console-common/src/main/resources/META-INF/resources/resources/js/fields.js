@@ -526,10 +526,10 @@ Ext.define('console.view.field.NemesisEntityField', {
     },
 
     getValue: function () {
-    	var record = this.store.getById(this.rawValue);
+        var record = this.store.getById(this.rawValue);
         if (this.entity && typeof this.entity.data !== 'undefined' && record) {
             // we must return something in the form of {"theme" : "https://localhost:8112/storefront/rest/site_theme/70933224484926368"}
-            return '{' + this.entity.id + ': "' + record.data._links.self.href + '"}';
+            return "" + record.data._links.self.href;
         } else {
             return "";
         }

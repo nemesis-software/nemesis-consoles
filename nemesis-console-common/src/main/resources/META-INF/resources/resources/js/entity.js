@@ -286,7 +286,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
             url: entity.data.url,
             method: entityPopupForm.method,
             headers: {'Content-Type': 'application/json', Accept: 'application/json'},
-            params: this.prepareValues(entityPopupForm.getForm().getValues()),
+            params: entityPopupForm.getForm().getValues(),
             success: function (responseObject) {
                 me.up('window').close();
                 var searchRes = Ext.getCmp(entity.data.id + '-search-result');
@@ -325,20 +325,18 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
         });
     },
     prepareValues: function (formValues) {
-        var links = [];
+        //var links = [];
         var result = {};
         for (var key in formValues) {
             if (key.indexOf('entity-') === 0) {
                 var strippedKey = key.substring(7);
-                var obj = {};
-                obj[strippedKey] = formValues[key];
-                links.push(obj);
+                result[strippedKey] = formValues[key];
             } else {
                 result[key] = formValues[key];
             }
         }
 
-        result['links'] = links;
+        //result['links'] = links;
         console.log(Ext.encode(result));
         return Ext.encode(result);
     }
