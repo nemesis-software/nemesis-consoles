@@ -251,14 +251,14 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
                     xtype: 'combobox',
                     store: Ext.create('console.store.Languages'),
                     listeners: {
-                        beforeselect: function (cb, record, index) {
+                        /*beforeselect: function (cb, record, index) {
                             if (me.fieldSet) {
                                 //save the input value (in case it was changed)
                                 var lang = me.fieldSet.items.items[0].getValue();
                                 var value = me.fieldSet.items.items[1].getValue();
                                 me.langValuePairs [lang] = {"value": value};
                             }
-                        },
+                        },*/
                         select: function (cb, record) {
                             var textValue = "";
                             if (me.langValuePairs[record.data.isoCode] !== undefined) {
@@ -283,7 +283,17 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
                     submitValue: false,
                     emptyText: this.name,
                     xtype: 'textfield',
-                    flex: 1
+                    flex: 1,
+                    listeners: {
+                    	change: function() {
+                    		if (me.fieldSet) {
+                                //save the input value in me.langValuePairs
+                                var lang = me.fieldSet.items.items[0].getValue();
+                                var value = me.fieldSet.items.items[1].getValue();
+                                me.langValuePairs[lang] = {"value": value};
+                            }
+                    	}
+                    }
                 }
             ],
             border: 0
@@ -292,24 +302,20 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
     },
     setValue: function (langValuePairs) {
         if (langValuePairs) {
-            this.langValuePairs = langValuePairs;
+            var me = this;
+            me.langValuePairs = langValuePairs;
             var val = langValuePairs[Ext.get('rest-base-url').dom.getAttribute('locale')];
-            if (val) {
-                this.fieldSet.items.items[1].setValue(val.value);
-            }
-            return this;
+            this.fieldSet.items.items[1].setValue(val && val.value || '');
+            var valueAsString = Ext.JSON.encode(langValuePairs);
+            me.setRawValue(me.valueToRaw(valueAsString));
+            return me.mixins.field.setValue.call(me, valueAsString);
         }
     },
     getValue: function () {
-        var me = this;
-        if (me.langValuePairs == null) {
-            return me.langValuePairs;
-        } else {
-            var lang = this.fieldSet.items.items[0].getValue();
-            var value = this.fieldSet.items.items[1].getValue();
-            me.langValuePairs [lang] = {"value": value};
-            return me.langValuePairs;
-        }
+        return Ext.JSON.encode(this.langValuePairs);
+    },
+    getSubmitValue: function() {
+        return this.getValue();
     }
 });
 
