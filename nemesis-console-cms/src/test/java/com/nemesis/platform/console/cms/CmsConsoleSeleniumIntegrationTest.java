@@ -101,14 +101,14 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
 
     @Test
     public void testChangeLocale() throws InterruptedException {
-        Thread.sleep(500);
+        Thread.sleep(1500);
         LOG.info("Change locale");
         //Change locale
         driver.executeScript(
                         "var c = Ext.getCmp('app-header-language-selector'); c.setValue({'isoCode':'bg'}); c.fireEvent('select', c, {data : {'isoCode':'bg'}});");
 
         // Wait for the page to load, timeout after 5 seconds
-        (new WebDriverWait(driver, 5)).until(new ExpectedCondition<Boolean>() {
+        (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getTitle().startsWith("CMS Console | Nemesis");
             }
