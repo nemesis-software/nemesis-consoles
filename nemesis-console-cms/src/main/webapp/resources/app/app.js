@@ -83,7 +83,7 @@ Ext.application({
             if (event.data.type === 'PAGE_LOADED') {
 
                 Ext.Ajax.request({
-                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByPkEqualsAndCatalogVersionEquals?catalogVersion=' + event.data.page.catalog_version + '&pk=' + event.data.page.pk,
+                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findAllByCatalogVersion?catalogVersion=' + event.data.page.catalog_version,
                     method: 'GET',
                     params: {},
                     success: function (responseObject) {

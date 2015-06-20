@@ -268,6 +268,13 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                     searchRes.mask();
                     searchRes.getStore().reload();
                     searchRes.unmask();
+                    Ext.toast({
+                        html: 'Successfully saved!',
+                        closable: false,
+                        align: 't',
+                        slideInDuration: 400,
+                        minWidth: 400
+                    });
                 }
             },
             failure: function (responseObject) {
@@ -286,7 +293,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
             url: entity.data.url,
             method: entityPopupForm.method,
             headers: {'Content-Type': 'application/json', Accept: 'application/json'},
-            params: entityPopupForm.getForm().getValues(),
+            params: this.prepareValues(entityPopupForm.getForm().getValues(false, true, false, false)),
             success: function (responseObject) {
                 me.up('window').close();
                 var searchRes = Ext.getCmp(entity.data.id + '-search-result');
@@ -294,6 +301,13 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                     searchRes.mask();
                     searchRes.getStore().reload();
                     searchRes.unmask();
+                    Ext.toast({
+                        html: 'Successfully saved!',
+                        closable: false,
+                        align: 't',
+                        slideInDuration: 400,
+                        minWidth: 400
+                    });
                 }
             },
             failure: function (responseObject) {
@@ -318,6 +332,13 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                 Ext.getCmp(entity.data.id + '-search-result').mask();
                 Ext.getCmp(entity.data.id + '-search-result').getStore().reload();
                 Ext.getCmp(entity.data.id + '-search-result').unmask();
+                Ext.toast({
+                    html: 'Successfully deleted!',
+                    closable: false,
+                    align: 't',
+                    slideInDuration: 400,
+                    minWidth: 400
+                });
             },
             failure: function (responseObject) {
                 Ext.Msg.alert('Error', responseObject.statusText);

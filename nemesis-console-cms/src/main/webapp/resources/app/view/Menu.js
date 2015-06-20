@@ -66,7 +66,7 @@ Ext.define('console.view.Menu', {
                                     }),
                                     proxy: {
                                         type: 'rest',
-                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'page_template/search/findAllByCatalogVersion?catalogVersion=' + Ext.get('catalogVersion').dom.getAttribute('value'),
+                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'page_template/search/findAllByCatalogVersionEquals?catalogVersion=' + Ext.get('catalogVersion').dom.getAttribute('value'),
                                         limitParam: 'size',
                                         useDefaultXhrHeader: false,
                                         cors: true,

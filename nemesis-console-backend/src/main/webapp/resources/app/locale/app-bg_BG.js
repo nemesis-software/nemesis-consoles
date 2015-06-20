@@ -54,7 +54,7 @@ Ext.define("console.locale.en.navigation.EntityNames", {
     abstract_page: 'Страница',                                 //cms
     abstract_template: 'Макет на страница',
     content_slot: 'Място на страница',
-    cms_site: 'Сайт',
+    site: 'Сайт',
     simple_cms_widget: 'Уйджет',
     cronjob: 'Задача',                                         //settings
     email_configuration: 'Имейл',

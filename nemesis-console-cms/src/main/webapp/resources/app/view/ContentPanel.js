@@ -37,7 +37,7 @@ Ext.define('console.view.ContentPanel', {
                                     fields: ['uid', 'name'],
                                     proxy: {
                                         type: 'rest',
-                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'cms_site/',
+                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'site/',
                                         useDefaultXhrHeader: false,
                                         cors: true,
                                         reader: {

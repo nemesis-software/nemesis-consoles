@@ -157,6 +157,22 @@
     background-repeat: no-repeat;
 }
 
+.x-form-trigger-default.x-form-trigger-focus {
+    background-position: 0 3px;
+}
+
+.x-form-trigger-default.x-form-trigger-over {
+    background-position: 0 3px;
+}
+
+.x-form-trigger.x-form-trigger-default.x-form-trigger-click {
+    background-position: 0 3px;
+}
+
+.x-form-trigger-default.x-form-trigger-over.x-form-trigger-focus {
+    background-position: 0 3px;
+}
+
 .nemesisLocalizedField > fieldset, .nemesisLocalizedRichtextField > fieldset {
     margin: 0;
     padding: 0;
@@ -168,7 +184,7 @@
 }
 
 .nemesisLocalizedField .field-restriction {
-	margin-right: 20px;
+    margin-right: 20px;
 }
 
 .search-btn {
