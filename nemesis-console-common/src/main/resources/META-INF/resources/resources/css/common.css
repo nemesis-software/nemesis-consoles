@@ -157,19 +157,19 @@
     background-repeat: no-repeat;
 }
 
-.x-form-trigger-default.x-form-trigger-focus {
+.x-form-entity-trigger.x-form-trigger-focus {
     background-position: 0 3px;
 }
 
-.x-form-trigger-default.x-form-trigger-over {
+.x-form-entity-trigger.x-form-trigger-over {
     background-position: 0 3px;
 }
 
-.x-form-trigger.x-form-trigger-default.x-form-trigger-click {
+.x-form-trigger.x-form-entity-trigger.x-form-trigger-click {
     background-position: 0 3px;
 }
 
-.x-form-trigger-default.x-form-trigger-over.x-form-trigger-focus {
+.x-form-entity-trigger.x-form-trigger-over.x-form-trigger-focus {
     background-position: 0 3px;
 }
 
