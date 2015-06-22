@@ -115,7 +115,16 @@ Ext.define('console.view.content.entity.EntityPopupForm', {
         this.getForm().setValues(result);
         Ext.each(this.query('nemesisCollectionField'), function (field) {
             field.initStore(result[field.name]);
-        })
+        });
+    },
+    getValues: function() {
+    	var values = this.getForm().getValues(false, true, false, false);
+    	Ext.each(this.query('nemesisCollectionField'), function (field) {
+            if (field.isDirty) {
+            	values[field.name] = field.store.asString();
+            }
+        });
+    	return values;
     },
     convertResult: function (p) {
         var result = p;
@@ -261,7 +270,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
             url: entity.data.url,
             method: entityPopupForm.method,
             headers: {'Content-Type': 'application/json', Accept: 'application/json'},
-            params: this.prepareValues(entityPopupForm.getForm().getValues(false, true, false, false)),
+            params: this.prepareValues(entityPopupForm.getValues()),
             success: function (responseObject) {
                 var searchRes = Ext.getCmp(entity.data.id + '-search-result');
                 if (searchRes) {
@@ -276,6 +285,9 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                         minWidth: 400
                     });
                 }
+                Ext.each(entityPopupForm.query('nemesisCollectionField'), function (field) {
+                    field.isDirty = false;
+                })
             },
             failure: function (responseObject) {
                 Ext.MessageBox.show({

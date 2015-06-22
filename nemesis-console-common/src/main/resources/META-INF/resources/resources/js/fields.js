@@ -205,8 +205,20 @@ Ext.define('console.view.field.NemesisCollectionField', {
                     },
                     listeners: {
                         load: function () {
-                            //me.setData();
+                            me.isDirty = false;
+                        },
+                        datachanged: function () {
+                            me.isDirty = true;
                         }
+                    },
+                    asString: function() {
+                    	var result = [];
+                    	var items = this.data.items;
+                        var fields = this.model.fields;
+                        for (var i = 0; i < items.length; i++) {
+                        	result.push(items[i].data.uid);
+                        }
+                        return Ext.JSON.encode(result);
                     }
                 }));
             } else {
@@ -251,14 +263,6 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
                     xtype: 'combobox',
                     store: Ext.create('console.store.Languages'),
                     listeners: {
-                        /*beforeselect: function (cb, record, index) {
-                            if (me.fieldSet) {
-                                //save the input value (in case it was changed)
-                                var lang = me.fieldSet.items.items[0].getValue();
-                                var value = me.fieldSet.items.items[1].getValue();
-                                me.langValuePairs [lang] = {"value": value};
-                            }
-                        },*/
                         select: function (cb, record) {
                             var textValue = "";
                             if (me.langValuePairs[record.data.isoCode] !== undefined) {
