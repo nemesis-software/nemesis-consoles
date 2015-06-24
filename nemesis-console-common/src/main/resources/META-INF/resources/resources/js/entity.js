@@ -121,7 +121,7 @@ Ext.define('console.view.content.entity.EntityPopupForm', {
     	var values = this.getForm().getValues(false, true, false, false);
     	Ext.each(this.query('nemesisCollectionField'), function (field) {
             if (field.isDirty) {
-            	values[field.name] = field.store.asString();
+            	values[field.name] = field.store.getValues();
             }
         });
     	return values;

@@ -183,7 +183,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                 me.setStore(Ext.create('Ext.data.ArrayStore', {
                     autoLoad: true,
                     autoSync: false,
-                    fields: ['uid', 'name', 'url'],
+                    fields: ['uid', 'pk', 'name', 'url'],
                     proxy: {
                         type: 'rest',
                         url: entity.data.url,
@@ -196,7 +196,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                                 for (var key in o._embedded) {
                                     for (inner in o._embedded[key]) {
                                         var record = o._embedded[key][inner];
-                                        data = data.concat({'id': record.id, 'uid': record.uid, 'name': record.entityName, 'url': record._links.self.href});
+                                        data = data.concat({'id': record.id, 'uid': record.uid, 'pk': record.pk, 'name': record.entityName, 'url': record._links.self.href});
                                     }
                                 }
                                 return data;
@@ -211,14 +211,14 @@ Ext.define('console.view.field.NemesisCollectionField', {
                             me.isDirty = true;
                         }
                     },
-                    asString: function() {
+                    getValues: function() {
                     	var result = [];
                     	var items = this.data.items;
                         var fields = this.model.fields;
                         for (var i = 0; i < items.length; i++) {
-                        	result.push(items[i].data.uid);
+                        	result.push(items[i].data.pk);
                         }
-                        return Ext.JSON.encode(result);
+                        return result;
                     }
                 }));
             } else {
@@ -319,7 +319,7 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
         return Ext.JSON.encode(this.langValuePairs);
     },
     getSubmitValue: function() {
-        return this.getValue();
+        return this.langValuePairs;
     }
 });
 
