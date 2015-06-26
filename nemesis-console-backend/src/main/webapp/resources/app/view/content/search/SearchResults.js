@@ -63,6 +63,15 @@ Ext.define('console.view.content.search.SearchResults', {
                         return data;
                     },
                     totalProperty: 'page.totalElements'
+                },
+                buildRequest: function(operation) {
+                	var request = Ext.data.proxy.Rest.prototype.buildRequest.apply(this, arguments);
+                	if (request._params && request._params.sort && request._params.dir) {
+                		request._params.sort = request._params.sort + ',' + request._params.dir;
+                		delete request._params.dir;
+                	}
+                	return request;
+                	
                 }
             }
         });
