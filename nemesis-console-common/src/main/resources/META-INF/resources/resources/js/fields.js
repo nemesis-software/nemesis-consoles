@@ -639,30 +639,16 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
                     isFormField: false,
                     submitValue: false,
                     xtype: 'combobox',
-                    //bodyStyle: 'vertical-align: top',
-                    //cls: "align-top",
-                    //listConfig: {
-                    //    getInnerTpl: function (displayField) {
-                    //        return '<img src="resources/images/flag-{uid}.gif" class="icon"/> {' + displayField + '}';
-                    //    }
-                    //},
                     store: Ext.create('console.store.Languages'),
                     listeners: {
-                        beforeselect: function (cb, record, index) {
-                            //save the input value (in case it was changed)
-                            if (me.fieldSet) {
-                                var lang = me.fieldSet.items.items[0].getValue();
-                                var value = me.fieldSet.items.items[1].getValue();
-                                me.langValuePairs [lang] = {"value": value};
-                            }
-                        },
                         select: function (cb, record) {
-                            //update the text field value
                             var textValue = "";
                             if (me.langValuePairs[record.data.isoCode] !== undefined) {
                                 textValue = me.langValuePairs[record.data.isoCode].value;
                             }
-                            me.fieldSet.items.items[1].setValue(textValue);
+                            if (me.fieldSet) {
+                                me.fieldSet.items.items[1].setRawValue(textValue);
+                            }
                         }
                     },
                     valueField: 'isoCode',
@@ -683,7 +669,17 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
                     enableAlignments: true,
                     enableLists: true,
                     enableSourceEdit: true,
-                    flex: 1
+                    flex: 1,
+                    listeners: {
+                    	change: function() {
+                    		if (me.fieldSet) {
+                                //save the input value in me.langValuePairs
+                                var lang = me.fieldSet.items.items[0].getValue();
+                                var value = me.fieldSet.items.items[1].getValue();
+                                me.langValuePairs[lang] = {"value": value};
+                            }
+                    	}
+                    }
                 }
             ],
             border: 0
@@ -691,25 +687,21 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
         this.fieldSet.render(this.inputEl);
     },
     setValue: function (langValuePairs) {
-        if (typeof langValuePairs !== "undefined" && langValuePairs !== null) {
-            this.langValuePairs = langValuePairs;
+        if (langValuePairs) {
+            var me = this;
+            me.langValuePairs = langValuePairs;
             var val = langValuePairs[Ext.get('rest-base-url').dom.getAttribute('locale')];
-            if (val) {
-                this.fieldSet.items.items[1].setValue(val.value);
-            }
-            return this;
+            this.fieldSet.items.items[1].setValue(val && val.value || '');
+            var valueAsString = Ext.JSON.encode(langValuePairs);
+            me.setRawValue(me.valueToRaw(valueAsString));
+            return me.mixins.field.setValue.call(me, valueAsString);
         }
     },
     getValue: function () {
-        var me = this;
-        if (this.langValuePairs == null) {
-            return me.langValuePairs;
-        } else {
-            var lang = this.fieldSet.items.items[0].getValue();
-            var value = this.fieldSet.items.items[1].getValue();
-            me.langValuePairs [lang] = {"value": value};
-            return me.langValuePairs;
-        }
+        return Ext.JSON.encode(this.langValuePairs);
+    },
+    getSubmitValue: function() {
+        return this.langValuePairs;
     }
 });
 
