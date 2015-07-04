@@ -11,6 +11,7 @@
  */
 package com.nemesis.platform.consoles.common.storefront.security;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -34,7 +35,12 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.AuthorityUtils;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.nio.charset.Charset;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 
 /**
@@ -71,7 +77,7 @@ public class DefaultRestAuthenticationProvider implements AuthenticationProvider
             /**
              * It can't be POST because the CSRF is triggered.
              */
-            HttpGet httpGet = new HttpGet(getRestBaseUrl() + "auth");
+            HttpGet httpGet = new HttpGet(getRestBaseUrl() + "auth?site=solar");
 
             LOG.debug("Calling: " + getRestBaseUrl() + "auth");
 
@@ -83,6 +89,7 @@ public class DefaultRestAuthenticationProvider implements AuthenticationProvider
             final String response = EntityUtils.toString(entity2, Charset.defaultCharset());
             LOG.info(response);
             ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
             userData = mapper.readValue(response, UserData.class);
             if (userData.getToken() == null) {
                 throw new BadCredentialsException("Invalid username/password");
@@ -94,7 +101,7 @@ public class DefaultRestAuthenticationProvider implements AuthenticationProvider
             principal.setToken(userData.getToken());
 
             return new UsernamePasswordAuthenticationToken(principal, password, principal.getAuthorities());
-        } catch (Exception e) {
+        } catch (NoSuchAlgorithmException | KeyManagementException | KeyStoreException | UnrecoverableKeyException | IOException e) {
             LOG.error(e.getMessage(), e);
             throw new InternalAuthenticationServiceException(e.getMessage());
         }

@@ -200,7 +200,7 @@ Ext.application({
                         {
                             itemId: 'edit-widget',
                             text: 'Edit Widget',
-                            iconCls: 'simple_cms_widget_edit',
+                            iconCls: 'widget_edit',
                             handler: function () {
                                 var entityConfiguration = Ext.create("console.markup." + event.data.selection.contentElementEntityName);
                                 var window = Ext.getCmp('cms-viewport').createWindow({
@@ -219,7 +219,7 @@ Ext.application({
                         {
                             itemId: 'removeWidget',
                             text: 'Remove Widget',
-                            iconCls: 'simple_cms_widget_remove',
+                            iconCls: 'widget_remove',
                             handler: function () {
                                 var entityConfiguration = Ext.create("console.markup." + record.get('id'));
                                 var window = Ext.getCmp('backend-viewport').createWindow({
@@ -238,11 +238,11 @@ Ext.application({
                         {
                             itemId: 'addWidget',
                             text: 'Add Another Widget',
-                            iconCls: 'simple_cms_widget_add',
+                            iconCls: 'widget_add',
                             handler: function () {
 
                                 var rest = document.getElementById('rest-base-url').getAttribute('url');
-                                var url = rest + 'simple_cms_widget';
+                                var url = rest + 'widget';
                                 Ext.Ajax.request({
                                     url: url,
                                     method: 'GET',

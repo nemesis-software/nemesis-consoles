@@ -55,7 +55,7 @@ Ext.define("console.locale.en.view.Header", {
  abstract_template: 'Page template',
  content_slot: 'Content slot',
  site: 'Site',
- simple_cms_widget: 'CMS Widget',
+ widget: 'CMS Widget',
  cronjob: 'Cronjob',                                        //settings
  email_configuration: 'Email',
  social_configuration: 'Social',

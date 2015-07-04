@@ -67,7 +67,7 @@ Ext.define('console.view.field.NemesisTextField', {
     dirtyCls: 'dirty',
     name: null,
     width: '95%',
-    columnWidth: .5,
+    columnWmeddth: .5,
     initComponent: function () {
         var me = this;
         me.emptyText = me.name;
@@ -196,7 +196,13 @@ Ext.define('console.view.field.NemesisCollectionField', {
                                 for (var key in o._embedded) {
                                     for (inner in o._embedded[key]) {
                                         var record = o._embedded[key][inner];
-                                        data = data.concat({'id': record.id, 'uid': record.uid, 'pk': record.pk, 'name': record.entityName, 'url': record._links.self.href});
+                                        data = data.concat({
+                                            'id': record.id,
+                                            'uid': record.uid,
+                                            'pk': record.pk,
+                                            'name': record.entityName,
+                                            'url': record._links.self.href
+                                        });
                                     }
                                 }
                                 return data;
@@ -211,12 +217,12 @@ Ext.define('console.view.field.NemesisCollectionField', {
                             me.isDirty = true;
                         }
                     },
-                    getValues: function() {
-                    	var result = [];
-                    	var items = this.data.items;
+                    getValues: function () {
+                        var result = [];
+                        var items = this.data.items;
                         var fields = this.model.fields;
                         for (var i = 0; i < items.length; i++) {
-                        	result.push(items[i].data.pk);
+                            result.push(items[i].data.pk);
                         }
                         return result;
                     }
@@ -289,14 +295,14 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
                     xtype: 'textfield',
                     flex: 1,
                     listeners: {
-                    	change: function() {
-                    		if (me.fieldSet) {
+                        change: function () {
+                            if (me.fieldSet) {
                                 //save the input value in me.langValuePairs
                                 var lang = me.fieldSet.items.items[0].getValue();
                                 var value = me.fieldSet.items.items[1].getValue();
                                 me.langValuePairs[lang] = {"value": value};
                             }
-                    	}
+                        }
                     }
                 }
             ],
@@ -318,7 +324,7 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
     getValue: function () {
         return Ext.JSON.encode(this.langValuePairs);
     },
-    getSubmitValue: function() {
+    getSubmitValue: function () {
         return this.langValuePairs;
     }
 });
@@ -429,7 +435,7 @@ Ext.define('console.view.field.NemesisEntityField', {
                     console.log(me.entity.data); //you need to initialize the entity from the url
                     var window = Ext.getCmp('backend-viewport').getWindow(this.entity.data.id);
                     if (!window) {
-                    	Ext.Ajax.request({
+                        Ext.Ajax.request({
                             url: me.entity.data.url,
                             method: 'GET',
                             success: function (responseObject) {
@@ -448,15 +454,26 @@ Ext.define('console.view.field.NemesisEntityField', {
                                 Ext.Msg.alert('Error', 'Error: ' + responseObject.responseText);
                             }
                         });
-                        
+
                     } else {
-                    	Ext.getCmp('backend-viewport').restoreWindow(window);
+                        Ext.getCmp('backend-viewport').restoreWindow(window);
                     }
                 }
             }
         }
     },
     listeners: {
+        render: function (c) {
+            var me = this;
+
+            var url = 'https://dve2ovdl241xy.cloudfront.net/categories/category-mens-picture.png';
+
+            Ext.create('Ext.tip.ToolTip', {
+                target: c.getEl(),
+                html: "<img src='" + url + "' width='400px'/>",
+                trackMouse: true
+            });
+        },
         el: {
             contextmenu: function (event, ui, ctxmenu) {
                 var me = this;
@@ -560,7 +577,7 @@ Ext.define('console.view.field.NemesisEntityField', {
 });
 
 Ext.define('console.view.field.NemesisMediaField', {
-    extend: 'console.view.field.NemesisEntityField',
+    extend: 'Ext.Img',
     xtype: 'nemesisMediaField',
     tooltip: 'This is media'
 });
@@ -684,14 +701,14 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
                     enableSourceEdit: true,
                     flex: 1,
                     listeners: {
-                    	change: function() {
-                    		if (me.fieldSet) {
+                        change: function () {
+                            if (me.fieldSet) {
                                 //save the input value in me.langValuePairs
                                 var lang = me.fieldSet.items.items[0].getValue();
                                 var value = me.fieldSet.items.items[1].getValue();
                                 me.langValuePairs[lang] = {"value": value};
                             }
-                    	}
+                        }
                     }
                 }
             ],
@@ -713,7 +730,7 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
     getValue: function () {
         return Ext.JSON.encode(this.langValuePairs);
     },
-    getSubmitValue: function() {
+    getSubmitValue: function () {
         return this.langValuePairs;
     }
 });

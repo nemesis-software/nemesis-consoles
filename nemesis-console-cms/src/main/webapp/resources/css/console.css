@@ -85,16 +85,16 @@ div.carousel-item-header {
     background-image: url(images/content_slot_edit.png);
 }
 
-.simple_cms_widget_add {
-    background-image: url(images/simple_cms_widget_add.png);
+.widget_add {
+    background-image: url(images/widget_add.png);
 }
 
-.simple_cms_widget_edit {
-    background-image: url(images/simple_cms_widget_edit.png);
+.widget_edit {
+    background-image: url(images/widget_edit.png);
 }
 
-.simple_cms_widget_remove {
-    background-image: url(images/simple_cms_widget_remove.png);
+.widget_remove {
+    background-image: url(images/widget_remove.png);
 }
 
 .email_template {

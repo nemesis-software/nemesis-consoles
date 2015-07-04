@@ -228,7 +228,7 @@ Ext.define('console.view.Menu', {
                 },
                 {
                     title: 'Widgets',
-                    iconCls: 'simple_cms_widget',
+                    iconCls: 'widget',
                     xtype: 'panel',
                     frame: false,
                     border: false,
@@ -273,7 +273,7 @@ Ext.define('console.view.Menu', {
                                     }),
                                     proxy: {
                                         type: 'rest',
-                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'simple_cms_widget',
+                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'widget',
                                         limitParam: 'size',
                                         useDefaultXhrHeader: false,
                                         cors: true,
