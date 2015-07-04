@@ -27,9 +27,6 @@ Ext.define('console.view.content.EntityPopupWindow', {
     layout: 'border',
     entityFields: null,
     entity: null,
-    constructor: function () {
-        this.callParent(arguments);
-    },
     initComponent: function () {
         var method = 'POST';
         if (this.id !== 'w_id_') {
@@ -52,6 +49,7 @@ Ext.define('console.view.content.EntityPopupWindow', {
             },
             {
                 region: 'center',
+                scrollable: 'y',
                 items: entityPopupForm
             }
         ];
@@ -84,7 +82,6 @@ Ext.define('console.view.content.entity.EntityPopupForm', {
             {
                 xtype: 'tabpanel',
                 activeTab: 0,
-                height: '100%',
                 deferredRender: false,
                 items: me.entityFields,
                 border: false
