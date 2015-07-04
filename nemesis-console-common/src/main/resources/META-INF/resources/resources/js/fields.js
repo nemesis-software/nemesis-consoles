@@ -466,13 +466,15 @@ Ext.define('console.view.field.NemesisEntityField', {
         render: function (c) {
             var me = this;
 
-            var url = 'https://dve2ovdl241xy.cloudfront.net/categories/category-mens-picture.png';
+            if (me.entityId === 'media') {
+                var url = 'https://dve2ovdl241xy.cloudfront.net/categories/category-mens-picture.png';
 
-            Ext.create('Ext.tip.ToolTip', {
-                target: c.getEl(),
-                html: "<img src='" + url + "' width='400px'/>",
-                trackMouse: true
-            });
+                Ext.create('Ext.tip.ToolTip', {
+                    target: c.getEl(),
+                    html: "<img src='" + url + "' width='400px'/>",
+                    trackMouse: true
+                });
+            }
         },
         el: {
             contextmenu: function (event, ui, ctxmenu) {
