@@ -205,7 +205,7 @@ Ext.application({
                                 var entityConfiguration = Ext.create("console.markup." + event.data.selection.contentElementEntityName);
                                 var window = Ext.getCmp('cms-viewport').createWindow({
                                     id: null,
-                                    title: '[SimpleCMSWidget]',
+                                    title: '[Widget]',
                                     iconCls: event.data.selection.contentElementEntityName,
                                     entity: Ext.create('console.model.Entity', {
                                         name: null,

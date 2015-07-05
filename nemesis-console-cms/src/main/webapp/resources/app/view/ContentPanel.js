@@ -42,7 +42,7 @@ Ext.define('console.view.ContentPanel', {
                                         cors: true,
                                         reader: {
                                             type: 'json',
-                                            rootProperty: 'content'
+                                            rootProperty: '_embedded.siteModels'
                                         }
                                     }
                                 })
