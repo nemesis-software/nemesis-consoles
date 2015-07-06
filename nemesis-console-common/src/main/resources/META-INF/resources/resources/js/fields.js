@@ -107,7 +107,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                                 console.log(Ext.getCmp(me.id).entity);
                                 var window = Ext.getCmp('backend-viewport').getWindow(record.data.uid);
                                 if (!window) {
-                                    var entityConfiguration = Ext.create("console.markup." + this.entityId);
+                                    var entityConfiguration = Ext.create("console.markup." + record.data.name);
                                     console.log(record);
                                     window = Ext.getCmp('backend-viewport').createWindow({
                                         id: record.data.uid,
