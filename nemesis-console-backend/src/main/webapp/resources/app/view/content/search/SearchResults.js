@@ -64,18 +64,18 @@ Ext.define('console.view.content.search.SearchResults', {
                     },
                     totalProperty: 'page.totalElements'
                 },
-                buildRequest: function(operation) {
-                	var request = Ext.data.proxy.Rest.prototype.buildRequest.apply(this, arguments);
-                	if (request._params && request._params.sort && request._params.dir) {
-                		request._params.sort = request._params.sort + ',' + request._params.dir;
-                		delete request._params.dir;
-                	}
-                	return request;
-                	
+                buildRequest: function (operation) {
+                    var request = Ext.data.proxy.Rest.prototype.buildRequest.apply(this, arguments);
+                    if (request._params && request._params.sort && request._params.dir) {
+                        request._params.sort = request._params.sort + ',' + request._params.dir;
+                        delete request._params.dir;
+                    }
+                    return request;
+
                 }
             }
         });
-        
+
         Ext.apply(this, {
             height: this.height,
             store: store,
@@ -112,7 +112,7 @@ Ext.define('console.view.content.search.SearchResults', {
                         editable: false,
                         forceSelection: true,
                         listeners: {
-                        	'select': function (combo, record) {
+                            'select': function (combo, record) {
                                 var bbar = combo.up();
                                 var newPageSize = parseInt(record.get('id'), 10);
                                 bbar.up().getStore().pageSize = newPageSize;
@@ -251,7 +251,7 @@ Ext.define('console.view.content.search.SearchResults', {
         if (currentToken === newToken) { //case when we click on a just closed window
             var window = Ext.getCmp(parentCmpId).getWindow(record.data.uid);
             if (!window) {
-                var entityConfiguration = Ext.create("console.markup." + this.entity.data.id);
+                var entityConfiguration = Ext.create("console.markup." + record.data.entityName);
                 console.log(record);
                 window = Ext.getCmp(parentCmpId).createWindow({
                     id: record.data.uid,
@@ -261,8 +261,10 @@ Ext.define('console.view.content.search.SearchResults', {
                         name: this.entity.data.name,
                         className: this.entity.data.className,
                         url: record.data._links['self'].href,
-                        synchronizable: entityConfiguration.synchronizable}),
-                    sections: entityConfiguration.sections});
+                        synchronizable: entityConfiguration.synchronizable
+                    }),
+                    sections: entityConfiguration.sections
+                });
             }
             Ext.getCmp(parentCmpId).restoreWindow(window);
         } else {
@@ -270,11 +272,19 @@ Ext.define('console.view.content.search.SearchResults', {
         }
     },
     onCopySelected: function (view, record, item, index, event) {
-        Ext.getCmp('backend-viewport').clipboard = {data: {id: record.data.uid, name: this.entity.data.name, url: record.data._links.self.href, className: this.entity.data.className}};
+        Ext.getCmp('backend-viewport').clipboard = {
+            data: {
+                id: record.data.uid,
+                name: this.entity.data.name,
+                url: record.data._links.self.href,
+                className: this.entity.data.className
+            }
+        };
     },
     onDeleteSelected: function (view, record, item, index, event) {
         var me = this;
-        Ext.Ajax.request({ url: record.data._links.self.href,
+        Ext.Ajax.request({
+            url: record.data._links.self.href,
             method: 'DELETE',
             params: {},
             success: function (responseObject) {

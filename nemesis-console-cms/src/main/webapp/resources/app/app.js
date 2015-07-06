@@ -211,7 +211,8 @@ Ext.application({
                                         name: null,
                                         url: Ext.get('rest-base-url').dom.getAttribute('url') + event.data.selection.contentElementEntityName + '/' + event.data.selection.contentElement
                                     }),
-                                    sections: entityConfiguration.sections
+                                    sections: entityConfiguration.sections,
+                                    synchronizable: entityConfiguration.synchronizable
                                 });
                                 window.show();
                             }
@@ -230,7 +231,8 @@ Ext.application({
                                         name: record.get('text'),
                                         url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('id')
                                     }),
-                                    sections: entityConfiguration.sections
+                                    sections: entityConfiguration.sections,
+                                    synchronizable: entityConfiguration.synchronizable
                                 });
                                 Ext.getCmp('backend-viewport').restoreWindow(window);
                             }
@@ -289,7 +291,8 @@ Ext.application({
                                         name: null,
                                         url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/' + event.data.selection.contentSlot
                                     }),
-                                    sections: entityConfiguration.sections
+                                    sections: entityConfiguration.sections,
+                                    synchronizable: entityConfiguration.synchronizable
                                 });
                                 window.show();
 

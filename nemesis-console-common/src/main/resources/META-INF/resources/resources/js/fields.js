@@ -116,7 +116,8 @@ Ext.define('console.view.field.NemesisCollectionField', {
                                             id: this.entityId,
                                             name: record.data.name,
                                             className: this.entityId,
-                                            url: record.data.url
+                                            url: record.data.url,
+                                            synchronizable: entityConfiguration.synchronizable
                                         }),
                                         sections: entityConfiguration.sections
                                     });
@@ -446,7 +447,8 @@ Ext.define('console.view.field.NemesisEntityField', {
                                     title: '[' + me.jsonValue + ' - ' + me.entity.data.name + ']',
                                     iconCls: me.entityId,
                                     entity: entity,
-                                    sections: Ext.create("console.markup." + me.entityId).sections
+                                    sections: Ext.create("console.markup." + me.entityId).sections,
+                                    synchronizable: Ext.create("console.markup." + me.entityId).synchronizable
                                 });
                                 Ext.getCmp('backend-viewport').restoreWindow(window);
                             },
