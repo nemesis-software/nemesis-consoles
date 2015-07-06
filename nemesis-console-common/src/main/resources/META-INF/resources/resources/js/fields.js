@@ -681,7 +681,7 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
                                 textValue = me.langValuePairs[record.data.isoCode].value;
                             }
                             if (me.fieldSet) {
-                                me.fieldSet.items.items[1].setRawValue(textValue);
+                                me.fieldSet.items.items[1].setValue(textValue);
                             }
                         }
                     },
