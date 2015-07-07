@@ -36,6 +36,15 @@ Ext.define('console.view.content.search.SearchResults', {
         'Ext.toolbar.Paging'
     ],
     initComponent: function () {
+    	var fields = searchData[this.entity.data.id + 'SearchResultMarkupStore'];
+    	for(var i=0; i<fields.length;i++) {
+    		if (-1 != fields[i].name.indexOf('.en_GB')) {
+    			fields[i].mapping = Ext.bind(function(data, arg2, arg3) {
+    			    return data[this.name.substring(0, this.name.indexOf('.'))][globalLang].value;
+    			}, fields[i]);
+    		}
+    	}
+    	var columns = searchData[this.entity.data.id + 'SearchResultMarkup'];
         var store = Ext.create('Ext.data.Store', {
             autoLoad: true,
             autoSync: false,
@@ -43,7 +52,7 @@ Ext.define('console.view.content.search.SearchResults', {
             remoteSort: true,
             model: Ext.define('name', {
                 extend: 'Ext.data.Model',
-                fields: searchData[this.entity.data.id + 'SearchResultMarkupStore']
+                fields: fields
             }),
             proxy: {
                 type: 'rest',
@@ -83,7 +92,7 @@ Ext.define('console.view.content.search.SearchResults', {
             columnLines: true,
             displayMsg: 'Displaying topics {0} - {1} of {2}',
             emptyMsg: "No topics to display",
-            columns: searchData[this.entity.data.id + 'SearchResultMarkup'],
+            columns: columns,
             bbar: new Ext.toolbar.Paging({
                 store: store,
                 displayInfo: true,
