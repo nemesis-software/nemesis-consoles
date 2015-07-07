@@ -39,8 +39,9 @@ Ext.define('console.view.content.search.SearchResults', {
     	var fields = searchData[this.entity.data.id + 'SearchResultMarkupStore'];
     	for(var i=0; i<fields.length;i++) {
     		if (-1 != fields[i].name.indexOf('.en_GB')) {
-    			fields[i].mapping = Ext.bind(function(data, arg2, arg3) {
-    			    return data[this.name.substring(0, this.name.indexOf('.'))][globalLang].value;
+    			fields[i].mapping = Ext.bind(function(data) {
+    				var fieldName = this.name.substring(0, this.name.indexOf('.'));
+    			    return data[fieldName][globalLang] && data[fieldName][globalLang].value || '';
     			}, fields[i]);
     		}
     	}
