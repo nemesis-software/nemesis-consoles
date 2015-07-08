@@ -465,19 +465,6 @@ Ext.define('console.view.field.NemesisEntityField', {
         }
     },
     listeners: {
-        render: function (c) {
-            var me = this;
-
-            if (me.entityId === 'media') {
-                var url = 'https://dve2ovdl241xy.cloudfront.net/categories/category-mens-picture.png';
-
-                Ext.create('Ext.tip.ToolTip', {
-                    target: c.getEl(),
-                    html: "<img src='" + url + "' width='400px'/>",
-                    trackMouse: true
-                });
-            }
-        },
         el: {
             contextmenu: function (event, ui, ctxmenu) {
                 var me = this;
@@ -555,6 +542,26 @@ Ext.define('console.view.field.NemesisEntityField', {
                     var result = Ext.decode(res.responseText);
                     me.jsonValue = Ext.isDefined(result.uid) ? result.uid : result.content.uid;
                     me.setRawValue(me.jsonValue);
+                    
+                    if (me.entityId === 'media') {
+                        me.tooltip = Ext.create('Ext.tip.ToolTip', {
+                            target: me.getEl(),
+                            trackMouse: true,
+                            listeners: {
+                            	show: {
+                            		single: true,
+                            		fn: function(tip) {
+                                		var relUrl = Ext.isDefined(result.url) ? result.url : result.content.url; 
+                                		var url = 'https://dve2ovdl241xy.cloudfront.net' + relUrl;
+                                        me.tooltip.update("<img id='" + relUrl + "' src='" + url + "' style='max-width:400px'/>");
+                                        document.getElementById(relUrl).onload = function(e) {
+                                        	me.tooltip.setHeight(e.srcElement.height);
+                                        };
+                                	}
+                            	}
+                            },
+                        });
+                    }
                 },
                 failure: function (responseObject) {
                     if (responseObject.status != 404) {
