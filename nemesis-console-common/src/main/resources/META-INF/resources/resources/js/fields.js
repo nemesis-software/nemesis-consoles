@@ -587,10 +587,174 @@ Ext.define('console.view.field.NemesisEntityField', {
     }
 });
 
+//Ext.define('console.view.field.NemesisMediaField', {
+//extend: 'Ext.Img',
+//xtype: 'nemesisMediaField',
+//});
+
 Ext.define('console.view.field.NemesisMediaField', {
-    extend: 'Ext.Img',
-    xtype: 'nemesisMediaField',
-    tooltip: 'This is media'
+	xtype : 'media',
+	extend : 'Ext.form.FieldContainer',
+	tooltip: 'This is media',
+	labelWidth: 50,
+	minWidth: 180,
+	layout: {
+        type: 'vbox',
+        pack: 'start',
+        align: 'center'
+    },
+	
+	//previewLocation : undefined, // possible values 'bottom'
+	//previewInitialSize : undefined, // possible values 'small'
+	//previewSizeSmall : undefined, // image size in pixels,
+	//previewSizeLarge : undefined, // image size in pixels,  default = 120
+	
+	fieldLabel : 'upload your file here..',
+	anchor : '100%',
+	buttonText : 'Choose ..', 
+	allowBlank : true,
+	previewLocation : 'top',
+	previewInitialSize : 'small',
+	previewSizeSmall : 60,
+	previewSizeLarge : 400,
+	value: "https://dve2ovdl241xy.cloudfront.net/categories/category-mens-picture.png",
+	/**
+	* Original value of date when form is initiated
+	*/
+	initComponent : function() {
+		var me = this;
+	
+		var upLoadButton = {
+			xtype : 'filefield',
+			//name: 'photo',
+	        labelWidth: 0,
+	        msgTarget: 'side',
+	        //anchor: '100%',
+	        width: 60,
+	        allowBlank : me.allowBlank,
+			// msgTarget : 'side',
+			buttonText : me.buttonText,
+			buttonOnly : true,
+			listeners : {
+				change : function(input, value, opts) {
+					// can't get the file path directly from the component due to browser security that does not allow for
+					// javascript to access the local file system directly Browser will return a "fakePath"
+					// reference to the actual local file To work around this, we have to access
+					// the dom file directly from the input element!!!
+					var canvas = Ext.ComponentQuery.query('image[canvas="' + upLoadButton.inputId + '"]')[0];
+					var file = input.getEl().down('input[type=file]').dom.files[0];
+	
+					if (file.type == "image/jpeg" || file.type == "image/jpg" || file.type == "image/png" || file.type == "image/gif") {
+						var reader = new FileReader();
+						reader.onload = function(e) {
+							canvas.setSrc(e.target.result);
+						}
+						reader.readAsDataURL(file);
+						canvas.show();
+					} else {
+						// canvas.setSrc(IMAGE_OFFSET +'images/no-photo.jpg');
+						canvas.hide();
+					}
+				}
+			}
+		}
+	
+		var sizeSmall = 60; // image size in pixels, default =
+							// 60
+		if (me.previewSizeSmall != undefined) {
+			sizeSmall = me.previewSizeSmall;
+		}
+		var sizeLarge = 120; // image size in pixels, default
+								// = 120
+		if (me.previewSizeLarge != undefined) {
+			sizeLarge = me.previewSizeLarge;
+		}
+		var initialSize = sizeSmall;
+		if (me.previewInitialSize == 'large') {
+			initialSize = sizeLarge;
+		}
+		var previewImage = {
+			xtype : 'image',
+			// src : IMAGE_OFFSET + 'images/no-photo.jpg',
+			frame : true,
+			canvas : upLoadButton.inputId,
+			// resizable : true,
+			width : initialSize,
+			height : initialSize,
+			animate : 2000,
+			hidden : true, // initially hidden
+			scope : this,
+			sizeSmall : sizeSmall,
+			sizeLarge : sizeLarge,
+			listeners : {
+				// bind the click event to the underlying
+				// component element (el) in order to be able
+				// to handle mouse clicks on an image
+				el : {
+					click : function() {
+						var canvasId = this.dom.previousSibling.outerHTML;
+						canvasId = canvasId.substring(0,
+								canvasId.indexOf('" '));
+						canvasId = canvasId.substring(canvasId
+								.indexOf('"') + 1);
+						var canvas = Ext.ComponentQuery
+								.query('image[canvas="fileuploadfield_'
+										+ canvasId + '"]')[0];
+						if (canvas.width == canvas.sizeSmall) {
+							canvas.setSize(canvas.sizeLarge,
+									canvas.sizeLarge);
+						} else {
+							canvas.setSize(canvas.sizeSmall,
+									canvas.sizeSmall);
+						}
+					}
+				}
+	
+			}
+	
+		}
+		if (!Ext.isEmpty(me.value)) {
+			// if an existing value 
+			previewImage.src = me.value;
+			previewImage.hidden = false;
+		}
+	
+		// rename original name and id to avoid conflits
+		me.name = me.name + '_container';
+		me.id = me.id + "_container";
+		me.items = [{
+			xtype: 'fieldcontainer',
+			layout: 'hbox',
+			items: [upLoadButton, {
+		    	xtype: 'button',
+		    	icon: 'resources/css/images/crop.png'
+		    }, {
+		    	xtype: 'button',
+		    	icon: 'resources/css/images/rotateleft.png'
+		    }, {
+		    	xtype: 'button',
+		    	icon: 'resources/css/images/rotate.png'
+		    }]
+		}];
+		if (me.previewLocation == 'left'
+				|| me.previewLocation == 'bottom'
+				|| me.previewLocation == undefined) {
+			me.items.push(previewImage);
+		} else if (me.previewLocation == 'top') {
+			me.items.splice(0, 0, previewImage);
+		}
+		if (me.previewLocation == 'left') {
+			me.layout = 'hbox';
+			upLoadButton.margin = '0 0 0 -24';
+			if (previewImage.initialSize != 'large') {
+				previewImage.margin = '0 0 0 90'; // ALIGN THE IMAGE AFTER THE BUTTON
+			}
+		}
+		me.callParent(arguments);
+	}, 
+	setValue: function (value) {
+		this.callParent();
+	}
 });
 
 Ext.define('console.view.field.NemesisEnumerationField', {
