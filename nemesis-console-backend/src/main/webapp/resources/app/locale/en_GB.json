@@ -109,7 +109,7 @@
   abstract_template: 'Page template',
   content_slot: 'Content slot',
   site: 'Site',
-  simple_cms_widget: 'CMS Widget',
+  widget: 'Widget',
   site_theme: 'Themes',
   cronjob: 'Cronjob',
   //settings

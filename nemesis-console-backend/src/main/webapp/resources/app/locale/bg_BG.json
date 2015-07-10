@@ -114,7 +114,7 @@
   abstract_template: 'Макет',
   content_slot: 'Процеп',
   site: 'Сайт',
-  simple_cms_widget: 'Джиджафки',
+  widget: 'Джиджафки',
   site_theme: 'Теми',
   cronjob: 'Крон задачи',
   //settings

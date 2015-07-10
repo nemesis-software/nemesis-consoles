@@ -31,7 +31,7 @@ Ext.define('console.view.content.search.SearchForm', function () {
                 url: Ext.get('rest-base-url').dom.getAttribute('url') + self.entity.data.id + '/search/',
                 loadMask: true,
                 method: 'GET',
-                params: {},
+                params: {'projection': 'search'},
                 success: function (responseObject) {
                     var searchfields = {};
                     var result = Ext.decode(responseObject.responseText);

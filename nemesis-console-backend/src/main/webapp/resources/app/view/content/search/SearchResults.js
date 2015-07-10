@@ -36,16 +36,16 @@ Ext.define('console.view.content.search.SearchResults', {
         'Ext.toolbar.Paging'
     ],
     initComponent: function () {
-    	var fields = searchData[this.entity.data.id + 'SearchResultMarkupStore'];
-    	for(var i=0; i<fields.length;i++) {
-    		if (-1 != fields[i].name.indexOf('.en_GB')) {
-    			fields[i].mapping = Ext.bind(function(data) {
-    				var fieldName = this.name.substring(0, this.name.indexOf('.'));
-    			    return data[fieldName][globalLang] && data[fieldName][globalLang].value || '';
-    			}, fields[i]);
-    		}
-    	}
-    	var columns = searchData[this.entity.data.id + 'SearchResultMarkup'];
+        var fields = searchData[this.entity.data.id + 'SearchResultMarkupStore'];
+        for (var i = 0; i < fields.length; i++) {
+            if (-1 != fields[i].name.indexOf('.en_GB')) {
+                fields[i].mapping = Ext.bind(function (data) {
+                    var fieldName = this.name.substring(0, this.name.indexOf('.'));
+                    return data[fieldName][globalLang] && data[fieldName][globalLang].value || '';
+                }, fields[i]);
+            }
+        }
+        var columns = searchData[this.entity.data.id + 'SearchResultMarkup'];
         var store = Ext.create('Ext.data.Store', {
             autoLoad: true,
             autoSync: false,
@@ -57,7 +57,7 @@ Ext.define('console.view.content.search.SearchResults', {
             }),
             proxy: {
                 type: 'rest',
-                url: Ext.get('rest-base-url').dom.getAttribute('url') + this.entity.data.id,
+                url: Ext.get('rest-base-url').dom.getAttribute('url') + this.entity.data.id + '?projection=search',
                 limitParam: 'size',
                 startParam: '',
                 simpleSortMode: true,

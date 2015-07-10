@@ -116,7 +116,7 @@ Ext.define('console.view.ContentPanel', {
                                 return false;
                             }
                         }
-                    },
+                    }
                 ]
             },
             {
