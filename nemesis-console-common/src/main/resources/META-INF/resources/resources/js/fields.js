@@ -659,13 +659,11 @@ Ext.define('console.view.field.NemesisMediaField', {
 			}
 		}
 	
-		var sizeSmall = 60; // image size in pixels, default =
-							// 60
+		var sizeSmall = 60; // image size in pixels, default = 60
 		if (me.previewSizeSmall != undefined) {
 			sizeSmall = me.previewSizeSmall;
 		}
-		var sizeLarge = 120; // image size in pixels, default
-								// = 120
+		var sizeLarge = 120; // image size in pixels, default = 120
 		if (me.previewSizeLarge != undefined) {
 			sizeLarge = me.previewSizeLarge;
 		}
@@ -687,25 +685,18 @@ Ext.define('console.view.field.NemesisMediaField', {
 			sizeSmall : sizeSmall,
 			sizeLarge : sizeLarge,
 			listeners : {
-				// bind the click event to the underlying
-				// component element (el) in order to be able
+				// bind the click event to the underlying component element (el) in order to be able
 				// to handle mouse clicks on an image
 				el : {
 					click : function() {
 						var canvasId = this.dom.previousSibling.outerHTML;
-						canvasId = canvasId.substring(0,
-								canvasId.indexOf('" '));
-						canvasId = canvasId.substring(canvasId
-								.indexOf('"') + 1);
-						var canvas = Ext.ComponentQuery
-								.query('image[canvas="fileuploadfield_'
-										+ canvasId + '"]')[0];
+						canvasId = canvasId.substring(0, canvasId.indexOf('" '));
+						canvasId = canvasId.substring(canvasId.indexOf('"') + 1);
+						var canvas = Ext.ComponentQuery.query('image[canvas="fileuploadfield_' + canvasId + '"]')[0];
 						if (canvas.width == canvas.sizeSmall) {
-							canvas.setSize(canvas.sizeLarge,
-									canvas.sizeLarge);
+							canvas.setSize(canvas.sizeLarge, canvas.sizeLarge);
 						} else {
-							canvas.setSize(canvas.sizeSmall,
-									canvas.sizeSmall);
+							canvas.setSize(canvas.sizeSmall, canvas.sizeSmall);
 						}
 					}
 				}

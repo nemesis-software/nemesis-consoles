@@ -283,6 +283,9 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                         minWidth: 400
                     });
                 }
+                entityPopupForm.getForm().getFields().each(function(field){
+            	   field.resetOriginalValue();
+            	});
                 Ext.each(entityPopupForm.query('nemesisCollectionField'), function (field) {
                     field.isDirty = false;
                 })
