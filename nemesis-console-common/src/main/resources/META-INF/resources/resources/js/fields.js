@@ -525,23 +525,23 @@ Ext.define('console.view.field.NemesisEntityField', {
         } else { //the set is invoked from the entityForm passing a single entity
             entity = record;
         }
-        if (typeof entity !== "undefined" && entity !== null && typeof entity.data !== 'undefined') {
-            var entityUrl;
-            if (record instanceof Array) {
-                entityUrl = entity.data._links.self.href;
-            } else {
-                entityUrl = entity.data.url;
-            }
+        if (entity && typeof entity.data !== 'undefined') {
             me.entity = entity;
-            //this.setRawValue("[" + entity.data.uid + " - " + entity.data.name + "]");
+            var entityUrl = record instanceof Array ? entity.data._links.self.href : entity.data.url;
             //this.setRawValue(entity.data.url);
             Ext.Ajax.request({
                 url: entityUrl,
                 method: 'GET',
                 success: function (res) {
                     var result = Ext.decode(res.responseText);
-                    me.jsonValue = Ext.isDefined(result.uid) ? result.uid : result.content.uid;
+                    var resultData = Ext.isObject(result.content) ? result.content : result;
+                    me.entityHref = result._links.self.href;
+                    me.jsonValue = resultData.uid;
                     me.setRawValue(me.jsonValue);
+                    if (!me.initialized) {
+                    	me.originalValue = me.jsonValue;
+                    	me.initialized = true;
+                    }
                     
                     if (me.entityId === 'media') {
                         me.tooltip = Ext.create('Ext.tip.ToolTip', {
@@ -551,7 +551,7 @@ Ext.define('console.view.field.NemesisEntityField', {
                             	show: {
                             		single: true,
                             		fn: function(tip) {
-                                		var relUrl = Ext.isDefined(result.url) ? result.url : result.content.url; 
+                                		var relUrl = resultData.url; 
                                 		var url = 'https://dve2ovdl241xy.cloudfront.net' + relUrl;
                                         me.tooltip.update("<img id='" + relUrl + "' src='" + url + "' style='max-width:400px'/>");
                                         document.getElementById(relUrl).onload = function(e) {
@@ -575,15 +575,16 @@ Ext.define('console.view.field.NemesisEntityField', {
         }
         return me;
     },
-
     getValue: function () {
+        return this.rawValue;
+    },
+    getSubmitValue: function () {
+    	if (!this.entity || typeof this.entity.data === 'undefined') {
+    		return '';
+    	}
         var record = this.store.getById(this.rawValue);
-        if (this.entity && typeof this.entity.data !== 'undefined' && record) {
-            // we must return something in the form of {"theme" : "https://localhost:8112/storefront/rest/site_theme/70933224484926368"}
-            return "" + record.data._links.self.href;
-        } else {
-            return "";
-        }
+        // we must return something in the form of {"theme" : "https://localhost:8112/storefront/rest/site_theme/70933224484926368"}
+        return record ? record.data._links.self.href : this.entityHref;
     }
 });
 
