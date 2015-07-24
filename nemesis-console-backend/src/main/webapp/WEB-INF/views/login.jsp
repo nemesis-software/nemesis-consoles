@@ -91,11 +91,11 @@
         }
     </style>
 </head>
-<body>
+<body onload="document.getElementById('login_username').focus();">
 <form action="<c:url value='/j_spring_security_check'/>" method="POST" onsubmit="keepHash(this)">
     <h1>Login</h1>
-    <label>Username:</label> <input type="text" name="username"/>
-    <label>Password:</label> <input type="password" name="password"/>
+    <label for="login_username">Username:</label> <input id="login_username" type="text" name="username"/>
+    <label for="login_password">Password:</label> <input id="login_password" type="password" name="password"/>
 
     <div class="error" style="${not empty param.error ? '' : 'display:none'}">
         <%
