@@ -34,21 +34,26 @@ public class CMSConsoleWebConfig implements WebApplicationInitializer {
         webCtx.register(CMSConsoleMVCConfig.class);
         webCtx.register(CMSConsoleConfig.class);
 
-        servletContext.addListener(new ContextLoaderListener(webCtx));
-        
         /* Spring Delegating Dispatcher Servlet */
         Servlet dispatcherServlet = new DispatcherServlet(webCtx);
         ServletRegistration.Dynamic dispatcherServletReg = servletContext.addServlet("dispatcherServlet", dispatcherServlet);
-        dispatcherServletReg.setLoadOnStartup(1);
-        dispatcherServletReg.setInitParameter("contextConfigLocation", "");
-        dispatcherServletReg.addMapping("/");
-        
-        /* Spring Security Delegating Filter */
-        FilterRegistration springSecurityFilterChainReg = servletContext.addFilter("springSecurityFilterChain", DelegatingFilterProxy.class);
-        springSecurityFilterChainReg.addMappingForServletNames(EnumSet.<DispatcherType>of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ERROR, DispatcherType.ASYNC), false, dispatcherServletReg.getName());
+        if (dispatcherServletReg != null) {
 
-        /* Session timeout filter */
-        FilterRegistration sessionTimeoutFilterChainReg = servletContext.addFilter("sessionTimeoutFilterChain", SessionTimeoutCookieFilter.class);
-        sessionTimeoutFilterChainReg.addMappingForServletNames(null, false, dispatcherServletReg.getName());
+            servletContext.addListener(new ContextLoaderListener(webCtx));
+
+            dispatcherServletReg.setLoadOnStartup(1);
+            dispatcherServletReg.setInitParameter("contextConfigLocation", "");
+            dispatcherServletReg.addMapping("/");
+        
+            /* Spring Security Delegating Filter */
+            FilterRegistration springSecurityFilterChainReg = servletContext.addFilter("springSecurityFilterChain", DelegatingFilterProxy.class);
+            springSecurityFilterChainReg.addMappingForServletNames(
+                            EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ERROR, DispatcherType.ASYNC), false,
+                            dispatcherServletReg.getName());
+
+            /* Session timeout filter */
+            FilterRegistration sessionTimeoutFilterChainReg = servletContext.addFilter("sessionTimeoutFilterChain", SessionTimeoutCookieFilter.class);
+            sessionTimeoutFilterChainReg.addMappingForServletNames(null, false, dispatcherServletReg.getName());
+        }
     }
 }

@@ -1,0 +1,33 @@
+= Dealing with SSL certificates
+Petar Tahchiev
+:doctype: book
+:sectanchors:
+:sectlinks:
+:toclevels: 4
+:source-highlighter: coderay
+:icons: font
+:last-update-label!:
+
+The Nemesis Consoles are javascript applications that connect via REST to a certain installation of the nemesis platform. Normally this connection is done on top of
+HTTPS so if you are using a self-signed certificates your javascript requests will not work. To overcome this here's short guide on how to configure your environment
+so that your browser always trusts the self-signed certificates.
+
+WARNING: For Google chrome to work your self signed certificate must have defined *Subject Alternative Name* equal to the domain name of the website you are browsing. If you are 
+creating your own self-signed certificate you need to provide the following options: `-ext SAN=dns:abc.com,dns:localhost,ip:127.0.0.1`.
+
+== Linux environment.
+Linux is always the recommended environment to work on. Chrome and Firefox use the operating system's trusted store so we need to import our certificate in there.
+So start the nemesis platform server and use link:import-cert.sh[this] sample script to do so:
+
+[source,bash]
+----
+ $ ./import-certs.sh localhost 8112
+----
+
+where the `localhost` is the hostname and `8112` is the port where the nemesis server is running on. After that simply restart firefox or chrome.
+
+== Windows environment.
+
+== Mac OS environment.
+
+
