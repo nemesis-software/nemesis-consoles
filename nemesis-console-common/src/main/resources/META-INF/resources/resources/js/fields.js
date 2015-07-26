@@ -588,37 +588,26 @@ Ext.define('console.view.field.NemesisEntityField', {
     }
 });
 
-//Ext.define('console.view.field.NemesisMediaField', {
-//extend: 'Ext.Img',
-//xtype: 'nemesisMediaField',
-//});
-
 Ext.define('console.view.field.NemesisMediaField', {
 	xtype : 'media',
 	extend : 'Ext.form.FieldContainer',
+	mixins: {
+        field: 'Ext.form.field.Field'
+    },
 	tooltip: 'This is media',
 	labelWidth: 50,
-	minWidth: 180,
+    colspan: 2,
 	layout: {
-        type: 'vbox',
-        pack: 'start',
+        type: 'fit',
+        pack: 'center',
         align: 'center'
     },
-	
-	//previewLocation : undefined, // possible values 'bottom'
-	//previewInitialSize : undefined, // possible values 'small'
-	//previewSizeSmall : undefined, // image size in pixels,
-	//previewSizeLarge : undefined, // image size in pixels,  default = 120
-	
 	fieldLabel : 'upload your file here..',
-	anchor : '100%',
+	//anchor : '100%',
 	buttonText : 'Choose ..', 
-	allowBlank : true,
-	previewLocation : 'top',
-	previewInitialSize : 'small',
+	previewLocation : 'top', // top, left, bottom
 	previewSizeSmall : 60,
-	previewSizeLarge : 400,
-	value: "https://dve2ovdl241xy.cloudfront.net/categories/category-mens-picture.png",
+	//value: "https://dve2ovdl241xy.cloudfront.net/categories/category-mens-picture.png",
 	/**
 	* Original value of date when form is initiated
 	*/
@@ -633,7 +622,6 @@ Ext.define('console.view.field.NemesisMediaField', {
 	        //anchor: '100%',
 	        width: 60,
 	        allowBlank : me.allowBlank,
-			// msgTarget : 'side',
 			buttonText : me.buttonText,
 			buttonOnly : true,
 			listeners : {
@@ -649,6 +637,7 @@ Ext.define('console.view.field.NemesisMediaField', {
 						var reader = new FileReader();
 						reader.onload = function(e) {
 							canvas.setSrc(e.target.result);
+							me.syncContainerWidth();
 						}
 						reader.readAsDataURL(file);
 						canvas.show();
@@ -660,63 +649,34 @@ Ext.define('console.view.field.NemesisMediaField', {
 			}
 		}
 	
-		var sizeSmall = 60; // image size in pixels, default = 60
-		if (me.previewSizeSmall != undefined) {
-			sizeSmall = me.previewSizeSmall;
-		}
-		var sizeLarge = 120; // image size in pixels, default = 120
-		if (me.previewSizeLarge != undefined) {
-			sizeLarge = me.previewSizeLarge;
-		}
-		var initialSize = sizeSmall;
-		if (me.previewInitialSize == 'large') {
-			initialSize = sizeLarge;
-		}
 		var previewImage = {
 			xtype : 'image',
 			// src : IMAGE_OFFSET + 'images/no-photo.jpg',
 			frame : true,
 			canvas : upLoadButton.inputId,
 			// resizable : true,
-			width : initialSize,
-			height : initialSize,
+			maxWidth : 550,
+			maxHeight : 230,
 			animate : 2000,
-			hidden : true, // initially hidden
-			scope : this,
-			sizeSmall : sizeSmall,
-			sizeLarge : sizeLarge,
+			style:'background-repeat: no-repeat;background-size: auto 100%;background-position: center;',
+			hidden : false, // initially hidden
 			listeners : {
-				// bind the click event to the underlying component element (el) in order to be able
-				// to handle mouse clicks on an image
-				el : {
-					click : function() {
-						var canvasId = this.dom.previousSibling.outerHTML;
-						canvasId = canvasId.substring(0, canvasId.indexOf('" '));
-						canvasId = canvasId.substring(canvasId.indexOf('"') + 1);
-						var canvas = Ext.ComponentQuery.query('image[canvas="fileuploadfield_' + canvasId + '"]')[0];
-						if (canvas.width == canvas.sizeSmall) {
-							canvas.setSize(canvas.sizeLarge, canvas.sizeLarge);
-						} else {
-							canvas.setSize(canvas.sizeSmall, canvas.sizeSmall);
-						}
-					}
+				render: function(c) {
+					this.getEl().on('load', function(e) {
+						me.syncContainerWidth();
+					});
 				}
-	
 			}
-	
 		}
 		if (!Ext.isEmpty(me.value)) {
 			// if an existing value 
 			previewImage.src = me.value;
-			previewImage.hidden = false;
 		}
 	
 		// rename original name and id to avoid conflits
-		me.name = me.name + '_container';
-		me.id = me.id + "_container";
 		me.items = [{
-			xtype: 'fieldcontainer',
-			layout: 'hbox',
+			xtype: 'container',
+			layout: {type:'hbox', pack: 'center', align:'center'},
 			items: [upLoadButton, {
 		    	xtype: 'button',
 		    	icon: 'resources/css/images/crop.png'
@@ -728,24 +688,35 @@ Ext.define('console.view.field.NemesisMediaField', {
 		    	icon: 'resources/css/images/rotate.png'
 		    }]
 		}];
-		if (me.previewLocation == 'left'
-				|| me.previewLocation == 'bottom'
-				|| me.previewLocation == undefined) {
-			me.items.push(previewImage);
-		} else if (me.previewLocation == 'top') {
+		if (me.previewLocation == 'top') {
 			me.items.splice(0, 0, previewImage);
+		} else {
+			me.items.push(previewImage);
 		}
 		if (me.previewLocation == 'left') {
 			me.layout = 'hbox';
 			upLoadButton.margin = '0 0 0 -24';
-			if (previewImage.initialSize != 'large') {
-				previewImage.margin = '0 0 0 90'; // ALIGN THE IMAGE AFTER THE BUTTON
-			}
+			previewImage.margin = '0 0 0 90'; // ALIGN THE IMAGE AFTER THE BUTTON
 		}
 		me.callParent(arguments);
-	}, 
+	},
+	getImageField: function() {
+		return this.items.findBy(function(item) {return item.xtype == 'image'});
+	},
+	syncContainerWidth: function() {
+		var me = this;
+		var imgFld = me.getImageField();
+		var imgEl = imgFld.el.dom;
+		var w = imgEl.height > imgFld.maxHeight ? imgEl.width * imgFld.maxHeight / imgEl.height : imgEl.width;
+		me.items.findBy(function(item) {return item.xtype == 'container'}).setWidth(w);
+	},
 	setValue: function (value) {
-		this.callParent();
+		var previewImage = this.getImageField();
+		if (!Ext.isEmpty(value)) {
+			// if an existing value 
+			previewImage.setSrc('https://dve2ovdl241xy.cloudfront.net' + value);
+			this.syncContainerWidth();
+		}
 	}
 });
 
