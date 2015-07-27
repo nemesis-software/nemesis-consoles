@@ -657,9 +657,6 @@ Ext.define('console.view.field.NemesisMediaField', {
 			// resizable : true,
 			maxWidth : 550,
 			maxHeight : 230,
-			animate : 2000,
-			style:'background-repeat: no-repeat;background-size: auto 100%;background-position: center;',
-			hidden : false, // initially hidden
 			listeners : {
 				render: function(c) {
 					this.getEl().on('load', function(e) {
@@ -669,7 +666,6 @@ Ext.define('console.view.field.NemesisMediaField', {
 			}
 		}
 		if (!Ext.isEmpty(me.value)) {
-			// if an existing value 
 			previewImage.src = me.value;
 		}
 	
@@ -708,6 +704,7 @@ Ext.define('console.view.field.NemesisMediaField', {
 		var imgFld = me.getImageField();
 		var imgEl = imgFld.el.dom;
 		var w = imgEl.height > imgFld.maxHeight ? imgEl.width * imgFld.maxHeight / imgEl.height : imgEl.width;
+		w = w > imgFld.maxWidth ? imgFld.maxWidth : w;
 		me.items.findBy(function(item) {return item.xtype == 'container'}).setWidth(w);
 	},
 	setValue: function (value) {
