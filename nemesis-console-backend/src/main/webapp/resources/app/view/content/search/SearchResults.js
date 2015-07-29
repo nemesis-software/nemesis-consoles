@@ -208,7 +208,7 @@ Ext.define('console.view.content.search.SearchResults', {
         if (view.getSelectionModel().getSelection().length > 0) {
             for (i = 0; i < view.getSelectionModel().getSelection().length; i++) {
                 entityNames.push(view.getSelectionModel().getSelection()[i].data.entityName);
-                selectedIds.push(view.getSelectionModel().getSelection()[i].data.id);
+                selectedIds.push(view.getSelectionModel().getSelection()[i].data.pk);
             }
         }
 
