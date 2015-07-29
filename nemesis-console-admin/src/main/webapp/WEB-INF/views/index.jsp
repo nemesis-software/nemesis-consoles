@@ -5,11 +5,11 @@
 <html>
 <head>
     <title>Admin Console | Nemesis</title>
-    <meta charset="utf-8"></meta>
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"></meta>
-    <meta http-equiv="Pragma" content="no-cache"></meta>
-    <meta http-equiv="Expires" content="0"></meta>
-    <meta name="_csrf_value" content="${_csrf.token}"/>
+    <meta charset="utf-8" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta name="_csrf_value" content="${_csrf.token}" />
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
     <link rel="shortcut icon" href="resources/img/favicon.ico" type="image/x-icon"/>
@@ -25,9 +25,12 @@
     <script src="webjars/jquery-atmosphere/2.2.3/jquery.atmosphere.js"></script>
 
     <script type="text/javascript" src="webjars/codemirror/5.1/lib/codemirror.js"></script>
-    <link rel="stylesheet" type="text/css" href="webjars/codemirror/5.1/lib/codemirror.css"></link>
+    <link rel="stylesheet" type="text/css" href="webjars/codemirror/5.1/lib/codemirror.css" />
     <script src="webjars/codemirror/5.1/mode/q/q.js"></script>
     <script src="webjars/codemirror/5.1/mode/sql/sql.js"></script>
+
+    <script src="webjars/sockjs-client/0.3.4/dist/sockjs.js"></script>
+    <script src="webjars/stomp-websocket/2.3.4/lib/stomp.js"></script>
 
     <link rel="stylesheet" type="text/css" href="resources/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="resources/css/console.css"/>

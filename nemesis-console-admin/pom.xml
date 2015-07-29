@@ -99,6 +99,19 @@
             <artifactId>jquery-atmosphere</artifactId>
             <version>${jqueryatmosphere.webjars.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>sockjs-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>stomp-websocket</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
