@@ -15,6 +15,11 @@ so that your browser always trusts the self-signed certificates.
 WARNING: For Google chrome to work your self signed certificate must have defined *Subject Alternative Name* equal to the domain name of the website you are browsing. If you are 
 creating your own self-signed certificate you need to provide the following options: `-ext SAN=dns:abc.com,dns:localhost,ip:127.0.0.1`.
 
+== Chrome Browser
+
+1) Go to chrome://flags 
+2) ENABLE the option for "Allow invalid certificates for resources loaded from localhost"
+
 == Linux environment.
 Linux is always the recommended environment to work on. Chrome and Firefox use the operating system's trusted store so we need to import our certificate in there.
 So start the nemesis platform server and use link:import-cert.sh[this] sample script to do so:
@@ -29,5 +34,4 @@ where the `localhost` is the hostname and `8112` is the port where the nemesis s
 == Windows environment.
 
 == Mac OS environment.
-
 
