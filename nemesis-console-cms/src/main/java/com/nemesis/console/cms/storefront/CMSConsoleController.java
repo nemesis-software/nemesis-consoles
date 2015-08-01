@@ -32,7 +32,7 @@ public class CMSConsoleController {
     public String home(final Model model, final HttpServletRequest request) {
         model.addAttribute("websiteBaseUrl", websiteBaseUrl);
         model.addAttribute("restBaseUrl", restBaseUrl);
-        model.addAttribute("catalogVersion", "3379279712517264");
+        model.addAttribute("catalogVersion", "3379288684257568");
         return "index";
     }
 

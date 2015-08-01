@@ -539,26 +539,26 @@ Ext.define('console.view.field.NemesisEntityField', {
                     me.jsonValue = resultData.uid;
                     me.setRawValue(me.jsonValue);
                     if (!me.initialized) {
-                    	me.originalValue = me.jsonValue;
-                    	me.initialized = true;
+                        me.originalValue = me.jsonValue;
+                        me.initialized = true;
                     }
-                    
+
                     if (me.entityId === 'media') {
                         me.tooltip = Ext.create('Ext.tip.ToolTip', {
                             target: me.getEl(),
                             trackMouse: true,
                             listeners: {
-                            	show: {
-                            		single: true,
-                            		fn: function(tip) {
-                                		var relUrl = resultData.url; 
-                                		var url = 'https://dve2ovdl241xy.cloudfront.net' + relUrl;
+                                show: {
+                                    single: true,
+                                    fn: function (tip) {
+                                        var relUrl = resultData.url;
+                                        var url = 'https://dve2ovdl241xy.cloudfront.net' + relUrl;
                                         me.tooltip.update("<img id='" + relUrl + "' src='" + url + "' style='max-width:400px'/>");
-                                        document.getElementById(relUrl).onload = function(e) {
-                                        	me.tooltip.setHeight(e.srcElement.height);
+                                        document.getElementById(relUrl).onload = function (e) {
+                                            me.tooltip.setHeight(e.srcElement.height);
                                         };
-                                	}
-                            	}
+                                    }
+                                }
                             },
                         });
                     }
@@ -579,9 +579,9 @@ Ext.define('console.view.field.NemesisEntityField', {
         return this.rawValue;
     },
     getSubmitValue: function () {
-    	if (!this.entity || typeof this.entity.data === 'undefined') {
-    		return '';
-    	}
+        if (!this.entity || typeof this.entity.data === 'undefined') {
+            return '';
+        }
         var record = this.store.getById(this.rawValue);
         // we must return something in the form of {"theme" : "https://localhost:8112/storefront/rest/site_theme/70933224484926368"}
         return record ? record.data._links.self.href : this.entityHref;
@@ -589,132 +589,136 @@ Ext.define('console.view.field.NemesisEntityField', {
 });
 
 Ext.define('console.view.field.NemesisMediaField', {
-	xtype : 'media',
-	extend : 'Ext.form.FieldContainer',
-	mixins: {
+    xtype: 'nemesisMediaField',
+    extend: 'Ext.form.FieldContainer',
+    mixins: {
         field: 'Ext.form.field.Field'
     },
-	tooltip: 'This is media',
-	labelWidth: 50,
+    tooltip: 'This is media',
+    labelWidth: 50,
     colspan: 2,
-	layout: {
+    layout: {
         type: 'fit',
         pack: 'center',
         align: 'center'
     },
-	fieldLabel : 'upload your file here..',
-	//anchor : '100%',
-	buttonText : 'Choose ..', 
-	previewLocation : 'top', // top, left, bottom
-	previewSizeSmall : 60,
-	//value: "https://dve2ovdl241xy.cloudfront.net/categories/category-mens-picture.png",
-	/**
-	* Original value of date when form is initiated
-	*/
-	initComponent : function() {
-		var me = this;
-	
-		var upLoadButton = {
-			xtype : 'filefield',
-			//name: 'photo',
-	        labelWidth: 0,
-	        msgTarget: 'side',
-	        //anchor: '100%',
-	        width: 60,
-	        allowBlank : me.allowBlank,
-			buttonText : me.buttonText,
-			buttonOnly : true,
-			listeners : {
-				change : function(input, value, opts) {
-					// can't get the file path directly from the component due to browser security that does not allow for
-					// javascript to access the local file system directly Browser will return a "fakePath"
-					// reference to the actual local file To work around this, we have to access
-					// the dom file directly from the input element!!!
-					var canvas = Ext.ComponentQuery.query('image[canvas="' + upLoadButton.inputId + '"]')[0];
-					var file = input.getEl().down('input[type=file]').dom.files[0];
-	
-					if (file.type == "image/jpeg" || file.type == "image/jpg" || file.type == "image/png" || file.type == "image/gif") {
-						var reader = new FileReader();
-						reader.onload = function(e) {
-							canvas.setSrc(e.target.result);
-							me.syncContainerWidth();
-						}
-						reader.readAsDataURL(file);
-						canvas.show();
-					} else {
-						// canvas.setSrc(IMAGE_OFFSET +'images/no-photo.jpg');
-						canvas.hide();
-					}
-				}
-			}
-		}
-	
-		var previewImage = {
-			xtype : 'image',
-			// src : IMAGE_OFFSET + 'images/no-photo.jpg',
-			frame : true,
-			canvas : upLoadButton.inputId,
-			// resizable : true,
-			maxWidth : 550,
-			maxHeight : 230,
-			listeners : {
-				render: function(c) {
-					this.getEl().on('load', function(e) {
-						me.syncContainerWidth();
-					});
-				}
-			}
-		}
-		if (!Ext.isEmpty(me.value)) {
-			previewImage.src = me.value;
-		}
-	
-		// rename original name and id to avoid conflits
-		me.items = [{
-			xtype: 'container',
-			layout: {type:'hbox', pack: 'center', align:'center'},
-			items: [upLoadButton, {
-		    	xtype: 'button',
-		    	icon: 'resources/css/images/crop.png'
-		    }, {
-		    	xtype: 'button',
-		    	icon: 'resources/css/images/rotateleft.png'
-		    }, {
-		    	xtype: 'button',
-		    	icon: 'resources/css/images/rotate.png'
-		    }]
-		}];
-		if (me.previewLocation == 'top') {
-			me.items.splice(0, 0, previewImage);
-		} else {
-			me.items.push(previewImage);
-		}
-		if (me.previewLocation == 'left') {
-			me.layout = 'hbox';
-			upLoadButton.margin = '0 0 0 -24';
-			previewImage.margin = '0 0 0 90'; // ALIGN THE IMAGE AFTER THE BUTTON
-		}
-		me.callParent(arguments);
-	},
-	getImageField: function() {
-		return this.items.findBy(function(item) {return item.xtype == 'image'});
-	},
-	syncContainerWidth: function() {
-		var me = this;
-		var imgFld = me.getImageField();
-		var imgEl = imgFld.el.dom;
-		var w = imgEl.height > imgFld.maxHeight ? imgEl.width * imgFld.maxHeight / imgEl.height : imgEl.width;
-		w = w > imgFld.maxWidth ? imgFld.maxWidth : w;
-		me.items.findBy(function(item) {return item.xtype == 'container'}).setWidth(w);
-	},
-	setValue: function (value) {
-		var previewImage = this.getImageField();
-		if (!Ext.isEmpty(value)) {
-			// if an existing value 
-			previewImage.setSrc('https://dve2ovdl241xy.cloudfront.net' + value);
-			this.syncContainerWidth();
-		}
-	}
+    fieldLabel: 'upload your file here..',
+    //anchor : '100%',
+    buttonText: 'Choose ..',
+    previewLocation: 'top', // top, left, bottom
+    previewSizeSmall: 60,
+    //value: "https://dve2ovdl241xy.cloudfront.net/categories/category-mens-picture.png",
+    /**
+     * Original value of date when form is initiated
+     */
+    initComponent: function () {
+        var me = this;
+
+        var upLoadButton = {
+            xtype: 'filefield',
+            //name: 'photo',
+            labelWidth: 0,
+            msgTarget: 'side',
+            //anchor: '100%',
+            width: 60,
+            allowBlank: me.allowBlank,
+            buttonText: me.buttonText,
+            buttonOnly: true,
+            listeners: {
+                change: function (input, value, opts) {
+                    // can't get the file path directly from the component due to browser security that does not allow for
+                    // javascript to access the local file system directly Browser will return a "fakePath"
+                    // reference to the actual local file To work around this, we have to access
+                    // the dom file directly from the input element!!!
+                    var canvas = Ext.ComponentQuery.query('image[canvas="' + upLoadButton.inputId + '"]')[0];
+                    var file = input.getEl().down('input[type=file]').dom.files[0];
+
+                    if (file.type == "image/jpeg" || file.type == "image/jpg" || file.type == "image/png" || file.type == "image/gif") {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            canvas.setSrc(e.target.result);
+                            me.syncContainerWidth();
+                        }
+                        reader.readAsDataURL(file);
+                        canvas.show();
+                    } else {
+                        // canvas.setSrc(IMAGE_OFFSET +'images/no-photo.jpg');
+                        canvas.hide();
+                    }
+                }
+            }
+        }
+
+        var previewImage = {
+            xtype: 'image',
+            // src : IMAGE_OFFSET + 'images/no-photo.jpg',
+            frame: true,
+            canvas: upLoadButton.inputId,
+            // resizable : true,
+            maxWidth: 550,
+            maxHeight: 230,
+            listeners: {
+                render: function (c) {
+                    this.getEl().on('load', function (e) {
+                        me.syncContainerWidth();
+                    });
+                }
+            }
+        }
+        if (!Ext.isEmpty(me.value)) {
+            previewImage.src = me.value;
+        }
+
+        // rename original name and id to avoid conflits
+        me.items = [{
+            xtype: 'container',
+            layout: {type: 'hbox', pack: 'center', align: 'center'},
+            items: [upLoadButton, {
+                xtype: 'button',
+                icon: 'resources/css/images/crop.png'
+            }, {
+                xtype: 'button',
+                icon: 'resources/css/images/rotateleft.png'
+            }, {
+                xtype: 'button',
+                icon: 'resources/css/images/rotate.png'
+            }]
+        }];
+        if (me.previewLocation == 'top') {
+            me.items.splice(0, 0, previewImage);
+        } else {
+            me.items.push(previewImage);
+        }
+        if (me.previewLocation == 'left') {
+            me.layout = 'hbox';
+            upLoadButton.margin = '0 0 0 -24';
+            previewImage.margin = '0 0 0 90'; // ALIGN THE IMAGE AFTER THE BUTTON
+        }
+        me.callParent(arguments);
+    },
+    getImageField: function () {
+        return this.items.findBy(function (item) {
+            return item.xtype == 'image'
+        });
+    },
+    syncContainerWidth: function () {
+        var me = this;
+        var imgFld = me.getImageField();
+        var imgEl = imgFld.el.dom;
+        var w = imgEl.height > imgFld.maxHeight ? imgEl.width * imgFld.maxHeight / imgEl.height : imgEl.width;
+        w = w > imgFld.maxWidth ? imgFld.maxWidth : w;
+        me.items.findBy(function (item) {
+            return item.xtype == 'container'
+        }).setWidth(w);
+    },
+    setValue: function (value) {
+        var previewImage = this.getImageField();
+        if (!Ext.isEmpty(value)) {
+            // if an existing value
+            previewImage.setSrc('https://dve2ovdl241xy.cloudfront.net' + value);
+            this.syncContainerWidth();
+        }
+    }
 });
 
 Ext.define('console.view.field.NemesisEnumerationField', {

@@ -21,7 +21,7 @@
 
     <New id="restBaseUrl" class="org.eclipse.jetty.plus.jndi.EnvEntry">
         <Arg>restBaseUrl</Arg>
-        <Arg type="java.lang.String">https://solarapparel.com:8112/storefront/rest/</Arg>
+        <Arg type="java.lang.String">https://solarapparel.com/rest/</Arg>
         <Arg type="boolean">true</Arg>
     </New>
 </Configure>
