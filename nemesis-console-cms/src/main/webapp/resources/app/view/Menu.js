@@ -53,13 +53,18 @@ Ext.define('console.view.Menu', {
                                 '</div>',
                                 '</tpl>'
                             ],
+                            listeners: {
+                                afterrender: function (p) {
+                                    Ext.getCmp('templates-pager').setStore(this.getStore());
+                                }
+                            },
                             store: Ext.create('Ext.data.Store',
                                 {
                                     id: 'page-template-store',
                                     autoLoad: true,
                                     autoSync: false,
                                     autoScroll: true,
-                                    pageSize: 100,
+                                    pageSize: 10,
                                     model: Ext.define('name', {
                                         extend: 'Ext.data.Model',
                                         fields: ["uid", "name", "title", "previewCanvas"]
@@ -84,7 +89,13 @@ Ext.define('console.view.Menu', {
                                     }
                                 })
                         }
-                    ]
+                    ],
+                    bbar: {
+                        id: 'templates-pager',
+                        xtype: 'pagingtoolbar',
+                        store: null,   // will be set in after renderer of the dataview
+                        displayInfo: false
+                    }
                 },
                 {
                     xtype: 'panel',
@@ -122,20 +133,25 @@ Ext.define('console.view.Menu', {
                                     }
                                 }
                             ),
+                            listeners: {
+                                afterrender: function (p) {
+                                    Ext.getCmp('pages-pager').setStore(this.getStore());
+                                }
+                            },
                             store: Ext.create('Ext.data.Store',
                                 {
                                     id: 'content-page-store',
-                                    autoLoad: true,
+                                    autoLoad: false,
                                     autoSync: false,
                                     autoScroll: true,
-                                    pageSize: 100,
+                                    pageSize: 10,
                                     model: Ext.define('name', {
                                         extend: 'Ext.data.Model',
                                         fields: ["uid", "name", "title"]
                                     }),
                                     proxy: {
                                         type: 'rest',
-                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findAllByCatalogVersion?catalogVersion=' + Ext.get('catalogVersion').dom.getAttribute('value'),
+                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findAllByCatalogVersionEquals?catalogVersion=' + Ext.get('catalogVersion').dom.getAttribute('value'),
                                         limitParam: 'size',
                                         useDefaultXhrHeader: false,
                                         cors: true,
@@ -153,7 +169,13 @@ Ext.define('console.view.Menu', {
                                     }
                                 })
                         }
-                    ]
+                    ],
+                    bbar: {
+                        id: 'pages-pager',
+                        xtype: 'pagingtoolbar',
+                        store: null,   // will be set in after renderer of the dataview
+                        displayInfo: false
+                    }
                 },
                 {
                     title: 'Slots For This Page',
@@ -193,13 +215,22 @@ Ext.define('console.view.Menu', {
                                     }
                                 }
                             ),
+                            listeners: {
+                                select: function (view) {
+                                    debugger;
+                                    alert('selected ' + view.getSelection()[0].data.pk);
+                                },
+                                afterrender: function (p) {
+                                    Ext.getCmp('page-slots-pager').setStore(this.getStore());
+                                }
+                            },
                             store: Ext.create('Ext.data.Store',
                                 {
                                     id: 'content-slot-store',
                                     autoLoad: false,
                                     autoSync: false,
                                     autoScroll: true,
-                                    pageSize: 100,
+                                    pageSize: 10,
                                     model: Ext.define('name', {
                                         extend: 'Ext.data.Model',
                                         fields: ["uid", "position", "previewCanvas"]
@@ -224,7 +255,13 @@ Ext.define('console.view.Menu', {
                                     }
                                 })
                         }
-                    ]
+                    ],
+                    bbar: {
+                        id: 'page-slots-pager',
+                        xtype: 'pagingtoolbar',
+                        store: null,   // will be set in after renderer of the dataview
+                        displayInfo: false
+                    }
                 },
                 {
                     title: 'Widgets',
@@ -234,14 +271,15 @@ Ext.define('console.view.Menu', {
                     border: false,
                     items: [
                         {
+                            id: "widgets-view",
                             bodyPadding: 0,
                             xtype: 'dataview',
-                            scroll: 'vertical',
                             trackOver: true,
                             itemSelector: 'div.top-carousel-item',
+                            singleSelect:true,
                             overItemCls: 'x-item-over',
-                            emptyText: 'No pages available',
-                            tpl: [
+                            emptyText: 'No widgets available',
+                            tpl: new Ext.XTemplate(
                                 '<tpl for=".">',
                                 '<div class="top-carousel-item" id="widget-{uid}">',
                                 '<div class="carousel-picture">',
@@ -254,19 +292,29 @@ Ext.define('console.view.Menu', {
                                 '</div>',
                                 '</tpl>',
                                 {
-                                    getPreviewImage: function (selfUrl) {
-                                        var tmp = selfUrl.slice(0, selfUrl.lastIndexOf('/'));
-                                        var widget_type = (tmp).substr(tmp.lastIndexOf('/') + 1, tmp.length);
+                                    getPreviewImage: function (url) {
+                                        var tmp = url.substring(0, url.lastIndexOf('/'));
+                                        var widget_type = tmp.substring(tmp.lastIndexOf('/') + 1, tmp.length);
                                         return Ext.get('contextPath').dom.getAttribute('ctxPath') + "/resources/img/" + widget_type + ".svg";
                                     }
                                 }
-                            ],
+                            ),
+                            listeners: {
+                                select: function (view) {
+                                    debugger;
+                                    alert('selected ' + view.getSelection()[0].data.pk);
+                                },
+                                afterrender: function (p) {
+                                    Ext.getCmp('widgets-pager').setStore(this.getStore());
+                                }
+                            },
                             store: Ext.create('Ext.data.Store',
                                 {
+                                    id: 'widgets-store',
                                     autoLoad: true,
                                     autoSync: false,
                                     autoScroll: true,
-                                    pageSize: 100,
+                                    pageSize: 10,
                                     model: Ext.define('name', {
                                         extend: 'Ext.data.Model',
                                         fields: ["uid", "name", "_links"]
@@ -291,7 +339,13 @@ Ext.define('console.view.Menu', {
                                     }
                                 })
                         }
-                    ]
+                    ],
+                    bbar: {
+                        id: 'widgets-pager',
+                        xtype: 'pagingtoolbar',
+                        store: null,   // will be set in after renderer of the dataview
+                        displayInfo: false
+                    }
                 },
                 {
                     xtype: 'panel',
@@ -322,10 +376,11 @@ Ext.define('console.view.Menu', {
                                 '</tpl>'],
                             store: Ext.create('Ext.data.Store',
                                 {
+                                    id: 'emails-store',
                                     autoLoad: true,
                                     autoSync: false,
                                     autoScroll: true,
-                                    pageSize: 100,
+                                    pageSize: 30,
                                     model: Ext.define('name', {
                                         extend: 'Ext.data.Model',
                                         fields: ["uid", "name", "title"]
@@ -355,10 +410,19 @@ Ext.define('console.view.Menu', {
                                     Ext.get('website-iframe').dom.src = Ext.get('website-base-url').dom.getAttribute('url') + "email/" + record.raw.uid + "?site=solar&live_edit_view=true";
                                     view.el.setStyle('background', '#DDDDDD');
                                     view.el.setStyle('border-color', '#000');
+                                },
+                                afterrender: function (p) {
+                                    Ext.getCmp('emails-pager').setStore(this.getStore());
                                 }
                             }
-                        }
-                    ]
+                        },
+                    ],
+                    bbar: {
+                        id: 'emails-pager',
+                        xtype: 'pagingtoolbar',
+                        store: null,   // will be set in after renderer of the dataview
+                        displayInfo: false
+                    }
                 }
             ]
         });

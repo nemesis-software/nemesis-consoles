@@ -26,13 +26,18 @@ Ext.application({
             //add an extra parameter to the request to denote that ext ajax is sending it
             request: function (options) {
                 var me = this;
-                if (!options.params)
+                if (!options.params) {
                     options.params = {};
-                options.params = {
+                }
+                var newOptions = {
                     'nemesis-username': Ext.get('username').dom.getAttribute('value'),
                     'nemesis-token': Ext.get('token').dom.getAttribute('value'),
                     'nemesis-expiryTime': Ext.get('expiryTime').dom.getAttribute('value')
                 };
+
+                for (var attrname in newOptions) {
+                    options.params[attrname] = newOptions[attrname];
+                }
 
                 return me.callOverridden(arguments);
             }
@@ -44,9 +49,7 @@ Ext.application({
             renderTo: Ext.getBody(),
             listeners: {
                 afterrender: function () {
-                    var mask = Ext.get('splash-screen'),
-                        parent = Ext.get('splash-background');
-                    ;
+                    var mask = Ext.get('splash-screen'), parent = Ext.get('splash-background');
                     mask.fadeOut({
                         callback: function () {
                             mask.destroy();

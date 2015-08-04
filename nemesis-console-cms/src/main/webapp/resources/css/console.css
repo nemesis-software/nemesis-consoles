@@ -18,6 +18,12 @@ div.top-carousel-item.x-item-over {
     background: #efefef repeat-x left top;
 }
 
+
+div.top-carousel-item.x-item-selected {
+    border: 1px solid rgb(0,0,0);
+    background: rgb(211, 211, 211) repeat-x left top;
+}
+
 div.carousel-picture {
     display: block;
     float: left;
