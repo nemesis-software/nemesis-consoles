@@ -94,7 +94,8 @@ Ext.define('console.view.content.search.SearchResults', {
             displayMsg: 'Displaying topics {0} - {1} of {2}',
             emptyMsg: "No topics to display",
             columns: columns,
-            bbar: new Ext.toolbar.Paging({
+            bbar: {
+                xtype: 'pagingtoolbar',
                 store: store,
                 displayInfo: true,
                 items: [
@@ -114,7 +115,6 @@ Ext.define('console.view.content.search.SearchResults', {
                         }),
                         mode: 'local',
                         value: '10',
-
                         listWidth: 40,
                         triggerAction: 'all',
                         displayField: 'id',
@@ -138,7 +138,7 @@ Ext.define('console.view.content.search.SearchResults', {
                         }
                     })
                 ]
-            })
+            }
         });
 
         this.callParent(arguments);
