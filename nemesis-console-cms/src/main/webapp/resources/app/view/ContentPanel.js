@@ -28,13 +28,12 @@ Ext.define('console.view.ContentPanel', {
                             {
                                 fieldLabel: 'Site',
                                 xtype: 'combo',
-                                valueField: 'uid',
-                                displayField: 'uid',
-                                value: 'solarapparel',
+                                valueField: 'pk',
+                                displayField: 'name',
                                 store: Ext.create('Ext.data.ArrayStore', {
                                     autoLoad: false,
                                     autoSync: false,
-                                    fields: ['uid', 'name'],
+                                    fields: ['pk', 'name'],
                                     proxy: {
                                         type: 'rest',
                                         url: Ext.get('rest-base-url').dom.getAttribute('url') + 'site/',
@@ -45,9 +44,19 @@ Ext.define('console.view.ContentPanel', {
                                             rootProperty: '_embedded.siteModels'
                                         }
                                     }
-                                })
+                                }),
+                                listeners : {
+                                    select: function (view) {
+                                        var catalogsCombo = Ext.getCmp('catalogsCombo');
+                                        //clear old selection of catalogs and catalogVersions
+                                        catalogsCombo.setValue("");
+                                        Ext.getCmp('catalogVersionsCombo').setValue("");
+                                        //fetch data
+                                        catalogsCombo.store.proxy.url = view.getSelectedRecord().data._links.contentCatalogs.href;
+                                        catalogsCombo.store.load();
+                                    }
+                                }
                             },
-                            '-',
                             {
                                 fieldLabel: 'Experience',
                                 xtype: 'combo',
@@ -83,7 +92,65 @@ Ext.define('console.view.ContentPanel', {
                                         scope: this
                                     }
                                 }
-                            }
+                            },
+                            {
+                                id: 'catalogsCombo',
+                                fieldLabel: 'Catalog',
+                                xtype: 'combo',
+                                multiSelect: true,
+                                valueField: 'pk',
+                                displayField: 'uid',
+                                store: Ext.create('Ext.data.ArrayStore', {
+                                    autoLoad: false,
+                                    autoSync: false,
+                                    fields: ['pk', 'name'],
+                                    proxy: {
+                                        type: 'rest',
+                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'catalog/',
+                                        useDefaultXhrHeader: false,
+                                        cors: true,
+                                        reader: {
+                                            type: 'json',
+                                            rootProperty: '_embedded.catalogModels'
+                                        }
+                                    }
+                                }),
+                                listeners : {
+                                    select: function (view) {
+                                        var selectedCatalogPK = view.getValue()[0];
+                                        var catalogVersionsCombo = Ext.getCmp('catalogVersionsCombo');
+                                        //clear old selection of catalogVersions
+                                        Ext.getCmp('catalogVersionsCombo').setValue("");
+                                        //fetch data
+                                        catalogVersionsCombo.store.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url')
+                                                                    + 'catalog/' + selectedCatalogPK + '/catalogVersions/';
+
+                                        catalogVersionsCombo.store.load();
+                                    }
+                                }
+                            },
+                            {
+                                id: 'catalogVersionsCombo',
+                                fieldLabel: 'Catalog Version',
+                                xtype: 'combo',
+                                valueField: 'uid',
+                                displayField: 'uid',
+                                store: Ext.create('Ext.data.ArrayStore', {
+                                    autoLoad: false,
+                                    autoSync: false,
+                                    fields: ['uid', 'name'],
+                                    proxy: {
+                                        type: 'rest',
+                                        url: null, //will be set by the catalog combo change event
+                                        useDefaultXhrHeader: false,
+                                        cors: true,
+                                        reader: {
+                                            type: 'json',
+                                            rootProperty: '_embedded.catalogVersionModels'
+                                        }
+                                    }
+                                })
+                            },
                         ]
                     }
                 ]
