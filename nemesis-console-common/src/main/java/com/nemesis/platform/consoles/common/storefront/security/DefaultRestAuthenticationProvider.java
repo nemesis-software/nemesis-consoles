@@ -11,37 +11,15 @@
  */
 package com.nemesis.platform.consoles.common.storefront.security;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.conn.ssl.TrustStrategy;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.PoolingClientConnectionManager;
-import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.AuthorityUtils;
 
 import javax.annotation.Resource;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
 
 /**
  * @version $Id$
@@ -55,56 +33,56 @@ public class DefaultRestAuthenticationProvider implements AuthenticationProvider
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        //
+        //        final String username = (String) authentication.getPrincipal();
+        //        final String password = (String) authentication.getCredentials();
+        //
+        //        final UserData userData;
+        //        try {
+        //            TrustStrategy acceptingTrustStrategy = new TrustStrategy() {
+        //                @Override
+        //                public boolean isTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+        //                    return true;
+        //                }
+        //            };
+        //            SSLSocketFactory sf = new SSLSocketFactory(acceptingTrustStrategy, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+        //            SchemeRegistry registry = new SchemeRegistry();
+        //            registry.register(new Scheme("https", 8112, sf));
+        //            ClientConnectionManager ccm = new PoolingClientConnectionManager(registry);
+        //
+        //            DefaultHttpClient httpclient = new DefaultHttpClient(ccm);
+        //
+        //            /**
+        //             * It can't be POST because the CSRF is triggered.
+        //             */
+        //            HttpGet httpGet = new HttpGet(getRestBaseUrl() + "auth?site=solar");
+        //
+        //            LOG.debug("Calling: " + getRestBaseUrl() + "auth");
+        //
+        //            httpGet.setHeader("X-Nemesis-Username", username);
+        //            httpGet.setHeader("X-Nemesis-Password", password);
+        //
+        //            HttpResponse response2 = httpclient.execute(httpGet);
+        //            HttpEntity entity2 = response2.getEntity();
+        //            final String response = EntityUtils.toString(entity2, Charset.defaultCharset());
+        //            LOG.info(response);
+        //            ObjectMapper mapper = new ObjectMapper();
+        //            mapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
+        //            userData = mapper.readValue(response, UserData.class);
+        //            if (userData.getToken() == null) {
+        //                throw new BadCredentialsException("Invalid username/password");
+        //            }
+        //
+        final ConsoleUserPrincipal principal =
+                        new ConsoleUserPrincipal("admin", "nimda", AuthorityUtils.createAuthorityList("ROLE_EMPLOYEEGROUP", "ROLE_ADMINGROUP"));
+        principal.setExpiryTime(-1L);
+        principal.setToken("");
 
-        final String username = (String) authentication.getPrincipal();
-        final String password = (String) authentication.getCredentials();
-
-        final UserData userData;
-        try {
-            TrustStrategy acceptingTrustStrategy = new TrustStrategy() {
-                @Override
-                public boolean isTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                    return true;
-                }
-            };
-            SSLSocketFactory sf = new SSLSocketFactory(acceptingTrustStrategy, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-            SchemeRegistry registry = new SchemeRegistry();
-            registry.register(new Scheme("https", 8112, sf));
-            ClientConnectionManager ccm = new PoolingClientConnectionManager(registry);
-
-            DefaultHttpClient httpclient = new DefaultHttpClient(ccm);
-
-            /**
-             * It can't be POST because the CSRF is triggered.
-             */
-            HttpGet httpGet = new HttpGet(getRestBaseUrl() + "auth?site=solar");
-
-            LOG.debug("Calling: " + getRestBaseUrl() + "auth");
-
-            httpGet.setHeader("X-Nemesis-Username", username);
-            httpGet.setHeader("X-Nemesis-Password", password);
-
-            HttpResponse response2 = httpclient.execute(httpGet);
-            HttpEntity entity2 = response2.getEntity();
-            final String response = EntityUtils.toString(entity2, Charset.defaultCharset());
-            LOG.info(response);
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
-            userData = mapper.readValue(response, UserData.class);
-            if (userData.getToken() == null) {
-                throw new BadCredentialsException("Invalid username/password");
-            }
-
-            final ConsoleUserPrincipal principal =
-                            new ConsoleUserPrincipal(userData.getUsername(), password, AuthorityUtils.createAuthorityList(userData.getAuthorities()));
-            principal.setExpiryTime(userData.getExpiryTime());
-            principal.setToken(userData.getToken());
-
-            return new UsernamePasswordAuthenticationToken(principal, password, principal.getAuthorities());
-        } catch (NoSuchAlgorithmException | KeyManagementException | KeyStoreException | UnrecoverableKeyException | IOException e) {
-            LOG.error(e.getMessage(), e);
-            throw new InternalAuthenticationServiceException(e.getMessage());
-        }
+        return new UsernamePasswordAuthenticationToken(principal, "nimda", principal.getAuthorities());
+        //        } catch (NoSuchAlgorithmException | KeyManagementException | KeyStoreException | UnrecoverableKeyException | IOException e) {
+        //            LOG.error(e.getMessage(), e);
+        //            throw new InternalAuthenticationServiceException(e.getMessage());
+        //        }
     }
 
     @Override
