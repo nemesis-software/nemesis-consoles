@@ -256,7 +256,8 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
     afterRender: function () {
         var me = this;
         me.callParent();
-
+        
+        me.langValuePairs = {};
         me.fieldSet = Ext.create('Ext.form.FieldSet', {
             layout: {
                 type: 'hbox',
@@ -579,9 +580,6 @@ Ext.define('console.view.field.NemesisEntityField', {
         return this.rawValue;
     },
     getSubmitValue: function () {
-        if (!this.entity || typeof this.entity.data === 'undefined') {
-            return '';
-        }
         var record = this.store.getById(this.rawValue);
         // we must return something in the form of {"theme" : "https://localhost:8112/storefront/rest/site_theme/70933224484926368"}
         return record ? record.data._links.self.href : this.entityHref;
