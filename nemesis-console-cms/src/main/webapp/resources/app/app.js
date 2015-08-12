@@ -86,7 +86,7 @@ Ext.application({
             if (event.data.type === 'PAGE_LOADED') {
 
                 Ext.Ajax.request({
-                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findAllByCatalogVersion?catalogVersion=' + event.data.page.catalog_version,
+                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/',
                     method: 'GET',
                     params: {},
                     success: function (responseObject) {
@@ -100,7 +100,6 @@ Ext.application({
                         var page = Ext.get('page-' + event.data.page.uid);
                         console.log(page);
                         if (page) {
-                            alert('scrollin');
                             page.dom.scrollIntoView();
                             page.setStyle('background', '#DDDDDD');
                             page.setStyle('border-color', '#000');
@@ -135,8 +134,6 @@ Ext.application({
                     }
                     this.previousTemplateId = 'template-' + event.data.page.template_id;
                 }
-
-                Ext.get('catalogVersion').dom.setAttribute('value', event.data.page.catalog_version);
 
                 Ext.getCmp('content-panel-status-bar').updateContent(event.data.page);
                 Ext.getCmp('page-slot-store').items.items[0].store.proxy.extraParams = {
@@ -247,7 +244,7 @@ Ext.application({
                             handler: function () {
 
                                 var rest = document.getElementById('rest-base-url').getAttribute('url');
-                                var url = rest + 'widget';
+                                var url = rest + 'widget/search/findByCatalogVersionUid?catalogVersionUid=Staged';
                                 Ext.Ajax.request({
                                     url: url,
                                     method: 'GET',
@@ -260,6 +257,7 @@ Ext.application({
                                         });
                                         var lang = document.getElementById('rest-base-url').getAttribute('locale');
                                         var json = JSON.parse(response.responseText), x, html = '';
+                                        debugger;
 
                                         for (x in json._embedded) {
                                             var item = json._embedded[x];

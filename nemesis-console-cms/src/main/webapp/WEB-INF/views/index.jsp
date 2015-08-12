@@ -36,8 +36,6 @@
 <div id="contextPath" style="display:none" ctxPath="${pageContext.request.contextPath}"></div>
 <div id="security" style="display:none" token="${_csrf.token}"></div>
 
-<div id="catalogVersion" style="display:none" value="${catalogVersion}"/>
-
 <div id="token" style="display:none" value="<sec:authentication property='principal.token' htmlEscape="false" />"></div>
 <div id="expiryTime" style="display:none" value="<sec:authentication property='principal.expiryTime' />"></div>
 <div id="username" style="display:none" value="<sec:authentication property='principal.username' />"></div>

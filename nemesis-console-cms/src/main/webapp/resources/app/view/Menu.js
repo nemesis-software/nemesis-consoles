@@ -30,6 +30,59 @@ Ext.define('console.view.Menu', {
                     iconCls: 'abstract_template',
                     items: [
                         {
+                            id: 'page-template-toolbar',
+                            xtype: 'toolbar',
+                            border: true,
+                            baseCls: 'subMenu',
+                            cls: 'effect1',
+                            dock: 'top',
+                            height: 25,
+                            items: [
+                                {
+                                    id: 'page-template-filter',
+                                    xtype: 'textfield',
+                                    name: 'SearchDownload',
+                                    itemId: 'SearchDownload',
+                                    enableKeyEvents: true,
+                                    allowBlank: true,
+                                    minLength: 3,
+                                    width:'79%',
+                                    listeners: {
+                                        specialkey: function (f, e) {
+                                            if (e.getKey() == e.ENTER) {
+                                                var input = Ext.getCmp('page-template-filter').getValue();
+                                                if (input) {
+                                                    Ext.getCmp('page-template-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'page_template/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input + "%25&catalogVersionUid=Staged";
+                                                    Ext.getCmp('page-template-dataview').getStore().load();
+                                                } else {
+                                                    Ext.getCmp('page-template-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'page_template/search/findByCatalogVersionUid?catalogVersionUid=Staged';
+                                                    Ext.getCmp('page-template-dataview').getStore().load();
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                '->',
+                                {
+                                    xtype:'button',
+                                    cls:'x-btn-default-small',
+                                    text : 'Filter',
+                                    width:'20%',
+                                    handler: function() {
+                                        var input = Ext.getCmp('page-template-filter').getValue();
+                                        if (input) {
+                                            Ext.getCmp('page-template-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'page_template/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input + "%25&catalogVersionUid=Staged";
+                                            Ext.getCmp('page-template-dataview').getStore().load();
+                                        } else {
+                                            Ext.getCmp('page-template-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'page_template/search/findByCatalogVersionUid?catalogVersionUid=Staged';
+                                            Ext.getCmp('page-template-dataview').getStore().load();
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            id: 'page-template-dataview',
                             bodyPadding: 0,
                             xtype: 'dataview',
                             scroll: 'vertical',
@@ -54,6 +107,9 @@ Ext.define('console.view.Menu', {
                                 '</tpl>'
                             ],
                             listeners: {
+                                select: function (view) {
+                                    alert('selected ' + view.getSelection()[0].data.pk);
+                                },
                                 afterrender: function (p) {
                                     Ext.getCmp('templates-pager').setStore(this.getStore());
                                 }
@@ -71,7 +127,7 @@ Ext.define('console.view.Menu', {
                                     }),
                                     proxy: {
                                         type: 'rest',
-                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'page_template/search/findAllByCatalogVersionEquals?catalogVersion=' + Ext.get('catalogVersion').dom.getAttribute('value'),
+                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'page_template/search/findByCatalogVersionUid?catalogVersionUid=Staged',
                                         limitParam: 'size',
                                         useDefaultXhrHeader: false,
                                         cors: true,
@@ -105,7 +161,57 @@ Ext.define('console.view.Menu', {
                     iconCls: 'abstract_page',
                     items: [
                         {
+                            xtype: 'toolbar',
+                            border: true,
+                            baseCls: 'subMenu',
+                            cls: 'effect1',
+                            dock: 'top',
+                            height: 25,
+                            items: [{
+                                id: 'content-page-filter',
+                                xtype: 'textfield',
+                                name: 'SearchDownload',
+                                itemId: 'SearchDownload',
+                                enableKeyEvents: true,
+                                allowBlank: true,
+                                minLength: 3,
+                                width:'79%',
+                                listeners: {
+                                    specialkey: function (f, e) {
+                                        if (e.getKey() == e.ENTER) {
+                                            var input = Ext.getCmp('content-page-filter').getValue();
+                                            if(input){
+                                                Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input +"%25&catalogVersionUid=Staged";
+                                                Ext.getCmp('content-page-dataview').getStore().load();
+                                            } else {
+                                                Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByCatalogVersionUid?catalogVersionUid=Staged';
+                                                Ext.getCmp('content-page-dataview').getStore().load();
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            '->',
+                            {
+                                xtype:'button',
+                                cls:'x-btn-default-small',
+                                text : 'Filter',
+                                width:'20%',
+                                handler: function() {
+                                    var input = Ext.getCmp('content-page-filter').getValue();
+                                    if(input){
+                                        Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input +"%25&catalogVersionUid=Staged";
+                                        Ext.getCmp('content-page-dataview').getStore().load();
+                                    } else {
+                                        Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByCatalogVersionUid?catalogVersionUid=Staged';
+                                        Ext.getCmp('content-page-dataview').getStore().load();
+                                    }
+                                }
+                            }]
+                        },
+                        {
                             bodyPadding: 0,
+                            id: 'content-page-dataview',
                             xtype: 'dataview',
                             scroll: 'vertical',
                             trackOver: true,
@@ -134,6 +240,9 @@ Ext.define('console.view.Menu', {
                                 }
                             ),
                             listeners: {
+                                select: function (view) {
+                                    alert('selected ' + view.getSelection()[0].data.pk);
+                                },
                                 afterrender: function (p) {
                                     Ext.getCmp('pages-pager').setStore(this.getStore());
                                 }
@@ -151,7 +260,7 @@ Ext.define('console.view.Menu', {
                                     }),
                                     proxy: {
                                         type: 'rest',
-                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findAllByCatalogVersionEquals?catalogVersion=' + Ext.get('catalogVersion').dom.getAttribute('value'),
+                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByCatalogVersionUid?catalogVersionUid=Staged',
                                         limitParam: 'size',
                                         useDefaultXhrHeader: false,
                                         cors: true,
@@ -271,7 +380,110 @@ Ext.define('console.view.Menu', {
                     border: false,
                     items: [
                         {
-                            id: "widgets-view",
+                            xtype: 'toolbar',
+                            border: true,
+                            baseCls: 'subMenu',
+                            cls: 'effect1',
+                            dock: 'top',
+                            height: 25,
+                            items: [{
+                                id: 'widgets-filter',
+                                xtype: 'textfield',
+                                name: 'SearchDownload',
+                                itemId: 'SearchDownload',
+                                enableKeyEvents: true,
+                                allowBlank: true,
+                                minLength: 3,
+                                width:'79%',
+                                listeners: {
+                                    specialkey: function (f, e) {
+                                        if (e.getKey() == e.ENTER) {
+                                            var input = Ext.getCmp('widgets-filter').getValue();
+                                            if(input){
+                                                Ext.getCmp('widgets-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input +"%25&catalogVersionUid=Staged";
+                                                Ext.getCmp('widgets-dataview').getStore().load();
+                                            } else {
+                                                Ext.getCmp('widgets-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCatalogVersionUid?catalogVersionUid=Staged';
+                                                Ext.getCmp('widgets-dataview').getStore().load();
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                                '->',
+                                {
+                                    xtype:'button',
+                                    cls:'x-btn-default-small',
+                                    text : 'Filter',
+                                    width:'20%',
+                                    handler: function() {
+                                        var input = Ext.getCmp('widgets-filter').getValue();
+                                        if(input){
+                                            Ext.getCmp('widgets-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input + "%25&catalogVersionUid=Staged";
+                                            Ext.getCmp('widgets-dataview').getStore().load({
+                                                //drag-n-drop experiments https://docs.sencha.com/extjs/5.1/core_concepts/drag_drop.html
+                                                //callback : function(records, options, success) {
+                                                //    if (success) {
+                                                //        var overrides = {
+                                                //            // Called the instance the element is dragged.
+                                                //            b4StartDrag: function () {
+                                                //                // Cache the drag element
+                                                //                if (!this.el) {
+                                                //                    this.el = Ext.get(this.getEl());
+                                                //                }
+                                                //
+                                                //                //Cache the original XY Coordinates of the element, we'll use this later.
+                                                //                this.originalXY = this.el.getXY();
+                                                //            },
+                                                //            // Called when element is dropped in a spot without a dropzone, or in a dropzone without matching a ddgroup.
+                                                //            onInvalidDrop: function () {
+                                                //                // Set a flag to invoke the animated repair
+                                                //                this.invalidDrop = true;
+                                                //            },
+                                                //            // Called when the drag operation completes
+                                                //            endDrag: function () {
+                                                //                // Invoke the animation if the invalidDrop flag is set to true
+                                                //                if (this.invalidDrop === true) {
+                                                //                    // Remove the drop invitation
+                                                //                    this.el.removeCls('dropOK');
+                                                //
+                                                //                    // Create the animation configuration object
+                                                //                    var animCfgObj = {
+                                                //                        easing: 'elasticOut',
+                                                //                        duration: 1,
+                                                //                        scope: this,
+                                                //                        callback: function () {
+                                                //                            // Remove the position attribute
+                                                //                            this.el.dom.style.position = '';
+                                                //                        }
+                                                //                    };
+                                                //
+                                                //                    // Apply the repair animation
+                                                //                    this.el.setXY(this.originalXY[0], this.originalXY[1], animCfgObj);
+                                                //                    delete this.invalidDrop;
+                                                //                }
+                                                //            }
+                                                //        };
+                                                //        var carElements = Ext.get('widgets-dataview').select('.widget-dnd')
+                                                //        Ext.each(carElements.elements, function(el) {
+                                                //            var dd = Ext.create('Ext.dd.DD', el, 'carsDDGroup', {
+                                                //                isTarget  : false
+                                                //            });
+                                                //            //Apply the overrides object to the newly created instance of DD
+                                                //            Ext.apply(dd, overrides);
+                                                //        });
+                                                //    }
+                                                //}
+                                            });
+                                        } else {
+                                            Ext.getCmp('widgets-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCatalogVersionUid?catalogVersionUid=Staged';
+                                            Ext.getCmp('widgets-dataview').getStore().load();
+                                        }
+                                    }
+                                }]
+                        },
+                        {
+                            id: "widgets-dataview",
                             bodyPadding: 0,
                             xtype: 'dataview',
                             trackOver: true,
@@ -281,7 +493,7 @@ Ext.define('console.view.Menu', {
                             emptyText: 'No widgets available',
                             tpl: new Ext.XTemplate(
                                 '<tpl for=".">',
-                                '<div class="top-carousel-item" id="widget-{uid}">',
+                                '<div class="top-carousel-item widget-dnd" id="widget-{uid}">',
                                 '<div class="carousel-picture">',
                                 '<a><img src="{[this.getPreviewImage(values._links[\'self\'].href)]}" width="100"></a>',
                                 '</div>',
@@ -321,7 +533,7 @@ Ext.define('console.view.Menu', {
                                     }),
                                     proxy: {
                                         type: 'rest',
-                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'widget',
+                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCatalogVersionUid?catalogVersionUid=Staged',
                                         limitParam: 'size',
                                         useDefaultXhrHeader: false,
                                         cors: true,
@@ -407,7 +619,7 @@ Ext.define('console.view.Menu', {
                             ),
                             listeners: {
                                 itemclick: function (view, record, item, index, e, eOpts) {
-                                    Ext.get('website-iframe').dom.src = Ext.get('website-base-url').dom.getAttribute('url') + "email/" + record.raw.uid + "?site=solar&live_edit_view=true";
+                                    Ext.get('website-iframe').dom.src = Ext.get('website-base-url').dom.getAttribute('url') + "email/" + record.raw.uid + "?live_edit_view=true&site=" + ((Ext.getCmp('site-combo').getSelection() != null) ? Ext.getCmp('site-combo').getSelection().data.uid  : 'solarapparel-uk');
                                     view.el.setStyle('background', '#DDDDDD');
                                     view.el.setStyle('border-color', '#000');
                                 },
