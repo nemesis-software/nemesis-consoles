@@ -792,6 +792,7 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
         var me = this;
         this.callParent();
 
+        me.langValuePairs = {};
         this.fieldSet = Ext.create('Ext.form.FieldSet', {
             defaults: {
                 anchor: '100% 100%'
