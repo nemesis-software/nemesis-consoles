@@ -84,7 +84,10 @@ Ext.define('console.view.content.entity.EntityPopupForm', {
                 activeTab: 0,
                 deferredRender: false,
                 items: me.entityFields,
-                border: false
+                border: false,
+                defaults: {
+                	hideMode: 'offsets'
+                }
             }
         ];
 
