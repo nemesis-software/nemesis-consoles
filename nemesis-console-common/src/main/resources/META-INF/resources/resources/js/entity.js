@@ -266,6 +266,9 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
         this.callParent(arguments);
     },
     onsaveClicked: function (entity, entityPopupForm) {
+    	if (!entityPopupForm.isValid()) {
+    		return;
+    	}
         var me = this;
         Ext.Ajax.request({
             url: entity.data.url,

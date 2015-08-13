@@ -465,6 +465,30 @@ Ext.define('console.view.field.NemesisEntityField', {
             }
         }
     },
+    validateValue : function(value) {
+        var errs = this.getErrors(value);
+
+        if((value || value != "") && this.forceSelection){
+            var val = this.getRawValue(),
+            rec = this.findRecord(this.displayField, val);
+
+            if(!rec) {
+                errs.push("Invalid Selection");
+            } else {
+            	errs = [];
+            }
+        }
+
+        var error = errs[0];
+
+    	this.reset();
+        if (error == undefined) {
+            return true;
+        } else {
+            this.markInvalid(error);
+            return false;
+        }
+    },
     listeners: {
         el: {
             contextmenu: function (event, ui, ctxmenu) {
