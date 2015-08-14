@@ -410,6 +410,14 @@ Ext.define('console.view.field.NemesisEntityField', {
                     },
                     totalProperty: 'page.totalElements'
                 }
+            },
+            listeners: {
+            	load: {
+            		single: true,
+            		fn: function() {
+            			this.loaded = true;
+            		}
+            	}
             }
         });
         this.store = store;
@@ -463,6 +471,30 @@ Ext.define('console.view.field.NemesisEntityField', {
                     }
                 }
             }
+        }
+    },
+    validateValue : function(value) {
+        var errs = this.getErrors(value);
+
+        if((value || value != "") && this.forceSelection && this.store.loaded) {
+            var val = this.getRawValue(),
+            rec = this.findRecord(this.displayField, val);
+
+            if(!rec) {
+                errs.push("Invalid Selection");
+            } else {
+            	errs = [];
+            }
+        }
+
+        var error = errs[0];
+
+    	this.reset();
+        if (error == undefined) {
+            return true;
+        } else {
+            this.markInvalid(error);
+            return false;
         }
     },
     listeners: {
@@ -792,6 +824,7 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
         var me = this;
         this.callParent();
 
+        me.langValuePairs = {};
         this.fieldSet = Ext.create('Ext.form.FieldSet', {
             defaults: {
                 anchor: '100% 100%'
