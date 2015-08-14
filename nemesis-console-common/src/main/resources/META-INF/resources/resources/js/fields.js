@@ -410,6 +410,14 @@ Ext.define('console.view.field.NemesisEntityField', {
                     },
                     totalProperty: 'page.totalElements'
                 }
+            },
+            listeners: {
+            	load: {
+            		single: true,
+            		fn: function() {
+            			this.loaded = true;
+            		}
+            	}
             }
         });
         this.store = store;
@@ -468,7 +476,7 @@ Ext.define('console.view.field.NemesisEntityField', {
     validateValue : function(value) {
         var errs = this.getErrors(value);
 
-        if((value || value != "") && this.forceSelection){
+        if((value || value != "") && this.forceSelection && this.store.loaded) {
             var val = this.getRawValue(),
             rec = this.findRecord(this.displayField, val);
 
