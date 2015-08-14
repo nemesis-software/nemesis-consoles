@@ -222,6 +222,35 @@ Ext.application({
                             text: 'Remove Widget',
                             iconCls: 'widget_remove',
                             handler: function () {
+                                var contentSlotPk = event.data.selection.contentSlot;
+                                var contentElementPk = event.data.selection.contentElement;
+                                //get SLOT
+                                var url = document.getElementById('rest-base-url').getAttribute('url') + 'content_slot/' + contentSlotPk + '/widgets';
+                                Ext.Ajax.request({
+                                    url: url,
+                                    method: 'GET',
+                                    headers: {'Content-Type': 'application/json'},
+                                    params: {},
+                                    success: function (response) {
+                                        var json = JSON.parse(response.responseText)
+                                        for (var x in json._embedded) {
+                                            var items = json._embedded[x];
+                                            var forRemove = -1;
+                                            for (var i = 0; i < items.length; i++) {
+                                                if (contentElementPk == items[i].pk) {
+                                                    forRemove = i;
+                                                }
+                                            }
+                                            if (forRemove != -1) {
+                                                items.remove(forRemove);
+                                            }
+                                        }
+                                    }
+                                });
+                                //remove element from widgets
+                                //PATCH slot
+                                //refresh
+
                                 var entityConfiguration = Ext.create("console.markup." + record.get('id'));
                                 var window = Ext.getCmp('backend-viewport').createWindow({
                                     id: null,
@@ -238,11 +267,19 @@ Ext.application({
                             }
                         },
                         {
-                            itemId: 'addWidget',
-                            text: 'Add Another Widget',
+                            itemId: 'pasteWidget    ',
+                            text: 'Paste Widget',
                             iconCls: 'widget_add',
                             handler: function () {
-
+                                var copiedWidget = Ext.getCmp('cms-viewport').clipboard;
+                                if(!copiedWidget) {
+                                    Ext.MessageBox.alert('Unable to copy', 'First select a widget for coping');
+                                    return;
+                                }
+                                //get slot
+                                //add element to widgets
+                                //patch slot
+                                //refresh
                                 var rest = document.getElementById('rest-base-url').getAttribute('url');
                                 var url = rest + 'widget/search/findByCatalogVersionUid?catalogVersionUid=Staged';
                                 Ext.Ajax.request({

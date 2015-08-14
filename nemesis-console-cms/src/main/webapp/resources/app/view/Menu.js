@@ -112,7 +112,46 @@ Ext.define('console.view.Menu', {
                                 },
                                 afterrender: function (p) {
                                     Ext.getCmp('templates-pager').setStore(this.getStore());
+                                },
+                                itemcontextmenu: function (view, record, item, index, event) {
+                                //			view.select(record);
+                                    event.stopEvent();
+                                    var ctxMenu = this.buildCtxMenu(view, record, item, index, event);
+
+                                    ctxMenu.showAt(event.getXY());
                                 }
+                            },
+                            buildCtxMenu: function (view, record, item, index, event) {
+                                var me = this;
+                                return Ext.create('Ext.menu.Menu', {
+                                    items: [
+                                        {
+                                            itemId: 'edit',
+                                            handler: function () {
+                                                me.onEditSelected(view, record, item, index, event);
+                                            },
+                                            text: 'Edit',
+                                            iconCls: 'edit'
+                                        }
+                                    ]
+                                });
+                            },
+                            onEditSelected: function (view, record, item, index, event) {
+                                var parentCmpId = 'cms-viewport';
+
+                                var entityConfiguration = Ext.create("console.markup." + record.data.entityName);
+                                console.log(record);
+                                var window = Ext.getCmp(parentCmpId).createWindow({
+                                    id: null,
+                                    iconCls: 'page_template',
+                                    entity: Ext.create('console.model.Entity', {
+                                        name: null,
+                                        url: record.data._links['self'].href,
+                                        synchronizable: entityConfiguration.synchronizable
+                                    }),
+                                    sections: entityConfiguration.sections
+                                });
+                                window.show();
                             },
                             store: Ext.create('Ext.data.Store',
                                 {
@@ -245,7 +284,45 @@ Ext.define('console.view.Menu', {
                                 },
                                 afterrender: function (p) {
                                     Ext.getCmp('pages-pager').setStore(this.getStore());
+                                },itemcontextmenu: function (view, record, item, index, event) {
+                                    //			view.select(record);
+                                    event.stopEvent();
+                                    var ctxMenu = this.buildCtxMenu(view, record, item, index, event);
+
+                                    ctxMenu.showAt(event.getXY());
                                 }
+                            },
+                            buildCtxMenu: function (view, record, item, index, event) {
+                                var me = this;
+                                return Ext.create('Ext.menu.Menu', {
+                                    items: [
+                                        {
+                                            itemId: 'edit',
+                                            handler: function () {
+                                                me.onEditSelected(view, record, item, index, event);
+                                            },
+                                            text: 'Edit',
+                                            iconCls: 'edit'
+                                        }
+                                    ]
+                                });
+                            },
+                            onEditSelected: function (view, record, item, index, event) {
+                                var parentCmpId = 'cms-viewport';
+
+                                var entityConfiguration = Ext.create("console.markup." + record.data.entityName);
+                                console.log(record);
+                                var window = Ext.getCmp(parentCmpId).createWindow({
+                                    id: null,
+                                    iconCls: 'content_page',
+                                    entity: Ext.create('console.model.Entity', {
+                                        name: null,
+                                        url: record.data._links['self'].href,
+                                        synchronizable: entityConfiguration.synchronizable
+                                    }),
+                                    sections: entityConfiguration.sections
+                                });
+                                window.show();
                             },
                             store: Ext.create('Ext.data.Store',
                                 {
@@ -331,7 +408,46 @@ Ext.define('console.view.Menu', {
                                 },
                                 afterrender: function (p) {
                                     Ext.getCmp('page-slots-pager').setStore(this.getStore());
+                                },
+                                itemcontextmenu: function (view, record, item, index, event) {
+                                    //			view.select(record);
+                                    event.stopEvent();
+                                    var ctxMenu = this.buildCtxMenu(view, record, item, index, event);
+
+                                    ctxMenu.showAt(event.getXY());
                                 }
+                            },
+                            buildCtxMenu: function (view, record, item, index, event) {
+                                var me = this;
+                                return Ext.create('Ext.menu.Menu', {
+                                    items: [
+                                        {
+                                            itemId: 'edit',
+                                            handler: function () {
+                                                me.onEditSelected(view, record, item, index, event);
+                                            },
+                                            text: 'Edit',
+                                            iconCls: 'edit'
+                                        }
+                                    ]
+                                });
+                            },
+                            onEditSelected: function (view, record, item, index, event) {
+                                var parentCmpId = 'cms-viewport';
+
+                                var entityConfiguration = Ext.create("console.markup." + record.data.entityName);
+                                console.log(record);
+                                var window = Ext.getCmp(parentCmpId).createWindow({
+                                    id: null,
+                                    iconCls: 'content_slot',
+                                    entity: Ext.create('console.model.Entity', {
+                                        name: null,
+                                        url: record.data._links['self'].href,
+                                        synchronizable: entityConfiguration.synchronizable
+                                    }),
+                                    sections: entityConfiguration.sections
+                                });
+                                window.show();
                             },
                             store: Ext.create('Ext.data.Store',
                                 {
@@ -518,7 +634,65 @@ Ext.define('console.view.Menu', {
                                 },
                                 afterrender: function (p) {
                                     Ext.getCmp('widgets-pager').setStore(this.getStore());
+                                },
+                                itemcontextmenu: function (view, record, item, index, event) {
+                                    //			view.select(record);
+                                    event.stopEvent();
+                                    var ctxMenu = this.buildCtxMenu(view, record, item, index, event);
+
+                                    ctxMenu.showAt(event.getXY());
                                 }
+                            },
+                            buildCtxMenu: function (view, record, item, index, event) {
+                                var me = this;
+                                return Ext.create('Ext.menu.Menu', {
+                                    items: [
+                                        {
+                                            itemId: 'edit',
+                                            handler: function () {
+                                                me.onEditSelected(view, record, item, index, event);
+                                            },
+                                            text: 'Edit',
+                                            iconCls: 'edit'
+                                        },
+                                        '-',
+                                        {
+                                            itemId: 'copy',
+                                            handler: function () {
+                                                me.onCopySelected(view, record, item, index, event);
+                                            },
+                                            text: 'Copy',
+                                            iconCls: 'copy'
+                                        }
+                                    ]
+                                });
+                            },
+                            onEditSelected: function (view, record, item, index, event) {
+                                var parentCmpId = 'cms-viewport';
+
+                                var entityConfiguration = Ext.create("console.markup." + record.data.entityName);
+                                console.log(record);
+                                var window = Ext.getCmp(parentCmpId).createWindow({
+                                    id: null,
+                                    iconCls: 'widget',
+                                    entity: Ext.create('console.model.Entity', {
+                                        name: null,
+                                        url: record.data._links['self'].href,
+                                        synchronizable: entityConfiguration.synchronizable
+                                    }),
+                                    sections: entityConfiguration.sections
+                                });
+                                window.show();
+                            },
+                            onCopySelected: function (view, record, item, index, event) {
+                                Ext.getCmp('cms-viewport').clipboard = {
+                                    data: {
+                                        pk: record.data.pk,
+                                        id: record.data.uid,
+                                        name: record.data.entityName,
+                                        url: record.data._links.self.href
+                                    }
+                                };
                             },
                             store: Ext.create('Ext.data.Store',
                                 {
