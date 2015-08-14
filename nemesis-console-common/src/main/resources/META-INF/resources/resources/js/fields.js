@@ -604,7 +604,7 @@ Ext.define('console.view.field.NemesisEntityField', {
             });
         } else {
             me.entity = null;
-            //me.setRawValue(null);
+            me.initialized = true;
         }
         return me;
     },
