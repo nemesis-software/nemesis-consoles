@@ -235,35 +235,29 @@ Ext.application({
                                         var json = JSON.parse(response.responseText)
                                         for (var x in json._embedded) {
                                             var items = json._embedded[x];
-                                            var forRemove = -1;
+                                            var newWidgets = [];
                                             for (var i = 0; i < items.length; i++) {
-                                                if (contentElementPk == items[i].pk) {
-                                                    forRemove = i;
+                                                if (contentElementPk != items[i].pk) {
+                                                    newWidgets.push(items[i].pk);
                                                 }
                                             }
-                                            if (forRemove != -1) {
-                                                items.remove(forRemove);
-                                            }
+
+                                            var contentSlotPatchData = {};
+                                            contentSlotPatchData['widgets'] = newWidgets;
+
+                                            Ext.Ajax.request({
+                                                url: document.getElementById('rest-base-url').getAttribute('url') + 'content_slot/' + contentSlotPk,
+                                                method: 'PATCH',
+                                                headers: {'Content-Type': 'application/json', Accept: 'application/json'},
+                                                params: Ext.encode(contentSlotPatchData),
+                                                success: function (response) {
+                                                    Ext.get('website-iframe').dom.src = Ext.get('website-iframe').dom.src;
+                                                    alert("Widget removed successfully");
+                                                }
+                                            });
                                         }
                                     }
                                 });
-                                //remove element from widgets
-                                //PATCH slot
-                                //refresh
-
-                                var entityConfiguration = Ext.create("console.markup." + record.get('id'));
-                                var window = Ext.getCmp('backend-viewport').createWindow({
-                                    id: null,
-                                    title: '[' + record.get('text') + ']',
-                                    iconCls: record.get('id'),
-                                    entity: Ext.create('console.model.Entity', {
-                                        name: record.get('text'),
-                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('id')
-                                    }),
-                                    sections: entityConfiguration.sections,
-                                    synchronizable: entityConfiguration.synchronizable
-                                });
-                                Ext.getCmp('backend-viewport').restoreWindow(window);
                             }
                         },
                         {
@@ -271,8 +265,8 @@ Ext.application({
                             text: 'Paste Widget',
                             iconCls: 'widget_add',
                             handler: function () {
-                                var copiedWidget = Ext.getCmp('cms-viewport').clipboard;
-                                if(!copiedWidget) {
+                                var copyWidget = Ext.getCmp('cms-viewport').clipboard;
+                                if(!copyWidget) {
                                     Ext.MessageBox.alert('Unable to copy', 'First select a widget for coping');
                                     return;
                                 }
@@ -280,34 +274,71 @@ Ext.application({
                                 //add element to widgets
                                 //patch slot
                                 //refresh
-                                var rest = document.getElementById('rest-base-url').getAttribute('url');
-                                var url = rest + 'widget/search/findByCatalogVersionUid?catalogVersionUid=Staged';
+                                var contentSlotPk = event.data.selection.contentSlot;
+                                //get SLOT
+                                var url = document.getElementById('rest-base-url').getAttribute('url') + 'content_slot/' + contentSlotPk + '/widgets';
                                 Ext.Ajax.request({
                                     url: url,
                                     method: 'GET',
                                     headers: {'Content-Type': 'application/json'},
                                     params: {},
                                     success: function (response) {
-                                        var modal = new Ext.Window({
-                                            height: 400,
-                                            width: 530
-                                        });
-                                        var lang = document.getElementById('rest-base-url').getAttribute('locale');
-                                        var json = JSON.parse(response.responseText), x, html = '';
-                                        debugger;
-
-                                        for (x in json._embedded) {
-                                            var item = json._embedded[x];
-                                            var i = 0, l = item.length;
-                                            for (; i < l; i++) {
-                                                html += '<li>' + item[i].name + '</li>';
+                                        var json = JSON.parse(response.responseText)
+                                        for (var x in json._embedded) {
+                                            var items = json._embedded[x];
+                                            var newWidgets = [];
+                                            for (var i = 0; i < items.length; i++) {
+                                                newWidgets.push(items[i].pk);
                                             }
+                                            newWidgets.push(copyWidget.data.pk);
+
+                                            var contentSlotPatchData = {};
+                                            contentSlotPatchData['widgets'] = newWidgets;
+
+                                            Ext.Ajax.request({
+                                                url: document.getElementById('rest-base-url').getAttribute('url') + 'content_slot/' + contentSlotPk,
+                                                method: 'PATCH',
+                                                headers: {'Content-Type': 'application/json', Accept: 'application/json'},
+                                                params: Ext.encode(contentSlotPatchData),
+                                                success: function (response) {
+                                                    Ext.get('website-iframe').dom.src = Ext.get('website-iframe').dom.src;
+                                                    alert("Widget added successfully");
+                                                }
+                                            });
                                         }
-                                        var html = '<ul>' + html + '</ul>';
-                                        modal.setHtml(html);
-                                        modal.show();
                                     }
                                 });
+
+
+
+                                //var rest = document.getElementById('rest-base-url').getAttribute('url');
+                                //var url = rest + 'widget/search/findByCatalogVersionUid?catalogVersionUid=Staged';
+                                //Ext.Ajax.request({
+                                //    url: url,
+                                //    method: 'GET',
+                                //    headers: {'Content-Type': 'application/json'},
+                                //    params: {},
+                                //    success: function (response) {
+                                //        var modal = new Ext.Window({
+                                //            height: 400,
+                                //            width: 530
+                                //        });
+                                //        var lang = document.getElementById('rest-base-url').getAttribute('locale');
+                                //        var json = JSON.parse(response.responseText), x, html = '';
+                                //        debugger;
+                                //
+                                //        for (x in json._embedded) {
+                                //            var item = json._embedded[x];
+                                //            var i = 0, l = item.length;
+                                //            for (; i < l; i++) {
+                                //                html += '<li>' + item[i].name + '</li>';
+                                //            }
+                                //        }
+                                //        var html = '<ul>' + html + '</ul>';
+                                //        modal.setHtml(html);
+                                //        modal.show();
+                                //    }
+                                //});
                                 /*
                                  var entityConfiguration = Ext.create("console.markup." + record.get('id'));
                                  var window = Ext.getCmp('backend-viewport').createWindow({id: null, title: '[' + record.get('text') + ']', iconCls: record.get('id'), entity: Ext.create('console.model.Entity', {name: record.get('text'), url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('id')}), sections: entityConfiguration.sections});
