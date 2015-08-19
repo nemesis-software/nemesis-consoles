@@ -75,10 +75,10 @@ Ext.define('console.view.ContentPanel', {
                                             callback : function(records, options, success) {
                                                 if (success) {
                                                     //this doesn't populate the combo as it should
-                                                    for (var i = 0; i < records.length; i++) {
-                                                        catalogsCombo.select(records[i]);
-                                                    }
-                                                    catalogsCombo.fireEvent('select', catalogsCombo, records);
+                                                    //for (var i = 0; i < records.length; i++) {
+                                                    //    catalogsCombo.select(records[i]);
+                                                    //}
+                                                    //catalogsCombo.fireEvent('select', catalogsCombo, records);
                                                 }
                                             }
                                         });
@@ -98,7 +98,7 @@ Ext.define('console.view.ContentPanel', {
                                 id: 'catalogsCombo',
                                 fieldLabel: 'Catalog',
                                 xtype: 'combo',
-                                multiSelect: true,
+                                multiSelect: true, //should be true ones we fix the duplicate homepage issue
                                 valueField: 'uid',
                                 displayField: 'uid',
                                 store: Ext.create('Ext.data.ArrayStore', {
@@ -115,22 +115,33 @@ Ext.define('console.view.ContentPanel', {
                                             rootProperty: '_embedded.contentCatalogModels'
                                         }
                                     }
-                                })/*,
+                                }),
                                 listeners : {
-                                    catalog versions will not be changable for now.. the combo will be removed
-                                    select: function (view, records) {
+                                    //catalog versions will not be changable for now.. the combo will be removed
+                                    //select: function (view, records) {
+                                    //
+                                    //    var firstSelectedCatalogPK = records[0].data.pk;
+                                    //    var catalogVersionsCombo = Ext.getCmp('catalogVersionsCombo');
+                                    //    //clear old selection of catalogVersions
+                                    //    Ext.getCmp('catalogVersionsCombo').clearValue();
+                                    //    //fetch data
+                                    //    catalogVersionsCombo.store.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url')
+                                    //                                + 'catalog/' + firstSelectedCatalogPK + '/catalogVersions/';
+                                    //
+                                    //    catalogVersionsCombo.store.load();
+                                    //}
+                                    select: function (cb, record) {
+                                        //append catalog and catalogsVersion parameter to the iframe
+                                        var currentUrl = Ext.get('website-iframe').dom.src;
+                                        var currentQuery = currentUrl.split('?')[1];
+                                        var params = Ext.urlDecode(currentQuery);
+                                        params.catalogs = Ext.getCmp('catalogsCombo').getValue().join();
+                                        params.clear = true;
+                                        var newQuery = Ext.Object.toQueryString(params);
 
-                                        var firstSelectedCatalogPK = records[0].data.pk;
-                                        var catalogVersionsCombo = Ext.getCmp('catalogVersionsCombo');
-                                        //clear old selection of catalogVersions
-                                        Ext.getCmp('catalogVersionsCombo').clearValue();
-                                        //fetch data
-                                        catalogVersionsCombo.store.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url')
-                                                                    + 'catalog/' + firstSelectedCatalogPK + '/catalogVersions/';
-
-                                        catalogVersionsCombo.store.load();
+                                        Ext.get('website-iframe').dom.src = Ext.get('website-base-url').dom.getAttribute('url') + '?' + newQuery;
                                     }
-                                }*/
+                                }
                             },
                             /*
                             {

@@ -201,6 +201,7 @@ Ext.application({
                             itemId: 'edit-widget',
                             text: 'Edit Widget',
                             iconCls: 'widget_edit',
+                            hidden: !event.data.selection.contentElement,
                             handler: function () {
                                 var entityConfiguration = Ext.create("console.markup." + event.data.selection.contentElementEntityName);
                                 var window = Ext.getCmp('cms-viewport').createWindow({
@@ -221,6 +222,7 @@ Ext.application({
                             itemId: 'removeWidget',
                             text: 'Remove Widget',
                             iconCls: 'widget_remove',
+                            hidden: !event.data.selection.contentElement,
                             handler: function () {
                                 var contentSlotPk = event.data.selection.contentSlot;
                                 var contentElementPk = event.data.selection.contentElement;
@@ -232,30 +234,39 @@ Ext.application({
                                     headers: {'Content-Type': 'application/json'},
                                     params: {},
                                     success: function (response) {
-                                        var json = JSON.parse(response.responseText)
+                                        var json = JSON.parse(response.responseText);
                                         for (var x in json._embedded) {
                                             var items = json._embedded[x];
+                                            var foundWidgetToRemove = false;
                                             var newWidgets = [];
                                             for (var i = 0; i < items.length; i++) {
                                                 if (contentElementPk != items[i].pk) {
                                                     newWidgets.push(items[i].pk);
+                                                } else {
+                                                    foundWidgetToRemove = true;
                                                 }
                                             }
-
-                                            var contentSlotPatchData = {};
-                                            contentSlotPatchData['widgets'] = newWidgets;
-
-                                            Ext.Ajax.request({
-                                                url: document.getElementById('rest-base-url').getAttribute('url') + 'content_slot/' + contentSlotPk,
-                                                method: 'PATCH',
-                                                headers: {'Content-Type': 'application/json', Accept: 'application/json'},
-                                                params: Ext.encode(contentSlotPatchData),
-                                                success: function (response) {
-                                                    Ext.get('website-iframe').dom.src = Ext.get('website-iframe').dom.src;
-                                                    alert("Widget removed successfully");
-                                                }
-                                            });
                                         }
+
+                                        if(!foundWidgetToRemove) {
+                                            Ext.MessageBox.alert("Status", "Unable to remove widget. <br/> Maybe it is a child in another widget?<br/> If so remove the whole parent or edit the parent.");
+                                        }
+
+                                        var contentSlotPatchData = {};
+                                        contentSlotPatchData['widgets'] = newWidgets;
+
+                                        Ext.Ajax.request({
+                                            url: document.getElementById('rest-base-url').getAttribute('url') + 'content_slot/' + contentSlotPk,
+                                            method: 'PATCH',
+                                            headers: {'Content-Type': 'application/json', Accept: 'application/json'},
+                                            params: Ext.encode(contentSlotPatchData),
+                                            success: function (response) {
+                                                if (foundWidgetToRemove) {
+                                                    Ext.get('website-iframe').dom.src = Ext.get('website-iframe').dom.src;
+                                                    Ext.MessageBox.alert("Status", "Widget removed successfully");
+                                                }
+                                            }
+                                        });
                                     }
                                 });
                             }
@@ -283,29 +294,29 @@ Ext.application({
                                     headers: {'Content-Type': 'application/json'},
                                     params: {},
                                     success: function (response) {
-                                        var json = JSON.parse(response.responseText)
+                                        var json = JSON.parse(response.responseText);
+                                        var newWidgets = [];
                                         for (var x in json._embedded) {
                                             var items = json._embedded[x];
-                                            var newWidgets = [];
                                             for (var i = 0; i < items.length; i++) {
                                                 newWidgets.push(items[i].pk);
                                             }
-                                            newWidgets.push(copyWidget.data.pk);
-
-                                            var contentSlotPatchData = {};
-                                            contentSlotPatchData['widgets'] = newWidgets;
-
-                                            Ext.Ajax.request({
-                                                url: document.getElementById('rest-base-url').getAttribute('url') + 'content_slot/' + contentSlotPk,
-                                                method: 'PATCH',
-                                                headers: {'Content-Type': 'application/json', Accept: 'application/json'},
-                                                params: Ext.encode(contentSlotPatchData),
-                                                success: function (response) {
-                                                    Ext.get('website-iframe').dom.src = Ext.get('website-iframe').dom.src;
-                                                    alert("Widget added successfully");
-                                                }
-                                            });
                                         }
+                                        newWidgets.push(copyWidget.data.pk);
+
+                                        var contentSlotPatchData = {};
+                                        contentSlotPatchData['widgets'] = newWidgets;
+
+                                        Ext.Ajax.request({
+                                            url: document.getElementById('rest-base-url').getAttribute('url') + 'content_slot/' + contentSlotPk,
+                                            method: 'PATCH',
+                                            headers: {'Content-Type': 'application/json', Accept: 'application/json'},
+                                            params: Ext.encode(contentSlotPatchData),
+                                            success: function (response) {
+                                                Ext.get('website-iframe').dom.src = Ext.get('website-iframe').dom.src;
+                                                Ext.MessageBox.alert("Status", "Widget added successfully");
+                                            }
+                                        });
                                     }
                                 });
 
