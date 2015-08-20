@@ -235,9 +235,9 @@ Ext.application({
                                     params: {},
                                     success: function (response) {
                                         var json = JSON.parse(response.responseText);
+                                        var foundWidgetToRemove = false;
                                         for (var x in json._embedded) {
                                             var items = json._embedded[x];
-                                            var foundWidgetToRemove = false;
                                             var newWidgets = [];
                                             for (var i = 0; i < items.length; i++) {
                                                 if (contentElementPk != items[i].pk) {

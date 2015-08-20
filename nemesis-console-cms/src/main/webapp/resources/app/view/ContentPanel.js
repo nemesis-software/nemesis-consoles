@@ -179,8 +179,117 @@ Ext.define('console.view.ContentPanel', {
                                         Ext.get('website-iframe').dom.src = Ext.get('website-base-url').dom.getAttribute('url') + '?' + newQuery;
                                     }
                                 }
-                            },*/
+                            }*/,
+                            {
+                                xtype: 'button',
+                                text: 'Synchronize',
+                                iconCls:'synchronize',
+                                handler: function () {
+                                    var catalogs = Ext.getCmp('catalogsCombo').getValue()
+                                    if(catalogs && catalogs.length > 0){
+                                        for(var i = 0; i < catalogs.length; i++){
+                                            var catalogPK = Ext.getCmp('catalogsCombo').findRecordByValue(catalogs[i]).data.pk;
+                                            Ext.Ajax.request({
+                                                url: Ext.get('rest-base-url').dom.getAttribute('url') + 'catalog/synchronize/' + catalogPK,
+                                                method: 'POST',
+                                                headers: {'Content-Type': 'application/json'},
+                                                params: {},
+                                                success: function (response) {
+
+                                                }
+                                            });
+                                        }
+                                    } else {
+                                        //get site catalogs
+                                        var contentCatalogsForSiteUrl = null;
+                                        if(Ext.getCmp('site-combo').getSelection()) {//we have selected site
+                                            contentCatalogsForSiteUrl = Ext.getCmp('site-combo').getSelection().data._links.contentCatalogs.href
+
+                                            Ext.Ajax.request({
+                                                url: contentCatalogsForSiteUrl,
+                                                method: 'GET',
+                                                headers: {'Content-Type': 'application/json'},
+                                                params: {},
+                                                success: function (response) {
+                                                    var site = JSON.parse(response.responseText);
+                                                    for(var i = 0; i < site._embedded.contentCatalogModels.length; i++){
+                                                        Ext.Ajax.request({
+                                                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'catalog/synchronize/' + site._embedded.contentCatalogModels[i].pk,
+                                                            method: 'POST',
+                                                            headers: {'Content-Type': 'application/json'},
+                                                            params: {},
+                                                            success: function (response) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            });
+
+                                        } else {
+                                            var siteUrl = Ext.get('rest-base-url').dom.getAttribute('url') + 'site/search/findByUid?uid=solarapparel-uk';
+
+                                            Ext.Ajax.request({
+                                                url: siteUrl,
+                                                method: 'GET',
+                                                headers: {'Content-Type': 'application/json'},
+                                                params: {},
+                                                success: function (response) {
+                                                    var site = JSON.parse(response.responseText);
+                                                    contentCatalogsForSiteUrl = site._embedded.siteModels[0]._links.contentCatalogs.href;
+
+                                                    Ext.Ajax.request({
+                                                        url: contentCatalogsForSiteUrl,
+                                                        method: 'GET',
+                                                        headers: {'Content-Type': 'application/json'},
+                                                        params: {},
+                                                        success: function (response) {
+                                                            var site = JSON.parse(response.responseText);
+                                                            for(var i = 0; i < site._embedded.contentCatalogModels.length; i++){
+                                                                //DO POST on site._embedded.contentCatalogModels[i].pk
+                                                                Ext.Ajax.request({
+                                                                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'catalog/synchronize/' + site._embedded.contentCatalogModels[i].pk,
+                                                                    method: 'POST',
+                                                                    headers: {'Content-Type': 'application/json'},
+                                                                    params: {},
+                                                                    success: function (response) {
+
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                        //var siteContentCatalogsStore = Ext.create('Ext.data.ArrayStore', {
+                                        //    autoLoad: false,
+                                        //    autoSync: false,
+                                        //    fields: ['uid', 'pk'],
+                                        //    proxy: {
+                                        //        type: 'rest',
+                                        //        url: contentCatalogsForSiteUrl,
+                                        //        useDefaultXhrHeader: false,
+                                        //        cors: true,
+                                        //        reader: {
+                                        //            type: 'json',
+                                        //            rootProperty: '_embedded.contentCatalogModels'
+                                        //        }
+                                        //    }
+                                        //});
+                                        //siteContentCatalogsStore.load({
+                                        //    callback : function(records, options, success) {
+                                        //        if (success) {
+                                        //            debugger;
+                                        //            //records[0].data.pk
+                                        //        }
+                                        //    }
+                                        //});
+                                    }
+                                }
+                            },
                             , '->',
+                            , '-',
                             {
                                 fieldLabel: 'Experience',
                                 xtype: 'combo',
