@@ -15,11 +15,10 @@ Ext.define('AdminConsole.controller.portlets.PlatformHealthPortletController', {
 		var self = this;
 		var serviceList = [];
 		var statusList = [];
-
 		Ext.Ajax.request({
 			url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/health',
-			method: 'POST',
-			params: {},
+			method: 'GET',
+			//params: {},
 			success: function(responseObject) {
 				var json = Ext.decode(responseObject.responseText);
 				self.generalStatusUp();
