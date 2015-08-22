@@ -489,8 +489,8 @@ Ext.define('console.view.field.NemesisEntityField', {
 
         var error = errs[0];
 
-    	this.reset();
         if (error == undefined) {
+        	this.clearInvalid();
             return true;
         } else {
             this.markInvalid(error);
