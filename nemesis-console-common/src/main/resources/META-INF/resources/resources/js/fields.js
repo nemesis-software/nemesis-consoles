@@ -162,16 +162,49 @@ Ext.define('console.view.field.NemesisCollectionField', {
         var me = this;
         me.title = me.fieldLabel;
         me.iconCls = me.entityId;
-        /*me.search.store = Ext.create('Ext.data.ArrayStore', {
-         autoLoad: true,
-         fields: ['uid', 'price'],
-         data: [
-         ['3m Co',71.72],
-         ['Alcoa Inc',29.01],
-         ['Boeing Co.',75.43]
-         ]
-         });*/
 
+        if (me.entityId) {
+        	me.search.store = Ext.create('Ext.data.Store', {
+                autoLoad: false,
+                autoSync: true,
+                pageSize: 10,
+                model: Ext.define('name', {
+                    extend: 'Ext.data.Model',
+                    fields: ['uid'],
+                    idProperty: 'uid'
+                }),
+                proxy: {
+                    type: 'rest',
+                    url: Ext.get('rest-base-url').dom.getAttribute('url') + me.entityId + "/search/findByUidIsStartingWith/",
+                    limitParam: 'size',
+                    useDefaultXhrHeader: false,
+                    cors: true,
+                    reader: {
+                        type: 'json',
+                        rootProperty: function (o) {
+                            var data = [];
+                            for (var key in o._embedded) {
+                                data = data.concat(o._embedded[key]);
+                            }
+                            return data;
+                        },
+                        totalProperty: 'page.totalElements'
+                    }
+                }
+            });
+            
+            me.search.onSearchChange = function(searchField) {
+            	var value = searchField.getValue(),
+                trigger = searchField.getTrigger('clear');
+
+            	trigger.setHidden(!value);
+            	this.getSearchStore().load({params: {
+                    uid: value
+                }});
+            	this.search(value);
+            }
+        }
+        
         me.callParent(arguments);
     },
     initStore: function (entity) {
