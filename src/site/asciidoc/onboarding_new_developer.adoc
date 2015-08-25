@@ -42,7 +42,7 @@ Each console speaks to a REST endpoint. To configure the address where the REST 
 By default the two properties point to localhost, but if you don't have the REST endpoint running locally, you can also point them at `https://solarapparel.com:8112/storefront` and `https://solarapparel.com:8112/storefront/rest`.
 
 == Install Java
-At the moment the nemesis platform requires version of the JDK at least `1.7.0`, so go to the Oracle website and download the latest version of the JDK. Please note that we use `maven-enforcer-plugin` so smaller version will simply not build the project.
+At the moment the nemesis platform requires version of the JDK at least `1.8.0`, so go to the Oracle website and download the latest version of the JDK. Please note that we use `maven-enforcer-plugin` so smaller version will simply not build the project.
 
 == Install Maven
 The platform needs maven in order to build the project. Required version is at least `3.0.0-alpha-1`. Please note that we use `maven-enforcer-plugin` so smaller version will simply not build the project.
@@ -58,21 +58,22 @@ To be able to run build the consoles you will need access to the Nemesis company
 		<server>
 		  <id>nemesis-repository</id>
 		  <username>admin</username>
-		  <password>nimda</password>
+		  <password>******</password>
 		</server>
 		<server>
 		  <id>nemesis-repository-releases</id>
 		  <username>admin</username>
-		  <password>nimda</password>
+		  <password>******</password>
 		</server>
 		<server>
 		  <id>nemesis-repository-snapshots</id>
 		  <username>admin</username>
-		  <password>nimda</password>
+		  <password>******</password>
 		</server>
 	</servers>
 </settings>
 ----
+Replace the star symbols with the password you were given. 
 
 == Build the project.
 To build the project simply run
