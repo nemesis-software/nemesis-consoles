@@ -101,6 +101,9 @@ Ext.define('console.view.field.NemesisCollectionField', {
                     items: [
                         {
                             itemId: 'edit',
+                            text: "Edit",
+                            iconCls: 'edit',
+                            disabled: selected.length == 0,
                             handler: function () {
                                 var record = selected[0];
                                 console.log(record);
@@ -123,10 +126,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                                     });
                                 }
                                 Ext.getCmp('backend-viewport').restoreWindow(window);
-                            }.bind(this.component),
-                            text: "Edit",
-                            iconCls: 'edit',
-                            disabled: selected.length == 0
+                            }.bind(this.component)
                         },
                         '-',
                         {
@@ -138,9 +138,15 @@ Ext.define('console.view.field.NemesisCollectionField', {
                         },
                         {
                             itemId: 'paste',
-                            handler: Ext.emptyFn,
                             text: 'Paste',
-                            iconCls: 'paste'
+                            iconCls: 'paste',
+                            handler: function() {
+                            	var clipboard = Ext.getCmp('backend-viewport').clipboard;
+                            	if (clipboard.data) {
+                                	var data = Ext.apply({uid: clipboard.data.id}, clipboard.data)
+                            		this.store.add(Ext.data.Record.create(data));
+                            	}
+                            }.bind(this.component)
                         },
                         {
                             itemId: 'clear',
