@@ -262,7 +262,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                         var items = this.data.items;
                         var fields = this.model.fields;
                         for (var i = 0; i < items.length; i++) {
-                            result.push(items[i].data.pk);
+                            result.push("" + items[i].data.pk);
                         }
                         return result;
                     }
