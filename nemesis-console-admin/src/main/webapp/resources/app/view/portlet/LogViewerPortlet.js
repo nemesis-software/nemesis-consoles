@@ -25,8 +25,8 @@ Ext.define('AdminConsole.view.portlet.LogViewerPortlet', {
         anchor: '100%',
         margins: '0 0 10 0'
     },
-    atmosphereConnection: $.atmosphere,
-    connected: true,
+    stompClient: null,
+    connected: false,
     initComponent: function (arguments) {
         Ext.apply(this, {
             tbar: [
@@ -70,32 +70,30 @@ Ext.define('AdminConsole.view.portlet.LogViewerPortlet', {
     },
     subscribe: function () {
         var self = this;
-        var request = {
-            url: Ext.get('website-base-url').dom.getAttribute('url') + 'log-socket/json/admin-queue-agent-logviewer',
-            transport: 'websocket',
-            contentType: "application/json",
-            logLevel: 'debug',
-            shared: true,
-            trackMessageLength: true,
-            fallbackTransport: 'long-polling'
-        };
-        request.onMessage = function (response) {
-            if (response.status == 200) {
-                var data = response.responseBody;
-                if (data.length > 0) {
-                    var dataJson = jQuery.parseJSON(data);
+        //url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/stomp',
+
+        this.stompClient = Stomp.over(new SockJS(Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/stomp'));
+
+        this.stompClient.connect(
+            {},
+            function onSuccess() {
+                self.connected = true;
+                self.stompClient.subscribe('/topic/log-stream/admin', function onReceive(frame) {
                     var outputText = Ext.ComponentQuery.query("#outputText")[0];
-                    self.text = self.text.append("\n" + dataJson.message, 20000);
+                    self.text = self.text.append(frame.body.replace(/\n/g, '<br />').replace(/\t/g, '&nbsp;&nbsp;'), 20000);
                     outputText.update(self.text);
                     outputText.body.scroll("span", 1000000, false);
-                }
-            }
-        };
-        this.atmosphereConnection.subscribe(request);
-        this.connected = true;
+                }, {});
+            },
+            function onError() {
+                // TODO: reconnect
+                self.connected = false;
+            });
     },
     unsubscribe: function () {
-        this.atmosphereConnection.unsubscribe();
+        if (this.stompClient) {
+            this.stompClient.disconnect();
+        }
         this.connected = false;
     },
     connect: function () {

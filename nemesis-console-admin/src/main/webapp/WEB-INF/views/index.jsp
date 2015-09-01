@@ -22,14 +22,13 @@
     <script type="text/javascript" src="webjars/extjs/5.2.0-SNAPSHOT/build/packages/ext-charts/build/ext-charts.js"></script>
 
     <script src="webjars/jquery/1.11.2/jquery.min.js"></script>
-    <script src="webjars/jquery-atmosphere/2.2.3/jquery.atmosphere.js"></script>
 
     <script type="text/javascript" src="webjars/codemirror/5.1/lib/codemirror.js"></script>
     <link rel="stylesheet" type="text/css" href="webjars/codemirror/5.1/lib/codemirror.css" />
     <script src="webjars/codemirror/5.1/mode/q/q.js"></script>
     <script src="webjars/codemirror/5.1/mode/sql/sql.js"></script>
 
-    <script src="webjars/sockjs-client/0.3.4/dist/sockjs.js"></script>
+    <script src="webjars/sockjs-client/1.0.2/dist/sockjs-0.3.4.js"></script>
     <script src="webjars/stomp-websocket/2.3.4/lib/stomp.js"></script>
 
     <link rel="stylesheet" type="text/css" href="resources/css/common.css"/>

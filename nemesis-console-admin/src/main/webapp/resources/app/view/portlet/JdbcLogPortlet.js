@@ -25,7 +25,7 @@ Ext.define('AdminConsole.view.portlet.JdbcLogPortlet', {
         margins: '0 0 10 0'
     },
     text: '',
-    atmosphereConnection: $.atmosphere,
+    stompClient: null,
     connected: true,
     enabled: false,
     enableText: 'Enable JDBC Log',
@@ -93,34 +93,32 @@ Ext.define('AdminConsole.view.portlet.JdbcLogPortlet', {
     },
     subscribe: function () {
         var self = this;
-        var request = {
-            url: Ext.get('website-base-url').dom.getAttribute('url') + 'log-socket/json/admin-queue-agent-logjdbcstream',
-            transport: 'websocket',
-            contentType: 'application/json',
-            logLevel: 'debug',
-            shared: true,
-            trackMessageLength: true,
-            fallbackTransport: 'long-polling'
-        };
-        request.onMessage = function (response) {
-            if (response.status == 200) {
-                var data = response.responseBody;
-                if (data.length > 0) {
-                    var dataJson = jQuery.parseJSON(data);
-                    var outputText = Ext.ComponentQuery.query('#jdbcOutputText')[0];
-                    self.text = self.text.append("\n" + dataJson.message, 20000);
-                    outputText.update(self.text);
-                    outputText.body.scroll("span", 1000000, false);
-                    if (!Ext.getCmp('jdbc-log').enabled) { //not enabled but message came ?
-                        Ext.getCmp('jdbc-log').enabled = true;
-                        Ext.getCmp('jdbcButton').setText(Ext.getCmp('jdbc-log').disableText);
-                        Ext.getCmp('jdbcButton').setIconCls(Ext.getCmp('jdbc-log').disableIconCls);
-                    }
-                }
-            }
-        };
-        this.atmosphereConnection.subscribe(request);
-        this.connected = true;
+
+        this.stompClient = Stomp.over(new SockJS(Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/stomp'));
+
+        this.stompClient.connect(
+            {},
+            function onSuccess() {
+                self.connected = true;
+                self.stompClient.subscribe(
+                    '/topic/log-stream/jdbc',
+                    function onReceive(frame) {
+                        var outputText = Ext.ComponentQuery.query("#jdbcOutputText")[0];
+                        self.text = self.text.append(frame.body.replace(/\n/g, '<br />').replace(/\t/g, '&nbsp;&nbsp;'), 20000);
+                        outputText.update(self.text);
+                        outputText.body.scroll("span", 1000000, false);
+                        if (!Ext.getCmp('jdbc-log').enabled) { //not enabled but message came ?
+                            Ext.getCmp('jdbc-log').enabled = true;
+                            Ext.getCmp('jdbcButton').setText(Ext.getCmp('jdbc-log').disableText);
+                            Ext.getCmp('jdbcButton').setIconCls(Ext.getCmp('jdbc-log').disableIconCls);
+                        }
+                    },
+                    {});
+            },
+            function onError() {
+                // TODO: reconnect
+                self.connected = false;
+            });
     },
     disableJdbcLog: function () {
         Ext.Ajax.request({ url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/jdbc-log',
@@ -135,13 +133,18 @@ Ext.define('AdminConsole.view.portlet.JdbcLogPortlet', {
 
     },
     unsubscribe: function () {
-        this.atmosphereConnection.unsubscribe();
+        if (this.stompClient) {
+            this.stompClient.disconnect();
+        }
         this.connected = false;
+    },
+    connect: function() {
+        this.unsubscribe();
+        this.subscribe();
     },
     listeners: {
         afterrender: function () {
-            this.unsubscribe();
-            this.subscribe();
+            this.connect();
         }
     },
     items: [
@@ -160,8 +163,7 @@ Ext.define('AdminConsole.view.portlet.JdbcLogPortlet', {
             button.setIconCls(this.enableIconCls);
         } else {
             this.enableJdbcLog();
-            this.unsubscribe();
-            this.subscribe();
+            this.connect();
             button.setText(this.disableText);
             button.setIconCls(this.disableIconCls);
         }

@@ -6,7 +6,7 @@ Ext.define('AdminConsole.view.portlet.PlatformActionsPortlet', {
     height: 20,
     intr: null,
     text: '',
-    atmosphereConnection: $.atmosphere,
+    stompClient: null,
     initComponent: function () {
         Ext.apply(this, {
             items: [
@@ -70,55 +70,40 @@ Ext.define('AdminConsole.view.portlet.PlatformActionsPortlet', {
 
     subscribe: function () {
         var self = this;
-        var requestLog = {
-            url: Ext.get('website-base-url').dom.getAttribute('url') + 'log-socket/json/admin-queue-agent-loginitupdate',
-            transport: 'websocket',
-            contentType: "application/json",
-            logLevel: 'debug',
-            shared: true,
-            trackMessageLength: true,
-            fallbackTransport: 'long-polling'
-        };
-        requestLog.onMessage = function (response) {
-            if (response.status == 200) {
-                var data = response.responseBody;
-                if (data.length > 0) {
-                    var dataJson = jQuery.parseJSON(data);
-                    var progressLog = Ext.ComponentQuery.query("#progress-log")[0];
-                    self.text = self.text.append("\n" + dataJson.message, 100000);
-                    progressLog.update(self.text);
-                    progressLog.body.scroll("span", 1000000, false);
-                }
-            }
-        };
-        this.atmosphereConnection.subscribe(requestLog);
 
-        var requestProgress = {
-            url: Ext.get('website-base-url').dom.getAttribute('url') + 'log-socket/json/admin-queue-agent-progressinitupdate',
-            transport: 'websocket',
-            contentType: "application/json",
-            logLevel: 'debug',
-            shared: true,
-            trackMessageLength: true,
-            fallbackTransport: 'long-polling'
-        };
-        requestProgress.onMessage = function (response) {
-            if (response.status == 200) {
-                var data = response.responseBody;
-                if (data.length > 0) {
-                    var dataJson = jQuery.parseJSON(data);
-                    var progressBar = Ext.ComponentQuery.query("#progress-bar")[0];
-                    progressBar.updateProgress(dataJson.value / 100);
-                    progressBar.updateText(dataJson.formattedValue);
-                }
+        this.stompClient = Stomp.over(new SockJS(Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/stomp'));
+        this.stompClient.connect(
+            {},
+            function onSuccess() {
+                self.connected = true;
+                self.stompClient.subscribe(
+                    '/topic/log/init-update',
+                    function onReceive(frame) {
+                        var progressLog = Ext.ComponentQuery.query("#progress-log")[0];
+                        self.text = self.text.append(frame.body.replace(/\n/g, '<br />').replace(/\t/g, '&nbsp;&nbsp;'), 20000);
+                        progressLog.update(self.text);
+                        progressLog.body.scroll("span", 1000000, false);
+                    }, {});
+                self.stompClient.subscribe(
+                    '/topic/progress/init-update',
+                    function onReceive(frame) {
+                        var dataJson = jQuery.parseJSON(frame.body);
+                        var progressBar = Ext.ComponentQuery.query("#progress-bar")[0];
+                        progressBar.updateProgress(dataJson.value / 100);
+                        progressBar.updateText(dataJson.formattedValue);
+                    }, {});
+            },
+            function onError() {
+                // TODO: reconnect
+                self.connected = false;
             }
-        };
-        this.atmosphereConnection.subscribe(requestProgress);
-        this.connected = true;
+        );
     },
 
     unsubscribe: function () {
-        this.atmosphereConnection.unsubscribe();
+        if (this.stompClient) {
+            this.stompClient.disconnect();
+        }
         this.connected = false;
     },
 
@@ -170,7 +155,7 @@ Ext.define('AdminConsole.view.portlet.PlatformActionsPortlet', {
             modal: true
         }).show();
 
-        Ext.Ajax.request({ url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/database',
+        Ext.Ajax.request({ url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform',
             method: 'POST',
             params: { 'action': 'update'},
             success: function (responseObject) {
@@ -340,7 +325,7 @@ Ext.define('AdminConsole.view.portlet.PlatformActionsPortlet', {
             modal: true
         }).show();
 
-        Ext.Ajax.request({ url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/database/',
+        Ext.Ajax.request({ url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/',
             method: 'POST',
             params: { 'action': 'init' },
             success: function (responseObject) {

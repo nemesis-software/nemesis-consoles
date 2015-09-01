@@ -21,8 +21,8 @@ describe("Basic Setup Assumptions", function () {
         expect($).toBeDefined();
     });
 
-    it("has Atmosphere loaded", function () {
-        expect($.atmosphere).toBeDefined();
+    it("has Stomp loaded", function () {
+        expect(Stomp).toBeDefined();
     });
 
     it("has Codemirror loaded", function () {
