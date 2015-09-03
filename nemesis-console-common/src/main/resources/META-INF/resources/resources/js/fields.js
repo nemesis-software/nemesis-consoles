@@ -909,6 +909,7 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
                     enableLists: true,
                     enableSourceEdit: true,
                     flex: 1,
+                    height: 180,
                     listeners: {
                         change: function () {
                             if (me.fieldSet) {
