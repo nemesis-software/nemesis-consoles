@@ -324,9 +324,8 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
                     displayField: 'name',
                     labelWidth: 0,
                     typeAhead: false,
-                    //formItemCls: 'field-restriction',
-                    //cls: 'localized-iso-dropdown',
-	                margin: '0 5 0 0',
+                    formItemCls: 'field-restriction',
+                    cls: 'localized-iso-dropdown',
                     value: Ext.get('rest-base-url').dom.getAttribute('locale'),
 	                flex: 1
                 },
