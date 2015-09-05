@@ -321,20 +321,21 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
                         }
                     },
                     valueField: 'isoCode',
-                    displayField: 'isoCode',
+                    displayField: 'name',
                     labelWidth: 0,
                     typeAhead: false,
-                    formItemCls: 'field-restriction',
-                    cls: 'localized-iso-dropdown',
-                    width: 50,
-                    value: Ext.get('rest-base-url').dom.getAttribute('locale')
+                    //formItemCls: 'field-restriction',
+                    //cls: 'localized-iso-dropdown',
+	                margin: '0 5 0 0',
+                    value: Ext.get('rest-base-url').dom.getAttribute('locale'),
+	                flex: 1
                 },
                 {
                     isFormField: false,
                     submitValue: false,
                     emptyText: this.name,
                     xtype: 'textfield',
-                    flex: 1,
+                    flex: 3,
                     listeners: {
                         change: function () {
                             if (me.fieldSet) {
@@ -631,7 +632,7 @@ Ext.define('console.view.field.NemesisEntityField', {
                                         };
                                     }
                                 }
-                            },
+                            }
                         });
                     }
                 },
