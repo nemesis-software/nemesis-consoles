@@ -15,7 +15,19 @@ Ext.define('console.view.ContentPanel', {
     ],
 
     initComponent: function () {
-        var me = this;
+        var me = this,
+	        languageCmb = Ext.getCmp('app-header-language-selector'),
+	        selectedLangCode = languageCmb.getValue();
+
+	    switch (selectedLangCode) {
+		    case 'en':
+			    selectedLangCode = 'en_GB';
+			    break;
+		    case 'bg':
+			    selectedLangCode = 'bg_BG';
+			    break;
+	    }
+
         me.items = [
             {
                 region: 'north',
@@ -28,13 +40,17 @@ Ext.define('console.view.ContentPanel', {
                             {
                                 id: 'site-combo',
                                 fieldLabel: 'Site',
+	                            labelWidth: 40,
+	                            width: 330,
+	                            editable: false,
+	                            margin: '0 0 0 10',
                                 xtype: 'combo',
                                 valueField: 'pk',
                                 displayField: 'name',
+	                            queryMode: 'local',
                                 store: Ext.create('Ext.data.ArrayStore', {
-                                    autoLoad: false,
                                     autoSync: false,
-                                    fields: ['pk', 'name', 'uid'],
+                                    fields: ['pk', 'name'],
                                     proxy: {
                                         type: 'rest',
                                         url: Ext.get('rest-base-url').dom.getAttribute('url') + 'site/',
@@ -44,22 +60,29 @@ Ext.define('console.view.ContentPanel', {
                                             type: 'json',
                                             rootProperty: '_embedded.siteModels'
                                         }
-                                    }
-                                }),
+                                    },
+	                                listeners: {
+		                                load: function(myself, records, successful, eOpts) {
+											if(successful) {
+												var comboSites = Ext.getCmp('site-combo');
+												comboSites.setValue(myself.findRecord('uid', 'solarapparel-uk').get('pk'))
+											}
+		                                }
+	                                },
+	                                autoLoad: true
+	                            }),
                                 listeners : {
-                                    select: function (view, record) {
-                                        var catalogsCombo = Ext.getCmp('catalogsCombo');
-                                        //clear old selection of catalogs and catalogVersions
-                                        catalogsCombo.clearValue();
-                                        //Ext.getCmp('catalogVersionsCombo').clearValue();
+                                    change: function (cmb, newValue, oldValue, eOpts) {
+	                                    var catalogsCombo = Ext.getCmp('catalogsCombo');
+
                                         //fetch data
-                                        var siteContentCatalogsStore = Ext.create('Ext.data.ArrayStore', {
-                                            autoLoad: false,
+                                        var siteContentCatalogsStore = Ext.create('Ext.data.Store', {
+                                            autoLoad: true,
                                             autoSync: false,
-                                            fields: ['uid', 'pk'],
+                                            fields: ['pk', 'uid'],
                                             proxy: {
                                                 type: 'rest',
-                                                url: view.getSelection().data._links.contentCatalogs.href,
+                                                url: cmb.getSelection().data._links.contentCatalogs.href,
                                                 useDefaultXhrHeader: false,
                                                 cors: true,
                                                 reader: {
@@ -69,24 +92,24 @@ Ext.define('console.view.ContentPanel', {
                                             }
                                         });
 
-                                        //catalogsCombo.store.proxy.url = view.getSelection().data._links.contentCatalogs.href;
-                                        //catalogsCombo.store.load();
                                         siteContentCatalogsStore.load({
                                             callback : function(records, options, success) {
                                                 if (success) {
-                                                    //this doesn't populate the combo as it should
-                                                    //for (var i = 0; i < records.length; i++) {
-                                                    //    catalogsCombo.select(records[i]);
-                                                    //}
-                                                    //catalogsCombo.fireEvent('select', catalogsCombo, records);
+	                                                var selectedCatalogsPks = new Array();
+                                                    for (var i = 0; i < records.length; i++) {
+                                                        selectedCatalogsPks.push(records[i].get('pk'))
+                                                    }
+
+	                                                catalogsCombo.setValue(selectedCatalogsPks);
                                                 }
                                             }
                                         });
+
                                         //append site parameter to the iframe
                                         var currentUrl = Ext.get('website-iframe').dom.src;
                                         var currentQuery = currentUrl.split('?')[1];
                                         var params = Ext.urlDecode(currentQuery);
-                                        params.site = record.get('uid');
+                                        params.site = cmb.getStore().findRecord('pk',newValue).get('uid');
                                         params.clear = true;
                                         var newQuery = Ext.Object.toQueryString(params);
 
@@ -97,14 +120,23 @@ Ext.define('console.view.ContentPanel', {
                             {
                                 id: 'catalogsCombo',
                                 fieldLabel: 'Catalog',
+	                            labelWidth: 60,
+	                            width: 300,
                                 xtype: 'combo',
+	                            margin: '0 0 0 10',
+	                            editable: false,
+	                            queryMode: 'local',
                                 multiSelect: true, //should be true ones we fix the duplicate homepage issue
-                                valueField: 'uid',
-                                displayField: 'uid',
+	                            autoSelect: true,
+                                valueField: 'pk',
+                                displayField: 'catalogName',
                                 store: Ext.create('Ext.data.ArrayStore', {
-                                    autoLoad: false,
+                                    autoLoad: true,
                                     autoSync: false,
-                                    fields: ['uid', 'pk'],
+                                    fields: [
+	                                    'pk',
+	                                    {name: 'catalogName', mapping: 'name.' + selectedLangCode + '.value'}
+                                    ],
                                     proxy: {
                                         type: 'rest',
                                         url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_catalog/search/findByCatalogVersionsUid?catalogVersionUid=Staged',
