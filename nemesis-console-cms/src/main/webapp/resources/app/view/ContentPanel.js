@@ -106,9 +106,10 @@ Ext.define('console.view.ContentPanel', {
                                         });
 
                                         //append site parameter to the iframe
-                                        var currentUrl = Ext.get('website-iframe').dom.src;
-                                        var currentQuery = currentUrl.split('?')[1];
-                                        var params = Ext.urlDecode(currentQuery);
+                                        var currentUrl = Ext.get('website-iframe').dom.src,
+                                            currentQuery = currentUrl.split('?')[1],
+                                            params = Ext.urlDecode(currentQuery);
+
                                         params.site = cmb.getStore().findRecord('pk',newValue).get('uid');
                                         params.clear = true;
                                         var newQuery = Ext.Object.toQueryString(params);
@@ -164,10 +165,17 @@ Ext.define('console.view.ContentPanel', {
                                     //}
                                     select: function (cb, record) {
                                         //append catalog and catalogsVersion parameter to the iframe
-                                        var currentUrl = Ext.get('website-iframe').dom.src;
-                                        var currentQuery = currentUrl.split('?')[1];
-                                        var params = Ext.urlDecode(currentQuery);
-                                        params.catalogs = Ext.getCmp('catalogsCombo').getValue().join();
+                                        var currentUrl = Ext.get('website-iframe').dom.src,
+                                            currentQuery = currentUrl.split('?')[1],
+                                            params = Ext.urlDecode(currentQuery),
+	                                        catalogsUUID = new Array(),
+	                                        catalogsCombo = Ext.getCmp('catalogsCombo');
+
+										// Gets selected catalogs UIDs
+	                                    catalogsCombo.valueCollection.items.forEach(function(item){
+		                                    catalogsUUID.push(item.get('uid'));
+	                                    });
+                                        params.catalogs = catalogsUUID;
                                         params.clear = true;
                                         var newQuery = Ext.Object.toQueryString(params);
 
@@ -344,13 +352,15 @@ Ext.define('console.view.ContentPanel', {
                                             Ext.getCmp('website-iframe').addCls(record.get('id') + '-iframe');
 
                                             //append site_preference parameter to the iframe
-                                            var currentUrl = Ext.get('website-iframe').dom.src;
-                                            var currentQuery = currentUrl.split('?')[1];
-                                            var params = Ext.urlDecode(currentQuery);
+                                            var currentUrl = Ext.get('website-iframe').dom.src,
+                                                currentQuery = currentUrl.split('?')[1],
+                                                params = Ext.urlDecode(currentQuery);
+
                                             params.site_preference = record.get('id');
                                             params.clear = true;
                                             params.live_edit_view = true;
-                                            var newQuery = Ext.Object.toQueryString(params);
+
+	                                        var newQuery = Ext.Object.toQueryString(params);
 
                                             Ext.get('website-iframe').dom.src = Ext.get('website-base-url').dom.getAttribute('url') + '?' + newQuery;
                                         },
