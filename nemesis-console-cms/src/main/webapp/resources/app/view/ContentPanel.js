@@ -168,14 +168,14 @@ Ext.define('console.view.ContentPanel', {
                                         var currentUrl = Ext.get('website-iframe').dom.src,
                                             currentQuery = currentUrl.split('?')[1],
                                             params = Ext.urlDecode(currentQuery),
-	                                        catalogsUUID = new Array(),
+	                                        catalogsUIDs = new Array(),
 	                                        catalogsCombo = Ext.getCmp('catalogsCombo');
 
 										// Gets selected catalogs UIDs
 	                                    catalogsCombo.valueCollection.items.forEach(function(item){
-		                                    catalogsUUID.push(item.get('uid'));
+		                                    catalogsUIDs.push(item.get('uid'));
 	                                    });
-                                        params.catalogs = catalogsUUID;
+                                        params.catalogs = catalogsUIDs.join();
                                         params.clear = true;
                                         var newQuery = Ext.Object.toQueryString(params);
 
