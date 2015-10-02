@@ -13,7 +13,7 @@
 Ext.define('AdminConsole.view.portlet.LogViewerPortlet', {
     extend: 'Ext.form.Panel',
     xtype: 'logViewerPortlet',
-    id: "log-viewer",
+    id: "log_viewer",
     frame: false,
     border: false,
     height: 500,
