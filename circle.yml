@@ -6,11 +6,11 @@ dependencies:
       - mvn dependency:resolve -Ptest -s src/main/resources/settings.xml
       - mvn dependency:resolve-plugins -Ptest -s src/main/resources/settings.xml
 test:
+   pre:
+      - ssh-keyscan -t rsa 95.85.47.238 >> ~/.ssh/known_hosts
    override:
-      - set -o pipefail && mvn clean deploy -Ptest -s src/main/resources/settings.xml | tee $CIRCLE_ARTIFACTS/mvn-clean-install.log
+      - set -o pipefail && mvn clean deploy site:site site:deploy -Ptest -s src/main/resources/settings.xml | tee $CIRCLE_ARTIFACTS/mvn-clean-install.log
    post:
       - mkdir -p $CIRCLE_TEST_REPORTS/junit/ 
       - find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
-      - mvn site:site -s src/main/resources/settings.xml
-      - ssh-keyscan -t rsa 95.85.47.238 >> ~/.ssh/known_hosts
-      - mvn site:deploy -s src/main/resources/settings.xml
+      - find . -type f -regex ".*/target/failsafe-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
