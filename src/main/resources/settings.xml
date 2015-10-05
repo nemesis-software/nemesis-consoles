@@ -19,41 +19,21 @@
 			<id>nemesis-docs</id>
 			<username>root</username>
 			<password>${env.NEMESIS_DOCS_SSH_ROOT_PASSWORD}</password>
-      <configuration>
-  			<knownHostsProvider implementation="org.apache.maven.wagon.providers.ssh.knownhost.NullKnownHostProvider">
-  				<hostKeyChecking>no</hostKeyChecking>
-  			</knownHostsProvider>
-      </configuration>
 		</server>
 		<server>
 			<id>nemesis-repository</id>
 			<username>admin</username>
 			<password>${env.NEMESIS_REPOSITORY_HTTP_PASSWORD}</password>
-      <configuration>
-  			<knownHostsProvider implementation="org.apache.maven.wagon.providers.ssh.knownhost.NullKnownHostProvider">
-  				<hostKeyChecking>no</hostKeyChecking>
-  			</knownHostsProvider>
-      </configuration>
 		</server>
 		<server>
 			<id>nemesis-repository-releases</id>
 			<username>admin</username>
 			<password>${env.NEMESIS_REPOSITORY_HTTP_PASSWORD}</password>
-      <configuration>
-  			<knownHostsProvider implementation="org.apache.maven.wagon.providers.ssh.knownhost.NullKnownHostProvider">
-  				<hostKeyChecking>no</hostKeyChecking>
-  			</knownHostsProvider>
-      </configuration>
 		</server>
 		<server>
 			<id>nemesis-repository-snapshots</id>
 			<username>admin</username>
 			<password>${env.NEMESIS_REPOSITORY_HTTP_PASSWORD}</password>
-      <configuration>
-  			<knownHostsProvider implementation="org.apache.maven.wagon.providers.ssh.knownhost.NullKnownHostProvider">
-  				<hostKeyChecking>no</hostKeyChecking>
-  			</knownHostsProvider>
-      </configuration>
 		</server>
 	</servers>
 </settings>
