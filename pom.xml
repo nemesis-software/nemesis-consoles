@@ -36,6 +36,13 @@
         <module>nemesis-console-search</module>
         <module>nemesis-console-common</module>
     </modules>
+    
+	<scm>
+        <connection>scm:git:https://github.com/nemesis-software/nemesis-consoles.git</connection>
+        <developerConnection>scm:git:https://github.com/nemesis-software/nemesis-consoles.git</developerConnection>
+        <url>https://github.com/nemesis-software/nemesis-consoles.git</url>
+		<tag>master</tag>
+	</scm>
 
     <repositories>
         <repository>
