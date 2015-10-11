@@ -3,8 +3,7 @@ machine:
       version: oraclejdk8
 dependencies:
    override:
-      - mvn dependency:resolve -Ptest -s src/main/resources/settings.xml
-      - mvn dependency:resolve-plugins -Ptest -s src/main/resources/settings.xml
+      - mvn package dependency:go-offline -Ptest -s src/main/resources/settings.xml
 test:
    pre:
       - ssh-keyscan -t rsa 95.85.47.238 >> ~/.ssh/known_hosts
