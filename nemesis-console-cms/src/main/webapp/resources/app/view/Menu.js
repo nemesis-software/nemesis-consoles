@@ -793,7 +793,7 @@ Ext.define('console.view.Menu', {
                             ),
                             listeners: {
                                 itemclick: function (view, record, item, index, e, eOpts) {
-                                    Ext.get('website-iframe').dom.src = Ext.get('website-base-url').dom.getAttribute('url') + "email/" + record.raw.uid + "?live_edit_view=true&site=" + ((Ext.getCmp('site-combo').getSelection() != null) ? Ext.getCmp('site-combo').getSelection().data.uid  : 'solarapparel-uk');
+                                    Ext.get('website-iframe').dom.src = Ext.get('website-base-url').dom.getAttribute('url') + "email/page/" + record.raw.uid + "?subject=" + record.raw.title + "&live_edit_view=true&site=" + ((Ext.getCmp('site-combo').getSelection() != null) ? Ext.getCmp('site-combo').getSelection().data.uid  : 'solar');
                                     view.el.setStyle('background', '#DDDDDD');
                                     view.el.setStyle('border-color', '#000');
                                 },
