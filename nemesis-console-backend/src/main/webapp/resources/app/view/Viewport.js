@@ -119,7 +119,7 @@ Ext.define('console.view.Viewport', {
 
     createWindow: function (config) {
         var me = this;
-        var win = Ext.create('console.view.content.EntityPopupWindow', {id: 'w_id_' + config.id, iconCls: config.iconCls, entity: config.entity, entityFields: config.sections});
+        var win = Ext.create('console.view.content.EntityPopupWindow', {config: config});
         me.windows.add(win);
         win.taskButton = Ext.getCmp('taskbar').addTaskButton(win);
         win.animateTarget = win.taskButton.el;
@@ -172,7 +172,7 @@ Ext.define('console.view.Viewport', {
     },
 
     getWindow: function (id) {
-        return this.windows.get('w_id_' + id);
+        return this.windows.get('w_id_' + id.replace(/@/g, '_AT_'));
     },
 
     restoreWindow: function (win) {

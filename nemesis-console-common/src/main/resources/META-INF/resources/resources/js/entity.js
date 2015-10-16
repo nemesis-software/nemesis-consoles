@@ -16,7 +16,7 @@ Ext.define('console.view.content.EntityPopupWindow', {
     isWindow: true,
     constrainHeader: true,
     constructTitle: function () {
-        return '[' + this.id.substring(5) + ' - ' + translate(this.entity.data.id) + ']';
+        return '[' + this.config.id + ' - ' + translate(this.config.entity.data.id) + ']';
     },
     minimizable: true,
     maximizable: true,
@@ -25,27 +25,31 @@ Ext.define('console.view.content.EntityPopupWindow', {
     animCollapse: false,
     border: false,
     layout: 'border',
-    entityFields: null,
-    entity: null,
+    config: null,
     initComponent: function () {
+    	Ext.apply(this, {
+    		id: 'w_id_' + this.config.id.replace(/@/g, '_AT_'), 
+    		iconCls: this.config.iconCls
+    	});
+    	
         var method = 'POST';
-        if (this.id !== 'w_id_') {
+        if (this.config.id !== '') {
             method = 'PATCH';
         }
 
         var entityPopupForm = Ext.create("console.view.content.entity.EntityPopupForm", {
-            entity: this.entity,
+            entity: this.config.entity,
             method: method,
-            entityFields: this.entityFields
+            entityFields: this.config.sections
         });
 
-        var entityPopupToolbar = Ext.create("console.view.content.entity.EntityPopupToolbar", {entity: this.entity, entityPopupForm: entityPopupForm});
+        var entityPopupToolbar = Ext.create("console.view.content.entity.EntityPopupToolbar", {entity: this.config.entity, entityPopupForm: entityPopupForm});
 
         this.items = [
             {
                 region: 'north',
                 items: entityPopupToolbar,
-                entity: this.entity
+                entity: this.config.entity
             },
             {
                 region: 'center',
