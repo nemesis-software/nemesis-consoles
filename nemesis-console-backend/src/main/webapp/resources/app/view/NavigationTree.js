@@ -124,7 +124,8 @@ Ext.define('console.view.NavigationTree', function () {
                         itemId: 'create',
                         handler: function () {
                             var entityConfiguration = Ext.create("console.markup." + record.get('id'));
-                            var window = Ext.getCmp('backend-viewport').createWindow({id: "", title: '[' + record.get('text') + ']', iconCls: record.get('id'), entity: Ext.create('console.model.Entity', {name: record.get('text'), url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('id')}), sections: entityConfiguration.sections, synchronizable: entityConfiguration.synchronizable});
+                            var entity = Ext.create('console.model.Entity', {name: record.get('text'), url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('id'), isNew: true});
+                            var window = Ext.getCmp('backend-viewport').createWindow({id: "", title: '[' + record.get('text') + ']', iconCls: record.get('id'), entity: entity, sections: entityConfiguration.sections, synchronizable: entityConfiguration.synchronizable});
                             Ext.getCmp('backend-viewport').restoreWindow(window);
                         },
                         text: 'Create',

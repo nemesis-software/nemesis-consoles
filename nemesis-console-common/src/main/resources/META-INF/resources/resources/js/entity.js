@@ -5,7 +5,8 @@ Ext.define('console.model.Entity', {
         {name: 'name'},                    // DiscountModel
         {name: 'url'},                     // http://localhost:8080/rest/discount/12312312313
         {name: 'className'},               // com.nemesis.platform.core.model.price.DiscountModel
-        {name: 'synchronizable'}           // true
+        {name: 'synchronizable'},           // true
+        {name: 'isNew'} 
     ]
 });
 
@@ -28,7 +29,7 @@ Ext.define('console.view.content.EntityPopupWindow', {
     config: null,
     initComponent: function () {
     	Ext.apply(this, {
-    		id: 'w_id_' + this.config.id.replace(/@/g, '_AT_'), 
+    		id: 'w_id_' + (this.config.id ? this.config.id.replace(/@/g, '_AT_') : ''), 
     		iconCls: this.config.iconCls
     	});
     	
@@ -97,19 +98,22 @@ Ext.define('console.view.content.entity.EntityPopupForm', {
 
         if (me.entity != null) {
             this.on('afterrender', function () {
-                Ext.Ajax.request({
-                    url: me.entity.data.url,
-                    method: 'GET',
-                    params: {},
-                    success: function (responseObject) {
-                        var result = Ext.decode(responseObject.responseText);
-                        console.log(result);
-                        me.populateForm(me.convertResult(result));
-                    },
-                    failure: function (responseObject) {
-                        Ext.Msg.alert('Error', 'Error: ' + responseObject.responseText);
-                    }
-                });
+            	if (!me.entity.data.isNew) {
+	                Ext.Ajax.request({
+	                    url: me.entity.data.url,
+	                    method: 'GET',
+	                    params: {},
+	                    success: function (responseObject) {
+	                        var result = Ext.decode(responseObject.responseText);
+	                        me.populateForm(me.convertResult(result));
+	                    },
+	                    failure: function (responseObject) {
+	                        Ext.Msg.alert('Error', 'Error: ' + responseObject.responseText);
+	                    }
+	                });
+            	} else {
+            		this.initCollectionFieldsStores({});
+            	}
             });
         }
 
@@ -117,6 +121,9 @@ Ext.define('console.view.content.entity.EntityPopupForm', {
     },
     populateForm: function (result) {
         this.getForm().setValues(result);
+        this.initCollectionFieldsStores(result);
+    },
+    initCollectionFieldsStores: function(result) {
         Ext.each(this.query('nemesisCollectionField'), function (field) {
             field.initStore(result[field.name]);
         });

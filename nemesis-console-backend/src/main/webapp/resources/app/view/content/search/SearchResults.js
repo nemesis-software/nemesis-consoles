@@ -285,6 +285,7 @@ Ext.define('console.view.content.search.SearchResults', {
         Ext.getCmp('backend-viewport').clipboard = {
             data: {
                 id: record.data.uid,
+                pk: record.data.pk,
                 name: this.entity.data.name,
                 url: record.data._links.self.href,
                 className: this.entity.data.className

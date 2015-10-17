@@ -143,8 +143,8 @@ Ext.define('console.view.field.NemesisCollectionField', {
                             handler: function() {
                             	var clipboard = Ext.getCmp('backend-viewport').clipboard;
                             	if (clipboard.data) {
-                                	var data = Ext.apply({uid: clipboard.data.id}, clipboard.data)
-                            		this.store.add(Ext.data.Record.create(data));
+                                	var data = Ext.apply({uid: clipboard.data.id, pk: clipboard.data.pk}, clipboard.data)
+                            		this.store.insert(this.store.data.items.length, Ext.data.Record.create(data));
                             	}
                             }.bind(this.component)
                         },
@@ -248,29 +248,28 @@ Ext.define('console.view.field.NemesisCollectionField', {
                                 return data;
                             }
                         }
-                    },
-                    listeners: {
-                        load: function () {
-                            me.isDirty = false;
-                        },
-                        datachanged: function () {
-                            me.isDirty = true;
-                        }
-                    },
-                    getValues: function () {
-                        var result = [];
-                        var items = this.data.items;
-                        var fields = this.model.fields;
-                        for (var i = 0; i < items.length; i++) {
-                            result.push("" + items[i].data.pk);
-                        }
-                        return result;
                     }
                 }));
             } else {
                 // list of primitives
                 //me.store.data = entity.data;
             }
+        }
+
+        me.store.on('load', function () {
+            me.isDirty = false;
+        });
+        me.store.on('datachanged', function () {
+            me.isDirty = true;
+        });
+        me.store.getValues = function () {
+            var result = [];
+            var items = this.data.items;
+            var fields = this.model.fields;
+            for (var i = 0; i < items.length; i++) {
+                result.push("" + items[i].data.pk);
+            }
+            return result;
         }
         return me;
     }
