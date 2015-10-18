@@ -19,30 +19,11 @@ Ext.application({
 
     launch: function () {
 
-        Ext.data.Connection.override({
-            //add an extra parameter to the request to denote that ext ajax is sending it
-            request: function (options) {
-                var me = this;
-                if (!options.params) {
-                    options.params = {};
-                }
-                var newOptions = {
-                    'nemesis-username': Ext.get('username').dom.getAttribute('value'),
-                    'nemesis-token': Ext.get('token').dom.getAttribute('value'),
-                    'nemesis-expiryTime': Ext.get('expiryTime').dom.getAttribute('value')
-                };
-
-                for (var attrname in newOptions) {
-                    options.params[attrname] = newOptions[attrname];
-                }
-
-                return me.callOverridden(arguments);
-            }
+        Ext.Ajax.setDefaultHeaders({
+            'X-Nemesis-Token': Ext.get('token').dom.getAttribute('value'),
+            'X-Nemesis-Username': Ext.get('username').dom.getAttribute('value'),
+            'X-Nemesis-ExpiryTime': Ext.get('expiryTime').dom.getAttribute('value')
         });
-
-        Ext.Ajax.defaultHeaders = {
-            'X-Nemesis-Token': 'blah'
-        };
 
 
         Ext.History.init();
@@ -53,12 +34,16 @@ Ext.application({
                 afterrender: function () {
                     var mask = Ext.get('splash-screen'),
                         parent = Ext.get('splash-background');
-                    mask.fadeOut({callback: function () {
-                        mask.destroy();
-                    }});
-                    parent.fadeOut({callback: function () {
-                        parent.destroy();
-                    }});
+                    mask.fadeOut({
+                        callback: function () {
+                            mask.destroy();
+                        }
+                    });
+                    parent.fadeOut({
+                        callback: function () {
+                            parent.destroy();
+                        }
+                    });
 
                     Ext.getCmp('app-header-logout').getEl().on('click', function () {
                         Ext.getCmp('logout-form-csrf-param').setValue(Ext.get('security').dom.getAttribute('token'));
@@ -101,7 +86,8 @@ Ext.application({
         });
 
         //check if the rest API is accessible
-        Ext.Ajax.request({ url: Ext.get('rest-base-url').dom.getAttribute('url'),
+        Ext.Ajax.request({
+            url: Ext.get('rest-base-url').dom.getAttribute('url'),
             loadMask: true,
             method: 'GET',
             success: function (responseObject) {
