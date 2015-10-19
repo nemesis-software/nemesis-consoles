@@ -22,24 +22,28 @@ Ext.application({
     launch: function () {
         var me = this;
 
-        Ext.data.Connection.override({
-            //add an extra parameter to the request to denote that ext ajax is sending it
-            request: function (options) {
-                var me = this;
-                if (!options.params) {
-                    options.params = {};
-                }
-                var newOptions = {
-                    'nemesis-username': Ext.get('username').dom.getAttribute('value'),
-                    'nemesis-token': Ext.get('token').dom.getAttribute('value'),
-                    'nemesis-expiryTime': Ext.get('expiryTime').dom.getAttribute('value')
-                };
+        Ext.Ajax.setDefaultHeaders({
+            'X-Nemesis-Token': Ext.get('token').dom.getAttribute('value'),
+            'X-Nemesis-Username': Ext.get('username').dom.getAttribute('value'),
+            'X-Nemesis-ExpiryTime': Ext.get('expiryTime').dom.getAttribute('value')
+        });
 
-                for (var attrname in newOptions) {
-                    options.params[attrname] = newOptions[attrname];
-                }
+        //TODO: override the loadScript method to pass defaultHeaders like above
+        Ext.Loader.loadScript({
+            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'markup/all',
+            onLoad: function () {
+            },
+            onError: function () {
+                console.error('Cannot load markup/all resource from the server!');
+            }
+        });
 
-                return me.callOverridden(arguments);
+        Ext.Loader.loadScript({
+            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'markup/results/all',
+            onLoad: function () {
+            },
+            onError: function () {
+                console.error('Cannot load markup/results/all resource from the server!');
             }
         });
 
@@ -248,7 +252,7 @@ Ext.application({
                                             }
                                         }
 
-                                        if(!foundWidgetToRemove) {
+                                        if (!foundWidgetToRemove) {
                                             Ext.MessageBox.alert("Status", "Unable to remove widget. <br/> Maybe it is a child in another widget?<br/> If so remove the whole parent or edit the parent.");
                                         }
 
@@ -277,7 +281,7 @@ Ext.application({
                             iconCls: 'widget_add',
                             handler: function () {
                                 var copyWidget = Ext.getCmp('cms-viewport').clipboard;
-                                if(!copyWidget) {
+                                if (!copyWidget) {
                                     Ext.MessageBox.alert('Unable to copy', 'First select a widget for coping');
                                     return;
                                 }
@@ -319,7 +323,6 @@ Ext.application({
                                         });
                                     }
                                 });
-
 
 
                                 //var rest = document.getElementById('rest-base-url').getAttribute('url');

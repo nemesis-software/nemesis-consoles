@@ -28,29 +28,12 @@ Ext.application({
     ],
 
     launch: function () {
-        
-        Ext.data.Connection.override({
-            //add an extra parameter to the request to denote that ext ajax is sending it
-            request: function (options) {
-                var me = this;
-                if (!options.params) {
-                    options.params = {};
-                }
-                var newOptions = {
-                    'nemesis-username': Ext.get('username').dom.getAttribute('value'),
-                    'nemesis-token': Ext.get('token').dom.getAttribute('value'),
-                    'nemesis-expiryTime': Ext.get('expiryTime').dom.getAttribute('value')
-                };
 
-                for (var attrname in newOptions) {
-                    options.params[attrname] = newOptions[attrname];
-                }
-
-                return me.callOverridden(arguments);
-            }
+        Ext.Ajax.setDefaultHeaders({
+            'X-Nemesis-Token': Ext.get('token').dom.getAttribute('value'),
+            'X-Nemesis-Username': Ext.get('username').dom.getAttribute('value'),
+            'X-Nemesis-ExpiryTime': Ext.get('expiryTime').dom.getAttribute('value')
         });
-
-        //Ext.Ajax.setDefaultHeaders({'nemesis-username': Ext.get('username').dom.getAttribute('value')}, {'nemesis-token' : Ext.get('token').dom.getAttribute('value')}, {'nemesis-expiryTime' : Ext.get('expiryTime').dom.getAttribute('value')});
 
         // Create the actual viewport in body
         var viewPort = Ext.create('AdminConsole.view.Viewport', {
@@ -59,7 +42,7 @@ Ext.application({
                 afterrender: function () {
                     var mask = Ext.get('splash-screen'),
                         parent = Ext.get('splash-background');
-                    
+
                     mask.fadeOut({
                         callback: function () {
                             mask.destroy();

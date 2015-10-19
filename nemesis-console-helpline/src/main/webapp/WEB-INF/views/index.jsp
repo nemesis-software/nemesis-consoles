@@ -24,8 +24,6 @@
 
     <script type="text/javascript" src="resources/js/fields.js"></script>
     <script type="text/javascript" src="resources/js/entity.js"></script>
-    <script type="text/javascript"
-            src="${restBaseUrl}markup/results/all?nemesis-username=<sec:authentication property='principal.username' />&nemesis-token=<sec:authentication property='principal.token' htmlEscape="false" />&nemesis-expiryTime=<sec:authentication property='principal.expiryTime' />"></script>
 
     <script src="webjars/jquery/1.11.2/jquery.min.js"></script>
     <script src="webjars/jquery-atmosphere/2.2.3/jquery.atmosphere.js"></script>

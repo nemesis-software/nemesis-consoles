@@ -19,6 +19,32 @@ Ext.application({
 
     launch: function () {
 
+        Ext.Ajax.setDefaultHeaders({
+            'X-Nemesis-Token': Ext.get('token').dom.getAttribute('value'),
+            'X-Nemesis-Username': Ext.get('username').dom.getAttribute('value'),
+            'X-Nemesis-ExpiryTime': Ext.get('expiryTime').dom.getAttribute('value')
+        });
+
+        //TODO: override the loadScript method to pass defaultHeaders like above
+        Ext.Loader.loadScript({
+            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'markup/all',
+            onLoad: function () {
+            },
+            onError: function () {
+                console.error('Cannot load markup/all resource from the server!');
+            }
+        });
+
+        Ext.Loader.loadScript({
+            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'markup/results/all',
+            onLoad: function () {
+            },
+            onError: function () {
+                console.error('Cannot load markup/results/all resource from the server!');
+            }
+        });
+
+
         // Create the actual viewport in body
         Ext.create('HelplineConsole.view.Viewport', {
             renderTo: Ext.getBody(),

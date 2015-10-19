@@ -1,5 +1,6 @@
 Ext.Loader.setConfig({
-    enabled: true
+    enabled: true,
+    disableCaching: false
 });
 
 Ext.application({
@@ -25,6 +26,24 @@ Ext.application({
             'X-Nemesis-ExpiryTime': Ext.get('expiryTime').dom.getAttribute('value')
         });
 
+        //TODO: override the loadScript method to pass defaultHeaders like above
+        Ext.Loader.loadScript({
+            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'markup/all',
+            onLoad: function () {
+            },
+            onError: function () {
+                console.error('Cannot load markup/all resource from the server!');
+            }
+        });
+
+        Ext.Loader.loadScript({
+            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'markup/results/all',
+            onLoad: function () {
+            },
+            onError: function () {
+                console.error('Cannot load markup/results/all resource from the server!');
+            }
+        });
 
         Ext.History.init();
         // Create the actual viewport in body
@@ -71,7 +90,7 @@ Ext.application({
 
         var runner = new Ext.util.TaskRunner();
 
-        // poll some page every 10 seconds
+// poll some page every 10 seconds
         var task = runner.start({
             run: function () {
                 var sessionExpiry = Math.abs(Ext.util.Cookies.get('sessionExpiry'));
@@ -85,7 +104,7 @@ Ext.application({
             interval: 10000
         });
 
-        //check if the rest API is accessible
+//check if the rest API is accessible
         Ext.Ajax.request({
             url: Ext.get('rest-base-url').dom.getAttribute('url'),
             loadMask: true,
@@ -113,4 +132,5 @@ Ext.application({
             }
         });
     }
-});
+})
+;

@@ -20,11 +20,6 @@
     <script type="text/javascript" src="resources/js/fields.js"></script>
     <script type="text/javascript" src="resources/js/entity.js"></script>
 
-    <script type="text/javascript"
-            src="${restBaseUrl}markup/all?nemesis-username=<sec:authentication property='principal.username' />&nemesis-token=<sec:authentication property='principal.token' htmlEscape="false" />&nemesis-expiryTime=<sec:authentication property='principal.expiryTime' />"></script>
-    <script type="text/javascript"
-            src="${restBaseUrl}markup/results/all?nemesis-username=<sec:authentication property='principal.username' />&nemesis-token=<sec:authentication property='principal.token' htmlEscape="false" />&nemesis-expiryTime=<sec:authentication property='principal.expiryTime' />"></script>
-
     <script type="text/javascript" src="resources/app/locale/app-${currentLocale}.js"></script>
 
     <script type="text/javascript" src="resources/app/locale/translate.js"></script>
