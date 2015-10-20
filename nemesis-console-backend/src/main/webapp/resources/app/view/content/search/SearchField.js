@@ -39,7 +39,14 @@ Ext.define('console.view.content.search.SearchField', {
                     submitValue: false,
                     emptyText: this.emptyTxt,
                     xtype: 'textfield',
-                    width: '30%'
+                    width: '30%',
+                    listeners: {
+                    	specialkey: function(field, event) {
+                    		if (event.getKey() == event.ENTER) {
+                    			console.getApplication().getController('console.controller.content.search.SearchFormController').onSearchClicked(this);
+                    	    }
+                    	}.bind(this)
+                    }
                 }
             ],
             border: 0

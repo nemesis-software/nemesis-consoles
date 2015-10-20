@@ -92,7 +92,6 @@ Ext.define('console.view.content.search.SearchForm', function () {
 
                         var backendSearchFields = [];
                         for (var key in searchfields) {
-                            console.log(key.charAt(0).toLowerCase() + key.slice(1));
                             backendSearchFields.push(Ext.create("console.view.content.search.SearchField", {
                                 fieldLabel: key,
                                 entity: self.entity,

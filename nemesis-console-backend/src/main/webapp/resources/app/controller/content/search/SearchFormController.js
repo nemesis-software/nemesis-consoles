@@ -23,7 +23,7 @@ Ext.define('console.controller.content.search.SearchFormController', {
     },
     onSearchClicked: function (button) {
         var me = this;
-        var contentSearchForm = button.up().up();
+        var contentSearchForm = button.up('contentSearchForm');
         var entityId = contentSearchForm.entity.data.id;
         Ext.getCmp(entityId + "-search-result").setLoading(true);
         var fields = Ext.getCmp(entityId + '-searchform-fieldset').items;
