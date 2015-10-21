@@ -57,7 +57,7 @@ Ext.define("console.locale.en.navigation.EntityNames", {
     site: 'Сайт',
     widget: 'Уйджет',
     cronjob: 'Задача',                                         //settings
-    email_configuration: 'Имейл',
+    email_page: 'Имейл',
     social_configuration: 'Социалност',
     storage_configuration: 'Съхранение'
 });

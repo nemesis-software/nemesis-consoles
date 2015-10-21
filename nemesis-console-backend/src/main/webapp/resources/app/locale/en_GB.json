@@ -90,6 +90,7 @@
   warehouse: 'Warehouse',
   //location
   point_of_service: 'Point of service',
+  organization: 'Organization',
   opening_schedule: 'Opening schedule',
   storefinder_configuration: 'Storefinder configuration',
   abstract_page: 'Page',
@@ -113,7 +114,7 @@
   site_theme: 'Themes',
   cronjob: 'Cronjob',
   //settings
-  email_configuration: 'Email',
+  email_message: 'Email',
   social_configuration: 'Social',
   storage_configuration: 'Storage',
   'Equals': 'is equal',

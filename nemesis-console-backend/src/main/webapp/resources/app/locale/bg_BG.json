@@ -95,6 +95,7 @@
   warehouse: 'Складове',
   //location
   point_of_service: 'Магазини',
+  organization: 'Организация',
   opening_schedule: 'Работно време',
   storefinder_configuration: 'Конфигурация магазинлокатор',
   abstract_page: 'Страница',
@@ -118,7 +119,7 @@
   site_theme: 'Теми',
   cronjob: 'Крон задачи',
   //settings
-  email_configuration: 'Имейл',
+  email_message: 'Имейл',
   social_configuration: 'Социална',
   storage_configuration: 'Файлове',
   'Currency': 'Валута',

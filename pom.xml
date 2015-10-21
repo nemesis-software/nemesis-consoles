@@ -10,7 +10,8 @@
   ~ Information and shall use it only in accordance with the terms of the
   ~ license agreement you entered into with nemesis.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -35,13 +36,13 @@
         <module>nemesis-console-search</module>
         <module>nemesis-console-common</module>
     </modules>
-    
-	<scm>
+
+    <scm>
         <connection>scm:git:https://github.com/nemesis-software/nemesis-consoles.git</connection>
         <developerConnection>scm:git:https://github.com/nemesis-software/nemesis-consoles.git</developerConnection>
         <url>https://github.com/nemesis-software/nemesis-consoles.git</url>
-		<tag>master</tag>
-	</scm>
+        <tag>master</tag>
+    </scm>
 
     <repositories>
         <repository>
@@ -208,7 +209,7 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>extjs</artifactId>
-            <version>5.2.0-SNAPSHOT</version>
+            <version>${extjs.webjars.version}</version>
         </dependency>
     </dependencies>
 </project>

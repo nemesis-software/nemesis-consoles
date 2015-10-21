@@ -343,6 +343,10 @@
     background-image: url(images/invoice.png);
 }
 
+.organization {
+    background-image: url(images/organization.png);
+}
+
 .delivery_mode {
     background-image: url(images/delivery_mode.png);
 }
@@ -401,6 +405,10 @@
 
 .address {
     background-image: url(images/address.png);
+}
+
+.deeplink_url {
+    background-image: url(images/deeplink_url.png);
 }
 
 .title {
@@ -471,8 +479,8 @@
     background-image: url(images/product_page.png);
 }
 
-.email_page {
-    background-image: url(images/email_page.png);
+.email_message {
+    background-image: url(images/email_message.png);
 }
 
 .invoice_page {
