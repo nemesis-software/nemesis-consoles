@@ -48,25 +48,6 @@ Ext.application({
             }
         });
 
-        //TODO: override the loadScript method to pass defaultHeaders like above
-        /*Ext.Loader.loadScript({
-            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'markup/all',
-            onLoad: function () {
-            },
-            onError: function () {
-                console.error('Cannot load markup/all resource from the server!');
-            }
-        });
-
-        Ext.Loader.loadScript({
-            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'markup/results/all',
-            onLoad: function () {
-            },
-            onError: function () {
-                console.error('Cannot load markup/results/all resource from the server!');
-            }
-        });*/
-
         Ext.History.init();
         // Create the actual viewport in body
         Ext.create('console.view.Viewport', {
