@@ -25,9 +25,31 @@ Ext.application({
             'X-Nemesis-Username': Ext.get('username').dom.getAttribute('value'),
             'X-Nemesis-ExpiryTime': Ext.get('expiryTime').dom.getAttribute('value')
         });
+        
+        Ext.Ajax.request({
+            method: 'GET',
+            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'markup/all',
+            success: function (response) {
+                eval(response.responseText);
+            },
+            failure: function () {
+            	console.error('Cannot load markup/all resource from the server!');
+            }
+        });
+        
+        Ext.Ajax.request({
+            method: 'GET',
+            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'markup/results/all',
+            success: function (response) {
+                eval(response.responseText);
+            },
+            failure: function () {
+            	console.error('Cannot load markup/results/all resource from the server!');
+            }
+        });
 
         //TODO: override the loadScript method to pass defaultHeaders like above
-        Ext.Loader.loadScript({
+        /*Ext.Loader.loadScript({
             url: Ext.get('rest-base-url').dom.getAttribute('url') + 'markup/all',
             onLoad: function () {
             },
@@ -43,7 +65,7 @@ Ext.application({
             onError: function () {
                 console.error('Cannot load markup/results/all resource from the server!');
             }
-        });
+        });*/
 
         Ext.History.init();
         // Create the actual viewport in body
