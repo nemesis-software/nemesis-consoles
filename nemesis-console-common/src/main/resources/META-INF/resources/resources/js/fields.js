@@ -106,13 +106,10 @@ Ext.define('console.view.field.NemesisCollectionField', {
                             disabled: selected.length == 0,
                             handler: function () {
                                 var record = selected[0];
-                                console.log(record);
-                                console.log(Ext.getCmp(me.id).entity);
-                                var window = Ext.getCmp('backend-viewport').getWindow(record.data.uid);
-                                if (!window) {
+                                var win = Ext.getCmp('backend-viewport').getWindow(record.data.uid);
+                                if (!win) {
                                     var entityConfiguration = Ext.create("console.markup." + record.data.name);
-                                    console.log(record);
-                                    window = Ext.getCmp('backend-viewport').createWindow({
+                                    win = Ext.getCmp('backend-viewport').createWindow({
                                         id: record.data.uid,
                                         iconCls: this.entityId,
                                         entity: Ext.create('console.model.Entity', {
@@ -125,7 +122,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                                         sections: entityConfiguration.sections
                                     });
                                 }
-                                Ext.getCmp('backend-viewport').restoreWindow(window);
+                                Ext.getCmp('backend-viewport').restoreWindow(win);
                             }.bind(this.component)
                         },
                         '-',
@@ -479,25 +476,26 @@ Ext.define('console.view.field.NemesisEntityField', {
         edit: {
             handler: function () {
                 var me = this;
+                var entityUid = me.jsonValue;
                 if (me.entity) {
                     console.log(me.entity.data); //you need to initialize the entity from the url
-                    var window = Ext.getCmp('backend-viewport').getWindow(this.entity.data.id);
-                    if (!window) {
+                    var win = Ext.getCmp('backend-viewport').getWindow(entityUid);
+                    if (!win) {
                         Ext.Ajax.request({
                             url: me.entity.data.url,
                             method: 'GET',
                             success: function (responseObject) {
                                 var result = Ext.decode(responseObject.responseText);
                                 var entity = {id: me.entity.id, data: {id: me.entity.data.id, url: result._links.self.href}};
-                                window = Ext.getCmp('backend-viewport').createWindow({
-                                    id: me.jsonValue,
-                                    title: '[' + me.jsonValue + ' - ' + me.entity.data.name + ']',
+                                win = Ext.getCmp('backend-viewport').createWindow({
+                                    id: entityUid,
+                                    title: '[' + entityUid + ' - ' + me.entity.data.name + ']',
                                     iconCls: me.entityId,
                                     entity: entity,
                                     sections: Ext.create("console.markup." + me.entityId).sections,
                                     synchronizable: Ext.create("console.markup." + me.entityId).synchronizable
                                 });
-                                Ext.getCmp('backend-viewport').restoreWindow(window);
+                                Ext.getCmp('backend-viewport').restoreWindow(win);
                             },
                             failure: function (responseObject) {
                                 Ext.Msg.alert('Error', 'Error: ' + responseObject.responseText);
@@ -505,7 +503,7 @@ Ext.define('console.view.field.NemesisEntityField', {
                         });
 
                     } else {
-                        Ext.getCmp('backend-viewport').restoreWindow(window);
+                        Ext.getCmp('backend-viewport').restoreWindow(win);
                     }
                 }
             }
