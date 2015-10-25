@@ -188,7 +188,8 @@ function retranslate(lang, w, isRootCmp) {
         translateObj(n.fieldSet.down('textfield(true)'));
     });
 
-    Ext.getCmp('navigation-tree').getView().refresh();
+    var navigationTree = Ext.getCmp('navigation-tree');
+    if (navigationTree) navigationTree.getView().refresh();
 
     setTimeout(function () {
         w.setLoading(false);

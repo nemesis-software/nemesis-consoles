@@ -142,7 +142,7 @@ Ext.define('console.view.Menu', {
                                 var entityConfiguration = Ext.create("console.markup." + record.data.entityName);
                                 console.log(record);
                                 var window = Ext.getCmp(parentCmpId).createWindow({
-                                    id: null,
+                                    id: record.data.uid,
                                     iconCls: 'page_template',
                                     entity: Ext.create('console.model.Entity', {
                                         name: null,
@@ -313,7 +313,7 @@ Ext.define('console.view.Menu', {
                                 var entityConfiguration = Ext.create("console.markup." + record.data.entityName);
                                 console.log(record);
                                 var window = Ext.getCmp(parentCmpId).createWindow({
-                                    id: null,
+                                    id: record.data.uid,
                                     iconCls: 'content_page',
                                     entity: Ext.create('console.model.Entity', {
                                         name: null,
@@ -438,7 +438,7 @@ Ext.define('console.view.Menu', {
                                 var entityConfiguration = Ext.create("console.markup." + record.data.entityName);
                                 console.log(record);
                                 var window = Ext.getCmp(parentCmpId).createWindow({
-                                    id: null,
+                                    id: record.data.uid,
                                     iconCls: 'content_slot',
                                     entity: Ext.create('console.model.Entity', {
                                         name: null,
@@ -673,7 +673,7 @@ Ext.define('console.view.Menu', {
                                 var entityConfiguration = Ext.create("console.markup." + record.data.entityName);
                                 console.log(record);
                                 var window = Ext.getCmp(parentCmpId).createWindow({
-                                    id: null,
+                                    id: record.data.uid,
                                     iconCls: 'widget',
                                     entity: Ext.create('console.model.Entity', {
                                         name: null,

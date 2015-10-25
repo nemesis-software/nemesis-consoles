@@ -216,10 +216,10 @@ Ext.application({
                                     iconCls: event.data.selection.contentElementEntityName,
                                     entity: Ext.create('console.model.Entity', {
                                         name: null,
-                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + event.data.selection.contentElementEntityName + '/' + event.data.selection.contentElement
+                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + event.data.selection.contentElementEntityName + '/' + event.data.selection.contentElement,
+                                        synchronizable: entityConfiguration.synchronizable
                                     }),
-                                    sections: entityConfiguration.sections,
-                                    synchronizable: entityConfiguration.synchronizable
+                                    sections: entityConfiguration.sections
                                 });
                                 window.show();
                             }
