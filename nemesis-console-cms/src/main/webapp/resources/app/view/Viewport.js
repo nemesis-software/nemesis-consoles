@@ -50,11 +50,7 @@ Ext.define('console.view.Viewport', {
         var me = this;
         console.log(config.sections);
         return Ext.create('console.view.content.EntityPopupWindow', {
-            id: config.id,
-            title: config.title,
-            iconCls: config.iconCls,
-            entity: config.entity,
-            entityFields: config.sections,
+            config: config,
             modal: true
         });
     }
