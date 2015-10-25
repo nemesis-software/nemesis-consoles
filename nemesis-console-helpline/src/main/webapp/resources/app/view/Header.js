@@ -58,7 +58,7 @@ Ext.define('HelplineConsole.view.Header', {
                 store: Ext.create('HelplineConsole.store.Languages'),
                 valueField: 'isoCode',
                 displayField: 'name',
-                value: 'en',
+                value: 'en_GB',
                 typeAhead: true,
                 listeners: {
                     select: {

@@ -67,7 +67,7 @@ Ext.define('AdminConsole.view.Header', {
                 store: Ext.create('AdminConsole.store.Languages'),
                 valueField: 'isoCode',
                 displayField: 'name',
-                value: 'en',
+                value: 'en_GB',
                 typeAhead: true,
                 listeners: {
                     select: {

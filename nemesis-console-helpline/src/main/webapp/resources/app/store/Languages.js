@@ -6,10 +6,10 @@ Ext.define('HelplineConsole.store.Languages', {
     storeId: 'languages',
 
     data: [
-        ['bg', 'Bulgarian'],
-        ['en', 'English'],
-        ['de', 'German'],
-        ['fr', 'French'],
-        ['sp', 'Spanish']
+        ['bg_BG', 'Bulgarian'],
+        ['en_GB', 'English'],
+        ['de_DE', 'German'],
+        ['fr_FR', 'French'],
+        ['es_ES', 'Spanish']
     ]
 });
