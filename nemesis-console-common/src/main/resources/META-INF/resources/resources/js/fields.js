@@ -137,12 +137,12 @@ Ext.define('console.view.field.NemesisCollectionField', {
                             itemId: 'paste',
                             text: 'Paste',
                             iconCls: 'paste',
-                            handler: function() {
-                            	var clipboard = Ext.getCmp('backend-viewport').clipboard;
-                            	if (clipboard.data) {
-                                	var data = Ext.apply({uid: clipboard.data.id, pk: clipboard.data.pk}, clipboard.data)
-                            		this.store.insert(this.store.data.items.length, Ext.data.Record.create(data));
-                            	}
+                            handler: function () {
+                                var clipboard = Ext.getCmp('backend-viewport').clipboard;
+                                if (clipboard.data) {
+                                    var data = Ext.apply({uid: clipboard.data.id, pk: clipboard.data.pk}, clipboard.data)
+                                    this.store.insert(this.store.data.items.length, Ext.data.Record.create(data));
+                                }
                             }.bind(this.component)
                         },
                         {
@@ -164,10 +164,10 @@ Ext.define('console.view.field.NemesisCollectionField', {
     initComponent: function () {
         var me = this;
         me.title = me.fieldLabel;
-        me.iconCls = me.entityId;
+        me.iconCls = 'default-icon ' + me.entityId;
 
         if (me.entityId) {
-        	me.search.store = Ext.create('Ext.data.Store', {
+            me.search.store = Ext.create('Ext.data.Store', {
                 autoLoad: false,
                 autoSync: true,
                 pageSize: 10,
@@ -195,19 +195,21 @@ Ext.define('console.view.field.NemesisCollectionField', {
                     }
                 }
             });
-            
-            me.search.onSearchChange = function(searchField) {
-            	var value = searchField.getValue(),
-                trigger = searchField.getTrigger('clear');
 
-            	trigger.setHidden(!value);
-            	this.getSearchStore().load({params: {
-                    uid: value
-                }});
-            	this.search(value);
+            me.search.onSearchChange = function (searchField) {
+                var value = searchField.getValue(),
+                    trigger = searchField.getTrigger('clear');
+
+                trigger.setHidden(!value);
+                this.getSearchStore().load({
+                    params: {
+                        uid: value
+                    }
+                });
+                this.search(value);
             }
         }
-        
+
         me.callParent(arguments);
     },
     initStore: function (entity) {
@@ -291,7 +293,7 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
     afterRender: function () {
         var me = this;
         me.callParent();
-        
+
         me.langValuePairs = {};
         me.fieldSet = Ext.create('Ext.form.FieldSet', {
             layout: {
@@ -323,7 +325,7 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
                     formItemCls: 'field-restriction',
                     cls: 'localized-iso-dropdown',
                     value: Ext.get('rest-base-url').dom.getAttribute('locale'),
-	                flex: 1
+                    flex: 1
                 },
                 {
                     isFormField: false,
@@ -418,7 +420,7 @@ Ext.define('console.view.field.NemesisEntityField', {
         var me = this;
         me.emptyText = me.entityId;
         console.log(me.triggers);
-        me.triggers['edit'].cls = 'x-form-entity-trigger ' + me.entityId;
+        me.triggers['edit'].cls = 'x-form-entity-trigger ' + ' default-icon ' + me.entityId;
         var store = Ext.create('Ext.data.Store', {
             autoLoad: false,
             autoSync: true,
@@ -447,12 +449,12 @@ Ext.define('console.view.field.NemesisEntityField', {
                 }
             },
             listeners: {
-            	load: {
-            		single: true,
-            		fn: function() {
-            			this.loaded = true;
-            		}
-            	}
+                load: {
+                    single: true,
+                    fn: function () {
+                        this.loaded = true;
+                    }
+                }
             }
         });
         this.store = store;
@@ -509,24 +511,24 @@ Ext.define('console.view.field.NemesisEntityField', {
             }
         }
     },
-    validateValue : function(value) {
+    validateValue: function (value) {
         var errs = this.getErrors(value);
 
-        if((value || value != "") && this.forceSelection && this.store.loaded) {
+        if ((value || value != "") && this.forceSelection && this.store.loaded) {
             var val = this.getRawValue(),
-            rec = this.findRecord(this.displayField, val);
+                rec = this.findRecord(this.displayField, val);
 
-            if(!rec) {
+            if (!rec) {
                 errs.push("Invalid Selection");
             } else {
-            	errs = [];
+                errs = [];
             }
         }
 
         var error = errs[0];
 
         if (error == undefined) {
-        	this.clearInvalid();
+            this.clearInvalid();
             return true;
         } else {
             this.markInvalid(error);

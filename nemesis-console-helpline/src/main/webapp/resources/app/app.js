@@ -25,21 +25,24 @@ Ext.application({
             'X-Nemesis-ExpiryTime': Ext.get('expiryTime').dom.getAttribute('value')
         });
 
-        //TODO: override the loadScript method to pass defaultHeaders like above
-        Ext.Loader.loadScript({
+        Ext.Ajax.request({
+            method: 'GET',
             url: Ext.get('rest-base-url').dom.getAttribute('url') + 'markup/all',
-            onLoad: function () {
+            success: function (response) {
+                eval(response.responseText);
             },
-            onError: function () {
+            failure: function () {
                 console.error('Cannot load markup/all resource from the server!');
             }
         });
 
-        Ext.Loader.loadScript({
+        Ext.Ajax.request({
+            method: 'GET',
             url: Ext.get('rest-base-url').dom.getAttribute('url') + 'markup/results/all',
-            onLoad: function () {
+            success: function (response) {
+                eval(response.responseText);
             },
-            onError: function () {
+            failure: function () {
                 console.error('Cannot load markup/results/all resource from the server!');
             }
         });
@@ -53,12 +56,16 @@ Ext.application({
                     var mask = Ext.get('splash-screen'),
                         parent = Ext.get('splash-background');
                     ;
-                    mask.fadeOut({callback: function () {
-                        mask.destroy();
-                    }});
-                    parent.fadeOut({callback: function () {
-                        parent.destroy();
-                    }});
+                    mask.fadeOut({
+                        callback: function () {
+                            mask.destroy();
+                        }
+                    });
+                    parent.fadeOut({
+                        callback: function () {
+                            parent.destroy();
+                        }
+                    });
                     Ext.getCmp('app-header-logout').getEl().on('click', function () {
                         Ext.getCmp('logout-form-csrf-param').setValue(Ext.get('security').dom.getAttribute('token'));
                         Ext.getCmp('logout-form').submit({
@@ -68,7 +75,12 @@ Ext.application({
 
                     Ext.getCmp('chat-response-area').getEl().on('keyup', function (e, textarea) {
                         if (e.getKey() === e.ENTER) {
-                            var event = Ext.create('HelplineConsole.model.ChatMessage', {author: Ext.get('security').dom.getAttribute('username'), broadcasterId: currentConversation.data.broadcasterId, time: new Date().getTime(), message: textarea.value});
+                            var event = Ext.create('HelplineConsole.model.ChatMessage', {
+                                author: Ext.get('security').dom.getAttribute('username'),
+                                broadcasterId: currentConversation.data.broadcasterId,
+                                time: new Date().getTime(),
+                                message: textarea.value
+                            });
                             subSocket.push({data: Ext.encode(event.data)});
                             Ext.getCmp('chat-response-area').setValue(null);
                         }
@@ -82,7 +94,7 @@ Ext.application({
                         onready: function () {
                             // SM2 is ready to play audio!
 
-                            var notificationSound = soundManager.createSound({ id: 'notification', url: 'resources/sound/notification.wav' });
+                            var notificationSound = soundManager.createSound({id: 'notification', url: 'resources/sound/notification.wav'});
 
                         }
                     });
@@ -116,7 +128,12 @@ Ext.application({
                                     //	date: '',
                                     //	message: data.message
                                     //});
-                                    var msg = Ext.create('HelplineConsole.model.ChatMessage', {author: data.author, broadcasterId: data.broadcasterId, date: format(d.getHours(), 2) + ":" + format(d.getMinutes(), 2) + ":" + format(d.getSeconds(), 2), message: data.message});
+                                    var msg = Ext.create('HelplineConsole.model.ChatMessage', {
+                                        author: data.author,
+                                        broadcasterId: data.broadcasterId,
+                                        date: format(d.getHours(), 2) + ":" + format(d.getMinutes(), 2) + ":" + format(d.getSeconds(), 2),
+                                        message: data.message
+                                    });
                                     var incomingMessageIndex = Ext.getCmp('chatlog-incoming-messages').getStore().find('broadcasterId', data.broadcasterId);
                                     if (incomingMessageIndex != -1) {
                                         var currConv = Ext.getCmp('chatlog-incoming-messages').getStore().getAt(incomingMessageIndex);
@@ -132,7 +149,10 @@ Ext.application({
                                             currentConversation.data.events.push(msg);
                                         } else {
                                             evs.push(msg);
-                                            currentConversation = Ext.create('HelplineConsole.model.ChatConversation', {broadcasterId: data.broadcasterId, events: evs});
+                                            currentConversation = Ext.create('HelplineConsole.model.ChatConversation', {
+                                                broadcasterId: data.broadcasterId,
+                                                events: evs
+                                            });
                                             Ext.getCmp('chatlog-incoming-messages').getStore().add(currentConversation);
                                         }
                                     }
@@ -151,7 +171,7 @@ Ext.application({
                     }
 
                     function format(a, b) {
-                        return(1e15 + a + "").slice(-b);
+                        return (1e15 + a + "").slice(-b);
                     }
 
                     function unsubscribe() {

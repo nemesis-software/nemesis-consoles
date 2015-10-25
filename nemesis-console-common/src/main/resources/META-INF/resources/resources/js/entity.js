@@ -6,7 +6,7 @@ Ext.define('console.model.Entity', {
         {name: 'url'},                     // http://localhost:8080/rest/discount/12312312313
         {name: 'className'},               // com.nemesis.platform.core.model.price.DiscountModel
         {name: 'synchronizable'},           // true
-        {name: 'isNew'} 
+        {name: 'isNew'}
     ]
 });
 
@@ -28,11 +28,11 @@ Ext.define('console.view.content.EntityPopupWindow', {
     layout: 'border',
     config: null,
     initComponent: function () {
-    	Ext.apply(this, {
-    		id: 'w_id_' + (this.config.id ? this.config.id.replace(/@/g, '_AT_') : ''), 
-    		iconCls: this.config.iconCls
-    	});
-    	
+        Ext.apply(this, {
+            id: 'w_id_' + (this.config.id ? this.config.id.replace(/@/g, '_AT_') : ''),
+            iconCls: 'default-icon ' + this.config.iconCls
+        });
+
         var method = 'POST';
         if (this.config.id !== '') {
             method = 'PATCH';
@@ -91,29 +91,29 @@ Ext.define('console.view.content.entity.EntityPopupForm', {
                 items: me.entityFields,
                 border: false,
                 defaults: {
-                	hideMode: 'offsets'
+                    hideMode: 'offsets'
                 }
             }
         ];
 
         if (me.entity != null) {
             this.on('afterrender', function () {
-            	if (!me.entity.data.isNew) {
-	                Ext.Ajax.request({
-	                    url: me.entity.data.url,
-	                    method: 'GET',
-	                    params: {},
-	                    success: function (responseObject) {
-	                        var result = Ext.decode(responseObject.responseText);
-	                        me.populateForm(me.convertResult(result));
-	                    },
-	                    failure: function (responseObject) {
-	                        Ext.Msg.alert('Error', 'Error: ' + responseObject.responseText);
-	                    }
-	                });
-            	} else {
-            		this.initCollectionFieldsStores({});
-            	}
+                if (!me.entity.data.isNew) {
+                    Ext.Ajax.request({
+                        url: me.entity.data.url,
+                        method: 'GET',
+                        params: {},
+                        success: function (responseObject) {
+                            var result = Ext.decode(responseObject.responseText);
+                            me.populateForm(me.convertResult(result));
+                        },
+                        failure: function (responseObject) {
+                            Ext.Msg.alert('Error', 'Error: ' + responseObject.responseText);
+                        }
+                    });
+                } else {
+                    this.initCollectionFieldsStores({});
+                }
             });
         }
 
@@ -123,7 +123,7 @@ Ext.define('console.view.content.entity.EntityPopupForm', {
         this.getForm().setValues(result);
         this.initCollectionFieldsStores(result);
     },
-    initCollectionFieldsStores: function(result) {
+    initCollectionFieldsStores: function (result) {
         Ext.each(this.query('nemesisCollectionField'), function (field) {
             field.initStore(result[field.name]);
         });
@@ -277,9 +277,9 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
         this.callParent(arguments);
     },
     onsaveClicked: function (entity, entityPopupForm) {
-    	if (!entityPopupForm.isValid()) {
-    		return;
-    	}
+        if (!entityPopupForm.isValid()) {
+            return;
+        }
         var me = this;
         Ext.Ajax.request({
             url: entity.data.url,
@@ -300,9 +300,9 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                         minWidth: 400
                     });
                 }
-                entityPopupForm.getForm().getFields().each(function(field){
-            	   field.resetOriginalValue();
-            	});
+                entityPopupForm.getForm().getFields().each(function (field) {
+                    field.resetOriginalValue();
+                });
                 Ext.each(entityPopupForm.query('nemesisCollectionField'), function (field) {
                     field.isDirty = false;
                 })

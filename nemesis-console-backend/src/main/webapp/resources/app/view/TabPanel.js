@@ -37,7 +37,7 @@ Ext.define('console.view.TabPanel', {
                 var cmpId = decodeURIComponent(parts[0]);
                 if (cmpId === 'tab-panel') {
                     var recordId = decodeURIComponent(parts[1]);
-                    var iconCls = decodeURIComponent(parts[2]);
+                    var iconCls = 'default-icon ' + decodeURIComponent(parts[2]);
                     if (!Ext.getCmp(cmpId).getComponent(recordId)) {
                         var entity = Ext.create("console.model.Entity", {
                             id: recordId,
@@ -49,7 +49,7 @@ Ext.define('console.view.TabPanel', {
                         Ext.getCmp(cmpId).add(Ext.create("console.view.content.Page", {
                             itemId: entity.data.id,
                             title: entity.data.name,
-                            iconCls: iconCls,
+                            iconCls: 'default-icon ' + iconCls,
                             closable: true,
                             entity: entity,
                             contentPanel: this.contentPanel
@@ -69,7 +69,7 @@ Ext.define('console.view.TabPanel', {
                         var entityConfiguration = Ext.create("console.markup." + entityDataId);
                         window = viewport.createWindow({
                             id: recordUid,
-                            iconCls: entityDataId,
+                            iconCls: 'default-icon ' + entityDataId,
                             entity: Ext.create('console.model.Entity', {
                                 id: entityDataId,
                                 name: entityDataName,

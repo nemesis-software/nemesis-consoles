@@ -28,25 +28,27 @@ Ext.application({
             'X-Nemesis-ExpiryTime': Ext.get('expiryTime').dom.getAttribute('value')
         });
 
-        //TODO: override the loadScript method to pass defaultHeaders like above
-        Ext.Loader.loadScript({
+        Ext.Ajax.request({
+            method: 'GET',
             url: Ext.get('rest-base-url').dom.getAttribute('url') + 'markup/all',
-            onLoad: function () {
+            success: function (response) {
+                eval(response.responseText);
             },
-            onError: function () {
+            failure: function () {
                 console.error('Cannot load markup/all resource from the server!');
             }
         });
 
-        Ext.Loader.loadScript({
+        Ext.Ajax.request({
+            method: 'GET',
             url: Ext.get('rest-base-url').dom.getAttribute('url') + 'markup/results/all',
-            onLoad: function () {
+            success: function (response) {
+                eval(response.responseText);
             },
-            onError: function () {
+            failure: function () {
                 console.error('Cannot load markup/results/all resource from the server!');
             }
         });
-
 
         // Create the actual viewport in body
         Ext.create('console.view.Viewport', {
