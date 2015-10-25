@@ -10,7 +10,7 @@
     <meta http-equiv="Pragma" content="no-cache"></meta>
     <meta http-equiv="Expires" content="0"></meta>
     <link rel="shortcut icon" href="resources/img/favicon.ico" type="image/x-icon"/>
-    <c:set var="currentLocale" value="${not empty param.lang ? param.lang : 'en'}"/>
+    <c:set var="currentLocale" value="${not empty param.lang ? param.lang : 'en_GB'}"/>
     <link href="webjars/extjs/5.1.1-light/build/packages/ext-theme-gray/build/resources/ext-theme-gray-all.css"
           rel="stylesheet"/>
     <script type="text/javascript" src="webjars/extjs/5.1.1-light/build/ext-all.js"></script>

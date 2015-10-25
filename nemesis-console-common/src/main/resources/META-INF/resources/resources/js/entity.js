@@ -229,8 +229,10 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                 disabled: me.entity.data.synchronizable != true,
                 handler: function () {
                     console.log(me.entity.data.url);
+
                     me.up().up().setLoading(true);
                     var pk = me.entity.data.url.substring(me.entity.data.url.lastIndexOf(me.entity.data.id) + me.entity.data.id.length + 1);
+                    console.log(pk)
                     Ext.Ajax.request({
                         url: Ext.get('rest-base-url').dom.getAttribute('url') + "backend/synchronize",
                         method: 'GET',

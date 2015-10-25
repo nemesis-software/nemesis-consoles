@@ -215,6 +215,7 @@ Ext.application({
                                     title: '[Widget]',
                                     iconCls: event.data.selection.contentElementEntityName,
                                     entity: Ext.create('console.model.Entity', {
+                                        id: event.data.selection.contentElementEntityName,
                                         name: null,
                                         url: Ext.get('rest-base-url').dom.getAttribute('url') + event.data.selection.contentElementEntityName + '/' + event.data.selection.contentElement,
                                         synchronizable: entityConfiguration.synchronizable
