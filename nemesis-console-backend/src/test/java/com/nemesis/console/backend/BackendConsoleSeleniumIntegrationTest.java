@@ -16,11 +16,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -32,6 +30,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -399,18 +398,45 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     //#102
     @Test
-    @Ignore("TODO")
     public void testMustShowToastWhenCreatingNewEntitiesAsWellAsWhenSavingAndRemovingOldEntities() throws InterruptedException {
         LOG.info("testMustShowToastWhenCreatingNewEntitiesAsWellAsWhenSavingAndRemovingOldEntities");
         String entityId = "unit";
         String entityFullId = "unit";
+
+        sleep();
+
         assertTrue(navTreeItems().size() > 0);
+
+        sleep();
 
         filterNavTree(entityId);
 
         sleep();
 
-        createNewFromNavTreeItem(null);
+        int position = navTreeItems().size() - 1;
+
+        Actions action = new Actions(getWebDriver());
+        action.contextClick(navTreeInnerItems().get(position)).build().perform();
+
+        sleep();
+
+        assertNotNull(getWebDriver().findElement(By.cssSelector("x-menu")));
+
+        getWebDriver().findElement(By.cssSelector("x-menu")).click();
+
+        Thread.sleep(1500);
+
+        assertTrue(existsElement("div[id^='w_id_']"));
+
+        Thread.sleep(1500);
+
+        closeEntityWindow();
+
+        Thread.sleep(1500);
+
+        assertTrue(!existsElement("div[id^='w_id_']"));
+
+        closeEntityTab(0);
     }
 
     private void sleep() throws InterruptedException {
@@ -435,14 +461,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertEquals(1, openedTabs().size());
 
         Thread.sleep(1500);
-    }
-
-    private void createNewFromNavTreeItem(Integer position) throws InterruptedException {
-        position = position != null ? position : navTreeItems().size() - 1;
-
-        Actions action = new Actions(getWebDriver());
-        action.contextClick(navTreeInnerItems().get(position)).sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.RETURN).build().perform();
-
     }
 
     private void openSearchGridItem(int itemIndex, String entityFullId) {
