@@ -38,6 +38,7 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
 
     @BeforeClass
     public static void setUp() throws Exception {
+        AbstractCommonConsoleSeleniumInterationTest.setUp();
         getWebDriver().manage().window().maximize();
         getWebDriver().get("http://localhost:8080/admin");
 

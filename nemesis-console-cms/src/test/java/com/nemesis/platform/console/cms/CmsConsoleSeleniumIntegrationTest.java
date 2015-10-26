@@ -37,6 +37,7 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
 
     @BeforeClass
     public static void setUp() throws Exception {
+        AbstractCommonConsoleSeleniumInterationTest.setUp();
         getWebDriver().manage().window().maximize();
         getWebDriver().get("http://localhost:8080/cms");
 
