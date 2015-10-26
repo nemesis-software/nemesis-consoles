@@ -16,9 +16,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -395,6 +397,22 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         clearNavTreeFilter();
     }
 
+    //#102
+    @Test
+    @Ignore("TODO")
+    public void testMustShowToastWhenCreatingNewEntitiesAsWellAsWhenSavingAndRemovingOldEntities() throws InterruptedException {
+        LOG.info("testMustShowToastWhenCreatingNewEntitiesAsWellAsWhenSavingAndRemovingOldEntities");
+        String entityId = "unit";
+        String entityFullId = "unit";
+        assertTrue(navTreeItems().size() > 0);
+
+        filterNavTree(entityId);
+
+        sleep();
+
+        createNewFromNavTreeItem(null);
+    }
+
     private void sleep() throws InterruptedException {
         Thread.sleep(1500);
     }
@@ -417,6 +435,14 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertEquals(1, openedTabs().size());
 
         Thread.sleep(1500);
+    }
+
+    private void createNewFromNavTreeItem(Integer position) throws InterruptedException {
+        position = position != null ? position : navTreeItems().size() - 1;
+
+        Actions action = new Actions(getWebDriver());
+        action.contextClick(navTreeInnerItems().get(position)).sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.RETURN).build().perform();
+
     }
 
     private void openSearchGridItem(int itemIndex, String entityFullId) {
