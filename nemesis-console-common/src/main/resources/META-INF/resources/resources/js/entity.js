@@ -34,7 +34,7 @@ Ext.define('console.view.content.EntityPopupWindow', {
         });
 
         var method = 'POST';
-        if (this.config.id !== '') {
+        if (this.config.id) {
             method = 'PATCH';
         }
 
@@ -232,7 +232,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
 
                     me.up().up().setLoading(true);
                     var pk = me.entity.data.url.substring(me.entity.data.url.lastIndexOf(me.entity.data.id) + me.entity.data.id.length + 1);
-                    console.log(pk)
+                    console.log(pk);
                     Ext.Ajax.request({
                         url: Ext.get('rest-base-url').dom.getAttribute('url') + "backend/synchronize",
                         method: 'GET',
@@ -289,7 +289,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
             headers: {'Content-Type': 'application/json', Accept: 'application/json'},
             params: this.prepareValues(entityPopupForm.getValues()),
             success: function (responseObject) {
-                var searchRes = Ext.getCmp(entity.data.id + '-search-result');
+                var searchRes = Ext.getCmp(entity.data.name + '-search-result');
                 if (searchRes) {
                     searchRes.mask();
                     searchRes.getStore().reload();
@@ -328,7 +328,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
             params: this.prepareValues(entityPopupForm.getForm().getValues(false, true, false, false)),
             success: function (responseObject) {
                 me.up('window').close();
-                var searchRes = Ext.getCmp(entity.data.id + '-search-result');
+                var searchRes = Ext.getCmp(entity.data.name + '-search-result');
                 if (searchRes) {
                     searchRes.mask();
                     searchRes.getStore().reload();
