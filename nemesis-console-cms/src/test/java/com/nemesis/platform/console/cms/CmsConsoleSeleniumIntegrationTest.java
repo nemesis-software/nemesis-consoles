@@ -20,8 +20,6 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -37,65 +35,54 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
 
     protected final Logger LOG = LogManager.getLogger(getClass());
 
-    public static RemoteWebDriver driver;
-
     @BeforeClass
     public static void setUp() throws Exception {
-        driver = new FirefoxDriver();
-        driver.manage().window().maximize();
-        driver.get("http://localhost:8080/cms");
+        getWebDriver().manage().window().maximize();
+        getWebDriver().get("http://localhost:8080/cms");
 
-        assertEquals("Login Page", driver.getTitle());
+        assertEquals("Login Page", getWebDriver().getTitle());
 
-        driver.findElement(By.cssSelector("input[name=username]")).sendKeys("admin");
-        driver.findElement(By.cssSelector("input[name=password]")).sendKeys("nimda");
-        driver.findElement(By.cssSelector("input[name=submit]")).click();
+        getWebDriver().findElement(By.cssSelector("input[name=username]")).sendKeys("admin");
+        getWebDriver().findElement(By.cssSelector("input[name=password]")).sendKeys("nimda");
+        getWebDriver().findElement(By.cssSelector("input[name=submit]")).click();
 
         // Wait for the page to load, timeout after 10 seconds
-        (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                return d.getTitle().toLowerCase().startsWith("cms console | nemesis");
-            }
+        (new WebDriverWait(getWebDriver(), 10)).until((WebDriver d) -> {
+            return d.getTitle().toLowerCase().startsWith("cms console | nemesis");
         });
 
-        assertEquals("cms console | nemesis", driver.getTitle().toLowerCase());
+        assertEquals("cms console | nemesis", getWebDriver().getTitle().toLowerCase());
 
         waitForDom();
         waitForLoad();
     }
 
     protected static void waitForDom() {
-        driver.executeScript("Ext.onReady(function () {});");
+        getWebDriver().executeScript("Ext.onReady(function () {});");
     }
 
     protected static void waitForLoad() {
-        ExpectedCondition<Boolean> pageLoadCondition = new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver driver) {
-                return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
-            }
-        };
-        WebDriverWait wait = new WebDriverWait(driver, 30);
+        ExpectedCondition<Boolean> pageLoadCondition = driver -> ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
+        WebDriverWait wait = new WebDriverWait(getWebDriver(), 30);
         wait.until(pageLoadCondition);
     }
 
     @AfterClass
     public static void tearDown() throws Exception {
-        driver.findElementById("app-header-logout").click();
+        getWebDriver().findElementById("app-header-logout").click();
         Thread.sleep(500);
-        assertEquals("Login Page", driver.getTitle());
+        assertEquals("Login Page", getWebDriver().getTitle());
 
-        driver.quit();
+        getWebDriver().quit();
     }
 
     @Test
     public void testHeaderLinkReloadsPage() {
         LOG.info("Header link reloads page");
-        driver.findElement(By.cssSelector("a#app-header-title")).click();
+        getWebDriver().findElement(By.cssSelector("a#app-header-title")).click();
         // Wait for the page to load, timeout after 10 seconds
-        (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                return d.getTitle().startsWith("CMS Console | Nemesis");
-            }
+        (new WebDriverWait(getWebDriver(), 10)).until((WebDriver d) -> {
+            return d.getTitle().startsWith("CMS Console | Nemesis");
         });
     }
 
@@ -104,17 +91,15 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
         Thread.sleep(1500);
         LOG.info("Change locale");
         //Change locale
-        driver.executeScript(
+        getWebDriver().executeScript(
                         "var c = Ext.getCmp('app-header-language-selector'); c.setValue({'isoCode':'bg'}); c.fireEvent('select', c, {data : {'isoCode':'bg'}});");
 
         // Wait for the page to load, timeout after 5 seconds
-        (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                return d.getTitle().startsWith("CMS Console | Nemesis");
-            }
+        (new WebDriverWait(getWebDriver(), 10)).until((WebDriver d) -> {
+            return d.getTitle().startsWith("CMS Console | Nemesis");
         });
 
-        assertEquals("Изход", driver.findElementById("app-header-logout").getText());
+        assertEquals("Изход", getWebDriver().findElementById("app-header-logout").getText());
 
     }
 
