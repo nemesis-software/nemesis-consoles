@@ -622,8 +622,8 @@ Ext.define('console.view.field.NemesisEntityField', {
                                 show: {
                                     single: true,
                                     fn: function (tip) {
+                                        var url = resultData.previewUrl;
                                         var relUrl = resultData.url;
-                                        var url = 'https://dve2ovdl241xy.cloudfront.net' + relUrl;
                                         me.tooltip.update("<img id='" + relUrl + "' src='" + url + "' style='max-width:400px'/>");
                                         document.getElementById(relUrl).onload = function (e) {
                                             me.tooltip.setHeight(e.srcElement.height);
@@ -706,7 +706,7 @@ Ext.define('console.view.field.NemesisMediaField', {
                         reader.onload = function (e) {
                             canvas.setSrc(e.target.result);
                             me.syncContainerWidth();
-                        }
+                        };
                         reader.readAsDataURL(file);
                         canvas.show();
                     } else {
@@ -715,7 +715,7 @@ Ext.define('console.view.field.NemesisMediaField', {
                     }
                 }
             }
-        }
+        };
 
         var previewImage = {
             xtype: 'image',
@@ -732,7 +732,7 @@ Ext.define('console.view.field.NemesisMediaField', {
                     });
                 }
             }
-        }
+        };
         if (!Ext.isEmpty(me.value)) {
             previewImage.src = me.value;
         }
@@ -783,7 +783,7 @@ Ext.define('console.view.field.NemesisMediaField', {
         var previewImage = this.getImageField();
         if (!Ext.isEmpty(value)) {
             // if an existing value
-            previewImage.setSrc('https://dve2ovdl241xy.cloudfront.net' + value);
+            previewImage.setSrc(value);
             this.syncContainerWidth();
         }
     }
