@@ -6,6 +6,7 @@ Ext.define('console.controller.content.search.SearchFormController', {
     init: function (application) {
         this.control({
             "toolbar > button[command=search]": {
+                cls: 'search-btn-search-form',
                 click: this.onSearchClicked
             },
             "toolbar > button[command=reset]": {

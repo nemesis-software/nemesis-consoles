@@ -19,7 +19,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -145,13 +145,13 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     public void testSelectMediaContainer() throws InterruptedException {
         LOG.info("testSelectMediaContainer");
 
-        Thread.sleep(1500);
+        sleep();
 
         assertTrue(getWebDriver().findElementsByCssSelector("div#navigation-tree table.x-grid-item").size() > 0);
 
         getWebDriver().findElementByCssSelector("input[id^='navigation-menu-filter-input']").sendKeys("media_container");
 
-        Thread.sleep(1500);
+        sleep();
 
         int size = getWebDriver().findElementsByCssSelector("div#navigation-tree table.x-grid-item").size();
 
@@ -176,7 +176,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         getWebDriver().findElementByCssSelector("input[id^='navigation-menu-filter-input']").sendKeys("media_container");
 
-        Thread.sleep(1500);
+        sleep();
 
         int size = getWebDriver().findElementsByCssSelector("div#navigation-tree table.x-grid-item").size();
 
@@ -202,7 +202,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         getWebDriver().findElementsByCssSelector("div#media_container-search-form div.x-toolbar a.x-btn").iterator().next().click();
 
-        Thread.sleep(1500);
+        sleep();
 
         assertEquals(1, getWebDriver().findElementsByCssSelector("div#media_container-search-result-body table.x-grid-item").size());
 
@@ -220,7 +220,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         filterNavTree(entityId);
 
-        Thread.sleep(1500);
+        sleep();
 
         openNavTreeItem(2);
 
@@ -228,25 +228,25 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         doubleClick(resultsGridInnerItems(entityId).get(0));
 
-        Thread.sleep(1500);
+        sleep();
 
         assertTrue(existsElement("div[id^='w_id_']"));
 
         closeEntityWindow();
 
-        Thread.sleep(1500);
+        sleep();
 
         assertTrue(!existsElement("div[id^='w_id_']"));
 
         doubleClick(resultsGridInnerItems(entityId).get(0));
 
-        Thread.sleep(1500);
+        sleep();
 
         assertTrue(existsElement("div[id^='w_id_']"));
 
         closeEntityWindow();
 
-        Thread.sleep(1500);
+        sleep();
 
         assertTrue(!existsElement("div[id^='w_id_']"));
 
@@ -266,13 +266,13 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         filterNavTree(entityId);
 
-        Thread.sleep(1500);
+        sleep();
 
         openNavTreeItem(null);
 
         openSearchGridItem(0, entityFullId);
 
-        Thread.sleep(1500);
+        sleep();
         assertTrue(1 <= (Long) getWebDriver().executeScript("return Ext.ComponentQuery.query('nemesisEnumField')[0].getStore().totalCount;"));
 
         closeWindowAndTab();
@@ -290,7 +290,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         filterNavTree(entityId);
 
-        Thread.sleep(1500);
+        sleep();
 
         openNavTreeItem(null);
 
@@ -298,7 +298,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         doubleClick(resultsGridInnerItems(entityFullId).get(0));
 
-        Thread.sleep(1500);
+        sleep();
 
         // #42: test the title is not empty - the header title should contain at least '[' and ']'
         assertTrue(2 <= getWebDriver().findElementByCssSelector("div.x-window div.x-window-header-title div.x-title-text").getText().length());
@@ -318,12 +318,12 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         String entityId = "unit";
         String entityFullId = "unit";
         //List<WebElement> navTreeItems = getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
-        Thread.sleep(1500);
+        sleep();
         assertTrue(navTreeItems().size() > 0);
 
         filterNavTree(entityId);
 
-        Thread.sleep(1500);
+        sleep();
 
         openNavTreeItem(null);
 
@@ -331,7 +331,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         doubleClick(resultsGridInnerItems(entityFullId).get(0));
 
-        Thread.sleep(1500);
+        sleep();
 
         // #43: test the url is not 'https'
         String url = getWebDriver().findElementByCssSelector("div.x-window div[id^='entityPopupToolbar-'] a[id^='url-']").getText(); // e.g. https://
@@ -397,6 +397,60 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         clearNavTreeFilter();
     }
 
+    //#95
+    @Test
+    public void testSearchFormMustSubmitOnEnter() throws InterruptedException {
+        LOG.info("testSearchFormMustSubmitOnEnter");
+
+        String entityId = "unit";
+        String entityFullId = "unit";
+        //List<WebElement> navTreeItems = getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+        sleep();
+        assertTrue(navTreeItems().size() > 0);
+
+        filterNavTree(entityId);
+
+        sleep();
+
+        openNavTreeItem(null);
+
+        assertTrue(1 <= resultsGridItems(entityFullId).size());
+
+        assertTrue(existsElement("#unit-search-form-body"));
+
+        WebElement searchForm = getWebDriver().findElement(By.cssSelector("#unit-search-form-body"));
+
+        assertTrue(existsElement("[id^=unit-searchform-fieldset-restriction_uid]"));
+
+        getWebDriver().executeScript(
+                        "var c = Ext.getCmp('unit-searchform-fieldset-restriction_uid'); c.setValue('IsStartingWith'); c.fireEvent('select', c, 'IsStartingWith');");
+
+        assertTrue(existsElement("#unit-searchform-fieldset-query_uid"));
+
+        WebElement queryField = searchForm.findElement(By.cssSelector("div#unit-searchform-fieldset-query_uid input[type='text']"));
+
+        queryField.clear();
+        queryField.sendKeys("n");
+        queryField.sendKeys(Keys.ENTER);
+
+        sleep();
+
+        assertTrue(0 == resultsGridItems(entityFullId).size());
+
+        queryField.clear();
+        queryField.sendKeys("p");
+        queryField.sendKeys(Keys.ENTER);
+
+        sleep();
+
+        assertTrue(1 <= resultsGridItems(entityFullId).size());
+
+        closeEntityTab(0);
+
+        clearNavTreeFilter();
+
+    }
+
     //#102 & #4
     @Test
     public void testMustShowToastWhenCreatingNewEntitiesAsWellAsWhenSavingAndRemovingOldEntities() throws InterruptedException {
@@ -426,11 +480,11 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         getWebDriver().findElement(By.cssSelector(".x-menu a.x-menu-item-link")).click();
 
-        Thread.sleep(1500);
+        sleep();
 
         assertTrue(existsElement("div[id^='w_id_']"));
 
-        Thread.sleep(1500);
+        sleep();
 
         assertFalse(existsElement("[id^='toast-']"));
 
@@ -518,7 +572,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         assertEquals(1, openedTabs().size());
 
-        Thread.sleep(1500);
+        sleep();
     }
 
     private void openSearchGridItem(int itemIndex, String entityFullId) {
@@ -554,7 +608,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         assertEquals(total - 1, openedTabs().size());
 
-        Thread.sleep(1500);
+        sleep();
     }
 
     private void closeWindowAndTab() throws InterruptedException {
