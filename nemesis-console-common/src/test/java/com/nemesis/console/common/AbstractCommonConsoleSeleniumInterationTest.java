@@ -17,6 +17,7 @@ import org.junit.experimental.categories.Category;
 import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -24,6 +25,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
@@ -44,7 +46,7 @@ public abstract class AbstractCommonConsoleSeleniumInterationTest {
 
     protected static WebDriverWait wait;
 
-    public static void setUp() throws Exception {
+    public static void setUpClass() throws Exception {
         webDriver = new FirefoxDriver();
         wait = new WebDriverWait(getWebDriver(), 5);
     }
@@ -109,6 +111,16 @@ public abstract class AbstractCommonConsoleSeleniumInterationTest {
 
     public static WebDriverWait getWait() {
         return wait;
+    }
+
+    protected static void waitForDom() {
+        getWebDriver().executeScript("Ext.onReady(function () {});");
+    }
+
+    protected static void waitForLoad() {
+        ExpectedCondition<Boolean> pageLoadCondition = driver -> ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
+        WebDriverWait wait = new WebDriverWait(getWebDriver(), 30);
+        wait.until(pageLoadCondition);
     }
 
     protected void doubleClick(WebElement item) {

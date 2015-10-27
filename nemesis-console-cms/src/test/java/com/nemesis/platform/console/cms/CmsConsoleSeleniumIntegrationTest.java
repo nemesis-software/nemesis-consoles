@@ -18,9 +18,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.junit.Assert.assertEquals;
@@ -36,8 +34,8 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
     protected final Logger LOG = LogManager.getLogger(getClass());
 
     @BeforeClass
-    public static void setUp() throws Exception {
-        AbstractCommonConsoleSeleniumInterationTest.setUp();
+    public static void setUpClass() throws Exception {
+        AbstractCommonConsoleSeleniumInterationTest.setUpClass();
         getWebDriver().manage().window().maximize();
         getWebDriver().get("http://localhost:8080/cms");
 
@@ -58,18 +56,8 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
         waitForLoad();
     }
 
-    protected static void waitForDom() {
-        getWebDriver().executeScript("Ext.onReady(function () {});");
-    }
-
-    protected static void waitForLoad() {
-        ExpectedCondition<Boolean> pageLoadCondition = driver -> ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
-        WebDriverWait wait = new WebDriverWait(getWebDriver(), 30);
-        wait.until(pageLoadCondition);
-    }
-
     @AfterClass
-    public static void tearDown() throws Exception {
+    public static void tearDownClass() throws Exception {
         getWebDriver().findElementById("app-header-logout").click();
         Thread.sleep(500);
         assertEquals("Login Page", getWebDriver().getTitle());
