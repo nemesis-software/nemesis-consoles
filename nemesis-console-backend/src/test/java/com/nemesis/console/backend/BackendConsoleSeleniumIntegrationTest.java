@@ -353,6 +353,28 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     }
 
+    // 50
+    @Test
+    public void testPaginationCorrectBehaviour() throws InterruptedException {
+        LOG.info("testPaginationCorrectBehaviour");
+        String entityId = "product";
+        assertTrue(navTreeItems().size() > 0);
+
+        filterNavTree(entityId);
+
+        openNavTreeItem(2);
+
+        assertEquals(9, resultsGridItems(entityId).size());
+
+        List<WebElement> resultGridList = resultsGridInnerItems(entityId);
+        assertNotNull(resultGridList);
+
+        assertTrue(existsElement("a.x-btn[data-qtip='Next Page']"));
+        WebElement nextPageBtn = getWebDriver().findElement(By.cssSelector("a.x-btn[data-qtip='Next Page']"));
+
+        assertNotNull(nextPageBtn);
+    }
+
     //#95
     @Test
     public void testSearchFormMustSubmitOnEnter() throws InterruptedException {
@@ -418,7 +440,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         List<WebElement> menuElements = resultsGridContextMenuItems();
         assertTrue(menuElements.size() > 2);
-        assertEquals("Edit", menuElements.get(0).findElement(By.cssSelector(".x-menu-item-text")).getText());
         menuElements.get(0).findElement(By.cssSelector(".x-menu-item-text")).click();
         Thread.sleep(500);
         assertTrue(existsElement("div[id^='w_id_']"));
