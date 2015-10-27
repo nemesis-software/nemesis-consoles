@@ -250,6 +250,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         assertTrue(!existsElement("div[id^='w_id_']"));
 
+        clearNavTreeFilter();
         closeEntityTab(0);
     }
 
@@ -333,9 +334,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         sleep();
 
-        // #43: test the url is not 'https'
         String url = getWebDriver().findElementByCssSelector("div.x-window div[id^='entityPopupToolbar-'] a[id^='url-']").getText(); // e.g. https://
-        assertTrue(!"https".equals(url));
 
         //#46: test the url is not duplicated
         String urlPrefix = url.substring(0, 9); // e.g. https://x
@@ -499,8 +498,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         sleep();
 
-        List<WebElement> rows = getWebDriver().findElement(By.cssSelector("#packaging-search-result")).findElement(
-                        By.cssSelector(".x-grid-item-container")).findElements(By.cssSelector(".x-grid-item"));
+        List<WebElement> rows = resultsGridItems(entityId);
         assertNotNull(rows);
         assertEquals(1, rows.size());
 
@@ -525,8 +523,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         sleep();
 
-        rows = getWebDriver().findElement(By.cssSelector("#packaging-search-result")).findElement(By.cssSelector(".x-grid-item-container")).findElements(
-                        By.cssSelector(".x-grid-item"));
+        rows = resultsGridItems(entityId);
         assertNotNull(rows);
         assertEquals(1, rows.size());
 
@@ -554,8 +551,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         buttons.get(0).click();
         sleep();
 
-        rows = getWebDriver().findElement(By.cssSelector("#packaging-search-result")).findElement(By.cssSelector(".x-grid-item-container")).findElements(
-                        By.cssSelector(".x-grid-item"));
+        rows = resultsGridItems(entityId);
         assertNotNull(rows);
         assertEquals(0, rows.size());
 
