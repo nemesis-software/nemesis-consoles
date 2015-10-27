@@ -76,7 +76,7 @@ Ext.define('console.view.ContentPanel', {
 	                                    var catalogsCombo = Ext.getCmp('catalogsCombo');
 
                                         //fetch data
-                                        var siteContentCatalogsStore = Ext.create('Ext.data.Store', {
+                                        var siteContentCatalogsStore = Ext.create('Ext.data.ArrayStore', {
                                             autoLoad: true,
                                             autoSync: false,
                                             fields: ['pk', 'uid'],
@@ -112,6 +112,11 @@ Ext.define('console.view.ContentPanel', {
 
                                         params.site = cmb.getStore().findRecord('pk',newValue).get('uid');
                                         params.clear = true;
+                                        // Delete the param catalog from url because remains the catalogs from the previous
+                                        // site which is wrong.
+                                        if(params.catalogs) {
+                                            delete params.catalogs;
+                                        }
                                         var newQuery = Ext.Object.toQueryString(params);
 
                                         Ext.get('website-iframe').dom.src = Ext.get('website-base-url').dom.getAttribute('url') + '?' + newQuery;
@@ -163,16 +168,15 @@ Ext.define('console.view.ContentPanel', {
                                     //
                                     //    catalogVersionsCombo.store.load();
                                     //}
-                                    select: function (cb, record) {
+                                    change: function (cmb, newValue, oldValue, eOpts) {
                                         //append catalog and catalogsVersion parameter to the iframe
                                         var currentUrl = Ext.get('website-iframe').dom.src,
                                             currentQuery = currentUrl.split('?')[1],
                                             params = Ext.urlDecode(currentQuery),
-	                                        catalogsUIDs = new Array(),
-	                                        catalogsCombo = Ext.getCmp('catalogsCombo');
+	                                        catalogsUIDs = new Array();
 
 										// Gets selected catalogs UIDs
-	                                    catalogsCombo.valueCollection.items.forEach(function(item){
+	                                    cmb.valueCollection.items.forEach(function(item){
 		                                    catalogsUIDs.push(item.get('uid'));
 	                                    });
                                         params.catalogs = catalogsUIDs.join();
