@@ -105,7 +105,7 @@ Ext.define('console.view.ContentPanel', {
                                             }
                                         });
 
-                                        //append site parameter to the iframe
+                                        //append site parameter to the iFrame
                                         var currentUrl = Ext.get('website-iframe').dom.src,
                                             currentQuery = currentUrl.split('?')[1],
                                             params = Ext.urlDecode(currentQuery);
