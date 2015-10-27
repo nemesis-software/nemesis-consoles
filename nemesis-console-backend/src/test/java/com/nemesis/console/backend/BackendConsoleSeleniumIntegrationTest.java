@@ -66,6 +66,8 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         waitForDom();
         waitForLoad();
+
+        getWait().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("div#navigation-tree table.x-grid-item")));
     }
 
     @Before
@@ -108,11 +110,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         getWebDriver().executeScript(
                         "var c = Ext.getCmp('app-header-language-selector'); c.setValue({'isoCode':'bg_BG'}); c.fireEvent('select', c, {data: {'isoCode':'bg_BG'}});");
 
-        // Wait for the page to load, timeout after 5 seconds
-        (new WebDriverWait(getWebDriver(), 5)).until((WebDriver d) -> {
-            return d.getTitle().startsWith("Backend Console | Nemesis");
-        });
-
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
         assertEquals("Изход", getWebDriver().findElementById("app-header-logout").getText());
 
     }
@@ -121,7 +119,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     public void testFilterNavigation() throws InterruptedException {
         LOG.info("testFilterNavigation");
 
-        Thread.sleep(2500);
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
 
         assertTrue(navTreeItems().size() > 0);
 
@@ -140,7 +138,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     public void testSelectMediaContainer() throws InterruptedException {
         LOG.info("testSelectMediaContainer");
 
-        sleep();
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
 
         assertTrue(navTreeItems().size() > 0);
 
@@ -362,8 +360,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         String entityId = "unit";
         String entityFullId = "unit";
-        //List<WebElement> navTreeItems = getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
-        sleep();
+
         assertTrue(navTreeItems().size() > 0);
 
         filterNavTree(entityId);
@@ -401,6 +398,57 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         assertTrue(1 <= resultsGridItems(entityFullId).size());
 
+    }
+
+    //56
+    @Test
+    public void testEntityFieldMustOpenTheRealEntityUrl() throws InterruptedException {
+        LOG.info("testSearchFormMustSubmitOnEnter");
+
+        String entityId = "site";
+        assertTrue(navTreeItems().size() > 0);
+
+        filterNavTree(entityId);
+
+        openNavTreeItem(2);
+
+        assertTrue(resultsGridItems(entityId).size() > 0);
+
+        rightClick(resultsGridInnerItems(entityId).get(0));
+
+        List<WebElement> menuElements = resultsGridContextMenuItems();
+        assertTrue(menuElements.size() > 2);
+        assertEquals("Edit", menuElements.get(0).findElement(By.cssSelector(".x-menu-item-text")).getText());
+        menuElements.get(0).findElement(By.cssSelector(".x-menu-item-text")).click();
+        Thread.sleep(500);
+        assertTrue(existsElement("div[id^='w_id_']"));
+        WebElement entityWindow = getWebDriver().findElement(By.cssSelector("div[id^='w_id_']"));
+        assertNotNull(entityWindow);
+
+        WebElement tab = getEntityTab(2);
+        assertNotNull(tab);
+        tab.click();
+
+        sleep();
+
+        String value = getWebDriver().findElement(By.cssSelector("input[name='entity-startingPage']")).getAttribute("value");
+        assertTrue(existsElement("div.x-form-entity-trigger.abstract_page"));
+        WebElement entityFieldStartingPage = getWebDriver().findElement(By.cssSelector("div.x-form-entity-trigger.abstract_page"));
+        entityFieldStartingPage.click();
+
+        sleep();
+
+        assertTrue(existsElement("div[id='w_id_" + value + "']"));
+
+        getWebDriver().findElement(By.cssSelector("div[id='w_id_" + value + "']")).findElement(By.cssSelector("img.x-tool-close")).click();
+    }
+
+    private WebElement getEntityTab(int index) {
+        return entityWindow().findElements(By.cssSelector("a.x-tab")).get(index);
+    }
+
+    private WebElement entityWindow() {
+        return getWebDriver().findElement(By.cssSelector("div[id^='w_id_']"));
     }
 
     //#102 & #4
@@ -486,8 +534,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         assertTrue(existsElement(".x-menu-body"));
 
-        WebElement menu = getWebDriver().findElement(By.cssSelector(".search-result-context-menu"));
-        List<WebElement> menuElements = menu.findElements(By.cssSelector(".x-menu-item"));
+        List<WebElement> menuElements = resultsGridContextMenuItems();
         assertTrue(menuElements.size() > 2);
         assertEquals("Delete", menuElements.get(3).findElement(By.cssSelector(".x-menu-item-text")).getText());
 
@@ -592,5 +639,10 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     private List<WebElement> openedTabCloseButtons() {
         return getWebDriver().findElementsByCssSelector("div#tab-panel a.x-tab span.x-tab-close-btn");
+    }
+
+    private List<WebElement> resultsGridContextMenuItems() {
+        WebElement menu = getWebDriver().findElement(By.cssSelector(".search-result-context-menu"));
+        return menu.findElements(By.cssSelector(".x-menu-item"));
     }
 }

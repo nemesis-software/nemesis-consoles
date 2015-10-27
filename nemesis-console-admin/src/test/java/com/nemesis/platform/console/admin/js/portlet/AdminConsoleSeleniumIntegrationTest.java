@@ -19,6 +19,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
@@ -181,10 +182,7 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
         getWebDriver().executeScript(
                         "var c = Ext.getCmp('app-header-language-selector'); c.setValue({'isoCode':'bg_BG'}); c.fireEvent('select', c, {data : {'isoCode':'bg_BG'}});");
 
-        // Wait for the page to load, timeout after 5 seconds
-        (new WebDriverWait(getWebDriver(), 10)).until((WebDriver d) -> {
-            return d.getTitle().startsWith("Admin Console | Nemesis");
-        });
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
 
         assertEquals("Изход", getWebDriver().findElementById("app-header-logout").getText());
 
@@ -192,8 +190,8 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
 
     @Test
     public void testPortletsDropdownMenu() throws InterruptedException {
-        List<WebElement> closeButtons = (List<WebElement>) getWebDriver().findElementsByClassName("x-tool-close");
-        List<WebElement> portlets = (List<WebElement>) getWebDriver().findElementsByClassName("x-dashboard-panel");
+        List<WebElement> closeButtons = getWebDriver().findElementsByClassName("x-tool-close");
+        List<WebElement> portlets = getWebDriver().findElementsByClassName("x-dashboard-panel");
 
         // close some portlets & check that they are not visible
         closeButtons.get(0).click();

@@ -19,6 +19,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.junit.Assert.assertEquals;
@@ -77,17 +78,13 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
 
     @Test
     public void testChangeLocale() throws InterruptedException {
-        Thread.sleep(1500);
+        sleep();
         LOG.info("Change locale");
         //Change locale
         getWebDriver().executeScript(
                         "var c = Ext.getCmp('app-header-language-selector'); c.setValue({'isoCode':'bg_BG'}); c.fireEvent('select', c, {data : {'isoCode':'bg_BG'}});");
 
-        // Wait for the page to load, timeout after 5 seconds
-        (new WebDriverWait(getWebDriver(), 10)).until((WebDriver d) -> {
-            return d.getTitle().startsWith("CMS Console | Nemesis");
-        });
-
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
         assertEquals("Изход", getWebDriver().findElementById("app-header-logout").getText());
 
     }
