@@ -194,7 +194,7 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
                         "var c = Ext.getCmp('app-header-language-selector'); c.setValue({'isoCode':'bg_BG'}); c.fireEvent('select', c, {data : {'isoCode':'bg_BG'}});");
 
         // Wait for the page to load, timeout after 5 seconds
-        (new WebDriverWait(getWebDriver(), 5)).until((WebDriver d) -> {
+        (new WebDriverWait(getWebDriver(), 10)).until((WebDriver d) -> {
             return d.getTitle().startsWith("Admin Console | Nemesis");
         });
 

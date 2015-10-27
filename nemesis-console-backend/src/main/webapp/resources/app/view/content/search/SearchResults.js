@@ -146,6 +146,7 @@ Ext.define('console.view.content.search.SearchResults', {
     buildCtxMenu: function (view, record, item, index, event) {
         var me = this;
         return Ext.create('Ext.menu.Menu', {
+            cls: 'search-result-context-menu',
             items: [
                 {
                     itemId: 'edit',

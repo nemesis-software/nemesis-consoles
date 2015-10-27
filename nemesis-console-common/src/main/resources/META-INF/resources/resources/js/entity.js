@@ -166,6 +166,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
         this.items = [
             {
                 text: 'Save',
+                cls: 'save-btn',
                 iconCls: 'save',
                 handler: function () {
                     me.onsaveClicked(me.entity, me.entityPopupForm);
@@ -173,6 +174,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
             },
             {
                 text: 'Save & Close',
+                cls: 'save-and-close-btn',
                 iconCls: 'saveandclose',
                 handler: function () {
                     me.onsaveandcloseClicked(me.entity, me.entityPopupForm);
@@ -181,6 +183,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
             '-',
             {
                 text: 'Delete',
+                cls: 'delete-btn',
                 iconCls: 'delete',
                 disabled: me.entity == null,
                 handler: function () {
@@ -196,6 +199,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
             '-',
             {
                 text: 'Refresh',
+                cls: 'refresh-btn',
                 iconCls: 'refresh',
                 disabled: me.entity == null,
                 handler: function () {
@@ -224,6 +228,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
             '-',
             {
                 text: 'Synchronize',
+                cls: 'synchronize-btn',
                 iconCls: 'synchronize',
                 hidden: me.entity.data.synchronizable != true,
                 disabled: me.entity.data.synchronizable != true,
@@ -289,7 +294,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
             headers: {'Content-Type': 'application/json', Accept: 'application/json'},
             params: this.prepareValues(entityPopupForm.getValues()),
             success: function (responseObject) {
-                var searchRes = Ext.getCmp(entity.data.name + '-search-result');
+                var searchRes = Ext.getCmp(entity.data.id + '-search-result');
                 if (searchRes) {
                     searchRes.mask();
                     searchRes.getStore().reload();
@@ -328,7 +333,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
             params: this.prepareValues(entityPopupForm.getForm().getValues(false, true, false, false)),
             success: function (responseObject) {
                 me.up('window').close();
-                var searchRes = Ext.getCmp(entity.data.name + '-search-result');
+                var searchRes = Ext.getCmp(entity.data.id + '-search-result');
                 if (searchRes) {
                     searchRes.mask();
                     searchRes.getStore().reload();

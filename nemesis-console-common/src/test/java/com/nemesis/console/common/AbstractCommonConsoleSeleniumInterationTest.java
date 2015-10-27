@@ -17,9 +17,12 @@ import org.junit.experimental.categories.Category;
 import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -106,5 +109,26 @@ public abstract class AbstractCommonConsoleSeleniumInterationTest {
 
     public static WebDriverWait getWait() {
         return wait;
+    }
+
+    protected void doubleClick(WebElement item) {
+        new Actions(getWebDriver()).doubleClick(item).build().perform();
+    }
+
+    protected void rightClick(WebElement item) {
+        new Actions(getWebDriver()).contextClick(item).build().perform();
+    }
+
+    protected void sleep() throws InterruptedException {
+        Thread.sleep(1500);
+    }
+
+    protected boolean existsElement(String selector) {
+        try {
+            getWebDriver().findElementByCssSelector(selector);
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
+        }
     }
 }

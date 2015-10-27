@@ -16,7 +16,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -31,6 +30,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -397,13 +397,11 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         clearNavTreeFilter();
     }
 
-    //#102
+    //#102 & #4
     @Test
-    @Ignore("TODO")
     public void testMustShowToastWhenCreatingNewEntitiesAsWellAsWhenSavingAndRemovingOldEntities() throws InterruptedException {
         LOG.info("testMustShowToastWhenCreatingNewEntitiesAsWellAsWhenSavingAndRemovingOldEntities");
-        String entityId = "unit";
-        String entityFullId = "unit";
+        String entityId = "packaging";
 
         sleep();
 
@@ -417,14 +415,16 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         int position = navTreeItems().size() - 1;
 
+        navTreeInnerItems().get(position).click();
+
         Actions action = new Actions(getWebDriver());
         action.contextClick(navTreeInnerItems().get(position)).build().perform();
 
         sleep();
 
-        assertNotNull(getWebDriver().findElement(By.cssSelector("x-menu")));
+        assertNotNull(getWebDriver().findElement(By.cssSelector(".x-menu")));
 
-        getWebDriver().findElement(By.cssSelector("x-menu")).click();
+        getWebDriver().findElement(By.cssSelector(".x-menu a.x-menu-item-link")).click();
 
         Thread.sleep(1500);
 
@@ -432,26 +432,82 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         Thread.sleep(1500);
 
+        assertFalse(existsElement("[id^='toast-']"));
+
+        getWebDriver().findElementByCssSelector("input[id^='nemesisTextField-'][name='uid']").sendKeys("testA");
+
+        getWebDriver().findElement(By.cssSelector(".save-btn")).click();
+
+        Thread.sleep(300);
+
+        //Don't know how to assert the toast was shown
+        //assertTrue(existsElement("[id^='toast-']"));
+
+        sleep();
+
+        List<WebElement> rows = getWebDriver().findElement(By.cssSelector("#packaging-search-result")).findElement(
+                        By.cssSelector(".x-grid-item-container")).findElements(By.cssSelector(".x-grid-item"));
+        assertNotNull(rows);
+        assertEquals(1, rows.size());
+
+        assertEquals("testA", rows.get(0).findElement(By.cssSelector(".x-grid-cell-inner")).getText());
+
         closeEntityWindow();
 
-        Thread.sleep(1500);
+        doubleClick(rows.get(0).findElement(By.cssSelector(".x-grid-cell-inner")));
+
+        sleep();
+
+        WebElement input = getWebDriver().findElementByCssSelector("input[id^='nemesisTextField-'][name='uid']");
+        input.clear();
+        input.sendKeys("testB");
+
+        getWebDriver().findElement(By.cssSelector(".save-and-close-btn")).click();
+
+        Thread.sleep(300);
+
+        //Don't know how to assert the toast was shown
+        //assertTrue(existsElement("id^='toast-'"));
+
+        sleep();
+
+        rows = getWebDriver().findElement(By.cssSelector("#packaging-search-result")).findElement(By.cssSelector(".x-grid-item-container")).findElements(
+                        By.cssSelector(".x-grid-item"));
+        assertNotNull(rows);
+        assertEquals(1, rows.size());
+
+        assertEquals("testB", rows.get(0).findElement(By.cssSelector(".x-grid-cell-inner")).getText());
 
         assertTrue(!existsElement("div[id^='w_id_']"));
 
+        rightClick(rows.get(0).findElement(By.cssSelector(".x-grid-cell-inner")));
+
+        assertTrue(existsElement(".x-menu-body"));
+
+        WebElement menu = getWebDriver().findElement(By.cssSelector(".search-result-context-menu"));
+        List<WebElement> menuElements = menu.findElements(By.cssSelector(".x-menu-item"));
+        assertTrue(menuElements.size() > 2);
+        assertEquals("Delete", menuElements.get(3).findElement(By.cssSelector(".x-menu-item-text")).getText());
+
+        menuElements.get(3).findElement(By.cssSelector(".x-menu-item-text")).click();
+
+        assertTrue(existsElement(".x-message-box"));
+
+        WebElement messageBox = getWebDriver().findElement(By.cssSelector(".x-message-box"));
+        List<WebElement> buttons = messageBox.findElements(By.cssSelector(".x-message-box a.x-btn:not([style*='display: none'])"));
+        assertEquals(2, buttons.size());
+
+        buttons.get(0).click();
+        sleep();
+
+        rows = getWebDriver().findElement(By.cssSelector("#packaging-search-result")).findElement(By.cssSelector(".x-grid-item-container")).findElements(
+                        By.cssSelector(".x-grid-item"));
+        assertNotNull(rows);
+        assertEquals(0, rows.size());
+
         closeEntityTab(0);
-    }
 
-    private void sleep() throws InterruptedException {
-        Thread.sleep(1500);
-    }
-
-    private boolean existsElement(String selector) {
-        try {
-            getWebDriver().findElementByCssSelector(selector);
-            return true;
-        } catch (NoSuchElementException e) {
-            return false;
-        }
+        clearNavTreeFilter();
     }
 
     private void openNavTreeItem(Integer position) throws InterruptedException {
@@ -528,9 +584,5 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     private List<WebElement> openedTabCloseButtons() {
         return getWebDriver().findElementsByCssSelector("div#tab-panel a.x-tab span.x-tab-close-btn");
-    }
-
-    private void doubleClick(WebElement item) {
-        new Actions(getWebDriver()).doubleClick(item).build().perform();
     }
 }

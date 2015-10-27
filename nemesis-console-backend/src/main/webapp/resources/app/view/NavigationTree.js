@@ -20,7 +20,7 @@ Ext.define('console.view.NavigationTree', function () {
             xtype: 'treecolumn',
             dataIndex: 'text',
             flex: 1,
-            renderer: function(value){
+            renderer: function (value) {
                 return translate(value);
             }
         }],
@@ -42,7 +42,12 @@ Ext.define('console.view.NavigationTree', function () {
                     var tabCmp = Ext.getCmp('tab-panel');
                     if (!tabCmp.getComponent(record.get('id'))) {
 
-                        var entity = Ext.create("console.model.Entity", {id: record.get('id'), name: translate(record.get('id')), url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('id'), className: ''});
+                        var entity = Ext.create("console.model.Entity", {
+                            id: record.get('id'),
+                            name: translate(record.get('id')),
+                            url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('id'),
+                            className: ''
+                        });
 
                         tabCmp.add(Ext.create("console.view.content.Page", {
                             itemId: entity.data.id,
@@ -124,8 +129,20 @@ Ext.define('console.view.NavigationTree', function () {
                         itemId: 'create',
                         handler: function () {
                             var entityConfiguration = Ext.create("console.markup." + record.get('id'));
-                            var entity = Ext.create('console.model.Entity', {name: record.get('text'), url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('id'), isNew: true});
-                            var window = Ext.getCmp('backend-viewport').createWindow({id: "", title: '[' + record.get('text') + ']', iconCls: record.get('id'), entity: entity, sections: entityConfiguration.sections, synchronizable: entityConfiguration.synchronizable});
+                            var entity = Ext.create('console.model.Entity', {
+                                id: record.get('text'),
+                                name: record.get('text'),
+                                url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('id'),
+                                isNew: true
+                            });
+                            var window = Ext.getCmp('backend-viewport').createWindow({
+                                id: "",
+                                title: '[' + record.get('text') + ']',
+                                iconCls: record.get('id'),
+                                entity: entity,
+                                sections: entityConfiguration.sections,
+                                synchronizable: entityConfiguration.synchronizable
+                            });
                             Ext.getCmp('backend-viewport').restoreWindow(window);
                         },
                         text: 'Create',
@@ -144,7 +161,16 @@ Ext.define('console.view.NavigationTree', function () {
                             itemId: item.text,
                             handler: function () {
                                 var entityConfiguration = Ext.create("console.markup." + item.id);
-                                var window = Ext.getCmp('backend-viewport').createWindow({id: null, title: '[' + item.text + ']', iconCls: item.iconCls, entity: Ext.create('console.model.Entity', {name: item.text, url: Ext.get('rest-base-url').dom.getAttribute('url') + item.id}), sections: entityConfiguration.sections});
+                                var window = Ext.getCmp('backend-viewport').createWindow({
+                                    id: null,
+                                    title: '[' + item.text + ']',
+                                    iconCls: item.iconCls,
+                                    entity: Ext.create('console.model.Entity', {
+                                        name: item.text,
+                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + item.id
+                                    }),
+                                    sections: entityConfiguration.sections
+                                });
                                 Ext.getCmp('backend-viewport').restoreWindow(window);
                             }
                         })
