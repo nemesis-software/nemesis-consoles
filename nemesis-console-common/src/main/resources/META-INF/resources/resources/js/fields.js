@@ -203,7 +203,8 @@ Ext.define('console.view.field.NemesisCollectionField', {
                 trigger.setHidden(!value);
                 this.getSearchStore().load({
                     params: {
-                        uid: value
+                        uid: value,
+                        projection: 'search'
                     }
                 });
                 this.search(value);
