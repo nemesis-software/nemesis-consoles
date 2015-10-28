@@ -536,7 +536,7 @@ Ext.define('console.view.field.NemesisEntityField', {
         }
     },
     assertValue: function() {
-    	if (me.rawValue == me.originalValue) {
+    	if (this.rawValue == this.originalValue && !this.store.isLoaded()) {
     		return;
     	}
     	this.callParent(arguments);
