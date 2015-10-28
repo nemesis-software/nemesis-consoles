@@ -211,7 +211,7 @@ Ext.application({
                             handler: function () {
                                 var entityConfiguration = Ext.create("console.markup." + event.data.selection.contentElementEntityName);
                                 var window = Ext.getCmp('cms-viewport').createWindow({
-                                    id: null,
+                                    id: event.data.selection.contentElement,
                                     title: '[Widget]',
                                     iconCls: event.data.selection.contentElementEntityName,
                                     entity: Ext.create('console.model.Entity', {
@@ -370,7 +370,7 @@ Ext.application({
                             handler: function () {
                                 var entityConfiguration = Ext.create("console.markup.content_slot");
                                 var window = Ext.getCmp('cms-viewport').createWindow({
-                                    id: null,
+                                    id: event.data.selection.contentSlot,
                                     title: '[ContentSlot]',
                                     iconCls: 'content_slot',
                                     entity: Ext.create('console.model.Entity', {
