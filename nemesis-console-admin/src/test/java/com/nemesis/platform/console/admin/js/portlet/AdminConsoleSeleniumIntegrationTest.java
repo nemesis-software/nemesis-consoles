@@ -177,7 +177,7 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
     }
 
     @Test
-    public void testChangeLocale() {
+    public void testChangeLocale() throws InterruptedException {
         //Change locale
         getWebDriver().executeScript(
                         "var c = Ext.getCmp('app-header-language-selector'); c.setValue({'isoCode':'bg_BG'}); c.fireEvent('select', c, {data : {'isoCode':'bg_BG'}});");
@@ -185,6 +185,13 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
         getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
 
         assertEquals("Изход", getWebDriver().findElementById("app-header-logout").getText());
+
+        getWebDriver().executeScript(
+                        "var c = Ext.getCmp('app-header-language-selector'); c.setValue({'isoCode':'en_GB'}); c.fireEvent('select', c, {data : {'isoCode':'en_GB'}});");
+
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
+
+        assertEquals("Logout", getWebDriver().findElementById("app-header-logout").getText());
 
     }
 

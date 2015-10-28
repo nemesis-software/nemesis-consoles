@@ -78,7 +78,6 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
 
     @Test
     public void testChangeLocale() throws InterruptedException {
-        sleep();
         LOG.info("Change locale");
         //Change locale
         getWebDriver().executeScript(
@@ -86,6 +85,12 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
 
         getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
         assertEquals("Изход", getWebDriver().findElementById("app-header-logout").getText());
+
+        getWebDriver().executeScript(
+                        "var c = Ext.getCmp('app-header-language-selector'); c.setValue({'isoCode':'en_GB'}); c.fireEvent('select', c, {data : {'isoCode':'en_GB'}});");
+
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
+        assertEquals("Logout", getWebDriver().findElementById("app-header-logout").getText());
 
     }
 
