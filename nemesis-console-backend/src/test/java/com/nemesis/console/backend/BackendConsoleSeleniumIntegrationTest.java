@@ -17,7 +17,6 @@ import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -74,6 +73,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     public void setUp() {
         waitForDom();
         waitForLoad();
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
     }
 
     public void tearDown() {
@@ -109,6 +109,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     @Test
     public void testChangeLocale() throws InterruptedException {
         LOG.info("testChangeLocale");
+
         //Change locale
         getWebDriver().executeScript(
                         "var c = Ext.getCmp('app-header-language-selector'); c.setValue({'isoCode':'bg_BG'}); c.fireEvent('select', c, {data: {'isoCode':'bg_BG'}});");
@@ -363,7 +364,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     // 50
     @Test
-    @Ignore
     public void testPaginationCorrectBehaviour() throws InterruptedException {
         LOG.info("testPaginationCorrectBehaviour");
         String entityId = "product";
