@@ -13,6 +13,7 @@ package com.nemesis.platform.console.admin.js.portlet;
 
 import com.nemesis.console.common.AbstractCommonConsoleSeleniumInterationTest;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -58,9 +59,16 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
         waitForLoad();
     }
 
+    @Before
+    public void setUp() {
+        waitForDom();
+        waitForLoad();
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
+    }
+
     @Override
     protected void tearDown() {
-        
+
     }
 
     @AfterClass
