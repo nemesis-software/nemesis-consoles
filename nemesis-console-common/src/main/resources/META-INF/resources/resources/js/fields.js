@@ -420,7 +420,6 @@ Ext.define('console.view.field.NemesisEntityField', {
     initComponent: function () {
         var me = this;
         me.emptyText = me.entityId;
-        console.log(me.triggers);
         me.triggers['edit'].cls = 'x-form-entity-trigger ' + ' default-icon ' + me.entityId;
         var store = Ext.create('Ext.data.Store', {
             autoLoad: false,
@@ -535,6 +534,12 @@ Ext.define('console.view.field.NemesisEntityField', {
             this.markInvalid(error);
             return false;
         }
+    },
+    assertValue: function() {
+    	if (me.rawValue == me.originalValue) {
+    		return;
+    	}
+    	this.callParent(arguments);
     },
     listeners: {
         el: {
