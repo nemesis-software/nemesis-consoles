@@ -56,7 +56,7 @@ public class HelplineConsoleSeleniumIntegrationTest extends AbstractCommonConsol
 
     @Override
     protected void tearDown() {
-        
+
     }
 
     @AfterClass

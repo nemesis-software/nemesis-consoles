@@ -58,6 +58,11 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
         waitForLoad();
     }
 
+    @Override
+    protected void tearDown() {
+        
+    }
+
     @AfterClass
     public static void tearDownClass() throws Exception {
         getWebDriver().findElementById("app-header-logout").click();
