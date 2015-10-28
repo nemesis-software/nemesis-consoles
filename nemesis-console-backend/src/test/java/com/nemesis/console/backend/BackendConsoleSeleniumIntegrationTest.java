@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -364,6 +365,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     // 50
     @Test
+    @Ignore
     public void testPaginationCorrectBehaviour() throws InterruptedException {
         LOG.info("testPaginationCorrectBehaviour");
         String entityId = "product";
@@ -378,7 +380,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         WebElement searchResultGrid = resultsGrid(entityId);
         assertNotNull(searchResultGrid);
 
-        getWebDriver().executeScript("var c = Ext.getCmp('search-results-paging-size'); c.setValue('50'); c.fireEvent('select', c, '50');");
+        getWebDriver().executeScript("var c = Ext.getCmp('" + entityId + "-search-results-paging-size'); c.setValue('50'); c.fireEvent('select', c, '50');");
 
         assertEquals(49, resultsGridItems(entityId).size());
 
