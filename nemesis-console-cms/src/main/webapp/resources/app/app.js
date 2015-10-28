@@ -374,8 +374,10 @@ Ext.application({
                                     title: '[ContentSlot]',
                                     iconCls: 'content_slot',
                                     entity: Ext.create('console.model.Entity', {
-                                        name: null,
-                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/' + event.data.selection.contentSlot
+                                        id: 'content_slot',
+                                        name: 'content_slot',
+                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/' + event.data.selection.contentSlot,
+                                        synchronizable: entityConfiguration.synchronizable
                                     }),
                                     sections: entityConfiguration.sections,
                                     synchronizable: entityConfiguration.synchronizable
