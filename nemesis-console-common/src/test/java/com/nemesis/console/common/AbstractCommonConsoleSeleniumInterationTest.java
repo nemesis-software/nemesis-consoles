@@ -51,6 +51,8 @@ public abstract class AbstractCommonConsoleSeleniumInterationTest {
         wait = new WebDriverWait(getWebDriver(), 10);
     }
 
+    protected abstract void tearDown();
+
     @Rule
     public ScreenshotOnFailTestRule screenshotTestRule = new ScreenshotOnFailTestRule();
 
@@ -64,6 +66,8 @@ public abstract class AbstractCommonConsoleSeleniumInterationTest {
                     } catch (Throwable t) {
                         takeScreenshot(frameworkMethod.getName());
                         throw t; // rethrow to allow the failure to be reported to JUnit
+                    } finally {
+                        tearDown();
                     }
                 }
 
@@ -73,7 +77,7 @@ public abstract class AbstractCommonConsoleSeleniumInterationTest {
                     try {
                         new File("target/surefire-reports/").mkdirs(); // Insure directory is there
                         out = new FileOutputStream("target/surefire-reports/screenshot-" + fileName + ".png");
-                        in = new FileInputStream(((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE));
+                        in = new FileInputStream(webDriver.getScreenshotAs(OutputType.FILE));
 
                         int read = 0;
                         byte[] bytes = new byte[1024];

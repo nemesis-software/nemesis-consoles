@@ -54,6 +54,11 @@ public class HelplineConsoleSeleniumIntegrationTest extends AbstractCommonConsol
         waitForLoad();
     }
 
+    @Override
+    protected void tearDown() {
+        
+    }
+
     @AfterClass
     public static void tearDownClass() throws Exception {
         getWebDriver().findElementById("app-header-logout").click();

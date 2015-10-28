@@ -14,10 +14,10 @@ package com.nemesis.console.backend;
 import com.nemesis.console.common.AbstractCommonConsoleSeleniumInterationTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -76,10 +76,13 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         waitForLoad();
     }
 
-    @After
-    public void tearDown() throws InterruptedException {
-        closeWindowAndTab();
-        clearNavTreeFilter();
+    public void tearDown() {
+        try {
+            closeWindowAndTab();
+            clearNavTreeFilter();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @AfterClass
@@ -360,6 +363,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     // 50
     @Test
+    @Ignore
     public void testPaginationCorrectBehaviour() throws InterruptedException {
         LOG.info("testPaginationCorrectBehaviour");
         String entityId = "product";
@@ -370,6 +374,13 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         openNavTreeItem(2);
 
         assertEquals(9, resultsGridItems(entityId).size());
+
+        WebElement searchResultGrid = resultsGrid(entityId);
+        assertNotNull(searchResultGrid);
+
+        getWebDriver().executeScript("var c = Ext.getCmp('search-results-paging-size'); c.setValue('50'); c.fireEvent('select', c, '50');");
+
+        assertEquals(49, resultsGridItems(entityId).size());
 
         List<WebElement> resultGridList = resultsGridInnerItems(entityId);
         assertNotNull(resultGridList);
@@ -651,6 +662,10 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         return getWebDriver().findElementsByCssSelector("div#navigation-tree table.x-grid-item div.x-grid-cell-inner");
     }
 
+    private WebElement resultsGrid(String entityId) {
+        return getWebDriver().findElement(By.id(entityId + "-search-result"));
+    }
+
     private List<WebElement> resultsGridItems(String entityId) {
         return getWebDriver().findElementsByCssSelector("div#" + entityId + "-search-result-body table.x-grid-item");
     }
@@ -668,7 +683,8 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     }
 
     private List<WebElement> resultsGridContextMenuItems() {
-        WebElement menu = getWebDriver().findElement(By.cssSelector(".search-result-context-menu"));
+        WebElement menu = getWebDriver().findElement(By.cssSelector(".search-result-context-menu:not([style*='visibility: hidden'])"));
         return menu.findElements(By.cssSelector(".x-menu-item"));
+
     }
 }

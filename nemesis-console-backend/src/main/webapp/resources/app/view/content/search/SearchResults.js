@@ -102,6 +102,7 @@ Ext.define('console.view.content.search.SearchResults', {
                     '-',
                     'Page size: ',
                     new Ext.form.ComboBox({
+                        id: 'search-results-paging-size',
                         name: 'pageSize',
                         width: 55,
                         store: new Ext.data.ArrayStore({
