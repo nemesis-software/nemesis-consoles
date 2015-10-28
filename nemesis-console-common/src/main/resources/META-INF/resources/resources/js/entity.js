@@ -299,14 +299,15 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                     searchRes.mask();
                     searchRes.getStore().reload();
                     searchRes.unmask();
-                    Ext.toast({
-                        html: 'Successfully saved!',
-                        closable: false,
-                        align: 't',
-                        slideInDuration: 400,
-                        minWidth: 400
-                    });
                 }
+                Ext.toast({
+                    html: 'Successfully saved!',
+                    closable: false,
+                    align: 't',
+                    slideInDuration: 400,
+                    minWidth: 400
+                });
+
                 entityPopupForm.getForm().getFields().each(function (field) {
                     field.resetOriginalValue();
                 });
@@ -338,14 +339,15 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                     searchRes.mask();
                     searchRes.getStore().reload();
                     searchRes.unmask();
-                    Ext.toast({
-                        html: 'Successfully saved!',
-                        closable: false,
-                        align: 't',
-                        slideInDuration: 400,
-                        minWidth: 400
-                    });
                 }
+                Ext.toast({
+                    html: 'Successfully saved!',
+                    closable: false,
+                    align: 't',
+                    slideInDuration: 400,
+                    minWidth: 400
+                });
+
             },
             failure: function (responseObject) {
                 Ext.MessageBox.show({
