@@ -216,7 +216,8 @@ Ext.application({
                                     iconCls: event.data.selection.contentElementEntityName,
                                     entity: Ext.create('console.model.Entity', {
                                         id: event.data.selection.contentElementEntityName,
-                                        name: null,
+                                        pk: event.data.selection.contentElement,
+                                        name: event.data.selection.contentElementEntityName,
                                         url: Ext.get('rest-base-url').dom.getAttribute('url') + event.data.selection.contentElementEntityName + '/' + event.data.selection.contentElement,
                                         synchronizable: entityConfiguration.synchronizable
                                     }),
@@ -375,6 +376,7 @@ Ext.application({
                                     iconCls: 'content_slot',
                                     entity: Ext.create('console.model.Entity', {
                                         id: 'content_slot',
+                                        pk: event.data.selection.contentSlot,
                                         name: 'content_slot',
                                         url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/' + event.data.selection.contentSlot,
                                         synchronizable: entityConfiguration.synchronizable

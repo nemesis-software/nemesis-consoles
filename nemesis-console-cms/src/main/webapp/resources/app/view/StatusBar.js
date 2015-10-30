@@ -30,11 +30,14 @@ Ext.define('console.view.StatusBar', {
                                 title: '[' + me.page.title + ']',
                                 iconCls: 'abstract_page',
                                 entity: Ext.create('console.model.Entity', {
+                                    id: 'abstract_page',
+                                    pk: me.page.pk,
                                     name: me.page.title,
-                                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'abstract_page/' + me.page.pk
+                                    className: '',
+                                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'abstract_page/' + me.page.pk,
+                                    synchronizable: entityConfiguration.synchronizable
                                 }),
-                                sections: entityConfiguration.sections,
-                                synchronizable: entityConfiguration.synchronizable
+                                sections: entityConfiguration.sections
                             });
 
                             window.show();

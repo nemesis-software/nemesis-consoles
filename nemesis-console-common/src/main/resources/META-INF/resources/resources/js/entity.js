@@ -3,9 +3,10 @@ Ext.define('console.model.Entity', {
     fields: [
         {name: 'id'},                      // discount
         {name: 'name'},                    // DiscountModel
+        {name: 'pk'},                      // 123123213
         {name: 'url'},                     // http://localhost:8080/rest/discount/12312312313
         {name: 'className'},               // com.nemesis.platform.core.model.price.DiscountModel
-        {name: 'synchronizable'},           // true
+        {name: 'synchronizable'},          // true
         {name: 'isNew'}
     ]
 });
@@ -241,7 +242,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                     console.log(me.entity.data.url);
 
                     me.up().up().setLoading(true);
-                    var pk = me.entity.data.url.substring(me.entity.data.url.lastIndexOf(me.entity.data.id) + me.entity.data.id.length + 1);
+                    var pk = me.entity.data.pk;
                     console.log(pk);
                     Ext.Ajax.request({
                         url: Ext.get('rest-base-url').dom.getAttribute('url') + "backend/synchronize",

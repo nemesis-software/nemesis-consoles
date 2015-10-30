@@ -260,28 +260,29 @@ Ext.define('console.view.content.search.SearchResults', {
         var href = Ext.isGecko ? record.data._links['self'].href : encodeURIComponent(record.data._links['self'].href);
         var newToken = encodeURIComponent(parentCmpId) + ':' + encodeURIComponent(record.data.uid) + ":" + encodeURIComponent(this.entity.data.name) + ":" + encodeURIComponent(this.entity.data.id) + ":" + encodeURIComponent(this.entity.data.className) + ":" + href;
 
-        if (currentToken === newToken) { //case when we click on a just closed window
-            var window = Ext.getCmp(parentCmpId).getWindow(record.data.uid);
-            if (!window) {
-                var entityConfiguration = Ext.create("console.markup." + record.data.entityName);
-                console.log(record);
-                window = Ext.getCmp(parentCmpId).createWindow({
-                    id: record.data.uid,
-                    iconCls: this.entity.data.id,
-                    entity: Ext.create('console.model.Entity', {
-                        id: this.entity.data.id,
-                        name: this.entity.data.name,
-                        className: this.entity.data.className,
-                        url: record.data._links['self'].href,
-                        synchronizable: entityConfiguration.synchronizable
-                    }),
-                    sections: entityConfiguration.sections
-                });
-            }
-            Ext.getCmp(parentCmpId).restoreWindow(window);
-        } else {
-            Ext.util.History.add(newToken);
+        //if (currentToken === newToken) { //case when we click on a just closed window
+        var window = Ext.getCmp(parentCmpId).getWindow(record.data.uid);
+        if (!window) {
+            var entityConfiguration = Ext.create("console.markup." + record.data.entityName);
+            console.log(record);
+            window = Ext.getCmp(parentCmpId).createWindow({
+                id: record.data.uid,
+                iconCls: record.data.entityName ? record.data.entityName : this.entity.data.id,
+                entity: Ext.create('console.model.Entity', {
+                    id: this.config.entity.data.id,
+                    pk: record.data.pk,
+                    name: this.entity.data.name,
+                    className: this.entity.data.className,
+                    url: record.data._links['self'].href,
+                    synchronizable: entityConfiguration.synchronizable
+                }),
+                sections: entityConfiguration.sections
+            });
         }
+        Ext.getCmp(parentCmpId).restoreWindow(window);
+        //} else {
+        //    Ext.util.History.add(newToken);
+        //}
     },
     onCopySelected: function (view, record, item, index, event) {
         Ext.getCmp('backend-viewport').clipboard = {

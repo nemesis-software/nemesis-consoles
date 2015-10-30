@@ -98,6 +98,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                 event.stopEvent();
                 var selected = Ext.getCmp(this.id).getSelection();
                 this.ctxMenu = Ext.create('Ext.menu.Menu', {
+                    cls: 'collection-field-context-menu',
                     items: [
                         {
                             itemId: 'edit',
@@ -114,6 +115,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                                         iconCls: this.entityId,
                                         entity: Ext.create('console.model.Entity', {
                                             id: this.entityId,
+                                            pk: record.data.pk,
                                             name: record.data.name,
                                             className: this.entityId,
                                             url: record.data.url,
@@ -476,8 +478,8 @@ Ext.define('console.view.field.NemesisEntityField', {
     },
     triggers: {
         edit: {
-            handler: function() {
-            	this.onEdit();
+            handler: function () {
+                this.onEdit();
             }
         }
     },
@@ -493,15 +495,21 @@ Ext.define('console.view.field.NemesisEntityField', {
                     method: 'GET',
                     success: function (responseObject) {
                         var result = Ext.decode(responseObject.responseText);
-                        var entity = {id: me.entity.id, data: {id: me.entity.data.id, url: result._links.self.href}};
                         win = Ext.getCmp('backend-viewport').createWindow({
-                            id: entityUid,
-                            title: '[' + entityUid + ' - ' + me.entity.data.name + ']',
-                            iconCls: me.entityId,
-                            entity: entity,
-                            sections: Ext.create("console.markup." + me.entityId).sections,
-                            synchronizable: Ext.create("console.markup." + me.entityId).synchronizable
-                        });
+                                id: entityUid,
+                                title: '[' + entityUid + ' - ' + me.entity.data.name + ']',
+                                iconCls: me.entityId,
+                                sections: Ext.create("console.markup." + me.entityId).sections,
+                                entity: Ext.create('console.model.Entity', {
+                                    id: result.content.entityName,
+                                    pk: result.content.pk,
+                                    name: result.content.entityName,
+                                    className: '',
+                                    url: result._links.self.href,
+                                    synchronizable: Ext.create("console.markup." + me.entityId).synchronizable
+                                })
+                            }
+                        );
                         Ext.getCmp('backend-viewport').restoreWindow(win);
                     },
                     failure: function (responseObject) {
@@ -538,11 +546,11 @@ Ext.define('console.view.field.NemesisEntityField', {
             return false;
         }
     },
-    assertValue: function() {
-    	if (this.rawValue == this.originalValue && !this.store.isLoaded()) {
-    		return;
-    	}
-    	this.callParent(arguments);
+    assertValue: function () {
+        if (this.rawValue == this.originalValue && !this.store.isLoaded()) {
+            return;
+        }
+        this.callParent(arguments);
     },
     listeners: {
         el: {

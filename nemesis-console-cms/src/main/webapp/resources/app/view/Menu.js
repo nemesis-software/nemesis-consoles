@@ -46,7 +46,7 @@ Ext.define('console.view.Menu', {
                                     enableKeyEvents: true,
                                     allowBlank: true,
                                     minLength: 3,
-                                    width:'79%',
+                                    width: '79%',
                                     listeners: {
                                         specialkey: function (f, e) {
                                             if (e.getKey() == e.ENTER) {
@@ -64,11 +64,11 @@ Ext.define('console.view.Menu', {
                                 },
                                 '->',
                                 {
-                                    xtype:'button',
-                                    cls:'x-btn-default-small',
-                                    text : 'Filter',
-                                    width:'20%',
-                                    handler: function() {
+                                    xtype: 'button',
+                                    cls: 'x-btn-default-small',
+                                    text: 'Filter',
+                                    width: '20%',
+                                    handler: function () {
                                         var input = Ext.getCmp('page-template-filter').getValue();
                                         if (input) {
                                             Ext.getCmp('page-template-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'page_template/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input + "%25&catalogVersionUid=Staged";
@@ -114,7 +114,7 @@ Ext.define('console.view.Menu', {
                                     Ext.getCmp('templates-pager').setStore(this.getStore());
                                 },
                                 itemcontextmenu: function (view, record, item, index, event) {
-                                //			view.select(record);
+                                    //			view.select(record);
                                     event.stopEvent();
                                     var ctxMenu = this.buildCtxMenu(view, record, item, index, event);
 
@@ -145,7 +145,9 @@ Ext.define('console.view.Menu', {
                                     id: record.data.uid,
                                     iconCls: 'page_template',
                                     entity: Ext.create('console.model.Entity', {
-                                        name: null,
+                                        id: record.data.entityName,
+                                        pk: record.data.pk,
+                                        name: record.data.entityName,
                                         url: record.data._links['self'].href,
                                         synchronizable: entityConfiguration.synchronizable
                                     }),
@@ -214,13 +216,13 @@ Ext.define('console.view.Menu', {
                                 enableKeyEvents: true,
                                 allowBlank: true,
                                 minLength: 3,
-                                width:'79%',
+                                width: '79%',
                                 listeners: {
                                     specialkey: function (f, e) {
                                         if (e.getKey() == e.ENTER) {
                                             var input = Ext.getCmp('content-page-filter').getValue();
-                                            if(input){
-                                                Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input +"%25&catalogVersionUid=Staged";
+                                            if (input) {
+                                                Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input + "%25&catalogVersionUid=Staged";
                                                 Ext.getCmp('content-page-dataview').getStore().load();
                                             } else {
                                                 Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByCatalogVersionUid?catalogVersionUid=Staged';
@@ -230,23 +232,23 @@ Ext.define('console.view.Menu', {
                                     }
                                 }
                             },
-                            '->',
-                            {
-                                xtype:'button',
-                                cls:'x-btn-default-small',
-                                text : 'Filter',
-                                width:'20%',
-                                handler: function() {
-                                    var input = Ext.getCmp('content-page-filter').getValue();
-                                    if(input){
-                                        Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input +"%25&catalogVersionUid=Staged";
-                                        Ext.getCmp('content-page-dataview').getStore().load();
-                                    } else {
-                                        Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByCatalogVersionUid?catalogVersionUid=Staged';
-                                        Ext.getCmp('content-page-dataview').getStore().load();
+                                '->',
+                                {
+                                    xtype: 'button',
+                                    cls: 'x-btn-default-small',
+                                    text: 'Filter',
+                                    width: '20%',
+                                    handler: function () {
+                                        var input = Ext.getCmp('content-page-filter').getValue();
+                                        if (input) {
+                                            Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input + "%25&catalogVersionUid=Staged";
+                                            Ext.getCmp('content-page-dataview').getStore().load();
+                                        } else {
+                                            Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByCatalogVersionUid?catalogVersionUid=Staged';
+                                            Ext.getCmp('content-page-dataview').getStore().load();
+                                        }
                                     }
-                                }
-                            }]
+                                }]
                         },
                         {
                             bodyPadding: 0,
@@ -284,7 +286,7 @@ Ext.define('console.view.Menu', {
                                 },
                                 afterrender: function (p) {
                                     Ext.getCmp('pages-pager').setStore(this.getStore());
-                                },itemcontextmenu: function (view, record, item, index, event) {
+                                }, itemcontextmenu: function (view, record, item, index, event) {
                                     //			view.select(record);
                                     event.stopEvent();
                                     var ctxMenu = this.buildCtxMenu(view, record, item, index, event);
@@ -316,7 +318,9 @@ Ext.define('console.view.Menu', {
                                     id: record.data.uid,
                                     iconCls: 'content_page',
                                     entity: Ext.create('console.model.Entity', {
-                                        name: null,
+                                        id: record.data.entityName,
+                                        pk: record.data.pk,
+                                        name: record.data.entityName,
                                         url: record.data._links['self'].href,
                                         synchronizable: entityConfiguration.synchronizable
                                     }),
@@ -441,7 +445,9 @@ Ext.define('console.view.Menu', {
                                     id: record.data.uid,
                                     iconCls: 'content_slot',
                                     entity: Ext.create('console.model.Entity', {
-                                        name: null,
+                                        id: record.data.entityName,
+                                        pk: record.data.pk,
+                                        name: record.data.entityName,
                                         url: record.data._links['self'].href,
                                         synchronizable: entityConfiguration.synchronizable
                                     }),
@@ -510,13 +516,13 @@ Ext.define('console.view.Menu', {
                                 enableKeyEvents: true,
                                 allowBlank: true,
                                 minLength: 3,
-                                width:'79%',
+                                width: '79%',
                                 listeners: {
                                     specialkey: function (f, e) {
                                         if (e.getKey() == e.ENTER) {
                                             var input = Ext.getCmp('widgets-filter').getValue();
-                                            if(input){
-                                                Ext.getCmp('widgets-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input +"%25&catalogVersionUid=Staged";
+                                            if (input) {
+                                                Ext.getCmp('widgets-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input + "%25&catalogVersionUid=Staged";
                                                 Ext.getCmp('widgets-dataview').getStore().load();
                                             } else {
                                                 Ext.getCmp('widgets-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCatalogVersionUid?catalogVersionUid=Staged';
@@ -528,13 +534,13 @@ Ext.define('console.view.Menu', {
                             },
                                 '->',
                                 {
-                                    xtype:'button',
-                                    cls:'x-btn-default-small',
-                                    text : 'Filter',
-                                    width:'20%',
-                                    handler: function() {
+                                    xtype: 'button',
+                                    cls: 'x-btn-default-small',
+                                    text: 'Filter',
+                                    width: '20%',
+                                    handler: function () {
                                         var input = Ext.getCmp('widgets-filter').getValue();
-                                        if(input){
+                                        if (input) {
                                             Ext.getCmp('widgets-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input + "%25&catalogVersionUid=Staged";
                                             Ext.getCmp('widgets-dataview').getStore().load({
                                                 //drag-n-drop experiments https://docs.sencha.com/extjs/5.1/core_concepts/drag_drop.html
@@ -604,7 +610,7 @@ Ext.define('console.view.Menu', {
                             xtype: 'dataview',
                             trackOver: true,
                             itemSelector: 'div.top-carousel-item',
-                            singleSelect:true,
+                            singleSelect: true,
                             overItemCls: 'x-item-over',
                             emptyText: 'No widgets available',
                             tpl: new Ext.XTemplate(
@@ -674,9 +680,11 @@ Ext.define('console.view.Menu', {
                                 console.log(record);
                                 var window = Ext.getCmp(parentCmpId).createWindow({
                                     id: record.data.uid,
-                                    iconCls: 'widget',
+                                    iconCls: record.data.entityName ? record.data.entityName : 'widget',
                                     entity: Ext.create('console.model.Entity', {
-                                        name: null,
+                                        id: record.data.entityName,
+                                        pk: record.data.pk,
+                                        name: record.data.entityName,
                                         url: record.data._links['self'].href,
                                         synchronizable: entityConfiguration.synchronizable
                                     }),
@@ -793,7 +801,7 @@ Ext.define('console.view.Menu', {
                             ),
                             listeners: {
                                 itemclick: function (view, record, item, index, e, eOpts) {
-                                    Ext.get('website-iframe').dom.src = Ext.get('website-base-url').dom.getAttribute('url') + "email/page/" + record.raw.uid + "?subject=" + record.raw.title + "&live_edit_view=true&site=" + ((Ext.getCmp('site-combo').getSelection() != null) ? Ext.getCmp('site-combo').getSelection().data.uid  : 'solar');
+                                    Ext.get('website-iframe').dom.src = Ext.get('website-base-url').dom.getAttribute('url') + "email/page/" + record.raw.uid + "?subject=" + record.raw.title + "&live_edit_view=true&site=" + ((Ext.getCmp('site-combo').getSelection() != null) ? Ext.getCmp('site-combo').getSelection().data.uid : 'solar');
                                     view.el.setStyle('background', '#DDDDDD');
                                     view.el.setStyle('border-color', '#000');
                                 },

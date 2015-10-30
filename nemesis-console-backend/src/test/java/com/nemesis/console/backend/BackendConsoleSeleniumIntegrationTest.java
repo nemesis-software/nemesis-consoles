@@ -148,17 +148,21 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     public void testSelectMediaContainer() throws InterruptedException {
         LOG.info("testSelectMediaContainer");
 
+        String entityId = "media_container";
+
         getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
 
         assertTrue(navTreeItems().size() > 0);
 
-        filterNavTree("media_container");
+        filterNavTree(entityId);
 
         int size = navTreeItems().size();
 
         assertTrue(size > 1);
 
         openNavTreeItem(null);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(resultsGridItems(entityId)));
 
         assertEquals(1, getWebDriver().findElementsByCssSelector("div#tab-panel a.x-tab").size());
 
@@ -175,6 +179,8 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         final String entityId = "media_container";
 
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+
         assertTrue(navTreeItems().size() > 0);
 
         filterNavTree(entityId);
@@ -182,6 +188,8 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertTrue(navTreeItems().size() > 0);
 
         openNavTreeItem(null);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(resultsGridItems(entityId)));
 
         assertEquals(1, getWebDriver().findElementsByCssSelector("div#tab-panel a.x-tab").size());
 
@@ -210,11 +218,18 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     public void testReopenEntityWindow() throws InterruptedException {
         LOG.info("testReopenEntityWindow");
         String entityId = "product";
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+
         assertTrue(navTreeItems().size() > 0);
 
         filterNavTree(entityId);
 
+        sleep();
+
         openNavTreeItem(2);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(resultsGridItems(entityId)));
 
         assertTrue(1 <= resultsGridItems(entityId).size());
 
@@ -252,11 +267,16 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         LOG.info("testEnumField");
         String entityId = "watermark";
         String entityFullId = "media_watermark";
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+
         assertTrue(navTreeItems().size() > 0);
 
         filterNavTree(entityId);
 
         openNavTreeItem(null);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(resultsGridItems(entityFullId)));
 
         openSearchGridItem(0, entityFullId);
 
@@ -271,11 +291,16 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         LOG.info("testEntityWindowTitle");
         String entityId = "unit";
         String entityFullId = "unit";
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+
         assertTrue(navTreeItems().size() > 0);
 
         filterNavTree(entityId);
 
         openNavTreeItem(null);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(resultsGridItems(entityFullId)));
 
         assertTrue(1 <= resultsGridItems(entityFullId).size());
 
@@ -296,13 +321,18 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         String entityId = "unit";
         String entityFullId = "unit";
-        //List<WebElement> navTreeItems = getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
-        sleep();
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+
         assertTrue(navTreeItems().size() > 0);
 
         filterNavTree(entityId);
 
+        sleep();
+
         openNavTreeItem(null);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(resultsGridItems(entityId)));
 
         assertTrue(1 <= resultsGridItems(entityFullId).size());
 
@@ -324,11 +354,16 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         LOG.info("testMaximizeEntityWindow");
         String entityId = "unit";
         String entityFullId = "unit";
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+
         assertTrue(navTreeItems().size() > 0);
 
         filterNavTree(entityId);
 
         openNavTreeItem(null);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(resultsGridItems(entityId)));
 
         assertTrue(1 <= resultsGridItems(entityFullId).size());
 
@@ -363,17 +398,98 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     }
 
+    // 49
+    @Test
+    public void testEditInCollectionFieldMustOpenEntityField() throws InterruptedException {
+        LOG.info("testPaginationCorrectBehaviour");
+        String entityId = "product";
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+
+        assertTrue(navTreeItems().size() > 0);
+
+        filterNavTree(entityId);
+
+        openNavTreeItem(2);
+
+        List<WebElement> results = resultsGridItems(entityId);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(results));
+
+        assertTrue(1 <= resultsGridItems(entityId).size());
+
+        //search for africa-love-capri
+
+        assertTrue(existsElement("#" + entityId + "-search-form-body"));
+
+        WebElement searchForm = searchForm(entityId);
+
+        assertTrue(existsElement("[id^=" + entityId + "-searchform-fieldset-restriction_uid]"));
+
+        getWebDriver().executeScript("var c = Ext.getCmp('" + entityId
+                                                     + "-searchform-fieldset-restriction_uid'); c.setValue('Equals'); c.fireEvent('select', c, 'Equals');");
+
+        assertTrue(existsElement("#" + entityId + "-searchform-fieldset-query_uid"));
+
+        WebElement queryField = searchForm.findElement(By.cssSelector("div#" + entityId + "-searchform-fieldset-query_uid input[type='text']"));
+
+        queryField.clear();
+        queryField.sendKeys("africa-love-capri");
+        queryField.sendKeys(Keys.ENTER);
+
+        sleep();
+
+        //open it
+
+        doubleClick(resultsGridInnerItems(entityId).get(0));
+
+        getWait().until(ExpectedConditions.visibilityOf(entityWindow()));
+
+        WebElement entityWindow = entityWindow();
+
+        assertNotNull(entityWindow);
+
+        //find the third tab.
+
+        WebElement tab = getEntityTab(2);
+        assertNotNull(tab);
+        tab.click();
+
+        sleep();
+
+        //right-click in the supercategories.
+
+        assertTrue(existsElement("[id^='nemesisEntitySection'].x-tabpanel-child:not(.x-hidden-offsets)"));
+
+        WebElement openedTab = getWebDriver().findElement(By.cssSelector("[id^='nemesisEntitySection'].x-tabpanel-child:not(.x-hidden-offsets)"));
+
+        assertNotNull(openedTab);
+
+        WebElement superCategoriesEntityField = openedTab.findElement(By.cssSelector("[id^='nemesisCollectionField']"));
+
+        assertNotNull(superCategoriesEntityField);
+
+        rightClick(superCategoriesEntityField);
+
+        assertTrue(existsElement(".collection-field-context-menu:not([style*='visibility: hidden'])"));
+    }
+
     // 50
     @Test
     @Ignore
     public void testPaginationCorrectBehaviour() throws InterruptedException {
         LOG.info("testPaginationCorrectBehaviour");
         String entityId = "product";
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+
         assertTrue(navTreeItems().size() > 0);
 
         filterNavTree(entityId);
 
         openNavTreeItem(2);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(resultsGridItems(entityId)));
 
         assertEquals(9, resultsGridItems(entityId).size());
 
@@ -401,17 +517,21 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         String entityId = "unit";
         String entityFullId = "unit";
 
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+
         assertTrue(navTreeItems().size() > 0);
 
         filterNavTree(entityId);
 
         openNavTreeItem(null);
 
+        getWait().until(ExpectedConditions.visibilityOfAllElements(resultsGridItems(entityId)));
+
         assertTrue(1 <= resultsGridItems(entityFullId).size());
 
         assertTrue(existsElement("#unit-search-form-body"));
 
-        WebElement searchForm = getWebDriver().findElement(By.cssSelector("#unit-search-form-body"));
+        WebElement searchForm = searchForm(entityId);
 
         assertTrue(existsElement("[id^=" + entityId + "-searchform-fieldset-restriction_uid]"));
 
@@ -446,11 +566,16 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         LOG.info("testSearchFormMustSubmitOnEnter");
 
         String entityId = "site";
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+
         assertTrue(navTreeItems().size() > 0);
 
         filterNavTree(entityId);
 
         openNavTreeItem(2);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(resultsGridItems(entityId)));
 
         assertTrue(resultsGridItems(entityId).size() > 0);
 
@@ -475,7 +600,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         WebElement entityFieldStartingPage = getWebDriver().findElement(By.cssSelector("div.x-form-entity-trigger.abstract_page"));
         entityFieldStartingPage.click();
 
-        sleep();
+        getWait().until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("div[id='w_id_" + value + "']")));
 
         assertTrue(existsElement("div[id='w_id_" + value + "']"));
 
@@ -496,13 +621,13 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         LOG.info("testMustShowToastWhenCreatingNewEntitiesAsWellAsWhenSavingAndRemovingOldEntities");
         String entityId = "packaging";
 
-        sleep();
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeInnerItems()));
 
         assertTrue(navTreeItems().size() > 0);
 
-        sleep();
-
         filterNavTree(entityId);
+
+        sleep();
 
         int position = navTreeItems().size() - 1;
 
@@ -689,4 +814,9 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         return menu.findElements(By.cssSelector(".x-menu-item"));
 
     }
+
+    private WebElement searchForm(String entityId) {
+        return getWebDriver().findElement(By.cssSelector("#" + entityId + "-search-form-body"));
+    }
+
 }

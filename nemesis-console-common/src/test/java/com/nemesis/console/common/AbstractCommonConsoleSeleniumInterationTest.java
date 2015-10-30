@@ -20,7 +20,6 @@ import org.junit.runners.model.Statement;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -48,7 +47,7 @@ public abstract class AbstractCommonConsoleSeleniumInterationTest {
 
     public static void setUpClass() throws Exception {
         webDriver = new FirefoxDriver();
-        wait = new WebDriverWait(getWebDriver(), 10);
+        wait = new WebDriverWait(getWebDriver(), 15);
     }
 
     protected abstract void tearDown();
