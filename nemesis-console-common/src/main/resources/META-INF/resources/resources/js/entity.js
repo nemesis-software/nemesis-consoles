@@ -135,6 +135,11 @@ Ext.define('console.view.content.entity.EntityPopupForm', {
                 values[field.name] = field.store.getValues();
             }
         });
+        Ext.each(this.query('nemesisEntityField'), function (field) {
+            if (field.getValue() == '' && field.getValue() != field.originalValue ) {
+                values[field.name] = null;
+            }
+        });
         return values;
     },
     convertResult: function (p) {
