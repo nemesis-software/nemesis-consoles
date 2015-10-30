@@ -404,6 +404,7 @@ Ext.define('console.view.field.NemesisDecimalField', {
 Ext.define('console.view.field.NemesisEntityField', {
     extend: 'Ext.form.field.ComboBox',
     xtype: 'nemesisEntityField',
+    cls: 'nemesis-entity-field',
     queryMode: 'remote',
     forceSelection: true,
     displayField: 'uid',
@@ -559,6 +560,7 @@ Ext.define('console.view.field.NemesisEntityField', {
                 event.stopEvent();
                 if (!me.ctxMenu) {
                     me.ctxMenu = Ext.create('Ext.menu.Menu', {
+                        cls: 'entity-field-context-menu',
                         items: [
                             {
                                 itemId: 'edit',
@@ -667,8 +669,8 @@ Ext.define('console.view.field.NemesisEntityField', {
         return this.rawValue;
     },
     getSubmitValue: function () {
-    	if ('' == this.rawValue) return '';
-    	
+        if ('' == this.rawValue) return '';
+
         var record = this.store.getById(this.rawValue);
         // we must return something in the form of {"theme" : "https://localhost:8112/storefront/rest/site_theme/70933224484926368"}
         return record ? record.data._links.self.href : this.entityHref;

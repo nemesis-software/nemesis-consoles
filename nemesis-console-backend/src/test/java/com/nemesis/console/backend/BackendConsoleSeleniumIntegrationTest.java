@@ -401,7 +401,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     // 49
     @Test
     public void testEditInCollectionFieldMustOpenEntityField() throws InterruptedException {
-        LOG.info("testPaginationCorrectBehaviour");
+        LOG.info("testEditInCollectionFieldMustOpenEntityField");
         String entityId = "product";
 
         getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
@@ -509,6 +509,116 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertNotNull(nextPageBtn);
     }
 
+    //56
+    @Test
+    public void testEntityFieldMustOpenTheRealEntityUrl() throws InterruptedException {
+        LOG.info("testEntityFieldMustOpenTheRealEntityUrl");
+
+        String entityId = "site";
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+
+        assertTrue(navTreeItems().size() > 0);
+
+        filterNavTree(entityId);
+
+        openNavTreeItem(2);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(resultsGridItems(entityId)));
+
+        assertTrue(resultsGridItems(entityId).size() > 0);
+
+        rightClick(resultsGridInnerItems(entityId).get(0));
+
+        List<WebElement> menuElements = resultsGridContextMenuItems();
+        assertTrue(menuElements.size() > 2);
+        menuElements.get(0).findElement(By.cssSelector(".x-menu-item-text")).click();
+        Thread.sleep(500);
+        assertTrue(existsElement("div[id^='w_id_']"));
+        WebElement entityWindow = getWebDriver().findElement(By.cssSelector("div[id^='w_id_']"));
+        assertNotNull(entityWindow);
+
+        WebElement tab = getEntityTab(2);
+        assertNotNull(tab);
+        tab.click();
+
+        sleep();
+
+        String value = getWebDriver().findElement(By.cssSelector("input[name='entity-startingPage']")).getAttribute("value");
+        assertTrue(existsElement("div.x-form-entity-trigger.abstract_page"));
+        WebElement entityFieldStartingPage = getWebDriver().findElement(By.cssSelector("div.x-form-entity-trigger.abstract_page"));
+        entityFieldStartingPage.click();
+
+        getWait().until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("div[id='w_id_" + value + "']")));
+
+        assertTrue(existsElement("div[id='w_id_" + value + "']"));
+
+        getWebDriver().findElement(By.cssSelector("div[id='w_id_" + value + "']")).findElement(By.cssSelector("img.x-tool-close")).click();
+    }
+
+    //#74
+    @Test
+    public void testRightClickOnEntityFieldMustShowContextMenu() throws InterruptedException {
+        LOG.info("testRightClickOnEntityFieldMustShowContextMenu");
+        String entityId = "product";
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+
+        assertTrue(navTreeItems().size() > 0);
+
+        filterNavTree(entityId);
+
+        openNavTreeItem(2);
+
+        List<WebElement> results = resultsGridItems(entityId);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(results));
+
+        assertTrue(1 <= resultsGridItems(entityId).size());
+
+        //search for africa-love-capri
+
+        assertTrue(existsElement("#" + entityId + "-search-form-body"));
+
+        WebElement searchForm = searchForm(entityId);
+
+        assertTrue(existsElement("[id^=" + entityId + "-searchform-fieldset-restriction_uid]"));
+
+        getWebDriver().executeScript("var c = Ext.getCmp('" + entityId
+                                                     + "-searchform-fieldset-restriction_uid'); c.setValue('Equals'); c.fireEvent('select', c, 'Equals');");
+
+        assertTrue(existsElement("#" + entityId + "-searchform-fieldset-query_uid"));
+
+        WebElement queryField = searchForm.findElement(By.cssSelector("div#" + entityId + "-searchform-fieldset-query_uid input[type='text']"));
+
+        queryField.clear();
+        queryField.sendKeys("africa-love-capri");
+        queryField.sendKeys(Keys.ENTER);
+
+        sleep();
+
+        //open it
+
+        doubleClick(resultsGridInnerItems(entityId).get(0));
+
+        getWait().until(ExpectedConditions.visibilityOf(entityWindow()));
+
+        WebElement entityWindow = entityWindow();
+
+        assertNotNull(entityWindow);
+
+        //right-click it
+
+        assertTrue(existsElement(".nemesis-entity-field"));
+
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".nemesis-entity-field")));
+
+        WebElement unitEntityField = getWebDriver().findElement(By.cssSelector(".nemesis-entity-field"));
+        rightClick(unitEntityField);
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".entity-field-context-menu:not([style*='visibility: hidden'])")));
+        assertTrue(existsElement(".entity-field-context-menu:not([style*='visibility: hidden'])"));
+    }
+
     //#95
     @Test
     public void testSearchFormMustSubmitOnEnter() throws InterruptedException {
@@ -558,61 +668,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         assertTrue(1 <= resultsGridItems(entityFullId).size());
 
-    }
-
-    //56
-    @Test
-    public void testEntityFieldMustOpenTheRealEntityUrl() throws InterruptedException {
-        LOG.info("testSearchFormMustSubmitOnEnter");
-
-        String entityId = "site";
-
-        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
-
-        assertTrue(navTreeItems().size() > 0);
-
-        filterNavTree(entityId);
-
-        openNavTreeItem(2);
-
-        getWait().until(ExpectedConditions.visibilityOfAllElements(resultsGridItems(entityId)));
-
-        assertTrue(resultsGridItems(entityId).size() > 0);
-
-        rightClick(resultsGridInnerItems(entityId).get(0));
-
-        List<WebElement> menuElements = resultsGridContextMenuItems();
-        assertTrue(menuElements.size() > 2);
-        menuElements.get(0).findElement(By.cssSelector(".x-menu-item-text")).click();
-        Thread.sleep(500);
-        assertTrue(existsElement("div[id^='w_id_']"));
-        WebElement entityWindow = getWebDriver().findElement(By.cssSelector("div[id^='w_id_']"));
-        assertNotNull(entityWindow);
-
-        WebElement tab = getEntityTab(2);
-        assertNotNull(tab);
-        tab.click();
-
-        sleep();
-
-        String value = getWebDriver().findElement(By.cssSelector("input[name='entity-startingPage']")).getAttribute("value");
-        assertTrue(existsElement("div.x-form-entity-trigger.abstract_page"));
-        WebElement entityFieldStartingPage = getWebDriver().findElement(By.cssSelector("div.x-form-entity-trigger.abstract_page"));
-        entityFieldStartingPage.click();
-
-        getWait().until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("div[id='w_id_" + value + "']")));
-
-        assertTrue(existsElement("div[id='w_id_" + value + "']"));
-
-        getWebDriver().findElement(By.cssSelector("div[id='w_id_" + value + "']")).findElement(By.cssSelector("img.x-tool-close")).click();
-    }
-
-    private WebElement getEntityTab(int index) {
-        return entityWindow().findElements(By.cssSelector("a.x-tab")).get(index);
-    }
-
-    private WebElement entityWindow() {
-        return getWebDriver().findElement(By.cssSelector("div[id^='w_id_']"));
     }
 
     //#102 & #4
@@ -718,6 +773,8 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertEquals(0, rows.size());
     }
 
+    /* private helpers */
+
     private void openNavTreeItem(Integer position) throws InterruptedException {
         assertTrue(navTreeItems().size() > 0);
 
@@ -779,6 +836,14 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     private void closeWindowAndTab() throws InterruptedException {
         closeEntityWindow();
         closeEntityTab(0);
+    }
+
+    private WebElement getEntityTab(int index) {
+        return entityWindow().findElements(By.cssSelector("a.x-tab")).get(index);
+    }
+
+    private WebElement entityWindow() {
+        return getWebDriver().findElement(By.cssSelector("div[id^='w_id_']"));
     }
 
     private List<WebElement> navTreeItems() {
