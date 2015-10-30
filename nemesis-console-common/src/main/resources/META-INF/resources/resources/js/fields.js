@@ -476,38 +476,41 @@ Ext.define('console.view.field.NemesisEntityField', {
     },
     triggers: {
         edit: {
-            handler: function () {
-                var me = this;
-                var entityUid = me.jsonValue;
-                if (me.entity) {
-                    console.log(me.entity.data); //you need to initialize the entity from the url
-                    var win = Ext.getCmp('backend-viewport').getWindow(entityUid);
-                    if (!win) {
-                        Ext.Ajax.request({
-                            url: me.entity.data.url,
-                            method: 'GET',
-                            success: function (responseObject) {
-                                var result = Ext.decode(responseObject.responseText);
-                                var entity = {id: me.entity.id, data: {id: me.entity.data.id, url: result._links.self.href}};
-                                win = Ext.getCmp('backend-viewport').createWindow({
-                                    id: entityUid,
-                                    title: '[' + entityUid + ' - ' + me.entity.data.name + ']',
-                                    iconCls: me.entityId,
-                                    entity: entity,
-                                    sections: Ext.create("console.markup." + me.entityId).sections,
-                                    synchronizable: Ext.create("console.markup." + me.entityId).synchronizable
-                                });
-                                Ext.getCmp('backend-viewport').restoreWindow(win);
-                            },
-                            failure: function (responseObject) {
-                                Ext.Msg.alert('Error', 'Error: ' + responseObject.responseText);
-                            }
+            handler: function() {
+            	this.onEdit();
+            }
+        }
+    },
+    onEdit: function () {
+        var me = this;
+        var entityUid = me.jsonValue;
+        if (me.entity) {
+            console.log(me.entity.data); //you need to initialize the entity from the url
+            var win = Ext.getCmp('backend-viewport').getWindow(entityUid);
+            if (!win) {
+                Ext.Ajax.request({
+                    url: me.entity.data.url,
+                    method: 'GET',
+                    success: function (responseObject) {
+                        var result = Ext.decode(responseObject.responseText);
+                        var entity = {id: me.entity.id, data: {id: me.entity.data.id, url: result._links.self.href}};
+                        win = Ext.getCmp('backend-viewport').createWindow({
+                            id: entityUid,
+                            title: '[' + entityUid + ' - ' + me.entity.data.name + ']',
+                            iconCls: me.entityId,
+                            entity: entity,
+                            sections: Ext.create("console.markup." + me.entityId).sections,
+                            synchronizable: Ext.create("console.markup." + me.entityId).synchronizable
                         });
-
-                    } else {
                         Ext.getCmp('backend-viewport').restoreWindow(win);
+                    },
+                    failure: function (responseObject) {
+                        Ext.Msg.alert('Error', 'Error: ' + responseObject.responseText);
                     }
-                }
+                });
+
+            } else {
+                Ext.getCmp('backend-viewport').restoreWindow(win);
             }
         }
     },
@@ -552,7 +555,7 @@ Ext.define('console.view.field.NemesisEntityField', {
                             {
                                 itemId: 'edit',
                                 handler: function () {
-                                    Ext.getCmp(me.id).onTriggerClick();
+                                    Ext.getCmp(me.id).onEdit();
                                 },
                                 text: 'Edit',
                                 iconCls: 'edit',
