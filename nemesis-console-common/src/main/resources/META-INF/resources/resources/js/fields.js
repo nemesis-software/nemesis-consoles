@@ -280,6 +280,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
 Ext.define('console.view.field.NemesisLocalizedTextField', {
     extend: 'Ext.form.field.Base',
     xtype: 'nemesisLocalizedTextField',
+    cls: 'nemesis-localized-field',
     requires: ['Ext.util.Format', 'Ext.XTemplate'],
     fieldCls: 'nemesisLocalizedField',
     fieldSubTpl: [
@@ -863,6 +864,7 @@ Ext.define('console.view.field.NemesisIntegerField', {
 
 Ext.define('console.view.field.NemesisLocalizedRichtextField', {
     extend: 'Ext.form.field.Base',
+    cls: 'nemesis-localized-richtext-field',
     xtype: 'nemesisLocalizedRichtextField',
     requires: ['Ext.util.Format', 'Ext.XTemplate'],
     fieldCls: 'nemesisLocalizedRichtextField',
@@ -915,7 +917,7 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
                     labelWidth: 0,
                     typeAhead: false,
                     formItemCls: 'field-restriction',
-                    cls: 'localized-iso-dropdown',
+                    cls: 'richtext-localized-iso-dropdown',
                     width: 60,
                     value: Ext.get('rest-base-url').dom.getAttribute('locale')
                 },

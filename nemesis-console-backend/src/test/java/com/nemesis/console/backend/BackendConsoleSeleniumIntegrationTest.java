@@ -533,7 +533,9 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         List<WebElement> menuElements = resultsGridContextMenuItems();
         assertTrue(menuElements.size() > 2);
         menuElements.get(0).findElement(By.cssSelector(".x-menu-item-text")).click();
-        Thread.sleep(500);
+
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id^='w_id_']")));
+
         assertTrue(existsElement("div[id^='w_id_']"));
         WebElement entityWindow = getWebDriver().findElement(By.cssSelector("div[id^='w_id_']"));
         assertNotNull(entityWindow);
@@ -554,6 +556,91 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertTrue(existsElement("div[id='w_id_" + value + "']"));
 
         getWebDriver().findElement(By.cssSelector("div[id='w_id_" + value + "']")).findElement(By.cssSelector("img.x-tool-close")).click();
+    }
+
+    //#57
+    @Test
+    public void testChangeLocaleInDescriptionFieldMustChangeTheValue() throws InterruptedException {
+        LOG.info("testChangeLocaleInDescriptionFieldMustChangeTheValue");
+
+        String entityId = "category";
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+
+        assertTrue(navTreeItems().size() > 0);
+
+        filterNavTree(entityId);
+
+        openNavTreeItem(2);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(resultsGridItems(entityId)));
+
+        assertTrue(resultsGridItems(entityId).size() > 0);
+
+        rightClick(resultsGridInnerItems(entityId).get(0));
+
+        List<WebElement> menuElements = resultsGridContextMenuItems();
+        assertTrue(menuElements.size() > 2);
+        menuElements.get(0).findElement(By.cssSelector(".x-menu-item-text")).click();
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id^='w_id_']")));
+
+        assertTrue(existsElement("div[id^='w_id_']"));
+        WebElement entityWindow = getWebDriver().findElement(By.cssSelector("div[id^='w_id_']"));
+        assertNotNull(entityWindow);
+
+        //change value of name field:
+        WebElement nameField = entityWindow.findElement(By.cssSelector(".nemesisLocalizedField"));
+        assertNotNull(nameField);
+
+        String nameValue = nameField.findElement(By.cssSelector("input.x-form-text-default")).getAttribute("value");
+
+        //Change language.
+
+        assertTrue(existsElement(".richtext-localized-iso-dropdown"));
+
+        getWebDriver().executeScript(
+                        "var c = Ext.ComponentQuery.query('combobox[cls=localized-iso-dropdown]')[0]; c.setValue('bg_BG'); c.fireEvent('select', c, Ext.create('console.model.Language', {isoCode: 'bg_BG', language: 'Bulgarian' }));");
+
+        String secondNameValue = nameField.findElement(By.cssSelector("input.x-form-text-default")).getAttribute("value");
+
+        LOG.info(secondNameValue);
+
+        assertFalse(nameValue.equals(secondNameValue));
+
+        //change value of description field:
+
+        WebElement iframeEditor = entityWindow.findElement(By.cssSelector("iframe[id^='htmleditor']"));
+        assertNotNull(iframeEditor);
+
+        getWebDriver().switchTo().frame(iframeEditor);
+
+        WebElement iframeBody = getWebDriver().findElement(By.cssSelector("body"));
+        String initialValue = iframeBody.getText();
+
+        LOG.info(initialValue);
+
+        getWebDriver().switchTo().parentFrame();
+
+        //Change language.
+
+        assertTrue(existsElement(".localized-iso-dropdown"));
+
+        getWebDriver().executeScript(
+                        "var c = Ext.ComponentQuery.query('combobox[cls=richtext-localized-iso-dropdown]')[0]; c.setValue('bg_BG'); c.fireEvent('select', c, Ext.create('console.model.Language', {isoCode: 'bg_BG', language: 'Bulgarian' }));");
+
+        getWebDriver().switchTo().frame(iframeEditor);
+
+        WebElement secondIframeBody = getWebDriver().findElement(By.cssSelector("body"));
+        String newValue = secondIframeBody.getText();
+
+        LOG.info(newValue);
+
+        assertFalse(initialValue.equals(newValue));
+
+        getWebDriver().switchTo().parentFrame();
+
+        //        WebElement categoryDescriptionField = getWebDriver().findElement(By.cssSelector(".nemesisLocalizedRichtextField"));
+        //        WebElement categoryDescriptionLanguageTriffer = getWebDriver().findElement(By.cssSelector(".localized-iso-dropdown"));
     }
 
     //#74
@@ -709,10 +796,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         getWebDriver().findElement(By.cssSelector(".save-btn")).click();
 
-        Thread.sleep(300);
-
-        //Don't know how to assert the toast was shown
-        //assertTrue(existsElement("[id^='toast-']"));
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id^='toast-']")));
 
         sleep();
 
@@ -734,10 +818,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         getWebDriver().findElement(By.cssSelector(".save-and-close-btn")).click();
 
-        Thread.sleep(300);
-
-        //Don't know how to assert the toast was shown
-        //assertTrue(existsElement("id^='toast-'"));
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id^='toast-']")));
 
         sleep();
 
@@ -766,6 +847,9 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertEquals(2, buttons.size());
 
         buttons.get(0).click();
+
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id^='toast-']")));
+
         sleep();
 
         rows = resultsGridItems(entityId);

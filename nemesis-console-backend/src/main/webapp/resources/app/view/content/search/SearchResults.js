@@ -176,6 +176,15 @@ Ext.define('console.view.content.search.SearchResults', {
                                         me.onDeleteSelected(view, view.getSelectionModel().getSelection()[i], item, index, event);
                                     }
                                 }
+
+                                Ext.toast({
+                                    html: 'Deleted ' + view.getSelectionModel().getSelection().length + ' item(s) successfully!',
+                                    closable: false,
+                                    align: 't',
+                                    slideInDuration: 400,
+                                    minWidth: 400,
+                                    autoCloseDelay: 500
+                                });
                             } else {
                                 //nothing
                             }
