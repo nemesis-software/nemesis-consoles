@@ -47,7 +47,7 @@ public abstract class AbstractCommonConsoleSeleniumInterationTest {
 
     public static void setUpClass() throws Exception {
         webDriver = new FirefoxDriver();
-        wait = new WebDriverWait(getWebDriver(), 15);
+        wait = new WebDriverWait(getWebDriver(), 15, 200);
     }
 
     protected abstract void tearDown();

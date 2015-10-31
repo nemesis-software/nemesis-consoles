@@ -15,3 +15,8 @@
     min-width: 60px;
     max-width: 60px;
 }
+
+.richtext-localized-iso-dropdown .x-form-text-field-body-default {
+    min-width: 60px;
+    max-width: 60px;
+}

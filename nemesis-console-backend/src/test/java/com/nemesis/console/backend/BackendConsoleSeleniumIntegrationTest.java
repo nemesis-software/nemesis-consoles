@@ -113,7 +113,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         //Change locale
         getWebDriver().executeScript(
-                        "var c = Ext.getCmp('app-header-language-selector'); c.setValue({'isoCode':'bg_BG'}); c.fireEvent('select', c, {data: {'isoCode':'bg_BG'}});");
+                        "var c = Ext.getCmp('app-header-language-selector'); c.setValue({data: {'isoCode':'bg_BG'}}); c.fireEvent('select', c, Ext.create('console.model.Language', {isoCode: 'bg_BG', language: 'Bulgarian' }));");
 
         getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
         assertEquals("Изход", getWebDriver().findElementById("app-header-logout").getText());
@@ -213,6 +213,33 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertEquals(1, resultsGridItems(entityId).size());
     }
 
+    // #29
+    @Test
+    public void testEnumField() throws InterruptedException {
+
+        clearNavTreeFilter();
+
+        LOG.info("testEnumField");
+        String entityId = "watermark";
+        String entityFullId = "media_watermark";
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+
+        assertTrue(navTreeItems().size() > 0);
+
+        filterNavTree(entityId);
+
+        openNavTreeItem(null);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(resultsGridItems(entityFullId)));
+
+        openSearchGridItem(0, entityFullId);
+
+        sleep();
+        assertTrue(1 <= (Long) getWebDriver().executeScript("return Ext.ComponentQuery.query('nemesisEnumField')[0].getStore().totalCount;"));
+
+    }
+
     // #41
     @Test
     public void testReopenEntityWindow() throws InterruptedException {
@@ -256,33 +283,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         sleep();
 
         assertTrue(!existsElement("div[id^='w_id_']"));
-    }
-
-    // #29
-    @Test
-    public void testEnumField() throws InterruptedException {
-
-        clearNavTreeFilter();
-
-        LOG.info("testEnumField");
-        String entityId = "watermark";
-        String entityFullId = "media_watermark";
-
-        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
-
-        assertTrue(navTreeItems().size() > 0);
-
-        filterNavTree(entityId);
-
-        openNavTreeItem(null);
-
-        getWait().until(ExpectedConditions.visibilityOfAllElements(resultsGridItems(entityFullId)));
-
-        openSearchGridItem(0, entityFullId);
-
-        sleep();
-        assertTrue(1 <= (Long) getWebDriver().executeScript("return Ext.ComponentQuery.query('nemesisEnumField')[0].getStore().totalCount;"));
-
     }
 
     // #42
@@ -398,7 +398,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     }
 
-    // 49
+    //#49
     @Test
     public void testEditInCollectionFieldMustOpenEntityField() throws InterruptedException {
         LOG.info("testEditInCollectionFieldMustOpenEntityField");
@@ -474,7 +474,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertTrue(existsElement(".collection-field-context-menu:not([style*='visibility: hidden'])"));
     }
 
-    // 50
+    //#50
     @Test
     @Ignore
     public void testPaginationCorrectBehaviour() throws InterruptedException {
@@ -643,7 +643,50 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         //        WebElement categoryDescriptionLanguageTriffer = getWebDriver().findElement(By.cssSelector(".localized-iso-dropdown"));
     }
 
-    //#74
+    //#67
+    @Test
+    public void testWhenOpenAnyBlogEntryTeaserAndContentFieldsMustBeShown() throws InterruptedException {
+        LOG.info("testWhenOpenAnyBlogEntryTeaserAndContentFieldsMustBeShown");
+        String entityId = "blog_entry";
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+
+        assertTrue(navTreeItems().size() > 0);
+
+        filterNavTree(entityId);
+
+        openNavTreeItem(1);
+
+        List<WebElement> results = resultsGridItems(entityId);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(results));
+
+        assertTrue(1 <= resultsGridItems(entityId).size());
+
+        //open it
+
+        doubleClick(resultsGridInnerItems(entityId).get(0));
+
+        getWait().until(ExpectedConditions.visibilityOf(entityWindow()));
+
+        WebElement entityWindow = entityWindow();
+
+        assertNotNull(entityWindow);
+
+        //find the second tab.
+
+        WebElement tab = getEntityTab(1);
+        assertNotNull(tab);
+        tab.click();
+
+        sleep();
+
+        List<WebElement> richtextFields = entityWindow.findElements(By.cssSelector("iframe[id^='htmleditor']"));
+        assertNotNull(richtextFields);
+        assertEquals(2, richtextFields.size());
+    }
+
+    //#74,#48
     @Test
     public void testRightClickOnEntityFieldMustShowContextMenu() throws InterruptedException {
         LOG.info("testRightClickOnEntityFieldMustShowContextMenu");
@@ -778,13 +821,13 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         Actions action = new Actions(getWebDriver());
         action.contextClick(navTreeInnerItems().get(position)).build().perform();
 
-        sleep();
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".x-menu a.x-menu-item-link")));
 
         assertNotNull(getWebDriver().findElement(By.cssSelector(".x-menu")));
 
         getWebDriver().findElement(By.cssSelector(".x-menu a.x-menu-item-link")).click();
 
-        sleep();
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id^='w_id_']")));
 
         assertTrue(existsElement("div[id^='w_id_']"));
 
