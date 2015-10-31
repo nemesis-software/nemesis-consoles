@@ -643,6 +643,59 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         //        WebElement categoryDescriptionLanguageTriffer = getWebDriver().findElement(By.cssSelector(".localized-iso-dropdown"));
     }
 
+    //#59
+    @Test
+    public void testEntityOfTypeMediaMustShowCorrectTooltipOnMouseover() throws InterruptedException {
+        LOG.info("testEntityOfTypeMediaMustShowCorrectTooltipOnMouseover");
+        String entityId = "category";
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+
+        assertTrue(navTreeItems().size() > 0);
+
+        filterNavTree(entityId);
+
+        openNavTreeItem(2);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(resultsGridItems(entityId)));
+
+        assertTrue(resultsGridItems(entityId).size() > 0);
+
+        rightClick(resultsGridInnerItems(entityId).get(0));
+
+        List<WebElement> menuElements = resultsGridContextMenuItems();
+        assertTrue(menuElements.size() > 2);
+        menuElements.get(0).findElement(By.cssSelector(".x-menu-item-text")).click();
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id^='w_id_']")));
+
+        assertTrue(existsElement("div[id^='w_id_']"));
+        WebElement entityWindow = getWebDriver().findElement(By.cssSelector("div[id^='w_id_']"));
+        assertNotNull(entityWindow);
+
+        //open the first tab
+        WebElement tab = getEntityTab(1);
+        assertNotNull(tab);
+        tab.click();
+
+        sleep();
+
+        assertTrue(existsElement("[id^='nemesisEntitySection'].x-tabpanel-child:not(.x-hidden-offsets)"));
+
+        WebElement openedTab = getWebDriver().findElement(By.cssSelector("[id^='nemesisEntitySection'].x-tabpanel-child:not(.x-hidden-offsets)"));
+
+        List<WebElement> mediaFields = openedTab.findElements(By.cssSelector("input[id^='nemesisEntityField']"));
+
+        assertEquals(2, mediaFields.size());
+
+        mouseover(mediaFields.get(0));
+
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id^='tooltip-'].x-tip")));
+
+        mouseover(mediaFields.get(1));
+
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id^='tooltip-'].x-tip")));
+    }
+
     //#67
     @Test
     public void testWhenOpenAnyBlogEntryTeaserAndContentFieldsMustBeShown() throws InterruptedException {
@@ -749,6 +802,63 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertTrue(existsElement(".entity-field-context-menu:not([style*='visibility: hidden'])"));
     }
 
+    //#78
+    @Test
+    public void testOpenTheSameEntityMustNotShowError() throws InterruptedException {
+        LOG.info("testOpenTheSameEntityMustNotShowError");
+        String entityId = "search_facet_config";
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+
+        assertTrue(navTreeItems().size() > 0);
+
+        filterNavTree(entityId);
+
+        openNavTreeItem(1);
+
+        List<WebElement> results = resultsGridItems(entityId);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(results));
+
+        assertTrue(1 <= resultsGridItems(entityId).size());
+
+        //open it
+
+        doubleClick(resultsGridInnerItems(entityId).get(0));
+
+        getWait().until(ExpectedConditions.visibilityOf(entityWindow()));
+
+        WebElement entityWindow = entityWindow();
+
+        assertNotNull(entityWindow);
+
+        //find the second tab.
+
+        WebElement tab = getEntityTab(1);
+        assertNotNull(tab);
+        tab.click();
+
+        sleep();
+
+        //right-click in the index type.
+
+        assertTrue(existsElement("[id^='nemesisEntitySection'].x-tabpanel-child:not(.x-hidden-offsets)"));
+
+        WebElement openedTab = getWebDriver().findElement(By.cssSelector("[id^='nemesisEntitySection'].x-tabpanel-child:not(.x-hidden-offsets)"));
+
+        assertNotNull(openedTab);
+
+        WebElement indexTypes = openedTab.findElement(By.cssSelector("[id^='nemesisCollectionField']"));
+
+        assertNotNull(indexTypes);
+
+        rightClick(indexTypes);
+
+        assertTrue(existsElement(".collection-field-context-menu:not([style*='visibility: hidden'])"));
+
+        //TODO: continue.
+    }
+
     //#95
     @Test
     public void testSearchFormMustSubmitOnEnter() throws InterruptedException {
@@ -821,11 +931,11 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         Actions action = new Actions(getWebDriver());
         action.contextClick(navTreeInnerItems().get(position)).build().perform();
 
-        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".x-menu a.x-menu-item-link")));
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".x-menu:not([style*='visibility: hidden'])")));
 
-        assertNotNull(getWebDriver().findElement(By.cssSelector(".x-menu")));
+        WebElement menu = getWebDriver().findElement(By.cssSelector(".x-menu:not([style*='visibility: hidden'])"));
 
-        getWebDriver().findElement(By.cssSelector(".x-menu a.x-menu-item-link")).click();
+        menu.findElement(By.cssSelector(".x-menu a.x-menu-item-link")).click();
 
         getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id^='w_id_']")));
 

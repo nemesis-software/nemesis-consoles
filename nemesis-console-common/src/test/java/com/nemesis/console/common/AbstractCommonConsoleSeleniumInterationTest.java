@@ -134,6 +134,10 @@ public abstract class AbstractCommonConsoleSeleniumInterationTest {
         new Actions(getWebDriver()).contextClick(item).build().perform();
     }
 
+    protected void mouseover(WebElement item) {
+        new Actions(getWebDriver()).moveToElement(item).build().perform();
+    }
+
     protected void sleep() throws InterruptedException {
         Thread.sleep(1500);
     }
