@@ -10,6 +10,8 @@ Ext.define('console.view.Viewport', {
 
     layout: 'border',
 
+    windows: new Ext.util.MixedCollection(),
+
     items: [
         {
             region: 'north',
@@ -46,12 +48,30 @@ Ext.define('console.view.Viewport', {
             margins: '5, 5, 5, 0'
         }
     ],
+
+    getWindow: function (id) {
+        return this.windows.get('w_id_' + id.replace(/@/g, '_AT_'));
+    },
+
     createWindow: function (config) {
-        var me = this;
         console.log(config.sections);
-        return Ext.create('console.view.content.EntityPopupWindow', {
-            config: config,
-            modal: true
-        });
+        var me = this,
+            win = Ext.create('console.view.content.EntityPopupWindow', {
+                config: config,
+                modal: true
+            });
+        me.windows.add(win);
+
+        return win;
+    },
+
+    restoreWindow: function (win) {
+        if (win.isVisible()) {
+            win.restore();
+            win.toFront();
+        } else {
+            win.show();
+        }
+        return win;
     }
 });

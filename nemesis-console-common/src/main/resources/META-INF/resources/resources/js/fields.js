@@ -106,11 +106,13 @@ Ext.define('console.view.field.NemesisCollectionField', {
                             iconCls: 'edit',
                             disabled: selected.length == 0,
                             handler: function () {
-                                var record = selected[0];
-                                var win = Ext.getCmp('backend-viewport').getWindow(record.data.uid);
+                                var record = selected[0],
+                                    viewport = Ext.ComponentQuery.query('viewport')[0],
+                                    win = viewport.getWindow(record.data.uid);
+
                                 if (!win) {
                                     var entityConfiguration = Ext.create("console.markup." + record.data.name);
-                                    win = Ext.getCmp('backend-viewport').createWindow({
+                                    win = viewport.createWindow({
                                         id: record.data.uid,
                                         iconCls: this.entityId,
                                         entity: Ext.create('console.model.Entity', {
@@ -124,7 +126,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                                         sections: entityConfiguration.sections
                                     });
                                 }
-                                Ext.getCmp('backend-viewport').restoreWindow(win);
+                                viewport.restoreWindow(win);
                             }.bind(this.component)
                         },
                         '-',
