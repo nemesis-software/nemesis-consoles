@@ -55,7 +55,7 @@ public abstract class AbstractCommonConsoleSeleniumInterationTest {
         LoggingPreferences logPrefs = new LoggingPreferences();
         logPrefs.enable(LogType.BROWSER, Level.ALL);
         caps.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
-        
+
         webDriver = new FirefoxDriver(caps);
         wait = new WebDriverWait(getWebDriver(), 15, 200);
     }

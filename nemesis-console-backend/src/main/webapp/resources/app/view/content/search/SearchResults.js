@@ -125,8 +125,8 @@ Ext.define('console.view.content.search.SearchResults', {
                         listeners: {
                             'select': function (combo, record) {
                                 var bbar = combo.up();
-                                console.log
-                                var newPageSize = parseInt(record.get('id'), 10);
+                                console.log(record);
+                                var newPageSize = parseInt(record['id'], 10);
                                 bbar.up().getStore().pageSize = newPageSize;
                                 store.load({
                                     params: {

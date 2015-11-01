@@ -27,11 +27,15 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -511,17 +515,82 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertNotNull(searchResultGrid);
 
         getWebDriver().executeScript(
-                        "var c = Ext.getCmp('" + entityId + "-search-results-paging-size'); c.setValue('50'); c.fireEvent('select', c, {id:'50'});");
+                        "var c = Ext.getCmp('" + entityId + "-search-results-paging-size'); c.setValue('50'); c.fireEvent('select', c, {'id':'50'});");
 
-        assertEquals(49, resultsGridItems(entityId).size());
+        // wait until ajax finishes loading
+        getWait().until(ExpectedConditions.not(input -> getWebDriver().executeScript("return Ext.Ajax.isLoading();")));
+
+        // looks like extjs is loading some parts of the grid dynamically so we can't really 'guess' how many values there will be in the grid.
+        assertTrue(15 < resultsGridItems(entityId).size());
+
+        getWebDriver().executeScript(
+                        "var c = Ext.getCmp('" + entityId + "-search-results-paging-size'); c.setValue('10'); c.fireEvent('select', c, {'id':'10'});");
+
+        // wait until ajax finishes loading
+        getWait().until(ExpectedConditions.not(input -> getWebDriver().executeScript("return Ext.Ajax.isLoading();")));
+
+        // looks like extjs is loading some parts of the grid dynamically so we can't really 'guess' how many values there will be in the grid.
+        assertEquals(9, resultsGridItems(entityId).size());
 
         List<WebElement> resultGridList = resultsGridInnerItems(entityId);
         assertNotNull(resultGridList);
+        List<String> initialProductCodes = new ArrayList<>();
+        for (WebElement element : resultGridList) {
+            initialProductCodes.add(element.getText());
+        }
 
         assertTrue(existsElement("a.x-btn[data-qtip='Next Page']"));
         WebElement nextPageBtn = getWebDriver().findElement(By.cssSelector("a.x-btn[data-qtip='Next Page']"));
 
         assertNotNull(nextPageBtn);
+
+        nextPageBtn.click();
+        nextPageBtn.click();
+        nextPageBtn.click();
+
+        getWait().until(ExpectedConditions.not(input -> getWebDriver().executeScript("return Ext.Ajax.isLoading();")));
+
+        List<WebElement> secondGridList = resultsGridInnerItems(entityId);
+        assertNotNull(secondGridList);
+        List<String> secondProductCodes = new ArrayList<>();
+        for (WebElement element : secondGridList) {
+            secondProductCodes.add(element.getText());
+        }
+
+        assertThat(initialProductCodes, not(containsInAnyOrder(secondProductCodes.toArray())));
+
+        assertTrue(existsElement("a.x-btn[data-qtip='Last Page']"));
+        WebElement lastPageBtn = getWebDriver().findElement(By.cssSelector("a.x-btn[data-qtip='Last Page']"));
+
+        lastPageBtn.click();
+
+        getWait().until(ExpectedConditions.not(input -> getWebDriver().executeScript("return Ext.Ajax.isLoading();")));
+
+        List<WebElement> lastGridList = resultsGridInnerItems(entityId);
+        assertNotNull(lastGridList);
+        List<String> lastGridProductCodes = new ArrayList<>();
+        for (WebElement element : lastGridList) {
+            lastGridProductCodes.add(element.getText());
+        }
+
+        assertThat(initialProductCodes, not(containsInAnyOrder(lastGridProductCodes.toArray())));
+        assertThat(secondProductCodes, not(containsInAnyOrder(lastGridProductCodes.toArray())));
+
+        assertTrue(existsElement("a.x-btn[data-qtip='First Page']"));
+        WebElement firstPageBtn = getWebDriver().findElement(By.cssSelector("a.x-btn[data-qtip='First Page']"));
+
+        firstPageBtn.click();
+
+        getWait().until(ExpectedConditions.not(input -> getWebDriver().executeScript("return Ext.Ajax.isLoading();")));
+
+        List<WebElement> firstGridList = resultsGridInnerItems(entityId);
+        assertNotNull(firstGridList);
+        List<String> firstGridProductCodes = new ArrayList<>();
+        for (WebElement element : firstGridList) {
+            firstGridProductCodes.add(element.getText());
+        }
+
+        assertThat(initialProductCodes, containsInAnyOrder(firstGridProductCodes.toArray()));
     }
 
     //56
