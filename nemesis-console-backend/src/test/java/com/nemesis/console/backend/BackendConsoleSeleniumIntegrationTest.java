@@ -864,15 +864,46 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         assertNotNull(openedTab);
 
-        WebElement indexTypes = openedTab.findElement(By.cssSelector("[id^='nemesisCollectionField']"));
+        WebElement indexTypes = openedTab.findElement(By.cssSelector("[id^='nemesisCollectionField'].x-panel-body"));
 
         assertNotNull(indexTypes);
 
-        rightClick(indexTypes);
+        indexTypes.click();
+
+        rightClick(indexTypes.findElement(By.cssSelector(".x-grid-row")));
 
         assertTrue(existsElement(".collection-field-context-menu:not([style*='visibility: hidden'])"));
 
-        //TODO: continue.
+        WebElement menu = getWebDriver().findElementByCssSelector(".collection-field-context-menu:not([style*='visibility: hidden'])");
+
+        List<WebElement> menuElements = menu.findElements(By.cssSelector(".x-menu-item"));
+
+        assertTrue(menuElements.size() > 2);
+        assertEquals("Edit", menuElements.get(0).findElement(By.cssSelector(".x-menu-item-text")).getText());
+
+        menuElements.get(0).findElement(By.cssSelector(".x-menu-item-text")).click();
+
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id^='w_id_product']")));
+
+        assertTrue(existsElement("div[id^='w_id_product']"));
+        WebElement productWindow = getWebDriver().findElement(By.cssSelector("div[id^='w_id_product']"));
+        assertNotNull(productWindow);
+
+        WebElement productGeneralTab = productWindow.findElement(By.cssSelector("[id^='nemesisEntitySection'].x-tabpanel-child:not(.x-hidden-offsets)"));
+
+        assertNotNull(productGeneralTab);
+
+        assertTrue(existsElement("[id^=nemesisEntityField-].x-form-entity-trigger"));
+
+        WebElement searchFacetConfigFieldTrigger = productGeneralTab.findElement(By.cssSelector("[id^=nemesisEntityField-].x-form-entity-trigger"));
+
+        assertNotNull(searchFacetConfigFieldTrigger);
+
+        searchFacetConfigFieldTrigger.click();
+
+        sleep();
+
+        getWebDriver().findElementByCssSelector("div[id^='w_id_product'].x-window img.x-tool-close").click();
     }
 
     //#95
@@ -1093,6 +1124,10 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     private WebElement getEntityTab(int index) {
         return entityWindow().findElements(By.cssSelector("a.x-tab")).get(index);
+    }
+
+    private WebElement getEntityTab(WebElement window, int index) {
+        return window.findElements(By.cssSelector("a.x-tab")).get(index);
     }
 
     private WebElement entityWindow() {
