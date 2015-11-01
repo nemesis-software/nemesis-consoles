@@ -20,8 +20,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 
@@ -105,6 +108,21 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
         getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
         assertEquals("Logout", getWebDriver().findElementById("app-header-logout").getText());
 
+    }
+
+    @Test
+    public void testChangeSiteAndAutoSelectCorrespondingCatalogs() throws Exception{
+        LOG.info("Change Site and Auto Select Coresponding Catalogs");
+
+        getWebDriver().executeScript(
+                "var c = Ext.getCmp('site-combo'); c.setValue('70933412403392736'); c.fireEvent('change', c, '70933412403392736');");
+
+        // Wait for Catalogs Combo change listeners to be called and change the iframe url.
+        getWebDriver().manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+
+        WebElement webSiteIframeWebEl = getWebDriver().findElementById("website-iframe");
+        String expectedUrl = "https://www.solarapparel.com/?site=nemesis&live_edit_view=true&site_preference=normal&clear=true&catalogs=nemesisContent";
+        assertEquals(expectedUrl, webSiteIframeWebEl.getAttribute("src"));
     }
 
 }
