@@ -89,8 +89,9 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     @AfterClass
     public static void tearDownClass() throws Exception {
         getWebDriver().findElementById("app-header-logout").click();
-        Thread.sleep(500);
-        assertEquals("Login Page", getWebDriver().getTitle());
+        getWait().until((WebDriver d) -> {
+            return d.getTitle().equals("Login Page");
+        });
 
         getWebDriver().quit();
     }
@@ -100,7 +101,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         LOG.info("testHeaderLinkReloadsPage");
         getWebDriver().findElement(By.cssSelector("a#app-header-title")).click();
         // Wait for the page to load, timeout after 10 seconds
-        (new WebDriverWait(getWebDriver(), 10)).until((WebDriver d) -> {
+        getWait().until((WebDriver d) -> {
             return d.getTitle().startsWith("Backend Console | Nemesis");
         });
         waitForDom();
@@ -111,9 +112,24 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     public void testChangeLocale() throws InterruptedException {
         LOG.info("testChangeLocale");
 
+        /**
+         * TODO: it blows with
+         *
+         * org.openqa.selenium.WebDriverException: TypeError: this.dom is null
+         *
+         * if I don't do it on a clean-loaded page.         *
+         */
+        getWebDriver().get("http://localhost:8080/backend");
+        // Wait for the page to load, timeout after 10 seconds
+        getWait().until((WebDriver d) -> {
+            return d.getTitle().startsWith("Backend Console | Nemesis");
+        });
+        waitForDom();
+        waitForLoad();
+
         //Change locale
         getWebDriver().executeScript(
-                        "var c = Ext.getCmp('app-header-language-selector'); c.setValue({data: {'isoCode':'bg_BG'}}); c.fireEvent('select', c, Ext.create('console.model.Language', {isoCode: 'bg_BG', language: 'Bulgarian' }));");
+                        "var c = Ext.getCmp('app-header-language-selector'); c.setValue(Ext.create('console.model.Language', {isoCode: 'bg_BG', language: 'Bulgarian' })); c.fireEvent('select', c, Ext.create('console.model.Language', {isoCode: 'bg_BG', language: 'Bulgarian' }));");
 
         getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
         assertEquals("Изход", getWebDriver().findElementById("app-header-logout").getText());
