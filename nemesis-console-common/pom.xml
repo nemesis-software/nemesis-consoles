@@ -16,7 +16,7 @@
     <parent>
         <groupId>com.nemesis.platform.console</groupId>
         <artifactId>consoles</artifactId>
-        <version>0.7</version>
+        <version>0.8-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -34,7 +34,7 @@
         <dependency>
             <groupId>com.nemesis.platform</groupId>
             <artifactId>nemesis-platform-util</artifactId>
-            <version>0.7</version>
+            <version>0.8-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
