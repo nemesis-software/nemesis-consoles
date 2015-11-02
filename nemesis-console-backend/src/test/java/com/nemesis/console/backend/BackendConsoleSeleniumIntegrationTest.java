@@ -780,6 +780,135 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id^='tooltip-'].x-tip")));
     }
 
+    //#61
+    @Test
+    public void testFieldsMustBeMarkedAsDirtyWhenYouReassignTheirOriginalValue() throws InterruptedException {
+
+        LOG.info("testEntityFieldMustOpenTheRealEntityUrl");
+
+        String entityId = "site";
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+
+        assertTrue(navTreeItems().size() > 0);
+
+        filterNavTree(entityId);
+
+        openNavTreeItem(2);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(resultsGridItems(entityId)));
+
+        assertTrue(1 <= resultsGridItems(entityId).size());
+
+        //search for solarapparel-uk
+
+        assertTrue(existsElement("#" + entityId + "-search-form-body"));
+
+        WebElement searchForm = searchForm(entityId);
+
+        assertTrue(existsElement("[id^=" + entityId + "-searchform-fieldset-restriction_uid]"));
+
+        getWebDriver().executeScript("var c = Ext.getCmp('" + entityId
+                                                     + "-searchform-fieldset-restriction_uid'); c.setValue('Equals'); c.fireEvent('select', c, 'Equals');");
+
+        assertTrue(existsElement("#" + entityId + "-searchform-fieldset-query_uid"));
+
+        WebElement queryField = searchForm.findElement(By.cssSelector("div#" + entityId + "-searchform-fieldset-query_uid input[type='text']"));
+
+        queryField.clear();
+        queryField.sendKeys("solarapparel-uk");
+        queryField.sendKeys(Keys.ENTER);
+
+        sleep();
+
+        //open it
+
+        doubleClick(resultsGridInnerItems(entityId).get(0));
+
+        getWait().until(ExpectedConditions.visibilityOf(entityWindow()));
+
+        WebElement entityWindow = entityWindow();
+
+        assertNotNull(entityWindow);
+
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id^='nemesisTextField-'].x-form-item-body")));
+
+        assertTrue(existsElement("[id^='nemesisTextField-'].x-form-item-body"));
+
+        //change name
+
+        List<WebElement> textFields = getWebDriver().findElements(By.cssSelector("[id^='nemesisTextField-'].x-form-item-body"));
+        assertTrue(1 < textFields.size());
+        textFields.get(1).findElement(By.cssSelector("input[id^='nemesisTextField-']")).clear();
+        textFields.get(1).findElement(By.cssSelector("input[id^='nemesisTextField-']")).sendKeys("Test-value");
+
+        //save and close
+        getWebDriver().findElement(By.cssSelector(".save-and-close-btn")).click();
+
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id^='toast-']")));
+
+        sleep();
+
+        assertTrue(!existsElement("div[id^='w_id_']"));
+
+        //open it again
+
+        doubleClick(resultsGridInnerItems(entityId).get(0));
+
+        getWait().until(ExpectedConditions.visibilityOf(entityWindow()));
+
+        entityWindow = entityWindow();
+
+        assertNotNull(entityWindow);
+
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id^='nemesisTextField-'].x-form-item-body")));
+
+        assertTrue(existsElement("[id^='nemesisTextField-'].x-form-item-body"));
+
+        //change name again
+
+        textFields = getWebDriver().findElements(By.cssSelector("[id^='nemesisTextField-'].x-form-item-default"));
+        assertTrue(1 < textFields.size());
+        String nameFieldId = textFields.get(1).getAttribute("id");
+
+        String nameFieldValue = (String) getWebDriver().executeScript(
+                        "function test() {var c = Ext.getCmp('" + nameFieldId + "'); return c.getValue();}; return test();");
+
+        assertEquals("Test-value", nameFieldValue);
+
+        textFields.get(1).findElement(By.cssSelector("input[id^='nemesisTextField-']")).clear();
+        textFields.get(1).findElement(By.cssSelector("input[id^='nemesisTextField-']")).sendKeys("Solarapparel Nemesis Platform B2C Demo Store");
+
+        //save and close again
+        getWebDriver().findElement(By.cssSelector(".save-and-close-btn")).click();
+
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id^='toast-']")));
+
+        sleep();
+
+        assertTrue(!existsElement("div[id^='w_id_']"));
+
+        //finally open again
+        doubleClick(resultsGridInnerItems(entityId).get(0));
+
+        getWait().until(ExpectedConditions.visibilityOf(entityWindow()));
+
+        entityWindow = entityWindow();
+
+        assertNotNull(entityWindow);
+
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id^='nemesisTextField-'].x-form-item-body")));
+
+        textFields = getWebDriver().findElements(By.cssSelector("[id^='nemesisTextField-'].x-form-item-default"));
+        assertTrue(1 < textFields.size());
+        nameFieldId = textFields.get(1).getAttribute("id");
+
+        nameFieldValue = (String) getWebDriver().executeScript(
+                        "function test() {var c = Ext.getCmp('" + nameFieldId + "'); return c.getValue();}; return test();");
+
+        assertEquals("Solarapparel Nemesis Platform B2C Demo Store", nameFieldValue);
+    }
+
     //#67
     @Test
     public void testWhenOpenAnyBlogEntryTeaserAndContentFieldsMustBeShown() throws InterruptedException {
