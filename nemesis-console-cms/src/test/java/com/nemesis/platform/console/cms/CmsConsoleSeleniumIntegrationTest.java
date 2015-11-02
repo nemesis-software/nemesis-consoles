@@ -20,6 +20,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -76,8 +77,12 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
     }
 
     @Override
-    protected void tearDown() {
-
+    public void tearDown() {
+        try {
+            getWebDriver().findElementByCssSelector("div[id^='w_id_'].x-window img.x-tool-close").click();
+        } catch (NoSuchElementException nsex) {
+            //ignored
+        }
     }
 
     @AfterClass
@@ -171,6 +176,42 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
         List<WebElement> tabs = getWebDriver().findElement(By.cssSelector("div[id^='tabbar-']")).findElements(By.cssSelector("a.x-tab"));
 
         assertTrue(1 < tabs.size());
+    }
+
+    //#100
+    @Test
+    public void testCatalogableWidgetsMustShowSynchronizeButton() {
+        LOG.info("testCatalogableWidgetsMustShowSynchronizeButton");
+
+        getWait().until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.id("website-iframe")));
+
+        assertTrue(existsElement("a[name='sa-normal-logo']"));
+        WebElement logo = getWebDriver().findElement(By.cssSelector("a[name='sa-normal-logo']"));
+        rightClick(logo);
+
+        getWebDriver().switchTo().parentFrame();
+
+        assertTrue(existsElement(".widget-context-menu:not([style*='visibility: hidden'])"));
+
+        WebElement widgetContextMenu = getWebDriver().findElement(By.cssSelector(".widget-context-menu:not([style*='visibility: hidden'])"));
+
+        assertNotNull(widgetContextMenu);
+
+        List<WebElement> menuElements = widgetContextMenu.findElements(By.cssSelector(".x-menu-item"));
+
+        assertNotNull(menuElements);
+        assertTrue(1 < menuElements.size());
+
+        menuElements.get(0).findElement(By.cssSelector(".x-menu-item-text")).click();
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id^='w_id_']")));
+
+        assertTrue(existsElement("div[id^='w_id_']"));
+        WebElement entityWindow = getWebDriver().findElement(By.cssSelector("div[id^='w_id_']"));
+        assertNotNull(entityWindow);
+
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a.synchronize-btn")));
+
+        assertTrue(existsElement("a.synchronize-btn"));
     }
 
 }
