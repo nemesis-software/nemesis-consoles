@@ -25,9 +25,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * A selenium test-case for the cms console.
@@ -114,6 +117,7 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
 
     }
 
+    //#84
     @Test
     @Ignore("We can't use PKs below because they are regenerated, plus this test is failing.")
     public void testChangeSiteAndAutoSelectCorrespondingCatalogs() throws Exception {
@@ -127,6 +131,46 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
         WebElement webSiteIframeWebEl = getWebDriver().findElementById("website-iframe");
         String expectedUrl = "https://www.solarapparel.com/?site=nemesis&live_edit_view=true&site_preference=normal&clear=true&catalogs=nemesisContent";
         assertEquals(expectedUrl, webSiteIframeWebEl.getAttribute("src"));
+    }
+
+    //#97
+    @Test
+    public void testEntityWindowMustNotShowEmpty() {
+        LOG.info("testEntityWindowMustNotShowEmpty");
+
+        getWait().until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.id("website-iframe")));
+
+        assertTrue(existsElement("a[name='sa-normal-logo']"));
+        WebElement logo = getWebDriver().findElement(By.cssSelector("a[name='sa-normal-logo']"));
+        rightClick(logo);
+
+        getWebDriver().switchTo().parentFrame();
+
+        assertTrue(existsElement(".widget-context-menu:not([style*='visibility: hidden'])"));
+
+        WebElement widgetContextMenu = getWebDriver().findElement(By.cssSelector(".widget-context-menu:not([style*='visibility: hidden'])"));
+
+        assertNotNull(widgetContextMenu);
+
+        List<WebElement> menuElements = widgetContextMenu.findElements(By.cssSelector(".x-menu-item"));
+
+        assertNotNull(menuElements);
+        assertTrue(1 < menuElements.size());
+
+        menuElements.get(0).findElement(By.cssSelector(".x-menu-item-text")).click();
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id^='w_id_']")));
+
+        assertTrue(existsElement("div[id^='w_id_']"));
+        WebElement entityWindow = getWebDriver().findElement(By.cssSelector("div[id^='w_id_']"));
+        assertNotNull(entityWindow);
+
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id^='tabbar-']")));
+
+        assertTrue(existsElement("div[id^='tabbar-']"));
+
+        List<WebElement> tabs = getWebDriver().findElement(By.cssSelector("div[id^='tabbar-']")).findElements(By.cssSelector("a.x-tab"));
+
+        assertTrue(1 < tabs.size());
     }
 
 }

@@ -202,6 +202,7 @@ Ext.application({
                 }
 
                 window.widgetContextMenu = Ext.create('Ext.menu.Menu', {
+                    cls: 'widget-context-menu',
                     items: [
                         {
                             itemId: 'edit-widget',
