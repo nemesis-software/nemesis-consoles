@@ -27,11 +27,6 @@
     <url>http://docs.nemesis.bg/platform/console/cms</url>
     <dependencies>
         <dependency>
-            <groupId>com.nemesis.platform</groupId>
-            <artifactId>nemesis-platform-util</artifactId>
-            <version>0.8-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>com.nemesis.platform.console</groupId>
             <artifactId>nemesis-console-common</artifactId>
             <version>${project.version}</version>
