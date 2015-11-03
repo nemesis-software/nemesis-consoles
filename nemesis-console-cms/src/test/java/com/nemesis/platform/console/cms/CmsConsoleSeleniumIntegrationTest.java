@@ -12,8 +12,6 @@
 package com.nemesis.platform.console.cms;
 
 import com.nemesis.console.common.AbstractCommonConsoleSeleniumInterationTest;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -41,8 +39,6 @@ import static org.junit.Assert.assertTrue;
  */
 public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSeleniumInterationTest {
 
-    protected final Logger LOG = LogManager.getLogger(getClass());
-
     @BeforeClass
     public static void setUpClass() throws Exception {
         AbstractCommonConsoleSeleniumInterationTest.setUpClass();
@@ -67,10 +63,9 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
     }
 
     @Before
+    @Override
     public void setUp() {
-        waitForDom();
-        waitForLoad();
-        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
+        super.setUp();
         getWait().until(ExpectedConditions.not(input -> getWebDriver().executeScript("return Ext.Ajax.isLoading();")));
         getWait().until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.id("website-iframe")));
         getWebDriver().switchTo().parentFrame();
@@ -96,7 +91,6 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
 
     @Test
     public void testHeaderLinkReloadsPage() {
-        LOG.info("Header link reloads page");
         getWebDriver().findElement(By.cssSelector("a#app-header-title")).click();
         // Wait for the page to load, timeout after 10 seconds
         (new WebDriverWait(getWebDriver(), 10)).until((WebDriver d) -> {
@@ -106,7 +100,6 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
 
     @Test
     public void testChangeLocale() throws InterruptedException {
-        LOG.info("Change locale");
         //Change locale
         getWebDriver().executeScript(
                         "var c = Ext.getCmp('app-header-language-selector'); c.setValue({'isoCode':'bg_BG'}); c.fireEvent('select', c, {data : {'isoCode':'bg_BG'}});");
@@ -126,8 +119,6 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
     @Test
     @Ignore("We can't use PKs below because they are regenerated, plus this test is failing.")
     public void testChangeSiteAndAutoSelectCorrespondingCatalogs() throws Exception {
-        LOG.info("testChangeSiteAndAutoSelectCorrespondingCatalogs");
-
         getWebDriver().executeScript("var c = Ext.getCmp('site-combo'); c.setValue('70933412403392736'); c.fireEvent('change', c, '70933412403392736');");
 
         // Wait for Catalogs Combo change listeners to be called and change the iframe url.
@@ -141,8 +132,6 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
     //#97
     @Test
     public void testEntityWindowMustNotShowEmpty() {
-        LOG.info("testEntityWindowMustNotShowEmpty");
-
         getWait().until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.id("website-iframe")));
 
         assertTrue(existsElement("a[name='sa-normal-logo']"));
@@ -181,8 +170,6 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
     //#100
     @Test
     public void testCatalogableWidgetsMustShowSynchronizeButton() {
-        LOG.info("testCatalogableWidgetsMustShowSynchronizeButton");
-
         getWait().until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.id("website-iframe")));
 
         assertTrue(existsElement("a[name='sa-normal-logo']"));

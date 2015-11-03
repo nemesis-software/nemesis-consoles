@@ -12,11 +12,16 @@
 package com.nemesis.console.common;
 
 import com.nemesis.platform.util.test.IntegrationTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.experimental.categories.Category;
 import org.junit.rules.MethodRule;
+import org.junit.rules.TestName;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
@@ -29,6 +34,7 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
@@ -46,9 +52,17 @@ import java.util.logging.Level;
 @Category(value = IntegrationTest.class)
 public abstract class AbstractCommonConsoleSeleniumInterationTest {
 
+    protected final Logger LOG = LogManager.getLogger(getClass());
+
     protected static RemoteWebDriver webDriver;
 
     protected static WebDriverWait wait;
+
+    @Rule
+    public TestName testName = new TestName();
+
+    @Rule
+    public ScreenshotOnFailTestRule screenshotTestRule = new ScreenshotOnFailTestRule();
 
     public static void setUpClass() throws Exception {
         DesiredCapabilities caps = DesiredCapabilities.firefox();
@@ -60,10 +74,15 @@ public abstract class AbstractCommonConsoleSeleniumInterationTest {
         wait = new WebDriverWait(getWebDriver(), 15, 200);
     }
 
-    protected abstract void tearDown();
+    @Before
+    public void setUp() {
+        LOG.info(testName.getMethodName());
+        waitForDom();
+        waitForLoad();
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
+    }
 
-    @Rule
-    public ScreenshotOnFailTestRule screenshotTestRule = new ScreenshotOnFailTestRule();
+    protected abstract void tearDown();
 
     class ScreenshotOnFailTestRule implements MethodRule {
         public Statement apply(final Statement statement, final FrameworkMethod frameworkMethod, final Object o) {

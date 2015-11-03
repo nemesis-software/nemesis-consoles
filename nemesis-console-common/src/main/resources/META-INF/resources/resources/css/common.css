@@ -98,6 +98,10 @@
     border-radius: 4px;
 }
 
+.dirty .x-form-text-wrap {
+    border: 1px #999 dashed;
+}
+
 /* header */
 #app-header {
     border: 0;

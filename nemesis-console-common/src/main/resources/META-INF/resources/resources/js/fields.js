@@ -78,6 +78,7 @@ Ext.define('console.view.field.NemesisTextField', {
 Ext.define('console.view.field.NemesisCollectionField', {
     extend: 'Ext.view.MultiSelector',
     xtype: 'nemesisCollectionField',
+    dirtyCls: 'dirty',
     width: '95%',
     colspan: 2,
     entity: null,
@@ -281,6 +282,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
 
 Ext.define('console.view.field.NemesisLocalizedTextField', {
     extend: 'Ext.form.field.Base',
+    dirtyCls: 'dirty',
     xtype: 'nemesisLocalizedTextField',
     cls: 'nemesis-localized-field',
     requires: ['Ext.util.Format', 'Ext.XTemplate'],
@@ -376,6 +378,7 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
 
 Ext.define('console.view.field.NemesisDateField', {
     extend: 'Ext.form.DateField',
+    dirtyCls: 'dirty',
     xtype: 'nemesisDateField',
     format: 'd-m-Y H:i:s',
     width: '95%',
@@ -390,6 +393,7 @@ Ext.define('console.view.field.NemesisDateField', {
 Ext.define('console.view.field.NemesisDecimalField', {
     extend: 'Ext.form.NumberField',
     xtype: 'nemesisDecimalField',
+    dirtyCls: 'dirty',
     emptyText: this.id,
     columnWidth: .5,
     width: '95%',
@@ -408,6 +412,7 @@ Ext.define('console.view.field.NemesisEntityField', {
     extend: 'Ext.form.field.ComboBox',
     xtype: 'nemesisEntityField',
     cls: 'nemesis-entity-field',
+    dirtyCls: 'dirty',
     queryMode: 'remote',
     forceSelection: true,
     displayField: 'uid',
@@ -686,6 +691,7 @@ Ext.define('console.view.field.NemesisMediaField', {
     mixins: {
         field: 'Ext.form.field.Field'
     },
+    dirtyCls: 'dirty',
     tooltip: 'This is media',
     labelWidth: 50,
     colspan: 2,
@@ -815,6 +821,7 @@ Ext.define('console.view.field.NemesisMediaField', {
 
 Ext.define('console.view.field.NemesisEnumerationField', {
     extend: 'Ext.form.field.ComboBox',
+    dirtyCls: 'dirty',
     xtype: 'nemesisEnumField',
     columnWidth: .5,
     width: '95%',
@@ -840,6 +847,7 @@ Ext.define('console.view.field.NemesisEnumerationField', {
 Ext.define('console.view.field.NemesisHtmlEditor', {
     extend: 'Ext.form.field.HtmlEditor',
     xtype: 'nemesisHtmlEditor',
+    dirtyCls: 'dirty',
     id: '',
     emptyText: this.id,
     width: 500,
@@ -855,6 +863,7 @@ Ext.define('console.view.field.NemesisHtmlEditor', {
 Ext.define('console.view.field.NemesisIntegerField', {
     extend: 'Ext.form.NumberField',
     xtype: 'nemesisIntegerField',
+    dirtyCls: 'dirty',
     emptyText: this.id,
     columnWidth: .5,
     width: '95%',
@@ -915,7 +924,7 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
                         }
                     },
                     valueField: 'isoCode',
-                    displayField: 'isoCode',
+                    displayField: 'name',
                     labelWidth: 0,
                     typeAhead: false,
                     formItemCls: 'field-restriction',
@@ -924,6 +933,7 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
                     value: Ext.get('rest-base-url').dom.getAttribute('locale')
                 },
                 {
+                    dirtyCls: 'dirty',
                     isFormField: false,
                     submitValue: false,
                     emptyText: this.name,
@@ -972,6 +982,7 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
 Ext.define('console.view.field.NemesisPasswordField', {
     extend: 'Ext.form.field.Text',
     xtype: 'nemesisPasswordField',
+    dirtyCls: 'dirty',
     emptyText: this.name,
     inputType: 'password',
     width: '95%',

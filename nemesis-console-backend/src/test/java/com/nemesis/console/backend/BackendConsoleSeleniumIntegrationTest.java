@@ -73,13 +73,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         getWait().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("div#navigation-tree table.x-grid-item")));
     }
 
-    @Before
-    public void setUp() {
-        waitForDom();
-        waitForLoad();
-        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
-    }
-
     public void tearDown() {
         try {
             closeWindowAndTab();
@@ -101,7 +94,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     @Test
     public void testHeaderLinkReloadsPage() throws InterruptedException {
-        LOG.info("testHeaderLinkReloadsPage");
         getWebDriver().findElement(By.cssSelector("a#app-header-title")).click();
         // Wait for the page to load, timeout after 10 seconds
         getWait().until((WebDriver d) -> {
@@ -113,8 +105,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     @Test
     public void testChangeLocale() throws InterruptedException {
-        LOG.info("testChangeLocale");
-
         /**
          * TODO: it blows with
          *
@@ -146,7 +136,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     @Test
     public void testFilterNavigation() throws InterruptedException {
-        LOG.info("testFilterNavigation");
 
         getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
 
@@ -165,8 +154,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     @Test
     public void testSelectMediaContainer() throws InterruptedException {
-        LOG.info("testSelectMediaContainer");
-
         String entityId = "media_container";
 
         getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
@@ -194,8 +181,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     @Test
     public void testFilterMediaContainer() throws InterruptedException {
-        LOG.info("testFilterMediaContainer");
-
         final String entityId = "media_container";
 
         getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
@@ -262,7 +247,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     // #41
     @Test
     public void testReopenEntityWindow() throws InterruptedException {
-        LOG.info("testReopenEntityWindow");
         String entityId = "product";
 
         getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
@@ -307,7 +291,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     // #42
     @Test
     public void testEntityWindowTitle() throws InterruptedException {
-        LOG.info("testEntityWindowTitle");
         String entityId = "unit";
         String entityFullId = "unit";
 
@@ -334,7 +317,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     // #43, #46
     @Test
     public void testEntityWindowUrl() throws InterruptedException {
-        LOG.info("testEntityWindowUrl");
 
         clearNavTreeFilter();
 
@@ -370,7 +352,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     // Note: I can't find a way to test resize of the window, so  I test only maximize and minimize
     @Test
     public void testMaximizeEntityWindow() throws InterruptedException {
-        LOG.info("testMaximizeEntityWindow");
         String entityId = "unit";
         String entityFullId = "unit";
 
@@ -420,7 +401,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     //#49
     @Test
     public void testEditInCollectionFieldMustOpenEntityField() throws InterruptedException {
-        LOG.info("testEditInCollectionFieldMustOpenEntityField");
         String entityId = "product";
 
         getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
@@ -496,7 +476,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     //#50
     @Test
     public void testPaginationCorrectBehaviour() throws InterruptedException {
-        LOG.info("testPaginationCorrectBehaviour");
         String entityId = "product";
 
         getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
@@ -596,8 +575,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     //56
     @Test
     public void testEntityFieldMustOpenTheRealEntityUrl() throws InterruptedException {
-        LOG.info("testEntityFieldMustOpenTheRealEntityUrl");
-
         String entityId = "site";
 
         getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
@@ -645,8 +622,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     //#57
     @Test
     public void testChangeLocaleInDescriptionFieldMustChangeTheValue() throws InterruptedException {
-        LOG.info("testChangeLocaleInDescriptionFieldMustChangeTheValue");
-
         String entityId = "category";
 
         getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
@@ -730,7 +705,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     //#59
     @Test
     public void testEntityOfTypeMediaMustShowCorrectTooltipOnMouseover() throws InterruptedException {
-        LOG.info("testEntityOfTypeMediaMustShowCorrectTooltipOnMouseover");
         String entityId = "category";
 
         getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
@@ -783,9 +757,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     //#61
     @Test
     public void testFieldsMustBeMarkedAsDirtyWhenYouReassignTheirOriginalValue() throws InterruptedException {
-
-        LOG.info("testEntityFieldMustOpenTheRealEntityUrl");
-
         String entityId = "site";
 
         getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
@@ -912,7 +883,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     //#67
     @Test
     public void testWhenOpenAnyBlogEntryTeaserAndContentFieldsMustBeShown() throws InterruptedException {
-        LOG.info("testWhenOpenAnyBlogEntryTeaserAndContentFieldsMustBeShown");
         String entityId = "blog_entry";
 
         getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
@@ -952,10 +922,17 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertEquals(2, richtextFields.size());
     }
 
+    //#69
+    @Test
+    public void testAutocompleteOfEntityFieldMustHaveCorrectBehaviour() {
+
+
+
+    }
+
     //#74,#48
     @Test
     public void testRightClickOnEntityFieldMustShowContextMenu() throws InterruptedException {
-        LOG.info("testRightClickOnEntityFieldMustShowContextMenu");
         String entityId = "product";
 
         getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
@@ -1018,7 +995,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     //#78
     @Test
     public void testOpenTheSameEntityMustNotShowError() throws InterruptedException {
-        LOG.info("testOpenTheSameEntityMustNotShowError");
         String entityId = "search_facet_config";
 
         getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
@@ -1106,8 +1082,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     //#95
     @Test
     public void testSearchFormMustSubmitOnEnter() throws InterruptedException {
-        LOG.info("testSearchFormMustSubmitOnEnter");
-
         String entityId = "unit";
         String entityFullId = "unit";
 
@@ -1157,7 +1131,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     //#102 & #4
     @Test
     public void testMustShowToastWhenCreatingNewEntitiesAsWellAsWhenSavingAndRemovingOldEntities() throws InterruptedException {
-        LOG.info("testMustShowToastWhenCreatingNewEntitiesAsWellAsWhenSavingAndRemovingOldEntities");
         String entityId = "packaging";
 
         getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeInnerItems()));
