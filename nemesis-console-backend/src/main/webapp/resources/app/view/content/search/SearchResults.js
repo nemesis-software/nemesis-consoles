@@ -274,7 +274,6 @@ Ext.define('console.view.content.search.SearchResults', {
         var window = Ext.getCmp(parentCmpId).getWindow(record.data.uid);
         if (!window) {
             var entityConfiguration = Ext.create("console.markup." + record.data.entityName);
-            console.log(record);
             window = Ext.getCmp(parentCmpId).createWindow({
                 id: record.data.uid,
                 iconCls: record.data.entityName ? record.data.entityName : this.entity.data.id,

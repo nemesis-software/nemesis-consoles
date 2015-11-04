@@ -161,7 +161,7 @@ function retranslate(lang, w, isRootCmp) {
         });
     }
 
-    Ext.each(w.query('button,displayfield,textfield,tbtext,pagingtoolbar,tabpanel,tab,gridpanel,fieldset,treepanel,gridcolumn,backendconsoleMenu,contentSearchForm,nemesisBooleanField,nemesisTextField,nemesisCollectionField,nemesisDateField,nemesisDecimalField,nemesisEntityField,nemesisMediaField,nemesisEnumField,nemesisHtmlEditor,nemesisIntegerField,nemesisPasswordField'), function (n) {
+    Ext.each(w.query('button,displayfield,textfield,tbtext,pagingtoolbar,tabpanel,tab,gridpanel,fieldset,treepanel,gridcolumn,backendconsoleMenu,contentSearchForm,nemesisBooleanField,nemesisTextField,nemesisCollectionField,nemesisDateField,nemesisTextarea,nemesisDecimalField,nemesisEntityField,nemesisMediaField,nemesisEnumField,nemesisHtmlEditor,nemesisIntegerField,nemesisPasswordField'), function (n) {
         translateObj(n);
     });
 

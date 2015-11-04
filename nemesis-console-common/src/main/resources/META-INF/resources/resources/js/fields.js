@@ -390,6 +390,17 @@ Ext.define('console.view.field.NemesisDateField', {
     }
 });
 
+Ext.define('console.view.field.NemesisTextareaField', {
+    extend: 'Ext.form.field.TextArea',
+    dirtyCls: 'dirty',
+    xtype: 'nemesisTextarea',
+    initComponent: function () {
+        var me = this;
+        me.emptyText = me.name;
+        me.callParent(arguments);
+    }
+});
+
 Ext.define('console.view.field.NemesisDecimalField', {
     extend: 'Ext.form.NumberField',
     xtype: 'nemesisDecimalField',
