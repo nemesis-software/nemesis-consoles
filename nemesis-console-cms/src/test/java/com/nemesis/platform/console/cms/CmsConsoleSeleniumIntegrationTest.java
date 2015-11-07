@@ -20,7 +20,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -112,9 +111,42 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
 
     }
 
+    //#82
+    @Test
+    public void testOpenEditFilterWindow() throws InterruptedException {
+        testEntityWindowMustNotShowEmpty();
+        List<WebElement> tabs = getWebDriver().findElement(By.cssSelector("div[id^='tabbar-']")).findElements(By.cssSelector("a.x-tab"));
+        WebElement filtersTab = null;
+        for (WebElement tab : tabs) {
+            if ("Filters".equals(tab.getText())) {
+                filtersTab = tab;
+                break;
+            }
+        }
+        assertNotNull(filtersTab);
+        filtersTab.click();
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("td .x-grid-cell-first")));
+        WebElement filter = getWebDriver().findElement(By.cssSelector("td .x-grid-cell-first"));
+        rightClick(filter);
+
+        assertTrue(existsElement(".collection-field-context-menu:not([style*='visibility: hidden'])"));
+        WebElement widgetContextMenu = getWebDriver().findElement(By.cssSelector(".collection-field-context-menu:not([style*='visibility: hidden'])"));
+        assertNotNull(widgetContextMenu);
+        List<WebElement> menuElements = widgetContextMenu.findElements(By.cssSelector(".x-menu-item"));
+
+        assertNotNull(menuElements);
+        assertTrue(1 < menuElements.size());
+
+        menuElements.get(0).findElement(By.cssSelector(".x-menu-item-link")).click();
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div#w_id_cms-normal-filter")));
+        assertTrue(existsElement("div#w_id_cms-normal-filter"));
+        WebElement filterWindow = getWebDriver().findElement(By.cssSelector("div#w_id_cms-normal-filter"));
+        assertNotNull(filterWindow);
+    }
+
     //#84
     @Test
-    public void testChangeSiteAndAutoSelectCorrespondingCatalogs() throws Exception {
+    public void testChangeSiteAndAutoSelectCorrespondingCatalogs() {
         getWebDriver().executeScript("var c = Ext.getCmp('site-combo'), " +
                                          "store = c.getStore()," +
                                          "record = store.findRecord('uid', 'nemesis');" +
@@ -196,5 +228,4 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
 
         assertTrue(existsElement("a.synchronize-btn"));
     }
-
 }
