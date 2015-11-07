@@ -118,7 +118,6 @@ Ext.define('console.view.ContentPanel', {
                                             delete params.catalogs;
                                         }
                                         var newQuery = Ext.Object.toQueryString(params);
-
                                         Ext.get('website-iframe').dom.src = Ext.get('website-base-url').dom.getAttribute('url') + '?' + newQuery;
                                     }
                                 }
