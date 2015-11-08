@@ -141,6 +141,14 @@ Ext.define('console.view.content.entity.EntityPopupForm', {
                 values[field.name] = null;
             }
         });
+
+        Ext.each(this.query('nemesisBooleanField'), function (field) {
+        	var value = field.getValue(), originalValue = field.originalValue;
+            if (value != null && originalValue != null && value[field.name] == null && originalValue[field.name] != null ) {
+                values[field.name] = null;
+            }
+        });
+        debugger
         return values;
     },
     convertResult: function (p) {
@@ -337,7 +345,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
             url: entity.data.url,
             method: entityPopupForm.method,
             headers: {'Content-Type': 'application/json', Accept: 'application/json'},
-            params: this.prepareValues(entityPopupForm.getForm().getValues(false, true, false, false)),
+            params: this.prepareValues(entityPopupForm.getValues()),
             success: function (responseObject) {
                 me.up('window').close();
                 var searchRes = Ext.getCmp(entity.data.id + '-search-result');
