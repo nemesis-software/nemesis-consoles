@@ -15,7 +15,6 @@ import com.nemesis.console.common.AbstractCommonConsoleSeleniumInterationTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -215,6 +214,57 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         sleep();
 
         assertEquals(1, resultsGridItems(entityId).size());
+    }
+
+    //#28 & #103
+    @Test
+    public void testEntityFieldsShowCorrectValues() throws InterruptedException {
+
+        LOG.info("testEnumField");
+        String entityId = "price";
+        String entityFullId = "price";
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+
+        assertTrue(navTreeItems().size() > 0);
+
+        filterNavTree(entityId);
+
+        openNavTreeItem(null);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(resultsGridItems(entityFullId)));
+
+        openSearchGridItem(0, entityFullId);
+
+        WebElement entityWindow = getWait().until(ExpectedConditions.visibilityOf(entityWindow()));
+        assertNotNull(entityWindow);
+
+        WebElement currencyField = getWait().until(ExpectedConditions.visibilityOf(entityWindow.findElement(By.cssSelector(".nemesis-entity-field"))));
+
+        getWait().until(ExpectedConditions.not(input -> getWebDriver().executeScript("return Ext.Ajax.isLoading();")));
+
+        String id = currencyField.getAttribute("id");
+
+        String currencyFieldValue =
+                        (String) getWebDriver().executeScript("function test() {var c = Ext.getCmp('" + id + "'); return c.getValue();}; return test();");
+
+        assertNotNull(currencyFieldValue);
+        assertFalse("".equals(currencyFieldValue));
+
+        WebElement uidField = getWait().until(ExpectedConditions.visibilityOf(entityWindow.findElement(By.cssSelector("[id^='nemesisTextField-'] > input"))));
+        assertNotNull(uidField);
+        uidField.click();
+
+        WebElement currencyInputField = getWait().until(ExpectedConditions.visibilityOf(entityWindow.findElement(By.cssSelector("[name='entity-currency']"))));
+
+        currencyInputField.click();
+        uidField.click();
+        currencyInputField.click();
+
+        currencyFieldValue = (String) getWebDriver().executeScript("function test() {var c = Ext.getCmp('" + id + "'); return c.getValue();}; return test();");
+
+        assertNotNull(currencyFieldValue);
+        assertFalse("".equals(currencyFieldValue));
     }
 
     // #29
@@ -925,8 +975,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     //#69
     @Test
     public void testAutocompleteOfEntityFieldMustHaveCorrectBehaviour() {
-
-
 
     }
 
