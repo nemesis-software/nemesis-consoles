@@ -294,6 +294,65 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     }
 
+    // #40
+    @Test
+    public void testWhenCloseATabAndOpenItAgainSearchFieldsMustNotBeDuplicated() throws InterruptedException {
+        String entityId = "product";
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+
+        assertTrue(navTreeItems().size() > 0);
+
+        filterNavTree(entityId);
+
+        openNavTreeItem(2);
+
+        List<WebElement> results = resultsGridItems(entityId);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(results));
+
+        assertTrue(1 <= resultsGridItems(entityId).size());
+
+        //search for africa-love-capri
+
+        assertTrue(existsElement("#" + entityId + "-search-form-body"));
+
+        WebElement searchForm = searchForm(entityId);
+
+        assertTrue(existsElement("[id^=" + entityId + "-searchform-fieldset-restriction_uid]"));
+        assertTrue(existsElement("#" + entityId + "-searchform-fieldset-query_uid"));
+
+        List<WebElement> queryFields = searchForm.findElements(By.cssSelector("div[id^='" + entityId + "-searchform-fieldset-query'] input[type='text']"));
+
+        int initialSize = queryFields.size();
+
+        // close tab
+        closeEntityTab(0);
+
+        // open it again
+
+        openNavTreeItem(2);
+
+        results = resultsGridItems(entityId);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(results));
+
+        assertTrue(1 <= resultsGridItems(entityId).size());
+
+        //search for africa-love-capri
+
+        assertTrue(existsElement("#" + entityId + "-search-form-body"));
+
+        searchForm = searchForm(entityId);
+
+        assertTrue(existsElement("[id^=" + entityId + "-searchform-fieldset-restriction_uid]"));
+        assertTrue(existsElement("#" + entityId + "-searchform-fieldset-query_uid"));
+
+        List<WebElement> newQueryFields = searchForm.findElements(By.cssSelector("div[id^='" + entityId + "-searchform-fieldset-query'] input[type='text']"));
+
+        assertEquals(newQueryFields.size(), initialSize);
+    }
+
     // #41
     @Test
     public void testReopenEntityWindow() throws InterruptedException {
