@@ -72,9 +72,13 @@
     content: '';
 }
 
-.x-grid-body {
-    border-bottom: 0 !important;
+.nemesis-collection-field {
+    margin-bottom: 10px;
 }
+
+/*.x-grid-body {*/
+/*border-bottom: 0 !important;*/
+/*}*/
 
 #examplePanel-body {
     background-color: #e4eaed;
