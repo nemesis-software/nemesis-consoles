@@ -12,8 +12,6 @@
 package com.nemesis.console.backend;
 
 import com.nemesis.console.common.AbstractCommonConsoleSeleniumInterationTest;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -22,7 +20,6 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -44,8 +41,6 @@ import static org.junit.Assert.assertTrue;
  * @since 0.6
  */
 public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSeleniumInterationTest {
-
-    protected final Logger LOG = LogManager.getLogger(getClass());
 
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -220,7 +215,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     @Test
     public void testEntityFieldsShowCorrectValues() throws InterruptedException {
 
-        LOG.info("testEnumField");
         String entityId = "price";
         String entityFullId = "price";
 
@@ -273,7 +267,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         clearNavTreeFilter();
 
-        LOG.info("testEnumField");
         String entityId = "watermark";
         String entityFullId = "media_watermark";
 
@@ -771,8 +764,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         String secondNameValue = nameField.findElement(By.cssSelector("input.x-form-text-default")).getAttribute("value");
 
-        LOG.info(secondNameValue);
-
         assertFalse(nameValue.equals(secondNameValue));
 
         //change value of description field:
@@ -784,8 +775,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         WebElement iframeBody = getWebDriver().findElement(By.cssSelector("body"));
         String initialValue = iframeBody.getText();
-
-        LOG.info(initialValue);
 
         getWebDriver().switchTo().parentFrame();
 
@@ -800,8 +789,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         WebElement secondIframeBody = getWebDriver().findElement(By.cssSelector("body"));
         String newValue = secondIframeBody.getText();
-
-        LOG.info(newValue);
 
         assertFalse(initialValue.equals(newValue));
 
@@ -1011,11 +998,17 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertTrue(1 <= resultsGridItems(entityId).size());
 
         //create new
-        rightClick(navTreeInnerItems().get(navTreeItems().size() - 1));
+        int position = navTreeItems().size() - 1;
 
-        WebElement menuLink = getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".x-menu:not([style*='visibility: hidden'])")));
-        assertNotNull(menuLink);
-        menuLink.click();
+        navTreeInnerItems().get(position).click();
+
+        rightClick(navTreeInnerItems().get(position));
+
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".x-menu:not([style*='visibility: hidden'])")));
+
+        WebElement menu = getWebDriver().findElement(By.cssSelector(".x-menu:not([style*='visibility: hidden'])"));
+
+        menu.findElement(By.cssSelector(".x-menu a.x-menu-item-link")).click();
 
         WebElement entityWindow = getWait().until(ExpectedConditions.visibilityOf(entityWindow()));
         assertNotNull(entityWindow);
@@ -1430,8 +1423,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         navTreeInnerItems().get(position).click();
 
-        Actions action = new Actions(getWebDriver());
-        action.contextClick(navTreeInnerItems().get(position)).build().perform();
+        rightClick(navTreeInnerItems().get(position));
 
         getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".x-menu:not([style*='visibility: hidden'])")));
 
