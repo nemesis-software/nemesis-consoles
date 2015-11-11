@@ -75,6 +75,21 @@ Ext.define('console.view.field.NemesisTextField', {
     }
 });
 
+//Ext.define('console.view.field.NemesisColorpickerField', {
+//    extend: 'Ext.ux.colorpick.Field',
+//    xtype: 'nemesisColorpickerField',
+//    requires: ['Ext.ux.colorpick.Field'],
+//    emptyText: this.name,
+//    dirtyCls: 'dirty',
+//    name: null,
+//    width: '95%',
+//    columnWmeddth: .5,
+//    initComponent: function () {
+//        var me = this;
+//        me.callParent(arguments);
+//    }
+//});
+
 Ext.define('console.view.field.NemesisCollectionField', {
     extend: 'Ext.view.MultiSelector',
     xtype: 'nemesisCollectionField',
