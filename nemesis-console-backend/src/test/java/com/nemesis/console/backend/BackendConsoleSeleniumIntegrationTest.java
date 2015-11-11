@@ -978,7 +978,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertEquals("Solarapparel Nemesis Platform B2C Demo Store", nameFieldValue);
     }
 
-    //#28 & #66 & #71
+    //#28 & #66 & #68 & #71
     @Test
     public void testCreateNewBlogEntryMustCreateNewBlogEntry() throws InterruptedException {
         String entityId = "blog_entry";
@@ -1024,6 +1024,26 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         openedTab.findElement(By.cssSelector("input[name='uid']")).sendKeys("test-uid");
         openedTab.findElement(By.cssSelector(".nemesisLocalizedField input[name^='textfield-']")).sendKeys("test-name");
+
+        //find the second tab
+        tab = getEntityTab(entityWindow, 1);
+        assertNotNull(tab);
+        tab.click();
+        openedTab = getWebDriver().findElement(By.cssSelector("[id^='nemesisEntitySection'].x-tabpanel-child:not(.x-hidden-offsets)"));
+
+        assertNotNull(openedTab);
+
+        sleep();
+
+        List<WebElement> localizedRichtextFields = openedTab.findElements(By.cssSelector(".nemesis-localized-richtext-field"));
+        assertTrue(2 == localizedRichtextFields.size());
+
+        String teaserId = localizedRichtextFields.get(0).getAttribute("id");
+        String contentId = localizedRichtextFields.get(1).getAttribute("id");
+
+        getWebDriver().executeScript("var c = Ext.getCmp('" + teaserId + "'); c.setValue({\"en_GB\" : {\"value\" : \"test-teaser\"}});");
+
+        getWebDriver().executeScript("var c = Ext.getCmp('" + contentId + "'); c.setValue({\"en_GB\" : {\"value\" : \"test-content\"}});");
 
         //find the third tab.
 
@@ -1114,6 +1134,27 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         String nameId = openedTab.findElement(By.cssSelector(".nemesis-localized-field ")).getAttribute("id");
         assertEquals("{\"en_GB\":{\"value\":\"test-name\"}}",
                      getWebDriver().executeScript("function test() {var c = Ext.getCmp('" + nameId + "'); return c.getValue();}; return test();"));
+
+        //on second tab
+        tab = getEntityTab(entityWindow, 1);
+        assertNotNull(tab);
+        tab.click();
+        openedTab = getWebDriver().findElement(By.cssSelector("[id^='nemesisEntitySection'].x-tabpanel-child:not(.x-hidden-offsets)"));
+
+        assertNotNull(openedTab);
+
+        sleep();
+
+        localizedRichtextFields = openedTab.findElements(By.cssSelector(".nemesis-localized-richtext-field"));
+        assertTrue(2 == localizedRichtextFields.size());
+
+        teaserId = localizedRichtextFields.get(0).getAttribute("id");
+        contentId = localizedRichtextFields.get(1).getAttribute("id");
+
+        assertEquals("{\"en_GB\":{\"value\":\"test-teaser\"}}",
+                     getWebDriver().executeScript("function test() {var c = Ext.getCmp('" + teaserId + "'); return c.getValue();}; return test();"));
+        assertEquals("{\"en_GB\":{\"value\":\"test-content\"}}",
+                     getWebDriver().executeScript("function test() {var c = Ext.getCmp('" + contentId + "'); return c.getValue();}; return test();"));
 
         //find the third tab.
 
