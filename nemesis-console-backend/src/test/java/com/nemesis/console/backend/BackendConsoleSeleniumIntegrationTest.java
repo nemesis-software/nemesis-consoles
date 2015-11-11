@@ -856,11 +856,13 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         mouseover(mediaFields.get(0));
 
-        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id^='tooltip-'].x-tip")));
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id^='tooltip-'].x-tip:not([style*='display: none'])")));
+
+        sleep();
 
         mouseover(mediaFields.get(1));
 
-        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id^='tooltip-'].x-tip")));
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id^='tooltip-'].x-tip:not([style*='display: none'])")));
     }
 
     //#61
@@ -1011,7 +1013,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         //create new
         rightClick(navTreeInnerItems().get(navTreeItems().size() - 1));
 
-        WebElement menuLink = getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a.x-menu-item-link")));
+        WebElement menuLink = getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".x-menu:not([style*='visibility: hidden'])")));
         assertNotNull(menuLink);
         menuLink.click();
 
