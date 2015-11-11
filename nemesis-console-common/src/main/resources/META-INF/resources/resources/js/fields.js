@@ -78,6 +78,7 @@ Ext.define('console.view.field.NemesisTextField', {
 Ext.define('console.view.field.NemesisCollectionField', {
     extend: 'Ext.view.MultiSelector',
     xtype: 'nemesisCollectionField',
+    cls: 'nemesis-collection-field',
     dirtyCls: 'dirty',
     width: '95%',
     colspan: 2,
@@ -275,7 +276,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                 result.push("" + items[i].data.pk);
             }
             return result;
-        }
+        };
         return me;
     }
 });

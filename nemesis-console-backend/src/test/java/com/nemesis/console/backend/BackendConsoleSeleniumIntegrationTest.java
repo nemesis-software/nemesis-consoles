@@ -989,6 +989,182 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertEquals("Solarapparel Nemesis Platform B2C Demo Store", nameFieldValue);
     }
 
+    //#28 & #66 & #71
+    @Test
+    public void testCreateNewBlogEntryMustCreateNewBlogEntry() throws InterruptedException {
+        String entityId = "blog_entry";
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+
+        assertTrue(navTreeItems().size() > 0);
+
+        filterNavTree(entityId);
+
+        openNavTreeItem(1);
+
+        List<WebElement> results = resultsGridItems(entityId);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(results));
+
+        assertTrue(1 <= resultsGridItems(entityId).size());
+
+        //create new
+        rightClick(navTreeInnerItems().get(navTreeItems().size() - 1));
+
+        WebElement menuLink = getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a.x-menu-item-link")));
+        assertNotNull(menuLink);
+        menuLink.click();
+
+        WebElement entityWindow = getWait().until(ExpectedConditions.visibilityOf(entityWindow()));
+        assertNotNull(entityWindow);
+
+        //enter data on first tab
+        WebElement tab = getEntityTab(entityWindow, 0);
+        assertNotNull(tab);
+        tab.click();
+
+        WebElement openedTab = getWebDriver().findElement(By.cssSelector("[id^='nemesisEntitySection'].x-tabpanel-child:not(.x-hidden-offsets)"));
+
+        assertNotNull(openedTab);
+
+        openedTab.findElement(By.cssSelector("input[name='uid']")).sendKeys("test-uid");
+        openedTab.findElement(By.cssSelector(".nemesisLocalizedField input[name^='textfield-']")).sendKeys("test-name");
+
+        //find the third tab.
+
+        tab = getEntityTab(entityWindow, 2);
+        assertNotNull(tab);
+        tab.click();
+        openedTab = getWebDriver().findElement(By.cssSelector("[id^='nemesisEntitySection'].x-tabpanel-child:not(.x-hidden-offsets)"));
+
+        assertNotNull(openedTab);
+
+        sleep();
+
+        openedTab.findElement(By.cssSelector("div[id^='nemesisCollectionField-'] img.x-tool-plus")).click();
+
+        WebElement searchInputField = getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[placeholder='Search...']")));
+        searchInputField.sendKeys("news");
+
+        WebElement checkbox = getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.x-grid-row-checker")));
+        checkbox.click();
+
+        //find the fourth tab.
+
+        tab = getEntityTab(entityWindow, 3);
+        assertNotNull(tab);
+        tab.click();
+        openedTab = getWebDriver().findElement(By.cssSelector("[id^='nemesisEntitySection'].x-tabpanel-child:not(.x-hidden-offsets)"));
+
+        assertNotNull(openedTab);
+
+        sleep();
+
+        WebElement catalogVersionField = getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[id^='nemesisEntityField-']")));
+        catalogVersionField.sendKeys("Staged");
+
+        sleep();
+
+        getWebDriver().findElement(By.cssSelector(".save-and-close-btn")).click();
+
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id^='toast-']")));
+
+        sleep();
+
+        //search for the new blog entry
+
+        assertTrue(existsElement("#" + entityId + "-search-form-body"));
+
+        WebElement searchForm = searchForm(entityId);
+
+        assertTrue(existsElement("[id^=" + entityId + "-searchform-fieldset-restriction_uid]"));
+
+        getWebDriver().executeScript("var c = Ext.getCmp('" + entityId
+                                                     + "-searchform-fieldset-restriction_uid'); c.setValue('Equals'); c.fireEvent('select', c, 'Equals');");
+
+        assertTrue(existsElement("#" + entityId + "-searchform-fieldset-query_uid"));
+
+        WebElement queryField = searchForm.findElement(By.cssSelector("div#" + entityId + "-searchform-fieldset-query_uid input[type='text']"));
+
+        queryField.clear();
+        queryField.sendKeys("test-uid");
+        queryField.sendKeys(Keys.ENTER);
+
+        sleep();
+
+        results = resultsGridItems(entityId);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(results));
+
+        assertTrue(1 == results.size());
+
+        doubleClick(resultsGridInnerItems(entityId).get(0));
+
+        entityWindow = getWait().until(ExpectedConditions.visibilityOf(entityWindow()));
+        assertNotNull(entityWindow);
+
+        //check values
+
+        //on first tab
+        tab = getEntityTab(entityWindow, 0);
+        assertNotNull(tab);
+        tab.click();
+
+        openedTab = getWebDriver().findElement(By.cssSelector("[id^='nemesisEntitySection'].x-tabpanel-child:not(.x-hidden-offsets)"));
+
+        assertNotNull(openedTab);
+
+        String uidId = openedTab.findElement(By.cssSelector("div[id^='nemesisTextField-']")).getAttribute("id");
+        assertEquals("test-uid", getWebDriver().executeScript("function test() {var c = Ext.getCmp('" + uidId + "'); return c.getValue();}; return test();"));
+        String nameId = openedTab.findElement(By.cssSelector(".nemesis-localized-field ")).getAttribute("id");
+        assertEquals("{\"en_GB\":{\"value\":\"test-name\"}}",
+                     getWebDriver().executeScript("function test() {var c = Ext.getCmp('" + nameId + "'); return c.getValue();}; return test();"));
+
+        //find the third tab.
+
+        tab = getEntityTab(entityWindow, 2);
+        assertNotNull(tab);
+        tab.click();
+        openedTab = getWebDriver().findElement(By.cssSelector("[id^='nemesisEntitySection'].x-tabpanel-child:not(.x-hidden-offsets)"));
+
+        assertNotNull(openedTab);
+
+        sleep();
+
+        //        String categoriesId = openedTab.findElement(By.cssSelector(".nemesis-collection-field")).getAttribute("id");
+        //        assertEquals("news",
+        //                     getWebDriver().executeScript("function test() {var c = Ext.getCmp('" + categoriesId + "'); return c.getValues();}; return test();"));
+
+        //find the fourth tab.
+
+        tab = getEntityTab(entityWindow, 3);
+        assertNotNull(tab);
+        tab.click();
+        openedTab = getWebDriver().findElement(By.cssSelector("[id^='nemesisEntitySection'].x-tabpanel-child:not(.x-hidden-offsets)"));
+
+        assertNotNull(openedTab);
+
+        sleep();
+
+        String catalogVersionId = getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".nemesis-entity-field"))).getAttribute("id");
+        assertEquals("Staged",
+                     getWebDriver().executeScript("function test() {var c = Ext.getCmp('" + catalogVersionId + "'); return c.getValue();}; return test();"));
+
+        //delete it
+
+        getWebDriver().findElement(By.cssSelector(".delete-btn")).click();
+
+        assertTrue(existsElement(".x-message-box"));
+
+        WebElement messageBox = getWebDriver().findElement(By.cssSelector(".x-message-box"));
+        List<WebElement> buttons = messageBox.findElements(By.cssSelector(".x-message-box a.x-btn:not([style*='display: none'])"));
+        assertEquals(2, buttons.size());
+
+        buttons.get(0).click();
+
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id^='toast-']")));
+    }
+
     //#67
     @Test
     public void testWhenOpenAnyBlogEntryTeaserAndContentFieldsMustBeShown() throws InterruptedException {
