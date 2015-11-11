@@ -23,6 +23,7 @@ import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebElement;
@@ -157,6 +158,14 @@ public abstract class AbstractCommonConsoleSeleniumInterationTest {
 
     protected void doubleClick(WebElement item) {
         new Actions(getWebDriver()).doubleClick(item).build().perform();
+    }
+
+    protected void dragAndDrop(WebElement item, int x, int y) {
+        new Actions(getWebDriver()).clickAndHold(item).moveByOffset(x, y).release().build().perform();
+    }
+
+    protected void pressKey(WebElement item, Keys keys) {
+        new Actions(getWebDriver()).keyDown(item, keys).keyUp(keys).build().perform();
     }
 
     protected void rightClick(WebElement item) {

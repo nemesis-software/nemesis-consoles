@@ -14,6 +14,7 @@ package com.nemesis.console.backend;
 import com.nemesis.console.common.AbstractCommonConsoleSeleniumInterationTest;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -30,6 +31,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -796,6 +798,49 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         //        WebElement categoryDescriptionField = getWebDriver().findElement(By.cssSelector(".nemesisLocalizedRichtextField"));
         //        WebElement categoryDescriptionLanguageTriffer = getWebDriver().findElement(By.cssSelector(".localized-iso-dropdown"));
+    }
+
+    //#58
+    @Test
+    @Ignore("Cannot release the window - I believe it's a bug in extjs")
+    public void testEntityWindowMustBeDraggableEvenIfWindowIdContainsSpecialCharacters() throws InterruptedException {
+        String entityId = "customer";
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
+
+        assertTrue(navTreeItems().size() > 0);
+
+        filterNavTree(entityId);
+
+        openNavTreeItem(2);
+
+        getWait().until(ExpectedConditions.visibilityOfAllElements(resultsGridItems(entityId)));
+
+        assertTrue(resultsGridItems(entityId).size() > 0);
+
+        rightClick(resultsGridInnerItems(entityId).get(resultsGridInnerItems(entityId).size() - 1));
+
+        List<WebElement> menuElements = resultsGridContextMenuItems();
+        assertTrue(menuElements.size() > 2);
+        menuElements.get(0).findElement(By.cssSelector(".x-menu-item-text")).click();
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id^='w_id_']")));
+
+        assertTrue(existsElement("div[id^='w_id_']"));
+        WebElement entityWindow = getWebDriver().findElement(By.cssSelector("div[id^='w_id_']"));
+        assertNotNull(entityWindow);
+
+        int x = entityWindow.getLocation().getX();
+
+        WebElement title = entityWindow.findElement(By.cssSelector(".x-title-text"));
+        dragAndDrop(title, 30, 30);
+
+        sleep();
+
+        int newX = entityWindow.getLocation().getX();
+
+        assertNotEquals(x, newX);
+
+        pressKey(entityWindow, Keys.ESCAPE);
     }
 
     //#59

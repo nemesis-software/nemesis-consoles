@@ -30,7 +30,7 @@ Ext.define('console.view.content.EntityPopupWindow', {
     config: null,
     initComponent: function () {
         Ext.apply(this, {
-            id: 'w_id_' + (this.config.id ? this.config.id.replace(/@/g, '_AT_') : ''),
+            id: 'w_id_' + (this.config.id ? this.config.id.replace(/@/g, '_AT_').replace(/\./g, '_DOT_') : ''),
             iconCls: 'default-icon ' + this.config.iconCls
         });
 
@@ -137,14 +137,14 @@ Ext.define('console.view.content.entity.EntityPopupForm', {
             }
         });
         Ext.each(this.query('nemesisEntityField'), function (field) {
-            if (field.getValue() == '' && field.getValue() != field.originalValue ) {
+            if (field.getValue() == '' && field.getValue() != field.originalValue) {
                 values[field.name] = null;
             }
         });
 
         Ext.each(this.query('nemesisBooleanField'), function (field) {
-        	var value = field.getValue(), originalValue = field.originalValue;
-            if (value != null && originalValue != null && value[field.name] == null && originalValue[field.name] != null ) {
+            var value = field.getValue(), originalValue = field.originalValue;
+            if (value != null && originalValue != null && value[field.name] == null && originalValue[field.name] != null) {
                 values[field.name] = null;
             }
         });
