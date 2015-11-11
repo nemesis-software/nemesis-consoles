@@ -32,6 +32,8 @@
   settingsfolder: 'Settings',
   product: 'Product',
   deeplinkfolder: 'Deeplink',
+  //samplestore
+  productmaterial: 'Material',
   //catalog
   category: 'Category',
   catalog: 'Catalog',

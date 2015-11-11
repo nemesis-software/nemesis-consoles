@@ -36,6 +36,8 @@
   settingsfolder: 'Настройки',
   deeplinkfolder: 'Връзки',
   product: 'Продукт',
+  //samplestore
+  productmaterial: 'Материал',
   //catalog
   category: 'Категория',
   catalog: 'Каталог',
