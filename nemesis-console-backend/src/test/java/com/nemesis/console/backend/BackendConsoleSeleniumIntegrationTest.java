@@ -21,6 +21,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -1244,6 +1245,58 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         buttons.get(0).click();
 
         getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id^='toast-']")));
+
+
+        //TODO: uncomment this once the synchronization is fixed (it is depending on https://jira.spring.io/browse/DATAREST-704)
+//        //synchronize it.
+//        WebElement synchronizeBtn = entityWindow.findElement(By.cssSelector("a.synchronize-btn"));
+//        assertNotNull(synchronizeBtn);
+//        synchronizeBtn.click();
+//        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id^='toast-']")));
+//        closeEntityWindow();
+//
+//        queryField = searchForm.findElement(By.cssSelector("div#" + entityId + "-searchform-fieldset-query_uid input[type='text']"));
+//
+//        queryField.clear();
+//        queryField.sendKeys("test-uid");
+//        queryField.sendKeys(Keys.ENTER);
+//
+//        sleep();
+//
+//        results = resultsGridItems(entityId);
+//
+//        getWait().until(ExpectedConditions.visibilityOfAllElements(results));
+//
+//        assertTrue(2 == results.size());
+//
+//        //delete it
+//
+//        new Actions(getWebDriver()).keyDown(Keys.SHIFT).click(results.get(0)).click(results.get(1)).contextClick().keyUp(Keys.SHIFT).perform();
+//        assertTrue(existsElement(".x-menu-body"));
+//
+//        List<WebElement> menuElements = resultsGridContextMenuItems();
+//        assertTrue(menuElements.size() > 2);
+//        assertEquals("Delete", menuElements.get(3).findElement(By.cssSelector(".x-menu-item-text")).getText());
+//
+//        menuElements.get(3).findElement(By.cssSelector(".x-menu-item-text")).click();
+//        //        getWebDriver().findElement(By.cssSelector(".delete-btn")).click();
+//
+//        assertTrue(existsElement(".x-message-box"));
+//
+//        WebElement messageBox = getWebDriver().findElement(By.cssSelector(".x-message-box"));
+//        List<WebElement> buttons = messageBox.findElements(By.cssSelector(".x-message-box a.x-btn:not([style*='display: none'])"));
+//        assertEquals(2, buttons.size());
+//
+//        buttons.get(0).click();
+//
+//        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id^='toast-']")));
+
+
+
+
+
+
+
     }
 
     //#67
