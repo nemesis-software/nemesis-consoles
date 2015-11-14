@@ -42,7 +42,9 @@ Ext.define('console.controller.content.search.SearchFormController', {
                     if (field === 'uid' && restriction === 'Equals') {
                         restriction = '';
                     }
-                    var params = {size: 10};
+                    var pagingCombo = contentSearchForm.up('contentPageTab').down('contentSearchResults').getDockedItems('toolbar[dock="bottom"]')[0].getComponent(4);
+                    var pageSize = pagingCombo.getValue();
+                    var params = {size: pageSize};
                     params[field] = value;
                     params['projection'] = 'search';
                     params['page'] = 1;
