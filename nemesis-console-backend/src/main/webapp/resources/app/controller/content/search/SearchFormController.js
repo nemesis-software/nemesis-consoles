@@ -45,6 +45,7 @@ Ext.define('console.controller.content.search.SearchFormController', {
                     var params = {size: 10};
                     params[field] = value;
                     params['projection'] = 'search';
+                    params['page'] = 1;
 
                     Ext.getCmp(entityId + "-search-result").setLoading(true);
                     Ext.getCmp(entityId + "-search-result").getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + entityId + '/search/findBy' + field.charAt(0).toUpperCase() + field.slice(1) + restriction;
