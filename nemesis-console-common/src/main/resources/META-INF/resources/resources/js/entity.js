@@ -148,7 +148,6 @@ Ext.define('console.view.content.entity.EntityPopupForm', {
                 values[field.name] = null;
             }
         });
-        debugger
         return values;
     },
     convertResult: function (p) {

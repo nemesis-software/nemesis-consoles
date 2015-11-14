@@ -872,16 +872,11 @@ Ext.define('console.view.field.NemesisEnumerationField', {
         var me = this;
         var data = [];
         for (var i = 0; i < me.values.length; i++) {
-            data.push([me.values[i]]);
+            data.push(me.values[i]);
         }
         Ext.apply(me, {
             emptyText: me.name,
-            displayField: 'id',
-            valueField: 'id',
-            store: new Ext.data.ArrayStore({
-                fields: ['id'],
-                data: data
-            })
+            store: data
         });
         me.callParent(arguments);
     }
