@@ -758,6 +758,7 @@ Ext.define('console.view.field.NemesisMediaField', {
         var upLoadButton = {
             xtype: 'filefield',
             //name: 'photo',
+            isFormField: false,
             labelWidth: 0,
             msgTarget: 'side',
             //anchor: '100%',
@@ -778,6 +779,8 @@ Ext.define('console.view.field.NemesisMediaField', {
                         var reader = new FileReader();
                         reader.onload = function (e) {
                             canvas.setSrc(e.target.result);
+                            me.file = file;
+                            me.dirty = true;
                             me.syncContainerWidth();
                         };
                         reader.readAsDataURL(file);
@@ -812,7 +815,8 @@ Ext.define('console.view.field.NemesisMediaField', {
 
         // rename original name and id to avoid conflits
         me.items = [{
-            xtype: 'container',
+            xtype: 'form',
+            autoEl: 'form',
             layout: {type: 'hbox', pack: 'center', align: 'center'},
             items: [upLoadButton, {
                 xtype: 'button',
@@ -849,7 +853,7 @@ Ext.define('console.view.field.NemesisMediaField', {
         var w = imgEl.height > imgFld.maxHeight ? imgEl.width * imgFld.maxHeight / imgEl.height : imgEl.width;
         w = w > imgFld.maxWidth ? imgFld.maxWidth : w;
         me.items.findBy(function (item) {
-            return item.xtype == 'container'
+            return item.xtype == 'form'
         }).setWidth(w);
     },
     setValue: function (value) {

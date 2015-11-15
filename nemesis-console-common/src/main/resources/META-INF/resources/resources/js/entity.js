@@ -296,17 +296,56 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
         ];
         this.callParent(arguments);
     },
-    onsaveClicked: function (entity, entityPopupForm) {
+    onsaveClicked: function (entity, entityPopupForm, closeWindow) {
         if (!entityPopupForm.isValid()) {
             return;
         }
         var me = this;
+        var dirtyFileField = null
+        entityPopupForm.getForm().getFields().each(function (field) {
+            if (field.xtype == 'nemesisMediaField' && field.dirty) {
+            	dirtyFileField = field;
+            	return false;
+            }
+        });
+        if (dirtyFileField) {
+        	var formData = new FormData();
+        	formData.append('file', dirtyFileField.file);
+        	var req = new XMLHttpRequest();
+        	req.open("POST", Ext.get('rest-base-url').dom.getAttribute('url') + '/media/' + dirtyFileField.up('entityPopupForm').entity.data.pk + '/upload', true);
+        	// set headers and mime-type appropriately
+        	//req.setRequestHeader("Content-Type", 'multipart/form-data');
+        	req.setRequestHeader('X-Nemesis-Token', Ext.get('token').dom.getAttribute('value'));
+        	req.setRequestHeader('X-Nemesis-Username', Ext.get('username').dom.getAttribute('value'));
+        	req.setRequestHeader('X-Nemesis-ExpiryTime', Ext.get('expiryTime').dom.getAttribute('value'));
+        	req.onload = function() {
+        		dirtyFileField.dirty = false;
+        		if (!req.hasError) {
+        			me.onsaveClicked(entity, entityPopupForm);
+        		}
+        	};
+        	req.onreadystatechange = function() {
+        		 if (req.readyState == 4 && req.status >= 400) {
+        			 req.hasError = true;
+        			  Ext.Msg.alert('Error', translate('There was problem uploading file.'));
+        		 }
+        	}
+        	req.send(formData);
+        } else {
+        	me.submitFormData(entity, entityPopupForm, closeWindow);
+        }
+    },
+    submitFormData: function(entity, entityPopupForm, closeWindow) {
+    	var me = this;
         Ext.Ajax.request({
             url: entity.data.url,
             method: entityPopupForm.method,
             headers: {'Content-Type': 'application/json', Accept: 'application/json'},
             params: this.prepareValues(entityPopupForm.getValues()),
             success: function (responseObject) {
+            	if (closeWindow) {
+            		me.up('window').close();
+            	}
                 var searchRes = Ext.getCmp(entity.data.id + '-search-result');
                 if (searchRes) {
                     searchRes.mask();
@@ -339,38 +378,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
         });
     },
     onsaveandcloseClicked: function (entity, entityPopupForm) {
-        var me = this;
-        Ext.Ajax.request({
-            url: entity.data.url,
-            method: entityPopupForm.method,
-            headers: {'Content-Type': 'application/json', Accept: 'application/json'},
-            params: this.prepareValues(entityPopupForm.getValues()),
-            success: function (responseObject) {
-                me.up('window').close();
-                var searchRes = Ext.getCmp(entity.data.id + '-search-result');
-                if (searchRes) {
-                    searchRes.mask();
-                    searchRes.getStore().reload();
-                    searchRes.unmask();
-                }
-                Ext.toast({
-                    html: 'Successfully saved!',
-                    closable: false,
-                    align: 't',
-                    slideInDuration: 400,
-                    minWidth: 400
-                });
-
-            },
-            failure: function (responseObject) {
-                Ext.MessageBox.show({
-                    title: 'Error',
-                    msg: responseObject.statusText,
-                    buttons: Ext.MessageBox.OK,
-                    icon: Ext.MessageBox.ERROR
-                });
-            }
-        });
+        me.onsaveClicked(entity, entityPopupForm, true);
     },
 
     ondeleteClicked: function (entity) {
