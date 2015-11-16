@@ -67,7 +67,7 @@ Ext.define('console.view.field.NemesisTextField', {
     dirtyCls: 'dirty',
     name: null,
     width: '95%',
-    columnWmeddth: .5,
+    columnWidth: .5,
     initComponent: function () {
         var me = this;
         me.emptyText = me.name;
@@ -82,7 +82,7 @@ Ext.define('console.view.field.NemesisColorpickerField', {
     dirtyCls: 'dirty',
     name: null,
     width: '95%',
-    columnWmeddth: .5,
+    columnWidth: .5,
     initComponent: function () {
         var me = this;
         me.emptyText = me.name;
@@ -425,6 +425,8 @@ Ext.define('console.view.field.NemesisDateField', {
 Ext.define('console.view.field.NemesisTextareaField', {
     extend: 'Ext.form.field.TextArea',
     dirtyCls: 'dirty',
+    width: '95%',
+    columnWidth: .5,
     xtype: 'nemesisTextarea',
     initComponent: function () {
         var me = this;
