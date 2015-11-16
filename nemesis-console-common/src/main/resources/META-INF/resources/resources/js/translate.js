@@ -4,7 +4,7 @@
  *
  */
 
-var globalLang = "en_GB";
+var globalLang = 'en';
 var globalLangHash = {};
 
 function setLanguage(lang, translate) {
