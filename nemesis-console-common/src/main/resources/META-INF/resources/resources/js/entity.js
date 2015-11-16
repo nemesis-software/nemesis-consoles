@@ -378,7 +378,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
         });
     },
     onsaveandcloseClicked: function (entity, entityPopupForm) {
-        me.onsaveClicked(entity, entityPopupForm, true);
+        this.onsaveClicked(entity, entityPopupForm, true);
     },
 
     ondeleteClicked: function (entity) {
