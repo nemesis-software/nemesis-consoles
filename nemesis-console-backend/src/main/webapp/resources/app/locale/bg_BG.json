@@ -32,6 +32,7 @@
   customerreviewmodule: 'Ревю',
   wishlistmodule: 'Любим списък',
   promotionmodule: 'Промоция',
+  rulemodule: 'Правила',
   widgetsfolder: 'Джиджафки',
   settingsfolder: 'Настройки',
   deeplinkfolder: 'Връзки',
@@ -57,6 +58,8 @@
   promotion: 'Промоция',
   promotion_group: 'Промоционални групи',
   promotion_result: 'Промоционален резултат',
+  //rule
+  rule: 'Правило',
   //price
   commerce: 'Търговия',
   discount: 'Отстъпки',
