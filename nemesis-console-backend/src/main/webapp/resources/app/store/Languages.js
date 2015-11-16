@@ -6,8 +6,10 @@ Ext.define('console.store.Languages', {
     storeId: 'languages',
 
     data: [
+        ['en', 'English'],
+        ['en_GB', 'English (GB)'],
+        ['en_US', 'English (US)'],
         ['bg_BG', 'Bulgarian'],
-        ['en_GB', 'English'],
         ['de_DE', 'German'],
         ['fr_FR', 'French'],
         ['es_ES', 'Spanish']
