@@ -61,7 +61,7 @@ Ext.define('console.view.Header', {
                 valueField: 'isoCode',
                 displayField: 'name',
                 forceSelection: true,
-                value: 'en_GB',
+                value: Ext.get('rest-base-url').dom.getAttribute('locale'),
                 typeAhead: true,
                 listeners: {
                     select: {
