@@ -28,6 +28,7 @@
   customerreviewmodule: 'Customer review',
   wishlistmodule: 'Wishlist',
   promotionmodule: 'Promotion',
+  rulemodule: 'Rule',
   widgetsfolder: 'Widgets',
   settingsfolder: 'Settings',
   product: 'Product',
@@ -53,6 +54,8 @@
   promotion: 'Promotion',
   promotion_group: 'Promotion Group',
   promotion_result: 'Promotion Result',
+  //rule
+  rule: 'Rule',
   //price
   discount: 'Discount',
   tax: 'Tax',
