@@ -1,0 +1,40 @@
+{
+  'Logout': 'Изход',
+  'CMS Console': 'Контент конзола',
+  'Configure': 'Конфигурирай',
+  'Filter': 'Филтър',
+  'Bulgarian': 'Български',
+  'English': 'Английски',
+  'German': 'Немски',
+  'French': 'Френски',
+  'Spanish': 'Испански',
+
+  'First Page': 'Първа страница',
+  'Next Page': 'Следваща Страница',
+  'Last Page': 'Последна Страница',
+  'Previous Page': 'Предишна страница',
+  'Page': 'Страница',
+  'of {0}': 'от {0}',
+  'Displaying {0} - {1} of {2}': 'Показва {0} - {1} of {2}',
+  'No data to display': 'Няма данни за показване',
+  'Slots For This Page': 'Слотове за тази страница',
+  'Refresh': 'Обнови',
+  'Pages': 'Страници',
+  //Menu content
+  'Page Templates': 'Шаблони на Страница',
+  'Filter': 'Филтър',
+  'No templates available': 'Няма шаблони',
+
+  //catalog
+  'category': 'Категория',
+  'catalog': 'Каталог',
+
+  //order
+  'widget': 'Джиджафки',
+  //settings
+  'Experience': 'Платформа',
+  'Synchronize': 'Синхронизирай',
+  'Catalog Version': 'Версия на каталог',
+  'language': 'Език',
+  'Site': 'Сайт'
+}

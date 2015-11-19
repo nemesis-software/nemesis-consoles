@@ -8,8 +8,10 @@ var globalLang = 'en';
 var globalLangHash = {};
 
 function setLanguage(lang, translate) {
+    Ext.log('translate.js#setLanguage');
+
     if (typeof globalLangHash[lang] != 'object') {
-        console.log('Download the language');
+        Ext.log('Download the language');
         Ext.Ajax.request({
             method: 'GET',
             url: 'resources/app/locale/' + lang + '.json',
@@ -17,7 +19,7 @@ function setLanguage(lang, translate) {
             success: function (res) {
                 var langData = Ext.JSON.decode(res.responseText, true);
                 if (null == langData) {
-                    console.log('cannot parse lang', lang);
+                    Ext.log('cannot parse lang', lang);
                 }
                 globalLangHash[lang] = langData;
                 if (translate) {
@@ -49,6 +51,8 @@ setLanguage(globalLang);
 
 // Function _t does the translation
 function _t(text) {
+    Ext.log('translate.js#_t');
+
     if (!text || !text.replace) return;
 
     return text.replace(/\$\{(.+?)\}/g, function (m, id) {
@@ -62,6 +66,8 @@ function _t(text) {
 }
 
 function translate(textId) {
+    Ext.log('translate.js#translate');
+
     if (!textId || !textId.replace) return;
     if (!globalLangHash || !globalLangHash[globalLang]) {
         console.log('Problem with', globalLang, globalLangHash);
@@ -79,6 +85,7 @@ function translate(textId) {
 }
 
 function setTitle(obj, title) {
+    Ext.log('translate.js#setTitle');
     title = translate(Ext.isObject(title) ? title.text : title);
     if (obj.xtype == 'entityPopupWindow' && !obj.title) {
         obj.title = title;
@@ -89,6 +96,7 @@ function setTitle(obj, title) {
 }
 
 function translateObj(obj) {
+    Ext.log('translate.js#translateObj');
     if (obj.emptyText) {
         if (!obj.orig_emptyText) {
             obj.orig_emptyText = obj.emptyText;
@@ -146,10 +154,14 @@ function translateObj(obj) {
 }
 
 function getRootCmp() {
+    Ext.log('translate.js#getRootCmp');
+
     return Ext.ComponentQuery.query('viewport')[0];
 }
 
 function retranslate(lang, w, isRootCmp) {
+    Ext.log('translate.js#retranslate');
+
     if (isRootCmp) {
         globalLang = lang;
         w.setLoading(true);
@@ -161,7 +173,7 @@ function retranslate(lang, w, isRootCmp) {
         });
     }
 
-    Ext.each(w.query('button,displayfield,textfield,tbtext,pagingtoolbar,tabpanel,tab,gridpanel,fieldset,treepanel,gridcolumn,backendconsoleMenu,contentSearchForm,nemesisBooleanField,nemesisTextField,nemesisCollectionField,nemesisDateField,nemesisTextarea,nemesisDecimalField,nemesisEntityField,nemesisMediaField,nemesisEnumField,nemesisHtmlEditor,nemesisIntegerField,nemesisPasswordField'), function (n) {
+    Ext.each(w.query('button,displayfield,textfield,tbtext,pagingtoolbar,panel,tabpanel,tab,gridpanel,fieldset,treepanel,gridcolumn,backendconsoleMenu,cmsconsoleMenu,contentSearchForm,nemesisBooleanField,nemesisTextField,nemesisCollectionField,nemesisDateField,nemesisTextarea,nemesisDecimalField,nemesisEntityField,nemesisMediaField,nemesisEnumField,nemesisHtmlEditor,nemesisIntegerField,nemesisPasswordField'), function (n) {
         translateObj(n);
     });
 
@@ -200,6 +212,8 @@ Ext.define('Nemesis.reader.JsonReader', {
     extend: 'Ext.data.reader.Json',
     alias: 'reader.transjson',
     getResponseData: function (response) {
+        Ext.log(Ext.getClass().$name + 'getResponseData');
+
         var o;
         try {
             o = Ext.decode(response.responseText);
@@ -209,6 +223,7 @@ Ext.define('Nemesis.reader.JsonReader', {
         }
 
         function doTran(o) {
+            Ext.log("translate.js#doTran")
             var i;
             if (Ext.isArray(o)) {
                 for (i = o.length - 1; i >= 0; i--) {
