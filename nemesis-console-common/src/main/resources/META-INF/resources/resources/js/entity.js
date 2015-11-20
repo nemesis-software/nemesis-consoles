@@ -334,6 +334,9 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
         } else {
         	me.submitFormData(entity, entityPopupForm, closeWindow);
         }
+        if(Ext.get('website-iframe')){ //we have an website as an iframe, then refresh
+            Ext.get('website-iframe').dom.src = Ext.get('website-iframe').dom.src;
+        }
     },
     submitFormData: function(entity, entityPopupForm, closeWindow) {
     	var me = this;
@@ -404,6 +407,9 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                 Ext.Msg.alert('Error', responseObject.statusText);
             }
         });
+        if(Ext.get('website-iframe')){ //we have an website as an iframe, then refresh
+            Ext.get('website-iframe').dom.src = Ext.get('website-iframe').dom.src;
+        }
     },
     prepareValues: function (formValues) {
         //var links = [];
