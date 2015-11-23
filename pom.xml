@@ -48,7 +48,7 @@
         <repository>
             <id>nemesis-repository-releases</id>
             <name>nemesis-repository-releases</name>
-            <url>https://repository.nemesis.io/artifactory/ext-release-local</url>
+            <url>https://repository.nemesis.io/artifactory/libs-release</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -59,7 +59,7 @@
         <repository>
             <id>nemesis-repository-snapshots</id>
             <name>nemesis-repository-snapshots</name>
-            <url>https://repository.nemesis.io/artifactory/ext-snapshot-local</url>
+            <url>https://repository.nemesis.io/artifactory/libs-snapshot</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -78,7 +78,6 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
             <optional>true</optional>
             <scope>provided</scope>
         </dependency>
