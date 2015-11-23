@@ -31,7 +31,7 @@ Ext.define('AdminConsole.view.portlet.PKAnalyzerPortlet', {
             params: {},
             success: function (responseObject) {
                 var result = Ext.decode(responseObject.responseText);
-                Ext.getCmp('pk-input-field').setValue(result);
+                Ext.getCmp('pk-input-field').setValue(result.content);
             },
             failure: function (responseObject) {
                 var error = Ext.decode(responseObject.responseText);
