@@ -6,7 +6,7 @@ dependencies:
       - mvn package dependency:go-offline -Ptest -s src/main/resources/settings.xml
 test:
    pre:
-      - ssh-keyscan -t rsa 95.85.47.238 >> ~/.ssh/known_hosts
+      - ssh-keyscan -t rsa 178.62.150.204 >> ~/.ssh/known_hosts
    override:
       - set -o pipefail && mvn clean deploy site:site site:deploy -Ptest -s src/main/resources/settings.xml | tee $CIRCLE_ARTIFACTS/mvn-clean-install.log
    post:
