@@ -121,8 +121,8 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
         assertTrue(itemsInitialSize > 0);
 
         // find items by key & test their size
-        getWebDriver().findElementByCssSelector("input[id^='system-properties-filter-input']").sendKeys("project.home");
-        Thread.sleep(500);
+        getWebDriver().findElementByCssSelector("input[id^='system-properties-filter-input']").sendKeys("flyway.enabled");
+        getWait().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("div#system-properties-grid-body table.x-grid-item")));
         assertTrue(getWebDriver().findElementsByCssSelector("div#system-properties-grid-body table.x-grid-item").size() > 2);
 
         // remove filter & assure that size of items shown is the same as before

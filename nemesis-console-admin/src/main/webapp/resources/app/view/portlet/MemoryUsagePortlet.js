@@ -18,7 +18,7 @@ Ext.define('AdminConsole.view.portlet.MemoryUsagePortlet', {
             url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/metrics/mem',
             method: 'GET',
             success: function (responseObject) {
-                memory = Ext.decode(responseObject.responseText);
+                memory = Ext.decode(responseObject.responseText)['mem'];
             },
             failure: function (responseObject) {
                 var error = Ext.decode(responseObject.responseText);
@@ -37,7 +37,7 @@ Ext.define('AdminConsole.view.portlet.MemoryUsagePortlet', {
                     url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/metrics/mem.free',
                     method: 'GET',
                     success: function (responseObject) {
-                        var result = Ext.decode(responseObject.responseText);
+                        var result = Ext.decode(responseObject.responseText)['mem.free'];
                         var percentageMemoryUsage = (result / memory) * 100;
                         data.push({
                             date: Ext.Date.add(date, Ext.Date.DAY, i++),

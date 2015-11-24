@@ -155,9 +155,10 @@ Ext.define('AdminConsole.view.portlet.PlatformActionsPortlet', {
             modal: true
         }).show();
 
-        Ext.Ajax.request({ url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform',
+        Ext.Ajax.request({
+            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform',
             method: 'POST',
-            params: { 'action': 'update'},
+            params: {'action': 'update'},
             success: function (responseObject) {
                 Ext.toast({
                     html: 'Successfully updated!',
@@ -261,7 +262,8 @@ Ext.define('AdminConsole.view.portlet.PlatformActionsPortlet', {
     },
 
     onClearCacheClick: function () {
-        Ext.Ajax.request({ url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/cache/',
+        Ext.Ajax.request({
+            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/cache/',
             method: 'DELETE',
             params: {},
             headers: {
@@ -325,9 +327,10 @@ Ext.define('AdminConsole.view.portlet.PlatformActionsPortlet', {
             modal: true
         }).show();
 
-        Ext.Ajax.request({ url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/',
+        Ext.Ajax.request({
+            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/',
             method: 'POST',
-            params: { 'action': 'init' },
+            params: {'action': 'init'},
             success: function (responseObject) {
                 Ext.toast({
                     html: 'Successfully initialized!',
