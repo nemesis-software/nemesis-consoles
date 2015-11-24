@@ -400,7 +400,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                     closable: false,
                     align: 't',
                     slideInDuration: 400,
-                    minWidth: 400
+                    minWidth:Rest 400
                 });
             },
             failure: function (responseObject) {
