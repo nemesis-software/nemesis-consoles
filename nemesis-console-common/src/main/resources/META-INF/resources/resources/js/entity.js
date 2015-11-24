@@ -314,12 +314,12 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
         	var req = new XMLHttpRequest();
         	req.open("POST", Ext.get('rest-base-url').dom.getAttribute('url') + '/media/' + dirtyFileField.up('entityPopupForm').entity.data.pk + '/upload', true);
         	// set headers and mime-type appropriately
-        	//req.setRequestHeader("Content-Type", 'multipart/form-data');
         	req.setRequestHeader('X-Nemesis-Token', Ext.get('token').dom.getAttribute('value'));
         	req.setRequestHeader('X-Nemesis-Username', Ext.get('username').dom.getAttribute('value'));
         	req.setRequestHeader('X-Nemesis-ExpiryTime', Ext.get('expiryTime').dom.getAttribute('value'));
         	req.onload = function() {
         		dirtyFileField.dirty = false;
+        		entityPopupForm.up().getEl().unmask();
         		if (!req.hasError) {
         			me.onsaveClicked(entity, entityPopupForm);
         		}
@@ -330,6 +330,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
         			  Ext.Msg.alert('Error', translate('There was problem uploading file.'));
         		 }
         	}
+        	entityPopupForm.up().getEl().mask("Uploading file ...");
         	req.send(formData);
         } else {
         	me.submitFormData(entity, entityPopupForm, closeWindow);

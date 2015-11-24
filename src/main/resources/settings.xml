@@ -17,8 +17,8 @@
 	<servers>
 		<server>
 			<id>nemesis-docs</id>
-			<username>root</username>
-			<password>${env.NEMESIS_DOCS_SSH_ROOT_PASSWORD}</password>
+			<username>nemesis</username>
+			<password>${env.NEMESIS_DOCS_SSH_NEMESIS_PASSWORD}</password>
 		</server>
 		<server>
 			<id>nemesis-repository</id>

@@ -470,6 +470,8 @@ Ext.define('console.view.field.NemesisEntityField', {
     columnWidth: .5,
     width: '95%',
     jsonValue: null,
+    displayField: 'uidToDisplay',
+    valueField: 'uidToDisplay',
     queryParam: 'uid',
     entity: null,
     text: null,
@@ -477,20 +479,23 @@ Ext.define('console.view.field.NemesisEntityField', {
         var me = this;
         me.emptyText = me.entityId;
         me.triggers['edit'].cls = 'x-form-entity-trigger ' + ' default-icon ' + me.entityId;
+        me.synchronizable = Ext.create("console.markup." +  me.entityId).synchronizable;
+        
         var store = Ext.create('Ext.data.Store', {
             autoLoad: false,
             autoSync: true,
             pageSize: 10,
             model: Ext.define('name', {
                 extend: 'Ext.data.Model',
-                fields: ['uid'],
-                idProperty: 'uid'
+                fields: ['uidToDisplay'],
+                idProperty: 'uidToDisplay'
             }),
             proxy: {
                 type: 'rest',
                 url: Ext.get('rest-base-url').dom.getAttribute('url') + me.entityId + "/search/findByUidIsStartingWith/",
                 limitParam: 'size',
                 useDefaultXhrHeader: false,
+                extraParams: {projection:'search'},
                 cors: true,
                 reader: {
                     type: 'json',
@@ -498,6 +503,9 @@ Ext.define('console.view.field.NemesisEntityField', {
                         var data = [];
                         for (var key in o._embedded) {
                             data = data.concat(o._embedded[key]);
+                        }
+                        for(var i=0; i<data.length; i++) {
+                        	data[i].uidToDisplay = data[i].uid + (me.synchronizable ? ' - ' + data[i].catalogVersion : '');
                         }
                         return data;
                     },
@@ -539,25 +547,27 @@ Ext.define('console.view.field.NemesisEntityField', {
     },
     onEdit: function () {
         var me = this;
-        var entityUid = me.jsonValue;
-        if (me.entity) {
-            console.log(me.entity.data); //you need to initialize the entity from the url
+        var entity = me.getEntity();
+        if (entity) {
+            var entityUid = me.jsonValue;
+            console.log(entity.data); //you need to initialize the entity from the url
             var win = Ext.getCmp('backend-viewport').getWindow(entityUid);
             if (!win) {
                 Ext.Ajax.request({
-                    url: me.entity.data.url,
+                    url: entity.data.url || entity.data._links.self.href,
                     method: 'GET',
                     success: function (responseObject) {
                         var result = Ext.decode(responseObject.responseText);
+                        var content = me.entity ? result.content : result;
                         win = Ext.getCmp('backend-viewport').createWindow({
                                 id: entityUid,
-                                title: '[' + entityUid + ' - ' + me.entity.data.name + ']',
+                                title: '[' + entityUid + ' - ' + entity.data.name + ']',
                                 iconCls: me.entityId,
                                 sections: Ext.create("console.markup." + me.entityId).sections,
                                 entity: Ext.create('console.model.Entity', {
-                                    id: result.content.entityName,
-                                    pk: result.content.pk,
-                                    name: result.content.entityName,
+                                    id: content.entityName,
+                                    pk: content.pk,
+                                    name: content.entityName,
                                     className: '',
                                     url: result._links.self.href,
                                     synchronizable: Ext.create("console.markup." + me.entityId).synchronizable
@@ -675,12 +685,13 @@ Ext.define('console.view.field.NemesisEntityField', {
             Ext.Ajax.request({
                 url: entityUrl,
                 method: 'GET',
+                params: me.synchronizable ? {projection:'search'} : {},
                 success: function (res) {
                     var result = Ext.decode(res.responseText);
                     var resultData = Ext.isObject(result.content) ? result.content : result;
                     me.entityHref = result._links.self.href;
                     me.jsonValue = resultData.uid;
-                    me.setRawValue(me.jsonValue);
+                    me.setRawValue(me.jsonValue ? me.jsonValue + (me.synchronizable ? ' - ' + resultData.catalogVersion : '') : me.jsonValue);
                     if (!me.initialized) {
                         me.originalValue = me.jsonValue;
                         me.initialized = true;
@@ -720,6 +731,9 @@ Ext.define('console.view.field.NemesisEntityField', {
     },
     getValue: function () {
         return this.rawValue;
+    },
+    getEntity: function() {
+    	return this.entity || this.findRecord(this.displayField, this.getRawValue());
     },
     getSubmitValue: function () {
         if ('' == this.rawValue) return '';
