@@ -19,14 +19,14 @@ Ext.define('console.view.ContentPanel', {
 	        languageCmb = Ext.getCmp('app-header-language-selector'),
 	        selectedLangCode = languageCmb.getValue();
 
-	    switch (selectedLangCode) {
-		    case 'en':
-			    selectedLangCode = 'en_GB';
-			    break;
-		    case 'bg':
-			    selectedLangCode = 'bg_BG';
-			    break;
-	    }
+	    //switch (selectedLangCode) {
+		 //   case 'en':
+			//    selectedLangCode = 'en_GB';
+			//    break;
+		 //   case 'bg':
+			//    selectedLangCode = 'bg_BG';
+			//    break;
+	    //}
 
         me.items = [
             {
