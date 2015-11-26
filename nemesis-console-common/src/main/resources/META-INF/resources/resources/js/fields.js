@@ -505,7 +505,7 @@ Ext.define('console.view.field.NemesisEntityField', {
                             data = data.concat(o._embedded[key]);
                         }
                         for(var i=0; i<data.length; i++) {
-                        	data[i].uidToDisplay = data[i].uid + (me.synchronizable ? ' - ' + data[i].catalogVersion : '');
+                        	data[i].uidToDisplay = me.entityId == 'catalog_version' ? data[i].catalogVersion : data[i].uid + (me.synchronizable ? ' - ' + data[i].catalogVersion : '');
                         }
                         return data;
                     },
@@ -685,13 +685,13 @@ Ext.define('console.view.field.NemesisEntityField', {
             Ext.Ajax.request({
                 url: entityUrl,
                 method: 'GET',
-                params: me.synchronizable ? {projection:'search'} : {},
+                params: {projection:'search'},
                 success: function (res) {
                     var result = Ext.decode(res.responseText);
                     var resultData = Ext.isObject(result.content) ? result.content : result;
                     me.entityHref = result._links.self.href;
                     me.jsonValue = resultData.uid;
-                    me.setRawValue(me.jsonValue ? me.jsonValue + (me.synchronizable ? ' - ' + resultData.catalogVersion : '') : me.jsonValue);
+                    me.setRawValue(me.entityId == 'catalog_version' ? resultData.catalogVersion : me.jsonValue ? me.jsonValue + (me.synchronizable ? ' - ' + resultData.catalogVersion : '') : me.jsonValue);
                     if (!me.initialized) {
                         me.originalValue = me.jsonValue;
                         me.initialized = true;
