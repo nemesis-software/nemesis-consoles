@@ -123,6 +123,7 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
         // find items by key & test their size
         getWebDriver().findElementByCssSelector("input[id^='system-properties-filter-input']").sendKeys("flyway.enabled");
         Thread.sleep(500);
+        LOG.info(getWebDriver().findElementsByCssSelector("div#system-properties-grid-body table.x-grid-item").size());
         assertTrue(getWebDriver().findElementsByCssSelector("div#system-properties-grid-body table.x-grid-item").size() > 1);
 
         // remove filter & assure that size of items shown is the same as before
