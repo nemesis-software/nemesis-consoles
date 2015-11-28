@@ -550,6 +550,8 @@ Ext.define('console.view.field.NemesisEntityField', {
         var entity = me.getEntity();
         if (entity) {
             var entityUid = me.jsonValue;
+            if (!entityUid) return;
+            
             console.log(entity.data); //you need to initialize the entity from the url
             var win = Ext.getCmp('backend-viewport').getWindow(entityUid);
             if (!win) {
@@ -647,7 +649,7 @@ Ext.define('console.view.field.NemesisEntityField', {
                             {
                                 itemId: 'paste',
                                 handler: function () {
-                                    Ext.getCmp(me.id).setValue(Ext.getCmp('backend-viewport').clipboard);
+                                    Ext.getCmp(me.id).setValue(Ext.getCmp('backend-viewport').clipboard, true);
                                 },
                                 text: 'Paste',
                                 iconCls: 'paste'
@@ -669,7 +671,11 @@ Ext.define('console.view.field.NemesisEntityField', {
             }
         }
     },
-    setValue: function (record) {
+    getUidToDisplay: function(resultData) {
+    	var me = this;
+    	return (me.entityId == 'catalog_version' ? resultData.catalogVersion : me.jsonValue ? me.jsonValue + (me.synchronizable ? ' - ' + resultData.catalogVersion : '') : me.jsonValue);
+    },
+    setValue: function (record, loadStore) {
         var me = this;
         var entity;
         //in extjs 5 the setValue can be multiselect and can support multiple values
@@ -680,6 +686,10 @@ Ext.define('console.view.field.NemesisEntityField', {
         }
         if (entity && typeof entity.data !== 'undefined') {
             me.entity = entity;
+        	if (entity.data.uidToDisplay) {
+        		me.setRawValue(me.getUidToDisplay(record.data));
+        		return;
+        	}
             var entityUrl = record instanceof Array ? entity.data._links.self.href : entity.data.url;
             //this.setRawValue(entity.data.url);
             Ext.Ajax.request({
@@ -691,10 +701,18 @@ Ext.define('console.view.field.NemesisEntityField', {
                     var resultData = Ext.isObject(result.content) ? result.content : result;
                     me.entityHref = result._links.self.href;
                     me.jsonValue = resultData.uid;
-                    me.setRawValue(me.entityId == 'catalog_version' ? resultData.catalogVersion : me.jsonValue ? me.jsonValue + (me.synchronizable ? ' - ' + resultData.catalogVersion : '') : me.jsonValue);
+                    me.setRawValue(me.getUidToDisplay(resultData));
                     if (!me.initialized) {
-                        me.originalValue = me.jsonValue;
+                        me.originalValue = me.rawValue;
                         me.initialized = true;
+                    }
+                    
+                    if (loadStore && !me.store.isLoaded()) {
+                    	me.store.load({
+                    		params: {
+                    			uid: me.jsonValue
+                    		}
+                    	});
                     }
 
                     if (me.entityId === 'media') {
