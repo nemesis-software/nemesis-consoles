@@ -35,5 +35,10 @@
 			<username>admin</username>
 			<password>${env.NEMESIS_REPOSITORY_HTTP_PASSWORD}</password>
 		</server>
+		<server>
+			<id>nemesis-repository-plugins</id>
+			<username>admin</username>
+			<password>${env.NEMESIS_REPOSITORY_HTTP_PASSWORD}</password>
+		</server>
 	</servers>
 </settings>
