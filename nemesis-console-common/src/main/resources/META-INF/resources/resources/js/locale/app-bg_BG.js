@@ -1,16 +1,16 @@
-Ext.define("console.locale.en.view.Header", {
+/*Ext.define("console.locale.en.view.Header", {
     override: "console.view.Header",
     appTitleName: "Backend Console",
     logoutLinkName: 'Изход'
-});
+});*/
 
-Ext.define("console.locale.en.view.Menu", {
+/*Ext.define("console.locale.en.view.Menu", {
     override: "console.view.Menu",
     title: "Навигация",
     filterEmptyText: 'Филтър...'
-});
+});*/
 
-Ext.define("console.locale.en.navigation.EntityNames", {
+/*Ext.define("console.locale.en.navigation.EntityNames", {
     product: 'Продукт',                                        //catalog
     category: 'Категория',
     catalog: 'Каталог',
@@ -120,4 +120,4 @@ Ext.define("console.locale.en.view.content.search.SearchForm", {
         'NotNull': 'не е празно',
         'IsNotNull': 'не е празно'
     }
-});
+});*/

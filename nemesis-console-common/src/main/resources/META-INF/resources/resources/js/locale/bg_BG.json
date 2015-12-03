@@ -1,4 +1,5 @@
 {
+  // Backend Console Translations
   'Logout': 'Изход',
   'Backend Console': 'Бекенд конзола',
   'Search': 'Търси',
@@ -274,7 +275,7 @@
   'OK': 'OK',
   'Yes': 'Да',
   'No': 'Не',
-  'Cancel': 'Cancel',
+  'Cancel': 'Откажи',
   'True': 'True',
   'False': 'False',
   'N/A': 'N/A',
@@ -365,5 +366,57 @@
   'frontendTemplateName': 'frontendTemplateName',
   'Search config': 'Search config',
   'title.name': 'title.name',
-  'catalog.name': 'catalog.name'
+  'catalog.name': 'catalog.name',
+
+  //CMS Console Translations
+  'CMS Console': 'Контент конзола',
+  'Configure': 'Конфигурирай',
+  'Filter': 'Филтър',
+
+  'First Page': 'Първа страница',
+  'Next Page': 'Следваща Страница',
+  'Last Page': 'Последна Страница',
+  'Previous Page': 'Предишна страница',
+  'Page': 'Страница',
+  'of {0}': 'от {0}',
+  'of 1': 'от 1',
+  'Displaying {0} - {1} of {2}': 'Показва {0} - {1} of {2}',
+  'No data to display': 'Няма данни за показване',
+  'Refresh': 'Обнови',
+
+  //Menu content
+  'Page Templates': 'Шаблони на Страница',
+  'Slots For This Page': 'Слотове за тази страница',
+  'Filter': 'Филтър',
+  'Widgets': 'Джиджафки',
+  'Emails': 'Имейли',
+  'Pages': 'Страници',
+  'No templates available': 'Няма шаблони',
+
+  //catalog
+  'category': 'Категория',
+  'catalog': 'Каталог',
+
+  //settings
+  'Experience': 'Платформа',
+  'Synchronize': 'Синхронизирай',
+  'Catalog Version': 'Версия на каталог',
+  'language': 'Език',
+  'Site': 'Сайт',
+  'Cancel': 'Откажи',
+  '&#160;': '&#160;',
+
+  'Page: ': 'Страница: ',
+
+  'Slots': 'Слотове',
+  'System': 'Система',
+  'CSS Classes': 'CSS Класове',
+  'Label': 'Етикет',
+  'Template': 'Шаблон',
+  'Save & Close': 'Запази & Затвори',
+
+  'No pages available': 'Няма страници',
+  'No slots available': 'Няма слотове',
+  'No widgets available': 'Няма джиджавки',
+  'No emails available': 'Няма имейли'
 }

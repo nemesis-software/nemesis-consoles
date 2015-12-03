@@ -14,7 +14,7 @@ function setLanguage(lang, translate) {
         Ext.log('Download the language');
         Ext.Ajax.request({
             method: 'GET',
-            url: 'resources/app/locale/' + lang + '.json',
+            url: 'resources/js/locale/' + lang + '.json',
             async: false, // TODO: check with some browsers, aka Chrome, that does not support sync
             success: function (res) {
                 var langData = Ext.JSON.decode(res.responseText, true);
@@ -173,7 +173,7 @@ function retranslate(lang, w, isRootCmp) {
         });
     }
 
-    Ext.each(w.query('button,displayfield,textfield,tbtext,pagingtoolbar,panel,tabpanel,tab,gridpanel,fieldset,treepanel,gridcolumn,backendconsoleMenu,cmsconsoleMenu,contentSearchForm,nemesisBooleanField,nemesisTextField,nemesisCollectionField,nemesisDateField,nemesisTextarea,nemesisDecimalField,nemesisEntityField,nemesisMediaField,nemesisEnumField,nemesisHtmlEditor,nemesisIntegerField,nemesisPasswordField'), function (n) {
+    Ext.each(w.query('label,button,displayfield,textfield,tbtext,pagingtoolbar,panel,tabpanel,tab,gridpanel,fieldset,treepanel,gridcolumn,backendconsoleMenu,cmsconsoleMenu,contentSearchForm,nemesisBooleanField,nemesisTextField,nemesisCollectionField,nemesisDateField,nemesisTextarea,nemesisDecimalField,nemesisEntityField,nemesisMediaField,nemesisEnumField,nemesisHtmlEditor,nemesisIntegerField,nemesisPasswordField'), function (n) {
         translateObj(n);
     });
 

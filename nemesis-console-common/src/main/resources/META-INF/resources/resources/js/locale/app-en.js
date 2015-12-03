@@ -1,8 +1,8 @@
-Ext.define("console.locale.en.view.Header", {
+/*Ext.define("console.locale.en.view.Header", {
     override: "console.view.Header",
     appTitleName: "Backend Console",
     logoutLinkName: 'Logout'
-});
+});*/
 
 /*Ext.define("console.locale.en.view.Menu", {
  override: "console.view.Menu",
@@ -88,7 +88,7 @@ Ext.define("console.locale.en.view.Header", {
  entityNames: new console.locale.en.navigation.EntityNames()
  });*/
 
-Ext.define("console.locale.en.view.content.search.SearchResults", {
+/*Ext.define("console.locale.en.view.content.search.SearchResults", {
     override: "console.view.content.search.SearchResults",
     title: "Results"
 });
@@ -135,5 +135,5 @@ Ext.define("console.locale.en.markup.AbstractEntity", {
     sectionNames: {
         administration: 'Administration'
     }
-});
+});*/
 

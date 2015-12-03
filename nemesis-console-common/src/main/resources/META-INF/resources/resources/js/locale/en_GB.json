@@ -1,4 +1,5 @@
 {
+  // Backend Console Translations
   'Logout': 'Logout',
   'Backend Console': 'Backend Console',
   'Search': 'Search',
@@ -147,4 +148,47 @@
   'NotNull': 'is not null',
   'IsNotNull': 'is not null',
   'lByCatalogVersion': 'By Catalog Version'
+
+  // CMS Console Translations
+  'Logout': 'Logout',
+  'CMS Console': 'CMS Console',
+  'Configure': 'Configure',
+  'Filter': 'Filter',
+  'Bulgarian': 'Bulgarian',
+  'English': 'English',
+  'German': 'German',
+  'French': 'French',
+  'Spanish': 'Spanish',
+
+  'First Page': 'First Page',
+  'Next Page': 'Next Page',
+  'Last Page': 'Last Page',
+  'Previous Page': 'Previous Page',
+  'Page': 'Page',
+  'of {0}': 'of {0}',
+  'of 1': 'of 1',
+  'Displaying {0} - {1} of {2}': 'Displaying {0} - {1} of {2}',
+  'No data to display': 'No data to display',
+  'Slots For This Page': 'Slots For This Page',
+  'Refresh': 'Refresh',
+  'Pages': 'Pages',
+  //Menu content
+  'Page Templates': 'Page Templates',
+  'Filter': 'Filter',
+  'No templates available': 'No templates available',
+  'Widgets': 'Widgets',
+  'Emails': 'Emails',
+
+  'category': 'Category',
+  'catalog': 'Catalog',
+
+  'Experience': 'Experience',
+  'Synchronize': 'Synchronize',
+  'Catalog Version': 'Catalog Version',
+  'Site': 'Site',
+  'OK': 'OK',
+  'Yes': 'Yes',
+  'No': 'No',
+  'Cancel': 'Cancel',
+  '&#160': '&#160'
 }
