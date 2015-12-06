@@ -1,8 +1,7 @@
-/*Ext.define("console.locale.en.view.Header", {
+Ext.define("console.locale.en.view.Header", {
     override: "console.view.Header",
-    appTitleName: "Backend Console",
     logoutLinkName: 'Изход'
-});*/
+});
 
 /*Ext.define("console.locale.en.view.Menu", {
     override: "console.view.Menu",

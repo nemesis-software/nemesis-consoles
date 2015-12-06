@@ -2,6 +2,8 @@ Ext.define('console.view.Header', {
     extend: 'Ext.Container',
     xtype: 'appHeader',
     id: 'app-header',
+    appTitleName: 'CMS Console',
+    logoutLinkName: 'Logout',
     height: 35,
     layout: {
         type: 'hbox',
@@ -18,7 +20,7 @@ Ext.define('console.view.Header', {
                 autoEl: {
                     tag: 'a',
                     href: Ext.get('contextPath').dom.getAttribute('ctxPath'),
-                    html: 'CMS Console'
+                    html: this.appTitleName
                 }
             },
             {
