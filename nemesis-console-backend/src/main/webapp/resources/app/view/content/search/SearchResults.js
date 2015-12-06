@@ -272,11 +272,12 @@ Ext.define('console.view.content.search.SearchResults', {
         var newToken = encodeURIComponent(parentCmpId) + ':' + encodeURIComponent(record.data.uid) + ":" + encodeURIComponent(this.entity.data.name) + ":" + encodeURIComponent(this.entity.data.id) + ":" + encodeURIComponent(this.entity.data.className) + ":" + href;
 
         //if (currentToken === newToken) { //case when we click on a just closed window
-        var window = Ext.getCmp(parentCmpId).getWindow(record.data.uid);
+        var window = Ext.getCmp(parentCmpId).getWindow(record.data.uid, record.data.catalogVersion);
         if (!window) {
             var entityConfiguration = Ext.create("console.markup." + record.data.entityName);
             window = Ext.getCmp(parentCmpId).createWindow({
-                id: record.data.uid,
+                data: record.data,
+                catalogVersion: record.data.catalogVersion,
                 iconCls: record.data.entityName ? record.data.entityName : this.entity.data.id,
                 entity: Ext.create('console.model.Entity', {
                     id: this.config.entity.data.id,

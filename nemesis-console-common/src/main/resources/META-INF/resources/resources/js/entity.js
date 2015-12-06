@@ -18,7 +18,7 @@ Ext.define('console.view.content.EntityPopupWindow', {
     isWindow: true,
     constrainHeader: true,
     constructTitle: function () {
-        return '[' + this.config.id + ' - ' + translate(this.config.entity.data.id) + ']';
+        return '[' + this.config.data.uid + ' - ' + translate(this.config.entity.data.id) + ']';
     },
     minimizable: true,
     maximizable: true,
@@ -28,14 +28,19 @@ Ext.define('console.view.content.EntityPopupWindow', {
     border: false,
     layout: 'border',
     config: null,
+    statics: {
+    	getWindowId: function(uid, catalogVersion) {
+    		return 'w_id_' + (uid ? uid.replace(/@/g, '_AT_').replace(/\./g, '_DOT_') + (catalogVersion ? '_' + catalogVersion.replace(/:/g, '_DOTS_') : '' ) : '')
+    	},
+    },
     initComponent: function () {
         Ext.apply(this, {
-            id: 'w_id_' + (this.config.id ? this.config.id.replace(/@/g, '_AT_').replace(/\./g, '_DOT_') : ''),
+            id: console.view.content.EntityPopupWindow.getWindowId(this.config.data.uid, this.config.data.catalogVersion),
             iconCls: 'default-icon ' + this.config.iconCls
         });
 
         var method = 'POST';
-        if (this.config.id) {
+        if (this.config.data.uid) {
             method = 'PATCH';
         }
 
