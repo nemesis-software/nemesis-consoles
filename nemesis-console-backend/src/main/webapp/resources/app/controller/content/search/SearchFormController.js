@@ -26,7 +26,8 @@ Ext.define('console.controller.content.search.SearchFormController', {
         var me = this;
         var contentSearchForm = button.up('contentSearchForm');
         var entityId = contentSearchForm.entity.data.id;
-        Ext.getCmp(entityId + "-search-result").setLoading(true);
+    	var searchGrid = Ext.getCmp(entityId + "-search-result");
+    	searchGrid.setLoading(true);
         var fields = Ext.getCmp(entityId + '-searchform-fieldset').items;
 
         if (fields.items.length > 0) {
@@ -42,28 +43,30 @@ Ext.define('console.controller.content.search.SearchFormController', {
                     if (field === 'uid' && restriction === 'Equals') {
                         restriction = '';
                     }
-                    var pagingCombo = contentSearchForm.up('contentPageTab').down('contentSearchResults').getDockedItems('toolbar[dock="bottom"]')[0].getComponent(4);
+                    var pagingCombo = contentSearchForm.up('contentPageTab').down('contentSearchResults').getDockedItems('toolbar[dock="bottom"]')[0].down('#pagingCombo');
                     var pageSize = pagingCombo.getValue();
                     var params = {size: pageSize};
                     params[field] = value;
                     params['projection'] = 'search';
                     params['page'] = 1;
 
-                    Ext.getCmp(entityId + "-search-result").setLoading(true);
-                    Ext.getCmp(entityId + "-search-result").getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + entityId + '/search/findBy' + field.charAt(0).toUpperCase() + field.slice(1) + restriction;
-                    Ext.getCmp(entityId + "-search-result").getStore().proxy.extraParams = params;
-                    Ext.getCmp(entityId + "-search-result").getStore().reload();
-                    Ext.getCmp(entityId + "-search-result").setLoading(false);
-
+                    searchGrid.setLoading(true);
+                    searchGrid.getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + entityId + '/search/findBy' + field.charAt(0).toUpperCase() + field.slice(1) + restriction;
+                    searchGrid.getStore().proxy.extraParams = params;
+                    searchGrid.getStore().reload();
+                    searchGrid.setLoading(false);
                     break;
                 }
             }
 
             if (!search_conditions) {
-                Ext.getCmp(entityId + "-search-result").setLoading(true);
-                Ext.getCmp(entityId + "-search-result").getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + contentSearchForm.entity.data.id;
-                Ext.getCmp(entityId + "-search-result").getStore().reload();
-                Ext.getCmp(entityId + "-search-result").setLoading(false);
+            	searchGrid.setLoading(true);
+            	searchGrid.getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + contentSearchForm.entity.data.id;
+            	if (searchGrid.getStore().proxy.extraParams) {
+            		delete searchGrid.getStore().proxy.extraParams.uid;
+            	}
+            	searchGrid.getStore().reload();
+            	searchGrid.setLoading(false);
             }
 
         }
