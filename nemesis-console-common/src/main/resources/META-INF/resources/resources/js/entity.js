@@ -1,3 +1,4 @@
+// Models
 Ext.define('console.model.Entity', {
     extend: 'Ext.data.Model',
     fields: [
@@ -11,6 +12,15 @@ Ext.define('console.model.Entity', {
     ]
 });
 
+Ext.define('console.model.Language', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'isoCode'},
+        {name: 'name', translate: true}
+    ]
+});
+
+// Views
 Ext.define('console.view.content.EntityPopupWindow', {
     extend: 'Ext.window.Window',
     xtype: 'entityPopupWindow',
@@ -482,4 +492,23 @@ Ext.define('console.view.content.entity.EntityContextMenu', {
         ],
             me.callParent(arguments);
     }
+});
+
+// Stores
+Ext.define('console.store.Languages', {
+    extend: 'Ext.data.ArrayStore',
+
+    model: 'console.model.Language',
+
+    storeId: 'languages',
+
+    data: [
+        ['en', 'English'],
+        ['en_GB', 'English (GB)'],
+        ['en_US', 'English (US)'],
+        ['bg_BG', 'Bulgarian'],
+        ['de_DE', 'German'],
+        ['fr_FR', 'French'],
+        ['es_ES', 'Spanish']
+    ]
 });
