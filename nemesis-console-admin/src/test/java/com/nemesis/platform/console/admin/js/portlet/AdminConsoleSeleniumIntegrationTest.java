@@ -76,8 +76,7 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
     public void testPkAnalyzerPortlet() throws Exception {
         getWebDriver().findElementById("pk-input-field-inputEl").sendKeys("563567378827168");
         getWebDriver().findElementById("decode-pk-button").click();
-        Thread.sleep(1500);
-        assertEquals("2", getWebDriver().findElementById("pk-input-field-inputEl").getAttribute("value"));
+        getWait().until(ExpectedConditions.textToBePresentInElementValue(By.id("pk-input-field-inputEl"), "2"));
     }
 
     @Test

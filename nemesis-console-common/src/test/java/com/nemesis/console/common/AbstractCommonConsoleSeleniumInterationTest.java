@@ -28,10 +28,8 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.logging.LogType;
-import org.openqa.selenium.logging.LoggingPreferences;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -42,7 +40,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.logging.Level;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Base selenium tests for all consoles.
@@ -66,12 +64,16 @@ public abstract class AbstractCommonConsoleSeleniumInterationTest {
     public ScreenshotOnFailTestRule screenshotTestRule = new ScreenshotOnFailTestRule();
 
     public static void setUpClass() throws Exception {
-        DesiredCapabilities caps = DesiredCapabilities.firefox();
-        LoggingPreferences logPrefs = new LoggingPreferences();
-        logPrefs.enable(LogType.BROWSER, Level.ALL);
-        caps.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
-
-        webDriver = new FirefoxDriver(caps);
+        DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+        capabilities.setJavascriptEnabled(true);
+        capabilities.setCapability("acceptSslCerts", true);
+        final FirefoxProfile firefoxProfile = new FirefoxProfile();
+        firefoxProfile.setPreference("xpinstall.signatures.required", false);
+        capabilities.setCapability(FirefoxDriver.PROFILE, firefoxProfile);
+        webDriver = new FirefoxDriver(capabilities);
+        webDriver.manage().window().maximize();
+        //workaround to wait when some element is not visible instead of calling implicitly wait on 1000 places.
+        webDriver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
         wait = new WebDriverWait(getWebDriver(), 15, 200);
     }
 
