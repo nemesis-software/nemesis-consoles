@@ -28,7 +28,7 @@ Ext.define('console.view.content.EntityPopupWindow', {
     isWindow: true,
     constrainHeader: true,
     constructTitle: function () {
-        return '[' + this.config.data.uid + ' - ' + translate(this.config.entity.data.id) + ']';
+        return '[' + (this.config.data ? this.config.data.uid + ' - ' + translate(this.config.entity.data.id) : this.config.entity.id) + ']';
     },
     minimizable: true,
     maximizable: true,
@@ -44,15 +44,18 @@ Ext.define('console.view.content.EntityPopupWindow', {
     	},
     },
     initComponent: function () {
+		  
+        var uid = this.config.data ? this.config.data.uid : this.config.entity.id;
         Ext.apply(this, {
-            id: console.view.content.EntityPopupWindow.getWindowId(this.config.data.uid, this.config.data.catalogVersion),
+            id: console.view.content.EntityPopupWindow.getWindowId(uid, this.config.data && this.config.data.catalogVersion),
             iconCls: 'default-icon ' + this.config.iconCls
         });
 
         var method = 'POST';
-        if (this.config.data.uid) {
+        if (this.config.data) {
             method = 'PATCH';
         }
+
 
         var entityPopupForm = Ext.create("console.view.content.entity.EntityPopupForm", {
             entity: this.config.entity,
