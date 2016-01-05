@@ -183,6 +183,9 @@
   'catalog': 'Catalog',
 
   'Experience': 'Experience',
+  'Desktop': 'Desktop',
+  'Tablet': 'Tablet',
+  'Mobile': 'Mobile',
   'Synchronize': 'Synchronize',
   'Catalog Version': 'Catalog Version',
   'Site': 'Site',

@@ -35,14 +35,12 @@ function setLanguage(lang, translate) {
                 console.error('Unknown language', lang);
             }
         });
-    } else {
-        if (translate) {
-            retranslate(lang, getRootCmp(), true);
-            Ext.each(Ext.ComponentQuery.query('window'), function (n) {
-                translateObj(n);
-                retranslate(globalLang, n);
-            });
-        }
+    } else if (translate) {
+        retranslate(lang, getRootCmp(), true);
+        Ext.each(Ext.ComponentQuery.query('window'), function (n) {
+            translateObj(n);
+            retranslate(globalLang, n);
+        });
     }
 
 }
@@ -287,8 +285,9 @@ Ext.onReady(function () {
             }
         },
         translate: function () {
-            var items = this.data.items;
-            var fields = this.model.fields;
+            var items = this.data.items,
+                fields = this.model.fields;
+
             for (var i = 0; i < items.length; i++) {
                 for (var j = 0; j < fields.length; j++) {
                     if (fields[j].translate) {

@@ -2,6 +2,6 @@ Ext.define('console.model.Experience', {
     extend: 'Ext.data.Model',
     fields: [
         {name: 'id'},
-        {name: 'name'}
+        {name: 'name', translate: true}
     ]
 });

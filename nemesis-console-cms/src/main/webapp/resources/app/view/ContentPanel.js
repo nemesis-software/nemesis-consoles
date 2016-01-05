@@ -331,6 +331,7 @@ Ext.define('console.view.ContentPanel', {
                                 valueField: 'id',
                                 displayField: 'name',
                                 value: 'normal',
+                                queryMode: 'local',
                                 listeners: {
                                     select: {
                                         fn: function (cb, record) {

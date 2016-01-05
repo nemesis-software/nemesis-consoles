@@ -61,12 +61,13 @@ Ext.define('console.view.Header', {
                 valueField: 'isoCode',
                 displayField: 'name',
                 forceSelection: true,
-                value: 'en',
+                value: Ext.get('rest-base-url').dom.getAttribute('locale'),
                 typeAhead: true,
                 listeners: {
                     select: {
                         fn: function (cb, record) {
                             setLanguage(record.data.isoCode, true);
+                            cb.getStore().translate();
                         },
                         scope: this
                     }

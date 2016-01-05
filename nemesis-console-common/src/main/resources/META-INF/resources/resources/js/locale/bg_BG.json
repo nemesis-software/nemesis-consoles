@@ -8,6 +8,8 @@
   'Filter...': 'Филтър...',
   'Bulgarian': 'Български',
   'English': 'Английски',
+  'English (GB)': 'Английски (GB)',
+  'English (US)': 'Английски (US)',
   'German': 'Немски',
   'French': 'Френски',
   'Spanish': 'Испански',
@@ -399,13 +401,15 @@
 
   //settings
   'Experience': 'Платформа',
+  'Desktop': 'Работен плот',
+  'Tablet': 'Таблет',
+  'Mobile': 'Мобилна',
   'Synchronize': 'Синхронизирай',
   'Catalog Version': 'Версия на каталог',
   'language': 'Език',
   'Site': 'Сайт',
   'Cancel': 'Откажи',
   '&#160;': '&#160;',
-
   'Page: ': 'Страница: ',
 
   'Slots': 'Слотове',
