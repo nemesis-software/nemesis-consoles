@@ -41,7 +41,7 @@ Ext.define('console.view.content.EntityPopupWindow', {
     statics: {
     	getWindowId: function(uid, catalogVersion) {
     		return 'w_id_' + (uid ? uid.replace(/@/g, '_AT_').replace(/\./g, '_DOT_') + (catalogVersion ? '_' + catalogVersion.replace(/:/g, '_DOTS_') : '' ) : '')
-    	},
+    	}
     },
     initComponent: function () {
 		  
@@ -52,7 +52,7 @@ Ext.define('console.view.content.EntityPopupWindow', {
         });
 
         var method = 'POST';
-        if (this.config.data) {
+        if (this.config.operation === 'edit') {
             method = 'PATCH';
         }
 

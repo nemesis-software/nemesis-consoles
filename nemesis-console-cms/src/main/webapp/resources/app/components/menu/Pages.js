@@ -126,6 +126,7 @@ Ext.define('console.components.menu.Pages', {
                         var entityConfiguration = Ext.create("console.markup." + record.data.entityName);
                         console.log(record);
                         var window = Ext.getCmp(parentCmpId).createWindow({
+                            operation: 'edit',
                             id: record.data.uid,
                             iconCls: 'content_page',
                             entity: Ext.create('console.model.Entity', {

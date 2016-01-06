@@ -10,7 +10,7 @@ Ext.define('console.view.StatusBar', {
         me.items = [
             {
                 xtype: 'label',
-                text: "Page: ",
+                text: "Page: "
             },
             {
                 xtype: 'component',
@@ -18,7 +18,7 @@ Ext.define('console.view.StatusBar', {
                     tag: 'a',
                     href: '#',
                     id: null,
-                    html: null,
+                    html: null
                 },
                 listeners: {
                     el: {

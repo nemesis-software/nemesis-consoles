@@ -146,6 +146,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                                 if (!win) {
                                     var entityConfiguration = Ext.create("console.markup." + record.data.name);
                                     win = viewport.createWindow({
+                                        operation: 'edit',
                                         id: record.data.uid,
                                         iconCls: this.entityId,
                                         entity: Ext.create('console.model.Entity', {
@@ -570,6 +571,7 @@ Ext.define('console.view.field.NemesisEntityField', {
                         var result = Ext.decode(responseObject.responseText);
                         var content = result;
                         win = Ext.getCmp('backend-viewport').createWindow({
+                                operation: 'edit',
                                 data: content,
                                 title: '[' + entityUid + ' - ' + entity.data.name + ']',
                                 iconCls: me.entityId,

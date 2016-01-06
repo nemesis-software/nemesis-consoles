@@ -191,6 +191,7 @@ Ext.define('console.components.menu.Widgets', {
                         var entityConfiguration = Ext.create("console.markup." + record.data.entityName);
                         console.log(record);
                         var window = Ext.getCmp(parentCmpId).createWindow({
+                            operation: 'edit',
                             id: record.data.uid,
                             iconCls: record.data.entityName ? record.data.entityName : 'widget',
                             entity: Ext.create('console.model.Entity', {
