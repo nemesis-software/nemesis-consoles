@@ -98,7 +98,7 @@ Ext.application({
                     success: function (responseObject) {
                         var result = Ext.decode(responseObject.responseText);
                         console.log(result);
-                        canvases += result._embedded.contentPageModels[0].previewCanvas;
+                        canvases += result._embedded.contentPageEntities[0].previewCanvas;
                         Ext.getCmp('cmsconsole-menu').pageCanvas = canvases;
                         Ext.getStore('content-page-store').reload();
                         Ext.getStore('content-slot-store').reload();

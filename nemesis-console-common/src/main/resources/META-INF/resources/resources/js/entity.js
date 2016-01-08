@@ -3,10 +3,10 @@ Ext.define('console.model.Entity', {
     extend: 'Ext.data.Model',
     fields: [
         {name: 'id'},                      // discount
-        {name: 'name'},                    // DiscountModel
+        {name: 'name'},                    // DiscountEntity
         {name: 'pk'},                      // 123123213
         {name: 'url'},                     // http://localhost:8080/rest/discount/12312312313
-        {name: 'className'},               // com.nemesis.platform.core.model.price.DiscountModel
+        {name: 'className'},               // com.nemesis.platform.core.entity.price.DiscountEntity
         {name: 'synchronizable'},          // true
         {name: 'isNew'}
     ]

@@ -55,7 +55,7 @@ Ext.define('HelplineConsole.controller.MenuController', {
 	createUserPopup: function(object) {
 		// TODO: figure out how to test if objects are found & remove the ajax call in the previous function
 		if (object['_embedded']) {
-			var users = object['_embedded']['employeeModels'];
+			var users = object['_embedded']['employeeEntities'];
 			var pageSize = users.length < 10 ? 0 : 10;
 			var displayInfo = pageSize != 0 ? true : false;
 			var store = Ext.create('Ext.data.Store', {
@@ -126,7 +126,7 @@ Ext.define('HelplineConsole.controller.MenuController', {
 	createOrderPopup: function(object) {
 		// TODO: figure out how to test if objects are found & remove the ajax call in the previous function
 		if (object['_embedded']) {
-			var orders = object['_embedded']['cartModels'];
+			var orders = object['_embedded']['cartEntities'];
 			var pageSize = orders == undefined || orders.length < 10 ? 0 : 10;
 			var displayInfo = pageSize != 0 ? true : false;
 			var store = Ext.create('Ext.data.Store', {

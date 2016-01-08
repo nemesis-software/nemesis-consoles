@@ -49,7 +49,7 @@ Ext.define('console.view.ContentPanel', {
                                         cors: true,
                                         reader: {
                                             type: 'json',
-                                            rootProperty: '_embedded.siteModels'
+                                            rootProperty: '_embedded.siteEntities'
                                         }
                                     },
 	                                listeners: {
@@ -78,7 +78,7 @@ Ext.define('console.view.ContentPanel', {
                                                 cors: true,
                                                 reader: {
                                                     type: 'json',
-                                                    rootProperty: '_embedded.contentCatalogModels'
+                                                    rootProperty: '_embedded.contentCatalogEntities'
                                                 }
                                             }
                                         });
@@ -140,7 +140,7 @@ Ext.define('console.view.ContentPanel', {
                                         cors: true,
                                         reader: {
                                             type: 'json',
-                                            rootProperty: '_embedded.contentCatalogModels'
+                                            rootProperty: '_embedded.contentCatalogEntities'
                                         }
                                     }
                                 }),
@@ -195,7 +195,7 @@ Ext.define('console.view.ContentPanel', {
                                         cors: true,
                                         reader: {
                                             type: 'json',
-                                            rootProperty: '_embedded.catalogVersionModels'
+                                            rootProperty: '_embedded.catalogVersionEntities'
                                         }
                                     }
                                 }),
@@ -246,9 +246,9 @@ Ext.define('console.view.ContentPanel', {
                                                 params: {},
                                                 success: function (response) {
                                                     var site = JSON.parse(response.responseText);
-                                                    for(var i = 0; i < site._embedded.contentCatalogModels.length; i++){
+                                                    for(var i = 0; i < site._embedded.contentCatalogEntities.length; i++){
                                                         Ext.Ajax.request({
-                                                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'catalog/synchronize/' + site._embedded.contentCatalogModels[i].pk,
+                                                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'catalog/synchronize/' + site._embedded.contentCatalogEntities[i].pk,
                                                             method: 'POST',
                                                             headers: {'Content-Type': 'application/json'},
                                                             params: {},
@@ -270,7 +270,7 @@ Ext.define('console.view.ContentPanel', {
                                                 params: {},
                                                 success: function (response) {
                                                     var site = JSON.parse(response.responseText);
-                                                    contentCatalogsForSiteUrl = site._embedded.siteModels[0]._links.contentCatalogs.href;
+                                                    contentCatalogsForSiteUrl = site._embedded.siteEntities[0]._links.contentCatalogs.href;
 
                                                     Ext.Ajax.request({
                                                         url: contentCatalogsForSiteUrl,
@@ -279,10 +279,10 @@ Ext.define('console.view.ContentPanel', {
                                                         params: {},
                                                         success: function (response) {
                                                             var site = JSON.parse(response.responseText);
-                                                            for(var i = 0; i < site._embedded.contentCatalogModels.length; i++){
-                                                                //DO POST on site._embedded.contentCatalogModels[i].pk
+                                                            for(var i = 0; i < site._embedded.contentCatalogEntities.length; i++){
+                                                                //DO POST on site._embedded.contentCatalogEntities[i].pk
                                                                 Ext.Ajax.request({
-                                                                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'catalog/synchronize/' + site._embedded.contentCatalogModels[i].pk,
+                                                                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'catalog/synchronize/' + site._embedded.contentCatalogEntities[i].pk,
                                                                     method: 'POST',
                                                                     headers: {'Content-Type': 'application/json'},
                                                                     params: {},
@@ -307,7 +307,7 @@ Ext.define('console.view.ContentPanel', {
                                         //        cors: true,
                                         //        reader: {
                                         //            type: 'json',
-                                        //            rootProperty: '_embedded.contentCatalogModels'
+                                        //            rootProperty: '_embedded.contentCatalogEntities'
                                         //        }
                                         //    }
                                         //});
