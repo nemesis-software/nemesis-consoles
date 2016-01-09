@@ -16,7 +16,7 @@
     <parent>
         <groupId>com.nemesis</groupId>
         <artifactId>bom</artifactId>
-        <version>0.9-SNAPSHOT</version>
+        <version>0.9</version>
     </parent>
 
     <groupId>com.nemesis.platform.console</groupId>
@@ -40,7 +40,7 @@
         <connection>scm:git:git@github.com:nemesis-software/nemesis-consoles.git</connection>
         <developerConnection>scm:git:git@github.com:nemesis-software/nemesis-consoles.git</developerConnection>
         <url>https://github.com/nemesis-software/nemesis-consoles.git</url>
-        <tag>master</tag>
+        <tag>0.9</tag>
     </scm>
 
     <repositories>
@@ -72,7 +72,7 @@
         <dependency>
             <groupId>com.nemesis.platform</groupId>
             <artifactId>nemesis-platform-util</artifactId>
-            <version>${nemesis.version}</version>
+            <version>0.9</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
