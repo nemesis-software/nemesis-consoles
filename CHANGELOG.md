@@ -1,8 +1,10 @@
 # Change Log
 
-## [Unreleased](https://github.com/nemesis-software/nemesis-consoles/tree/HEAD)
+## [0.9](https://github.com/nemesis-software/nemesis-consoles/tree/0.9) (2016-01-09)
+[Full Changelog](https://github.com/nemesis-software/nemesis-consoles/compare/0.8...0.9)
 
-[Full Changelog](https://github.com/nemesis-software/nemesis-consoles/compare/0.7...HEAD)
+## [0.8](https://github.com/nemesis-software/nemesis-consoles/tree/0.8) (2015-12-01)
+[Full Changelog](https://github.com/nemesis-software/nemesis-consoles/compare/0.7...0.8)
 
 **Implemented enhancements:**
 
@@ -17,6 +19,10 @@
 
 **Fixed bugs:**
 
+- \[cms\] Localized fields are not correctly displayed. [\#63](https://github.com/nemesis-software/nemesis-consoles/issues/63)
+- \[backend\] Fields of type entity does not show value. [\#28](https://github.com/nemesis-software/nemesis-consoles/issues/28)
+- \\[admin\\] Remember position of portlets in a cookie [\#17](https://github.com/nemesis-software/nemesis-consoles/issues/17)
+- \[admin\] memory and CPU usage portlet doesnt scroll automatically [\#12](https://github.com/nemesis-software/nemesis-consoles/issues/12)
 - \[cms\] Entity popup must refresh the iframe onsave/ondelete [\#113](https://github.com/nemesis-software/nemesis-consoles/issues/113)
 - \[backend\] Entity field becomes empty when focus is lost [\#103](https://github.com/nemesis-software/nemesis-consoles/issues/103)
 - \[cms\] Localizable properties are not displayed [\#85](https://github.com/nemesis-software/nemesis-consoles/issues/85)
@@ -25,13 +31,9 @@
 - \[backend\] Validation alert - access denied [\#79](https://github.com/nemesis-software/nemesis-consoles/issues/79)
 - \[backend\] New blog entry does not send teaser or content fields. [\#68](https://github.com/nemesis-software/nemesis-consoles/issues/68)
 - \[backend\] Create NEW functionality doesn't work. [\#66](https://github.com/nemesis-software/nemesis-consoles/issues/66)
-- \[cms\] Localized fields are not correctly displayed. [\#63](https://github.com/nemesis-software/nemesis-consoles/issues/63)
 - \[backend\] Fields are not dirty if you assign their original value. [\#61](https://github.com/nemesis-software/nemesis-consoles/issues/61)
 - \[backend\] Customer entity window is not draggable. [\#58](https://github.com/nemesis-software/nemesis-consoles/issues/58)
-- \[backend\] Fields of type entity does not show value. [\#28](https://github.com/nemesis-software/nemesis-consoles/issues/28)
-- \\[admin\\] Remember position of portlets in a cookie [\#17](https://github.com/nemesis-software/nemesis-consoles/issues/17)
 - \[cms\] Edit widget containing media field shows no popup window. [\#13](https://github.com/nemesis-software/nemesis-consoles/issues/13)
-- \[admin\] memory and CPU usage portlet doesnt scroll automatically [\#12](https://github.com/nemesis-software/nemesis-consoles/issues/12)
 
 ## [0.7](https://github.com/nemesis-software/nemesis-consoles/tree/0.7) (2015-11-02)
 [Full Changelog](https://github.com/nemesis-software/nemesis-consoles/compare/0.6...0.7)
@@ -79,6 +81,7 @@
 - \[backend\] Focus on entity field and icon disappears [\#51](https://github.com/nemesis-software/nemesis-consoles/issues/51)
 - \[backend\] Localized fields are not displayed [\#47](https://github.com/nemesis-software/nemesis-consoles/issues/47)
 - \[backend\] Window resize or maximize does not work [\#44](https://github.com/nemesis-software/nemesis-consoles/issues/44)
+- Entity window has wrong URL [\#43](https://github.com/nemesis-software/nemesis-consoles/issues/43)
 - \[backend\] Entity window has no title [\#42](https://github.com/nemesis-software/nemesis-consoles/issues/42)
 - \[backend\] When open an entity window and close it you cannot open it again. [\#41](https://github.com/nemesis-software/nemesis-consoles/issues/41)
 - \[backend\] Search fields are duplicated if you close a tab and open it again [\#40](https://github.com/nemesis-software/nemesis-consoles/issues/40)
