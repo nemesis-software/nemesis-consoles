@@ -220,7 +220,7 @@ Ext.define('Nemesis.reader.JsonReader', {
             return this.createReadError(ex.message);
         }
 
-        function doTran(o) {
+        function doTrans(o) {
             Ext.log("translate.js#doTran")
             var i;
             if (Ext.isArray(o)) {

@@ -16,8 +16,7 @@ Ext.define('console.view.ContentPanel', {
 
     initComponent: function () {
         var me = this,
-	        languageCmb = Ext.getCmp('app-header-language-selector'),
-	        selectedLangCode = languageCmb.getValue();
+            selectedLangCode = console.app.getLanguage();
 
         me.items = [
             {

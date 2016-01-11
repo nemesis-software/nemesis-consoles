@@ -16,7 +16,8 @@ Ext.application({
     ],
 
     controllers: [
-        'Main'
+        'Main',
+        'console.controller.Header'
     ],
 
     launch: function () {
@@ -439,5 +440,19 @@ Ext.application({
             },
             interval: 10000
         });
+    },
+
+    /**
+     * Gets selected language code
+     * @returns {string}
+     */
+    getLanguage: function () {
+        var languageCmb = Ext.getCmp('app-header-language-selector');
+
+        if (languageCmb) {
+            return languageCmb.getValue();
+        }
+
+        return 'en';
     }
 });

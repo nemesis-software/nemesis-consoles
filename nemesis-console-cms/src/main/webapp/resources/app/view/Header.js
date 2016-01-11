@@ -66,23 +66,12 @@ Ext.define('console.view.Header', {
                 listeners: {
                     select: {
                         fn: function (cb, record) {
-                            var cmbCatalogs = Ext.getCmp('catalogsCombo'),
-                                storeCatalogs = cmbCatalogs.getStore(),
+                            var me = this,
                                 langCode = record.data.isoCode;
 
                             setLanguage(langCode, true);
                             cb.getStore().translate();
-                            storeCatalogs.getRange().forEach(function (record) {
-                                var catalogName = '';
-                                if (langCode === 'bg_BG') {
-                                    catalogName = record.get('name').bg_BG.value;
-                                }
-                                //TODO Change it when other language translates appears from the REST
-                                else {
-                                    catalogName = record.get('name').en.value;
-                                }
-                                record.set('catalogName', catalogName);
-                            });
+                            me.fireEvent('translateMenu', langCode);
                         },
                         scope: this
                     }
