@@ -4,6 +4,8 @@ Ext.define('console.components.menu.Widgets', {
 
     alias: 'widget.components-menu-widgets',
 
+    requires: ["console.utils.Utilities"],
+
     initComponent: function() {
         var me = this;
 
@@ -241,6 +243,13 @@ Ext.define('console.components.menu.Widgets', {
                                     return data;
                                 },
                                 totalProperty: 'page.totalElements'
+                            }
+                        },
+                        listeners: {
+                            load: function(myself, records, successful, operation, eOpts) {
+                                if (successful) {
+                                    console.utils.Utilities.translateMenuItems(records);
+                                }
                             }
                         }
                     })
