@@ -91,7 +91,7 @@ Ext.define('console.components.menu.PageTemplates', {
                     ],
                     listeners: {
                         select: function (view) {
-                            alert('selected ' + view.getSelection()[0].data.pk);
+                            //alert('selected ' + view.getSelection()[0].data.pk);
                         },
                         afterrender: function (p) {
                             Ext.getCmp('templates-pager').setStore(this.getStore());

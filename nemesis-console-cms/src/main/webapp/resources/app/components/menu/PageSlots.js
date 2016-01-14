@@ -47,7 +47,7 @@ Ext.define('console.components.menu.PageSlots', {
                     listeners: {
                         select: function (view) {
                             debugger;
-                            alert('selected ' + view.getSelection()[0].data.pk);
+                            //alert('selected ' + view.getSelection()[0].data.pk);
                         },
                         afterrender: function (p) {
                             Ext.getCmp('page-slots-pager').setStore(this.getStore());
