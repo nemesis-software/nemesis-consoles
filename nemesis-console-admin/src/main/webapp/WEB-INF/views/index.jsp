@@ -52,9 +52,6 @@
 <div id="security" style="display:none" token="${_csrf.token}"></div>
 
 <div id="token" style="display:none" value="<sec:authentication property='principal.token' htmlEscape="false" />"></div>
-<div id="expiryTime" style="display:none" value="<sec:authentication property='principal.expiryTime' />"></div>
-<div id="username" style="display:none" value="<sec:authentication property='principal.username' />"></div>
-
 
 <div class="x-mask splashscreen" style="top:0;left:0;" id="splash-background"></div>
 <div class="x-mask-msg splashscreen" id="splash-screen">

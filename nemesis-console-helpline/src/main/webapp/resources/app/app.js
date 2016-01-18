@@ -20,9 +20,7 @@ Ext.application({
     launch: function () {
 
         Ext.Ajax.setDefaultHeaders({
-            'X-Nemesis-Token': Ext.get('token').dom.getAttribute('value'),
-            'X-Nemesis-Username': Ext.get('username').dom.getAttribute('value'),
-            'X-Nemesis-ExpiryTime': Ext.get('expiryTime').dom.getAttribute('value')
+            'X-Nemesis-Token': Ext.get('token').dom.getAttribute('value')
         });
 
         Ext.Ajax.request({
