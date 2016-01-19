@@ -99,7 +99,8 @@ Ext.define('console.components.menu.Pages', {
                         },
                         afterrender: function (p) {
                             Ext.getCmp('pages-pager').setStore(this.getStore());
-                        }, itemcontextmenu: function (view, record, item, index, event) {
+                        },
+                        itemcontextmenu: function (view, record, item, index, event) {
                             //			view.select(record);
                             event.stopEvent();
                             var ctxMenu = this.buildCtxMenu(view, record, item, index, event);
