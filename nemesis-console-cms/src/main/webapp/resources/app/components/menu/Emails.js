@@ -140,15 +140,6 @@ Ext.define('console.components.menu.Emails', {
                                     },
                                     text: 'Edit',
                                     iconCls: 'edit'
-                                },
-                                '-',
-                                {
-                                    itemId: 'copy',
-                                    handler: function () {
-                                        me.onCopySelected(view, record, item, index, event);
-                                    },
-                                    text: 'Copy',
-                                    iconCls: 'copy'
                                 }
                             ]
                         });
@@ -172,16 +163,6 @@ Ext.define('console.components.menu.Emails', {
                             sections: entityConfiguration.sections
                         });
                         window.show();
-                    },
-                    onCopySelected: function (view, record, item, index, event) {
-                        Ext.getCmp('cms-viewport').clipboard = {
-                            data: {
-                                pk: record.data.pk,
-                                id: record.data.uid,
-                                name: record.data.entityName,
-                                url: record.data._links.self.href
-                            }
-                        };
                     }
                 }
             ],
