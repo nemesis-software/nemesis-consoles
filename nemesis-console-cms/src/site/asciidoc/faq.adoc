@@ -1,0 +1,10 @@
+= FAQs and Troubleshooting
+Nayden Gochev <https://github.com/gochev[@gochev]>;
+:description: Frequently asked questions (FAQ) about the Nemesis CMS Console
+:keywords: Nemesis, Nemesis E-commerce Platform, frequently, question, problem, issue, tips, cms
+
+[qanda]
+Does CMS Console support drag and drop?::
+Yes.
+The CMS console supports drag and drop of widgets into content slots for pages and emails.
+For more information read link:drag-and-drop.html[here]

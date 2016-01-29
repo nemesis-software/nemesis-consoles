@@ -25,6 +25,7 @@
     <script type="text/javascript" src="resources/js/fields.js"></script>
     <script type="text/javascript" src="resources/js/entity.js"></script>
     <script type="text/javascript" src="resources/js/translate.js"></script>
+
 </head>
 <body>
 <div id="website-base-url" style="display:none" url="${websiteBaseUrl}"></div>

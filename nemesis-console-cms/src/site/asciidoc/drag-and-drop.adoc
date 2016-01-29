@@ -1,0 +1,49 @@
+= Drag and Drop support in the CMS console
+Nayden Gochev
+:doctype: book
+:sectanchors:
+:sectlinks:
+:toclevels: 4
+:source-highlighter: coderay
+:icons: font
+:last-update-label!:
+
+== General Information
+
+The CMS console supports drag and drop of widgets into the cms page or the email template.
+In order this to work we drag from a cms window into an iframe which shows the content of the current site (which is running on another machine).
+
+This uses html 5 drag and drop support which works in Firefox but doesn't work in Chrome.
+There is a security feature of Chrome to not allow this if the two iframes are from the same domains.
+
+For more information about Chrome/Chromium issue you can read it here: https://code.google.com/p/chromium/issues/detail?id=251718
+
+== Workaround for Chrome
+
+In order yo use Google Chrome and have a drag and drop support in the cms console you have to start chrome without the web security feature.
+
+=== Windows
+Start Google Chrome via:
+[source,bash]
+----
+chrome.exe --disable-web-security
+----
+
+=== Linux
+Start Google Chrome via:
+[source,bash]
+----
+chrome --disable-web-security
+----
+or
+[source,bash]
+----
+chromium-browser --disable-web-security
+----
+
+=== Mac OS X:
+Start Google Chrome via:
+[source,bash]
+----
+open /Applications/Google\ Chrome.app/ --args --disable-web-security
+----

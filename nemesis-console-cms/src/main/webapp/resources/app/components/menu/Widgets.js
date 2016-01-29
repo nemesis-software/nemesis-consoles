@@ -129,9 +129,9 @@ Ext.define('console.components.menu.Widgets', {
                     emptyText: 'No widgets available',
                     tpl: new Ext.XTemplate(
                         '<tpl for=".">',
-                        '<div class="top-carousel-item widget-dnd" id="widget-{uid}">',
+                        '<div class="top-carousel-item widget-dnd" id="widget-{pk}">',
                         '<div class="carousel-picture">',
-                        '<a><img src="{[this.getPreviewImage(values._links[\'self\'].href)]}" width="100"></a>',
+                        '<a><img draggable="true" style="cursor: move;" src="{[this.getPreviewImage(values._links[\'self\'].href)]}" width="100"></a>',
                         '</div>',
                         '<div class="carousel-item">',
                         '<div class="widget-description">{name}</div>',
