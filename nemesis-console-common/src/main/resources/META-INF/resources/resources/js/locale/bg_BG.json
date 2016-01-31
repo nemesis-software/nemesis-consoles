@@ -6,13 +6,6 @@
   'Clear': 'Изчисти',
   'Navigation': 'Навигация',
   'Filter...': 'Филтър...',
-  'Bulgarian': 'Български',
-  'English': 'Английски',
-  'English (GB)': 'Английски (GB)',
-  'English (US)': 'Английски (US)',
-  'German': 'Немски',
-  'French': 'Френски',
-  'Spanish': 'Испански',
   core: 'Основни',
   catalogfolder: 'Каталог',
   commercefolder: 'Търговия',
@@ -422,5 +415,12 @@
   'No pages available': 'Няма страници',
   'No slots available': 'Няма слотове',
   'No widgets available': 'Няма джиджавки',
-  'No emails available': 'Няма имейли'
+  'No emails available': 'Няма имейли',
+  'Bulgarian': 'Български',
+  'English': 'Английски',
+  'English (GB)': 'Английски (GB)',
+  'English (US)': 'Английски (US)',
+  'German': 'Немски',
+  'French': 'Френски',
+  'Spanish': 'Испански'
 }

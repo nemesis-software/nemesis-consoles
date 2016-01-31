@@ -153,11 +153,6 @@
   'CMS Console': 'CMS Console',
   'Configure': 'Configure',
   'Filter': 'Filter',
-  'Bulgarian': 'Bulgarian',
-  'English': 'English',
-  'German': 'German',
-  'French': 'French',
-  'Spanish': 'Spanish',
 
   'First Page': 'First Page',
   'Next Page': 'Next Page',
@@ -199,6 +194,15 @@
   'No pages available': 'No pages available',
   'No slots available': 'No slots available',
   'No widgets available': 'No widgets available',
-  'No emails available': 'No emails available'
+  'No emails available': 'No emails available',
 
+  'Bulgarian': 'Bulgarian',
+  'English': 'English',
+  'English (US)': 'English (US)',
+  'English (GB)': 'English (GB)',
+  'German': 'German',
+  'French': 'French',
+  'Spanish': 'Spanish',
+
+  '&#160': '&#160'
 }
