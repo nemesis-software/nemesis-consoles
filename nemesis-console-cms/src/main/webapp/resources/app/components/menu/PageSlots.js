@@ -69,7 +69,7 @@ Ext.define('console.components.menu.PageSlots', {
                                     handler: function () {
                                         me.onEditSelected(view, record, item, index, event);
                                     },
-                                    text: 'Edit',
+                                    text: 'Edit/Create slot',
                                     iconCls: 'edit'
                                 }
                             ]

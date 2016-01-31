@@ -14,6 +14,7 @@ Ext.define('console.view.StatusBar', {
             },
             {
                 xtype: 'component',
+                itemId: 'pageLink',
                 autoEl: {
                     tag: 'a',
                     href: '#',
@@ -49,7 +50,8 @@ Ext.define('console.view.StatusBar', {
         this.callParent();
     },
     updateContent: function (page) {
-        this.page = page;
-        this.items.items[1].update(page.title);
+        var me = this;
+        me.page = page;
+        me.down('#pageLink').update(page.title);
     }
 });

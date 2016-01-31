@@ -559,7 +559,7 @@ Ext.define('console.view.field.NemesisEntityField', {
             	catalogVersion = me.rawValue.substring(entityUid.length + sep.length);
             }
             console.log(entity.data); //you need to initialize the entity from the url
-            var win = Ext.getCmp('backend-viewport').getWindow(entityUid, catalogVersion);
+            var win = Ext.ComponentQuery.query('viewport')[0].getWindow(entityUid, catalogVersion);
             if (!win) {
                 Ext.Ajax.request({
                     url: entity.data.url || entity.data._links.self.href,
