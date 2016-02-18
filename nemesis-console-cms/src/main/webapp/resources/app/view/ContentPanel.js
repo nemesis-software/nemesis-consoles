@@ -55,7 +55,7 @@ Ext.define('console.view.ContentPanel', {
 		                                load: function(myself, records, successful, eOpts) {
 											if(successful) {
 												var comboSites = Ext.getCmp('site-combo');
-												comboSites.setValue(myself.findRecord('uid', 'solarapparel-uk').get('pk'))
+												comboSites.setValue(myself.findRecord('uid', 'solarapparel').get('pk'))
 											}
 		                                }
 	                                },
@@ -260,7 +260,7 @@ Ext.define('console.view.ContentPanel', {
                                             });
 
                                         } else {
-                                            var siteUrl = Ext.get('rest-base-url').dom.getAttribute('url') + 'site/search/findByUid?uid=solarapparel-uk';
+                                            var siteUrl = Ext.get('rest-base-url').dom.getAttribute('url') + 'site/search/findByUid?uid=solarapparel';
 
                                             Ext.Ajax.request({
                                                 url: siteUrl,
@@ -378,7 +378,7 @@ Ext.define('console.view.ContentPanel', {
                         cls: 'normal-iframe',
                         autoEl: {
                             tag: "iframe",
-                            src: Ext.get('website-base-url').dom.getAttribute('url') + '?site=solarapparel-uk&live_edit_view=true&site_preference=normal',
+                            src: Ext.get('website-base-url').dom.getAttribute('url') + '?site=solarapparel&live_edit_view=true&site_preference=normal',
                             allowtransparency: true
                         },
                         listeners: {

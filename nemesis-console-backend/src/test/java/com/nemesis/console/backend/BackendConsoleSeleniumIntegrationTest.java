@@ -926,7 +926,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         assertTrue(1 <= resultsGridItems(entityId).size());
 
-        //search for solarapparel-uk
+        //search for solarapparel
 
         assertTrue(existsElement("#" + entityId + "-search-form-body"));
 
@@ -942,7 +942,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         WebElement queryField = searchForm.findElement(By.cssSelector("div#" + entityId + "-searchform-fieldset-query_uid input[type='text']"));
 
         queryField.clear();
-        queryField.sendKeys("solarapparel-uk");
+        queryField.sendKeys("solarapparel");
         queryField.sendKeys(Keys.ENTER);
 
         sleep();
