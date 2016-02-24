@@ -63,16 +63,21 @@ Ext.define('console.components.menu.PageSlots', {
                     buildCtxMenu: function (view, record, item, index, event) {
                         var me = this;
                         return Ext.create('Ext.menu.Menu', {
-                            items: [
-                                {
-                                    itemId: 'edit',
-                                    handler: function () {
-                                        me.onEditSelected(view, record, item, index, event);
-                                    },
-                                    text: 'Edit/Create slot',
-                                    iconCls: 'edit'
+                            items: [{
+                                itemId: 'addWidgetMenu',
+                                text: 'Add Widget',
+                                iconCls: 'widget_add',
+                                handler: function(menu) {
+                                    menu.fireEvent('addWidget');
                                 }
-                            ]
+                            }, {
+                                itemId: 'edit',
+                                text: 'Edit/Create slot',
+                                iconCls: 'edit',
+                                handler: function () {
+                                    me.onEditSelected(view, record, item, index, event);
+                                }
+                            }]
                         });
                     },
                     onEditSelected: function (view, record, item, index, event) {

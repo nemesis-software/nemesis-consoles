@@ -17,7 +17,8 @@ Ext.application({
 
     controllers: [
         'Main',
-        'console.controller.Header'
+        'console.controller.Header',
+        'console.controller.Menu'
     ],
 
     launch: function () {

@@ -221,7 +221,7 @@ Ext.define('console.view.ContentPanel', {
                                     var catalogs = Ext.getCmp('catalogsCombo').getValue()
                                     if(catalogs && catalogs.length > 0){
                                         for(var i = 0; i < catalogs.length; i++){
-                                            var catalogPK = Ext.getCmp('catalogsCombo').findRecordByValue(catalogs[i]).data.pk;
+                                            var catalogPK = Ext.getCmp('catalogsCombo').findRecordByValue(catalogs[i]).get('pk');
                                             Ext.Ajax.request({
                                                 url: Ext.get('rest-base-url').dom.getAttribute('url') + 'catalog/synchronize/' + catalogPK,
                                                 method: 'POST',
