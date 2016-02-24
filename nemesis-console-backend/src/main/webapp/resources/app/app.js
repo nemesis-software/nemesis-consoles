@@ -23,30 +23,35 @@ Ext.application({
         Ext.Ajax.setDefaultHeaders({
             'X-Nemesis-Token': Ext.get('token').dom.getAttribute('value')
         });
-        
+
+        var self = this;
+
         Ext.Ajax.request({
             method: 'GET',
             url: Ext.get('rest-base-url').dom.getAttribute('url') + 'markup/all',
             success: function (response) {
                 eval(response.responseText);
+
+                Ext.Ajax.request({
+                    method: 'GET',
+                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'markup/results/all',
+                    success: function (response) {
+                        eval(response.responseText);
+                        self.show();
+                    },
+                    failure: function () {
+                        console.error('Cannot load markup/results/all resource from the server!');
+                    }
+                });
             },
             failure: function () {
             	console.error('Cannot load markup/all resource from the server!');
             }
         });
-        
-        Ext.Ajax.request({
-            method: 'GET',
-            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'markup/results/all',
-            success: function (response) {
-                eval(response.responseText);
-            },
-            failure: function () {
-            	console.error('Cannot load markup/results/all resource from the server!');
-            }
-        });
 
-        Ext.History.init();
+    },
+    show: function() {
+        //Ext.History.init();
         // Create the actual viewport in body
         Ext.create('console.view.Viewport', {
             renderTo: Ext.getBody(),
@@ -91,7 +96,7 @@ Ext.application({
 
         var runner = new Ext.util.TaskRunner();
 
-// poll some page every 10 seconds
+        // poll some page every 10 seconds
         var task = runner.start({
             run: function () {
                 var sessionExpiry = Math.abs(Ext.util.Cookies.get('sessionExpiry'));
@@ -105,7 +110,7 @@ Ext.application({
             interval: 10000
         });
 
-//check if the rest API is accessible
+        //check if the rest API is accessible
         Ext.Ajax.request({
             url: Ext.get('rest-base-url').dom.getAttribute('url'),
             loadMask: true,

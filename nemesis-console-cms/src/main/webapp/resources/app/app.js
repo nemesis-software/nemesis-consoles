@@ -195,7 +195,7 @@ Ext.application({
 
                 if (!!window.widgetContextMenu) {
                     Ext.destroy(widgetContextMenu);
-                    ;
+
                     delete window.widgetContextMenu;
                 }
 
