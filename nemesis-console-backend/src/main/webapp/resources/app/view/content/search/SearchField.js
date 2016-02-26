@@ -13,6 +13,7 @@ Ext.define('console.view.content.search.SearchField', {
     searchRestrictions: [],
     isFormField: true,
     submitValue: true,
+    inputType: 'textfield',
     afterRender: function () {
         this.callParent();
         this.fieldSet = Ext.create('Ext.form.FieldSet', {
@@ -31,14 +32,28 @@ Ext.define('console.view.content.search.SearchField', {
                     valueField: 'value',
                     displayField: 'displayName',
                     typeAhead: false,
-                    formItemCls: 'field-restriction'
+                    formItemCls: 'field-restriction',
+                    listeners: {
+                        select: function (cb, record) {
+                            if(record.data.value.indexOf("Null") != -1) {
+                                Ext.getCmp(this.id.replace("restriction_", "query_")).setReadOnly(true);
+                                //Ext.getCmp(this.id.replace("restriction_", "query_")).setValue("N/A")
+                                Ext.getCmp(this.id.replace("restriction_", "query_")).getEl().setOpacity(0)
+                            } else {
+                                Ext.getCmp(this.id.replace("restriction_", "query_")).setReadOnly(false);
+                                //Ext.getCmp(this.id.replace("restriction_", "query_")).setValue("");
+                                Ext.getCmp(this.id.replace("restriction_", "query_")).getEl().setOpacity(100);
+                            }
+
+                        }
+                    }
                 },
                 {
                     id: this.entity.data.id + '-searchform-fieldset-query_' + this.emptyTxt,
                     isFormField: false,
                     submitValue: false,
                     emptyText: this.emptyTxt,
-                    xtype: 'textfield',
+                    xtype: this.inputType,
                     width: '30%',
                     listeners: {
                     	specialkey: function(field, event) {

@@ -51,7 +51,7 @@ Ext.application({
 
     },
     show: function() {
-        //Ext.History.init();
+        Ext.History.init();
         // Create the actual viewport in body
         Ext.create('console.view.Viewport', {
             renderTo: Ext.getBody(),

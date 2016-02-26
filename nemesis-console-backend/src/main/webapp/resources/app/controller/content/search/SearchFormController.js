@@ -31,39 +31,90 @@ Ext.define('console.controller.content.search.SearchFormController', {
         var fields = Ext.getCmp(entityId + '-searchform-fieldset').items;
 
         if (fields.items.length > 0) {
+            var filter = "";
             var search_conditions = false;
             for (var i = 0; i < fields.items.length; i++) {
                 var restriction = fields.items[i].fieldSet.items.items[0].value;
                 var value = fields.items[i].fieldSet.items.items[1].value;
 
-                if (typeof restriction !== 'undefined' && value) {
+                if (typeof restriction !== 'undefined') {
                     search_conditions = true;
                     var field = fields.items[i].emptyTxt;
                     //for UID searches use the not unique method which is without Equals suffix
-                    if (field === 'uid' && restriction === 'Equals') {
-                        restriction = '';
-                    }
-                    var pagingCombo = contentSearchForm.up('contentPageTab').down('contentSearchResults').getDockedItems('toolbar[dock="bottom"]')[0].down('#pagingCombo');
-                    var pageSize = pagingCombo.getValue();
-                    var params = {size: pageSize};
-                    params[field] = value;
-                    params['projection'] = 'search';
-                    params['page'] = 1;
+                    //TODO check why is that after we use $filter
+                    //if (field === 'uid' && restriction === 'Equals') {
+                    //    restriction = '';
+                    //}
 
-                    searchGrid.setLoading(true);
-                    searchGrid.getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + entityId + '/search/findBy' + field.charAt(0).toUpperCase() + field.slice(1) + restriction;
-                    searchGrid.getStore().proxy.extraParams = params;
-                    searchGrid.getStore().reload();
-                    searchGrid.setLoading(false);
-                    break;
+                    if (restriction === 'IsStartingWith' && value) {
+                        //startswith(field, 'Karl') eq true
+                        filter = this.appendFilter(filter, "startswith(" + field  + ", '" + value + "') eq true");
+                    } else if (restriction === 'StartingWith' && value) {
+                        filter = this.appendFilter(filter, "startswith(" + field  + ", '" + value + "') eq true");
+                    } else if (restriction === 'IsEndingWith' && value) {
+                        filter = this.appendFilter(filter, "endswith(" + field  + ", '" + value + "') eq true");
+                    } else if (restriction === 'EndingWith' && value) {
+                        filter = this.appendFilter(filter, "endswith(" + field  + ", '" + value + "') eq true");
+                    } else if (restriction === 'Contains' && value) {
+                        //(indexof(uid, 'lowrider') ge 0)
+                        filter = this.appendFilter(filter, "(indexof(" + field + ", '" + value + "') ge 0)");
+                    } else if (restriction === 'IsContaining' && value) {
+                        filter = this.appendFilter(filter, "(indexof(" + field + ", '" + value + "') ge 0)");
+                    } else if (restriction === 'Containing' && value) {
+                        filter = this.appendFilter(filter, "(indexof(" + field + ", '" + value + "') ge 0)");
+                    } else if (restriction === 'After' && value) {
+                        //field gt datetime'2011-12-03T10:15:30'
+                        filter = this.appendFilter(filter, field + " gt datetime'" + value + "'");
+                    } else if (restriction === 'Before' && value) {
+                        //field lt datetime'2011-12-03T10:15:30'
+                        filter = this.appendFilter(filter, field + " lt datetime'" + value + "'");
+                    } else if (restriction === 'GreaterThan' && value) {
+                        //field ge 10
+                        filter = this.appendFilter(filter, field + " ge " + value);
+                    } else if (restriction === 'LessThan' && value) {
+                        //field le 10
+                        filter = this.appendFilter(filter, field + " le " + value);
+                    } else if (restriction === 'IsNotNull') {
+                        //field ne null
+                        filter = this.appendFilter(filter, field + " ne null");
+                    } else if (restriction === 'NotNull') {
+                        //field ne null
+                        filter = this.appendFilter(filter, field + " ne null");
+                    } else if (restriction === 'IsNull') {
+                        //field eq null
+                            filter = this.appendFilter(filter, field + " eq null");
+                    } else if (restriction === 'Null') {
+                        //field eq null
+                        filter = this.appendFilter(filter, field + " eq null");
+                    } else if ((restriction === 'Equals' || !restriction)  && value) {
+                        //field eq 'Karlovo'
+                        filter = this.appendFilter(filter, field + " eq " + "'" + value + "'");
+                    } else {
+                        console.log("invalid restriction !");
+                    }
                 }
             }
 
-            if (!search_conditions) {
+            if(search_conditions){
+                var pagingCombo = contentSearchForm.up('contentPageTab').down('contentSearchResults').getDockedItems('toolbar[dock="bottom"]')[0].down('#pagingCombo');
+                var pageSize = pagingCombo.getValue();
+                var params = {size: pageSize};
+                //params[field] = value;
+                params['$filter'] = filter;
+                params['projection'] = 'search';
+                params['page'] = 1;
+
+                searchGrid.setLoading(true);
+                //searchGrid.getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + entityId + '/search/findBy' + field.charAt(0).toUpperCase() + field.slice(1) + restriction;
+                searchGrid.getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + entityId + '/';
+                searchGrid.getStore().proxy.extraParams = params;
+                searchGrid.getStore().reload();
+                searchGrid.setLoading(false);
+            } else {
             	searchGrid.setLoading(true);
             	searchGrid.getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + contentSearchForm.entity.data.id;
             	if (searchGrid.getStore().proxy.extraParams) {
-            		delete searchGrid.getStore().proxy.extraParams.uid;
+            		delete searchGrid.getStore().proxy.extraParams;
             	}
             	searchGrid.getStore().reload();
             	searchGrid.setLoading(false);
@@ -82,5 +133,12 @@ Ext.define('console.controller.content.search.SearchFormController', {
             data = data.concat(resultObjects._embedded[key]);
         }
         return data;
+    },
+    appendFilter: function (filter, restriction) {
+        if(filter){
+            filter += " and ";
+        }
+        filter += restriction
+        return filter;
     }
 });

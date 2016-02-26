@@ -27,13 +27,15 @@ Ext.define('console.view.content.search.SearchForm', function () {
             self.callParent(arguments);
         },
         initComponent: function () {
+            //TODO change this no call.. hardcoded restrictions and fields
+
             Ext.Ajax.request({
                 url: Ext.get('rest-base-url').dom.getAttribute('url') + self.entity.data.id + '/search/',
                 loadMask: true,
                 method: 'GET',
                 params: {'projection': 'search'},
                 success: function (responseObject) {
-                    var searchfields = {};
+                    var searchFields = {};
                     var result = Ext.decode(responseObject.responseText);
                     if (Object.keys(result._links).length > 0) {
                         for (var _link in result._links) {
@@ -64,10 +66,6 @@ Ext.define('console.view.content.search.SearchForm', function () {
                                 restriction = "GreaterThan";
                             } else if (fieldRestriction.indexOf("LessThan", fieldRestriction.length - "LessThan".length) !== -1) {
                                 restriction = "LessThan";
-                            } else if (fieldRestriction.indexOf("NotLike", fieldRestriction.length - "NotLike".length) !== -1) {
-                                restriction = "NotLike";
-                            } else if (fieldRestriction.indexOf("Like", fieldRestriction.length - "Like".length) !== -1) {
-                                restriction = "Like";
                             } else if (fieldRestriction.indexOf("IsNotNull", fieldRestriction.length - "IsNotNull".length) !== -1) {
                                 restriction = "IsNotNull";
                             } else if (fieldRestriction.indexOf("NotNull", fieldRestriction.length - "NotNull".length) !== -1) {
@@ -84,19 +82,21 @@ Ext.define('console.view.content.search.SearchForm', function () {
 
                             field = Ext.util.Format.substr(fieldRestriction, 0, fieldRestriction.length - restriction.length);
 
-                            if (searchfields[field] === undefined) {
-                                searchfields[field] = [];
+                            if (searchFields[field] === undefined) {
+                                searchFields[field] = [];
                             }
-                            searchfields[field].push(Ext.create("console.model.SearchRestriction", {value: restriction, displayName: restriction}));
+                            searchFields[field].push(Ext.create("console.model.SearchRestriction", {value: restriction, displayName: restriction}));
                         }
 
                         var backendSearchFields = [];
-                        for (var key in searchfields) {
+                        for (var key in searchFields) {
+
                             backendSearchFields.push(Ext.create("console.view.content.search.SearchField", {
                                 fieldLabel: key,
                                 entity: self.entity,
                                 emptyTxt: key.charAt(0).toLowerCase() + key.slice(1),
-                                searchRestrictions: searchfields[key]
+                                searchRestrictions: searchFields[key],
+                                inputType: 'textfield'
                             }));
                         }
 
