@@ -19,7 +19,7 @@ Ext.define('AdminConsole.controller.portlets.SpringBeansPortletController', {
             params: {},
             success: function (responseObject) {
                 var json = Ext.decode(responseObject.responseText);
-                self.parseData(json['content'][0]);
+                self.parseData(json[0]);
             },
             failure: function (responseObject) {
                 var error = Ext.decode(responseObject.responseText);
