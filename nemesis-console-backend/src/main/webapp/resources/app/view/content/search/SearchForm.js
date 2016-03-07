@@ -27,8 +27,70 @@ Ext.define('console.view.content.search.SearchForm', function () {
             self.callParent(arguments);
         },
         initComponent: function () {
-            //TODO change this no call.. hardcoded restrictions and fields
+            var restrictions = {};
+            restrictions['nemesisTextField'] = ["StartingWith", "EndingWith", "Contains", "NotNull", "Null", "Equals"];
+            restrictions['nemesisIntegerField'] = ["GreaterThan", "LessThan", "NotNull", "Null", "Equals"];
+            restrictions['nemesisDecimalField'] = ["GreaterThan", "LessThan", "NotNull", "Null", "Equals"];
+            restrictions['nemesisDateField'] = ["After", "Before", "NotNull", "Null"];
+            restrictions['nemesisEnumField'] = ["Equals"];
+            restrictions['nemesisLocalizedTextField'] = ["StartingWith", "EndingWith", "Contains", "NotNull", "Null", "Equals"];
+            restrictions['nemesisEntityField'] = ["NotNull", "Null", "Equals"];
+            restrictions['nemesisBooleanField'] = ["Equals"];
 
+            restrictions['nemesisCollectionField'] = ["Not-Supported"];
+
+            var filters = searchFilterData[self.entity.data.id].filter;
+            var searchFields = {};
+            var backendSearchFields = [];
+            for(var i in filters){
+                filter = filters[i];
+                var field = filter.name;
+                var xtype = filter.xtype;
+                if(xtype === 'nemesisHtmlEditor' || xtype === 'nemesisTextarea'){
+                    xtype = 'nemesisTextField';
+                }
+
+                if (searchFields[field] === undefined) {
+                    searchFields[field] = [];
+                }
+
+                for (var r = 0; r < restrictions[xtype].length; r++) {
+                    var restriction = restrictions[xtype][r];
+                    searchFields[field].push(Ext.create("console.model.SearchRestriction", {
+                        value: restriction,
+                        displayName: restriction
+                    }));
+                }
+                console.log(xtype);
+                backendSearchFields.push(Ext.create("console.view.content.search.SearchField", {
+                    fieldLabel: field,
+                    entity: self.entity,
+                    emptyTxt: field.charAt(0).toLowerCase() + field.slice(1),
+                    searchRestrictions: searchFields[field],
+                    inputType: xtype,
+                    values: filter.values, // needed for enums
+                    entityId: filter.entityId //needed for entity relations
+                }));
+            }
+
+            //for (var key in searchFields) {
+            //    backendSearchFields.push(Ext.create("console.view.content.search.SearchField", {
+            //        fieldLabel: key,
+            //        entity: self.entity,
+            //        emptyTxt: key.charAt(0).toLowerCase() + key.slice(1),
+            //        searchRestrictions: searchFields[key],
+            //        inputType: 'nemesisTextField'
+            //    }));
+            //}
+
+            //TODO strange but it looks the component is not yet available ?
+            var task = new Ext.util.DelayedTask(function() {
+                Ext.getCmp(self.entity.data.id + '-searchform-fieldset').add(backendSearchFields);
+            });
+            task.delay(100);
+
+
+            /*
             Ext.Ajax.request({
                 url: Ext.get('rest-base-url').dom.getAttribute('url') + self.entity.data.id + '/search/',
                 loadMask: true,
@@ -108,7 +170,7 @@ Ext.define('console.view.content.search.SearchForm', function () {
                     var error = Ext.decode(responseObject.responseText);
                     Ext.Msg.alert('Error', 'Error: ' + error.message);
                 }
-            });
+            });*/
 
             this.items = [
                 {

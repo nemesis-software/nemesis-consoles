@@ -37,7 +37,18 @@ Ext.application({
                     url: Ext.get('rest-base-url').dom.getAttribute('url') + 'markup/results/all',
                     success: function (response) {
                         eval(response.responseText);
-                        self.show();
+
+                        Ext.Ajax.request({
+                            method: 'GET',
+                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'markup/search/all',
+                            success: function (response) {
+                                searchFilterData = Ext.util.JSON.decode(response.responseText);
+                                self.show();
+                            },
+                            failure: function () {
+                                console.error('Cannot load markup/results/all resource from the server!');
+                            }
+                        });
                     },
                     failure: function () {
                         console.error('Cannot load markup/results/all resource from the server!');

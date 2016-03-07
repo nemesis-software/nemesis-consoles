@@ -14,6 +14,9 @@ Ext.define('console.view.content.search.SearchField', {
     isFormField: true,
     submitValue: true,
     inputType: 'textfield',
+    fieldLabel: '',
+    values: [],
+    entityId: '',
     afterRender: function () {
         this.callParent();
         this.fieldSet = Ext.create('Ext.form.FieldSet', {
@@ -50,10 +53,13 @@ Ext.define('console.view.content.search.SearchField', {
                 },
                 {
                     id: this.entity.data.id + '-searchform-fieldset-query_' + this.emptyTxt,
+                    name: this.fieldLabel,
                     isFormField: false,
                     submitValue: false,
                     emptyText: this.emptyTxt,
                     xtype: this.inputType,
+                    values: this.values, // case when we have enum, it needs possible values in order to be displayed
+                    entityId: this.entityId, //case when we have entity relation
                     width: '30%',
                     listeners: {
                     	specialkey: function(field, event) {
