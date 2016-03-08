@@ -269,7 +269,7 @@ Ext.define('console.view.content.search.SearchResults', {
         var parentCmpId = 'backend-viewport';
         var currentToken = Ext.util.History.getToken();
         var href = Ext.isGecko ? record.data._links['self'].href : encodeURIComponent(record.data._links['self'].href);
-        var newToken = encodeURIComponent(parentCmpId) + ':' + encodeURIComponent(record.data.uid) + ":" + encodeURIComponent(this.entity.data.name) + ":" + encodeURIComponent(this.entity.data.id) + ":" + encodeURIComponent(this.entity.data.className) + ":" + href;
+        var newToken = encodeURIComponent(parentCmpId) + ':' + encodeURIComponent(record.data.uid) + ":" + encodeURIComponent(this.entity.data.name) + ":" + encodeURIComponent(this.entity.data.id) + ":" +  encodeURIComponent(this.entity.data.className) + ":" +  encodeURIComponent(record.data.pk) + ":" + href;
 
         if (currentToken === newToken) { //case when we click on a just closed window
             var window = Ext.getCmp(parentCmpId).getWindow(record.data.uid, record.data.catalogVersion);
