@@ -22,8 +22,12 @@ Ext.define('AdminConsole.controller.portlets.SpringBeansPortletController', {
                 self.parseData(json[0]);
             },
             failure: function (responseObject) {
-                var error = Ext.decode(responseObject.responseText);
-                Ext.Msg.alert('Error', 'Error: ' + error);
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: responseObject.responseText,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
             }
         });
     },

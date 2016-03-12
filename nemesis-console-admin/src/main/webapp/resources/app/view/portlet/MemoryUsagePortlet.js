@@ -21,8 +21,13 @@ Ext.define('AdminConsole.view.portlet.MemoryUsagePortlet', {
                 memory = Ext.decode(responseObject.responseText)['mem'];
             },
             failure: function (responseObject) {
-                var error = Ext.decode(responseObject.responseText);
-                Ext.Msg.alert('Error', 'Error: ' + error);
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: responseObject.responseText,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
+
             }
         });
         var generateData = (function () {
@@ -46,8 +51,12 @@ Ext.define('AdminConsole.view.portlet.MemoryUsagePortlet', {
                         });
                     },
                     failure: function (responseObject) {
-                        var error = Ext.decode(responseObject.responseText);
-                        Ext.Msg.alert('Error', 'Error: ' + error);
+                        Ext.MessageBox.show({
+                            title: 'Error',
+                            msg: responseObject.responseText,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR
+                        });
                     }
                 });
 

@@ -125,9 +125,14 @@ Ext.define('AdminConsole.view.portlet.SystemPropertiesPortlet', {
         //             minWidth: 400
         //         });
         //     },
-        //     failure: function(batch, options) {
-        //         var error = Ext.decode(responseObject.responseText);
-        //         Ext.Msg.alert('Error', 'Error: ' + error);
+        //     failure: function(responseObject, options) {
+        //                         Ext.MessageBox.show({
+//                                       title: 'Error',
+//                                       msg: responseObject.responseText,
+//                                       buttons: Ext.MessageBox.OK,
+//                                       icon: Ext.MessageBox.ERROR
+//                                   });
+
         //     }
         // });
     },

@@ -188,9 +188,14 @@ Ext.define('AdminConsole.view.portlet.SystemLoggersPortlet', {
                     minWidth: 400
                 });
             },
-            failure: function (batch, options) {
-                console.log(batch);
-                Ext.Msg.alert("Error", batch.proxy.getReader().jsonData.message);
+            failure: function (responseObject, options) {
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: responseObject.responseText,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
+
             }
         });
     },

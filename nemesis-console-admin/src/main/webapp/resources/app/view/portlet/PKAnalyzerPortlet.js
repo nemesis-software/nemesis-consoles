@@ -35,8 +35,13 @@ Ext.define('AdminConsole.view.portlet.PKAnalyzerPortlet', {
                 Ext.getCmp('pk-input-field').setValue(result);
             },
             failure: function (responseObject) {
-                var error = Ext.decode(responseObject.responseText);
-                Ext.Msg.alert('Error', 'Error: ' + error);
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: responseObject.responseText,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
+
             }
         });
     }
