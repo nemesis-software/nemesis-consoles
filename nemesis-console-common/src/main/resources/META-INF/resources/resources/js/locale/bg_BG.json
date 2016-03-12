@@ -11,6 +11,7 @@
   commercefolder: 'Търговия',
   commercecatalogfolder: 'Каталог',
   cms: 'Съдържание',
+  reportfolder: 'Репорт',
   batch: 'Бач',
   pricefolder: 'Цена',
   orderfolder: 'Поръчки',
@@ -119,6 +120,9 @@
   widget: 'Джиджафки',
   site_theme: 'Теми',
   cronjob: 'Крон задачи',
+  //report
+  report: 'Репорт',
+  report_restriction: 'Репортови Ограничения',
   //settings
   email_message: 'Имейл',
   social_configuration: 'Социална',
@@ -362,12 +366,10 @@
   'Search config': 'Search config',
   'title.name': 'title.name',
   'catalog.name': 'catalog.name',
-
   //CMS Console Translations
   'CMS Console': 'Контент конзола',
   'Configure': 'Конфигурирай',
   'Filter': 'Филтър',
-
   'First Page': 'Първа страница',
   'Next Page': 'Следваща Страница',
   'Last Page': 'Последна Страница',
@@ -378,7 +380,6 @@
   'Displaying {0} - {1} of {2}': 'Показва {0} - {1} of {2}',
   'No data to display': 'Няма данни за показване',
   'Refresh': 'Обнови',
-
   //Menu content
   'Page Templates': 'Шаблони на Страница',
   'Slots For This Page': 'Слотове за тази страница',
@@ -387,11 +388,9 @@
   'Emails': 'Имейли',
   'Pages': 'Страници',
   'No templates available': 'Няма шаблони',
-
   //catalog
   'category': 'Категория',
   'catalog': 'Каталог',
-
   //settings
   'Experience': 'Платформа',
   'Desktop': 'Работен плот',
@@ -404,14 +403,12 @@
   'Cancel': 'Откажи',
   '&#160;': '&#160;',
   'Page: ': 'Страница: ',
-
   'Slots': 'Слотове',
   'System': 'Система',
   'CSS Classes': 'CSS Класове',
   'Label': 'Етикет',
   'Template': 'Шаблон',
   'Save & Close': 'Запази & Затвори',
-
   'No pages available': 'Няма страници',
   'No slots available': 'Няма слотове',
   'No widgets available': 'Няма джиджавки',

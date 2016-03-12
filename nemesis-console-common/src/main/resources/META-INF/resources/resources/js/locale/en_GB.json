@@ -12,6 +12,7 @@
   commercecatalogfolder: 'Catalog',
   commercei18nfolder: 'Internationalization',
   cms: 'CMS',
+  reportfolder: 'Report',
   batch: 'Batch',
   pricefolder: 'Price',
   orderfolder: 'Order',
@@ -119,6 +120,9 @@
   widget: 'Widget',
   site_theme: 'Themes',
   cronjob: 'Cronjob',
+  //report
+  report: 'Report',
+  report_restriction: 'Report Restriction',
   //settings
   email_message: 'Email',
   social_configuration: 'Social',
@@ -154,7 +158,6 @@
   'CMS Console': 'CMS Console',
   'Configure': 'Configure',
   'Filter': 'Filter',
-
   'First Page': 'First Page',
   'Next Page': 'Next Page',
   'Last Page': 'Last Page',
@@ -173,10 +176,8 @@
   'No templates available': 'No templates available',
   'Widgets': 'Widgets',
   'Emails': 'Emails',
-
   'category': 'Category',
   'catalog': 'Catalog',
-
   'Experience': 'Experience',
   'Desktop': 'Desktop',
   'Tablet': 'Tablet',
@@ -191,8 +192,8 @@
   '&#160;': '&#160;',
   'Bulgarian': 'Bulgarian',
   'English': 'English',
-  'English (GB)' : 'English (GB)',
-  'English (US)' : 'English (US)',
+  'English (GB)': 'English (GB)',
+  'English (US)': 'English (US)',
   'German': 'German',
   'French': 'French',
   'Spanish': 'Spanish'

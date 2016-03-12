@@ -12,6 +12,7 @@
   commercecatalogfolder: 'Catalog',
   commercei18nfolder: 'Internationalization',
   cms: 'CMS',
+  reportfolder: 'Report',
   batch: 'Batch',
   pricefolder: 'Price',
   orderfolder: 'Order',
@@ -119,6 +120,9 @@
   widget: 'Widget',
   site_theme: 'Themes',
   cronjob: 'Cronjob',
+  //report
+  report: 'Report',
+  report_restriction: 'Report Restriction',
   //settings
   email_message: 'Email',
   social_configuration: 'Social',
@@ -148,12 +152,10 @@
   'NotNull': 'is not null',
   'IsNotNull': 'is not null',
   'lByCatalogVersion': 'By Catalog Version',
-
   //CMS Console Translations
   'CMS Console': 'CMS Console',
   'Configure': 'Configure',
   'Filter': 'Filter',
-
   'First Page': 'First Page',
   'Next Page': 'Next Page',
   'Last Page': 'Last Page',
@@ -163,7 +165,6 @@
   'of 1': 'of 1',
   'Displaying {0} - {1} of {2}': 'Displaying {0} - {1} of {2}',
   'No data to display': 'No data to display',
-
   'Refresh': 'Refresh',
   'Pages': 'Pages',
   //Menu content
@@ -173,10 +174,8 @@
   'No templates available': 'No templates available',
   'Widgets': 'Widgets',
   'Emails': 'Emails',
-
   'category': 'Category',
   'catalog': 'Catalog',
-
   'Experience': 'Experience',
   'Desktop': 'Desktop',
   'Tablet': 'Tablet',
@@ -189,13 +188,11 @@
   'No': 'No',
   'Cancel': 'Cancel',
   '&#160': '&#160;',
-
   'Page: ': 'Page: ',
   'No pages available': 'No pages available',
   'No slots available': 'No slots available',
   'No widgets available': 'No widgets available',
   'No emails available': 'No emails available',
-
   'Bulgarian': 'Bulgarian',
   'English': 'English',
   'English (US)': 'English (US)',
@@ -203,6 +200,5 @@
   'German': 'German',
   'French': 'French',
   'Spanish': 'Spanish',
-
   '&#160': '&#160'
 }
