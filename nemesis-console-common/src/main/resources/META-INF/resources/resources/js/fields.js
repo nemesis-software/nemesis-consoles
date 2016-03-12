@@ -90,6 +90,56 @@ Ext.define('console.view.field.NemesisColorpickerField', {
     }
 });
 
+//Ext.define('console.view.field.NemesisColorpickerField', {
+//        extend: 'Ext.form.field.Trigger',
+//        alias: 'widget.colorcbo',
+//        triggerTip: 'Please select a color.',
+//        picker: null,
+//        onTriggerClick: function() {
+//                var me = this;
+//                if(!me.picker) {
+//                        me.picker = Ext.create('Ext.picker.Color', {
+//                                pickerField: this,
+//                                ownerCt: this,
+//                                renderTo: document.body,
+//                                floating: true,
+//                                hidden: false,
+//                                focusOnShow: true,
+//                                style: {
+//                                        backgroundColor: "#fff"
+//                                } ,
+//                                listeners: {
+//                                        scope:this,
+//                                        select: function(field, value, opts){
+//                                                me.setValue('#' + value);
+//                                                me.inputEl.setStyle({backgroundColor:value});
+//                                                me.picker.hide();
+//                                        },
+//                                        show: function(field,opts){
+//                                                field.getEl().monitorMouseLeave(500, field.hide, field);
+//                                        },
+//                                }
+//                        });
+//                        me.picker.alignTo(me.inputEl, 'tl-bl?');
+//                        me.picker.show(me.inputEl);
+//                }
+//                else {
+//                        if(me.picker.hidden) {
+//                                me.picker.show();
+//                        }
+//                        else {
+//                                me.picker.hide();
+//                        }
+//                }
+//        },
+//});
+
+
+
+
+
+
+
 
 //Ext.define('console.view.field.NemesisColorpickerField', {
 //    extend: 'Ext.ux.colorpick.Field',
@@ -589,7 +639,12 @@ Ext.define('console.view.field.NemesisEntityField', {
                         Ext.getCmp('backend-viewport').restoreWindow(win);
                     },
                     failure: function (responseObject) {
-                        Ext.Msg.alert('Error', 'Error: ' + responseObject.responseText);
+                        Ext.MessageBox.show({
+                            title: 'Error',
+                            msg: responseObject.responseText,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR
+                        });
                     }
                 });
 
@@ -781,6 +836,7 @@ Ext.define('console.view.field.NemesisMediaField', {
     dirtyCls: 'dirty',
     tooltip: 'This is media',
     labelWidth: 50,
+    minWidth: 150,
     colspan: 2,
     layout: {
         type: 'fit',
