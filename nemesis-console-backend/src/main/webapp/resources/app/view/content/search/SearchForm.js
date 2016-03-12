@@ -167,8 +167,12 @@ Ext.define('console.view.content.search.SearchForm', function () {
                     }
                 },
                 failure: function (responseObject) {
-                    var error = Ext.decode(responseObject.responseText);
-                    Ext.Msg.alert('Error', 'Error: ' + error.message);
+                    Ext.MessageBox.show({
+                        title: 'Error',
+                        msg: responseObject.responseText,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });
                 }
             });*/
 
