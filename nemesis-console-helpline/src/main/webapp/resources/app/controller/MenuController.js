@@ -31,7 +31,12 @@ Ext.define('HelplineConsole.controller.MenuController', {
 				self.createUserPopup(json);
 			},
 			failure: function(responseObject) {
-				Ext.Msg.alert('Error', 'Error: ' + responseObject.responseText);
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: responseObject.responseText,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
 			}
 		});
 	},
@@ -47,7 +52,12 @@ Ext.define('HelplineConsole.controller.MenuController', {
 				self.createOrderPopup(json);
 			},
 			failure: function(responseObject) {
-				Ext.Msg.alert('Error', 'Error: ' + responseObject.responseText);
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: responseObject.responseText,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
 			}
 		});
 	},
