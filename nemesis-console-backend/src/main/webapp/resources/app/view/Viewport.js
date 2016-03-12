@@ -119,7 +119,12 @@ Ext.define('console.view.Viewport', {
 
     createWindow: function (config) {
         var me = this;
-        var win = Ext.create('console.view.content.EntityPopupWindow', {config: config});
+        if (config.chartType) {
+            var win = Ext.create('console.view.content.ChartPopupWindow', {config: config});
+        } else {
+            var win = Ext.create('console.view.content.EntityPopupWindow', {config: config});
+        }
+
         me.windows.add(win);
         win.taskButton = Ext.getCmp('taskbar').addTaskButton(win);
         win.animateTarget = win.taskButton.el;
