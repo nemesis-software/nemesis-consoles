@@ -20,6 +20,111 @@ Ext.define('console.model.Language', {
     ]
 });
 
+Ext.define('console.view.content.ChartPopupWindow', {
+    extend: 'Ext.window.Window',
+    xtype: 'chartPopupWindow',
+    stateful: false,
+    isWindow: true,
+    constrainHeader: true,
+    minimizable: true,
+    maximizable: true,
+    animCollapse: false,
+    border: false,
+    layout: 'fit',
+    config: null,
+    initComponent: function () {
+
+        var me = this;
+        me.title = me.config.name;
+        console.log(me.config);
+
+
+        me.myDataStore = new Ext.data.Store({
+            fields: ['key', 'value' ],
+            proxy: {
+                type: 'ajax',
+                url: 'http://solar.local:8111/storefront/en/US/api/report/chart/' + me.config.pk ,
+                reader: {
+                    root: 'data',
+                    type: 'json'
+                }
+            },
+            autoLoad: true
+        });
+
+        this.items =
+        [{
+             xtype: 'cartesian',
+             width: me.config.height,
+             height: me.config.width,
+             animate: true,
+             store: this.myDataStore,
+             innerPadding: 50,
+             insetPadding: 40,
+             legend: {
+                 docked: 'bottom'
+             },
+             sprites: [{
+                 type: 'text',
+                 text: me.config.name,
+                 font: '22px Helvetica',
+                 width: 100,
+                 height: 30,
+                 x: 40, // the sprite x position
+                 y: 20  // the sprite y position
+             }, {
+                 type: 'text',
+                 text: me.config.description,
+                 font: '10px Helvetica',
+                 x: 12,
+                 y: 680
+             }],
+             axes: [{
+                 type: 'numeric',
+                 position: 'left',
+                 grid: true,
+                 fields: ['value'],
+                 renderer: function (v) { return v + '%'; },
+                 minimum: 0,
+                 maximum: 100
+             }, {
+                 type: 'category',
+                 position: 'bottom',
+                 grid: true,
+                 fields: ['key'],
+                 label: {
+                     rotate: {
+                         degrees: -45
+                     }
+                 }
+             }],
+             series: [{
+                 type: me.config.chartType.toLowerCase(),
+                 axis: 'left',
+                 xField: 'key',
+                 yField: 'value',
+                 style: {
+                     opacity: 0.80
+                 },
+                 highlight: {
+                     fillStyle: '#000',
+                     lineWidth: 2,
+                     strokeStyle: '#fff'
+                 },
+                 tooltip: {
+                     trackMouse: true,
+                     style: 'background: #fff',
+                     renderer: function(storeItem, item) {
+                         this.setHtml(storeItem.get('key') + ': ' + storeItem.get('value') + ' %');
+                     }
+                 }
+             }]
+         }];
+
+        this.callParent();
+    }
+})
+
 // Views
 Ext.define('console.view.content.EntityPopupWindow', {
     extend: 'Ext.window.Window',
@@ -127,7 +232,12 @@ Ext.define('console.view.content.entity.EntityPopupForm', {
                             me.populateForm(me.convertResult(result));
                         },
                         failure: function (responseObject) {
-                            Ext.Msg.alert('Error', 'Error: ' + responseObject.responseText);
+                            Ext.MessageBox.show({
+                                title: 'Error',
+                                msg: responseObject.responseText,
+                                buttons: Ext.MessageBox.OK,
+                                icon: Ext.MessageBox.ERROR
+                            });
                         }
                     });
                 } else {
@@ -245,7 +355,6 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                             me.entityPopupForm.populateForm(result);
                         },
                         failure: function (responseObject) {
-                            Ext.Msg.alert('Error', 'Error: ' + responseObject.responseText);
                             Ext.MessageBox.show({
                                 title: 'Error',
                                 msg: responseObject.responseText,
@@ -281,7 +390,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                             me.up().up().setLoading(false);
                             //Ext.MessageBox.alert('Status', 'Synchronizing was successfully.');
                             Ext.toast({
-                                html: 'Synchronizing was successfull!',
+                                html: 'Synchronizing was successful!',
                                 closable: false,
                                 align: 't',
                                 slideInDuration: 400,
@@ -291,6 +400,34 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                         },
                         failure: function (responseObject) {
                             me.up().up().setLoading(false);
+                            Ext.MessageBox.show({
+                                title: 'Error',
+                                msg: responseObject.responseText,
+                                buttons: Ext.MessageBox.OK,
+                                icon: Ext.MessageBox.ERROR
+                            });
+                        }
+                    });
+                }
+            },
+            {
+                text: 'Generate',
+                cls: 'generate-report-btn',
+                iconCls: 'synchronize',
+                handler: function () {
+                    Ext.Ajax.request({
+                        url: me.entity.data.url,
+                        method: 'GET',
+                        params: {},
+                        success: function (responseObject) {
+                            var result = Ext.decode(responseObject.responseText);
+
+                            console.log(result);
+
+                            var window = Ext.getCmp('backend-viewport').createWindow(result);
+                            Ext.getCmp('backend-viewport').restoreWindow(window);
+                        },
+                        failure: function (responseObject) {
                             Ext.MessageBox.show({
                                 title: 'Error',
                                 msg: responseObject.responseText,
@@ -345,7 +482,12 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
         	req.onreadystatechange = function() {
         		 if (req.readyState == 4 && req.status >= 400) {
         			 req.hasError = true;
-        			  Ext.Msg.alert('Error', translate('There was problem uploading file.'));
+                     Ext.MessageBox.show({
+                         title: 'Error',
+                         msg: 'There was problem uploading the file.',
+                         buttons: Ext.MessageBox.OK,
+                         icon: Ext.MessageBox.ERROR
+                     });
         		 }
         	}
         	entityPopupForm.up().getEl().mask("Uploading file ...");
@@ -423,7 +565,12 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                 });
             },
             failure: function (responseObject) {
-                Ext.Msg.alert('Error', responseObject.statusText);
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: responseObject.responseText,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
             }
         });
         if(Ext.get('website-iframe')){ //we have an website as an iframe, then refresh
