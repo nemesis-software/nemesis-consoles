@@ -17,6 +17,12 @@
     <script type="text/javascript"
             src="webjars/extjs/5.1.1-light/build/packages/ext-locale/build/ext-locale-${currentLocale}.js"></script>
 
+
+    <script type="text/javascript" src="webjars/extjs/5.1.1-light/build/packages/sencha-charts/build/sencha-charts.js"></script>
+    <link type="text/css" href="webjars/extjs/5.1.1-light/build/packages/sencha-charts/build/classic/resources/sencha-charts-all.css">
+
+
+
     <script type="text/javascript" src="resources/js/fields.js"></script>
     <script type="text/javascript" src="resources/js/entity.js"></script>
     <script type="text/javascript" src="resources/js/translate.js"></script>
@@ -29,6 +35,7 @@
     <link rel="stylesheet" type="text/css" href="resources/css/console.css"/>
 </head>
 <body>
+<div id="website-base-url" style="display:none" url="${websiteBaseUrl}"></div>
 <div id="rest-base-url" style="display:none" url="${restBaseUrl}" locale="${currentLocale}"></div>
 <div id="contextPath" style="display:none"
      ctxPath="${pageContext.request.contextPath}">${pageContext.request.contextPath}</div>
