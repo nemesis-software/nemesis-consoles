@@ -587,6 +587,14 @@
     background-image: url(images/promotion_result.png);
 }
 
+.report {
+    background-image: url(images/report.png);
+}
+
+.report_restriction {
+    background-image: url(images/restriction.png);
+}
+
 .cronjob {
     background-image: url(images/cronjob.png);
 }
