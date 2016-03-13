@@ -414,6 +414,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                 text: 'Generate',
                 cls: 'generate-report-btn',
                 iconCls: 'synchronize',
+                hidden: true,
                 handler: function () {
                     Ext.Ajax.request({
                         url: me.entity.data.url,
