@@ -14,33 +14,31 @@ package com.nemesis.console.common;
 import com.nemesis.platform.util.test.IntegrationTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.experimental.categories.Category;
 import org.junit.rules.MethodRule;
 import org.junit.rules.TestName;
+import org.junit.runner.RunWith;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AbstractTestExecutionListener;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Base selenium tests for all consoles.
@@ -48,14 +46,17 @@ import java.util.concurrent.TimeUnit;
  * @author Petar Tahchiev
  * @since 0.6
  */
+@WebIntegrationTest
+@RunWith(SpringJUnit4ClassRunner.class)
 @Category(value = IntegrationTest.class)
-public abstract class AbstractCommonConsoleSeleniumInterationTest {
+public abstract class AbstractCommonConsoleSeleniumIntegrationTest extends AbstractTestExecutionListener {
 
     protected final Logger LOG = LogManager.getLogger(getClass());
 
-    protected static RemoteWebDriver webDriver;
+    @Autowired
+    protected RemoteWebDriver webDriver;
 
-    protected static WebDriverWait wait;
+    protected WebDriverWait wait;
 
     @Rule
     public TestName testName = new TestName();
@@ -63,29 +64,7 @@ public abstract class AbstractCommonConsoleSeleniumInterationTest {
     @Rule
     public ScreenshotOnFailTestRule screenshotTestRule = new ScreenshotOnFailTestRule();
 
-    public static void setUpClass() throws Exception {
-        DesiredCapabilities capabilities = DesiredCapabilities.firefox();
-        capabilities.setJavascriptEnabled(true);
-        capabilities.setCapability("acceptSslCerts", true);
-        final FirefoxProfile firefoxProfile = new FirefoxProfile();
-        firefoxProfile.setPreference("xpinstall.signatures.required", false);
-        capabilities.setCapability(FirefoxDriver.PROFILE, firefoxProfile);
-        webDriver = new FirefoxDriver(capabilities);
-        webDriver.manage().window().maximize();
-        //workaround to wait when some element is not visible instead of calling implicitly wait on 1000 places.
-        webDriver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-        wait = new WebDriverWait(getWebDriver(), 15, 200);
-    }
-
-    @Before
-    public void setUp() {
-        LOG.info(testName.getMethodName());
-        waitForDom();
-        waitForLoad();
-        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
-    }
-
-    protected abstract void tearDown();
+    public abstract void tearDown();
 
     class ScreenshotOnFailTestRule implements MethodRule {
         public Statement apply(final Statement statement, final FrameworkMethod frameworkMethod, final Object o) {
@@ -95,6 +74,7 @@ public abstract class AbstractCommonConsoleSeleniumInterationTest {
                     try {
                         statement.evaluate();
                     } catch (Throwable t) {
+                        LOG.error(t.getMessage(), t);
                         takeScreenshot(frameworkMethod.getName());
                         throw t; // rethrow to allow the failure to be reported to JUnit
                     } finally {
@@ -140,19 +120,19 @@ public abstract class AbstractCommonConsoleSeleniumInterationTest {
         }
     }
 
-    public static RemoteWebDriver getWebDriver() {
+    public RemoteWebDriver getWebDriver() {
         return webDriver;
     }
 
-    public static WebDriverWait getWait() {
+    public WebDriverWait getWait() {
         return wait;
     }
 
-    protected static void waitForDom() {
+    protected void waitForDom() {
         getWebDriver().executeScript("Ext.onReady(function () {});");
     }
 
-    protected static void waitForLoad() {
+    protected void waitForLoad() {
         ExpectedCondition<Boolean> pageLoadCondition = driver -> ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
         WebDriverWait wait = new WebDriverWait(getWebDriver(), 30);
         wait.until(pageLoadCondition);

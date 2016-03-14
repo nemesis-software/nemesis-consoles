@@ -12,6 +12,8 @@
 package com.nemesis.platform.console.admin.config;
 
 import com.nemesis.platform.consoles.common.core.CommonConsoleConfig;
+import com.nemesis.platform.consoles.common.core.ConsoleProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +32,7 @@ import javax.annotation.Resource;
 @EnableWebSecurity
 @ComponentScan(basePackages = { "com.nemesis.platform.console.admin", "com.nemesis.platform.util" })
 @Import(value = CommonConsoleConfig.class)
+@EnableConfigurationProperties(ConsoleProperties.class)
 @EnableGlobalMethodSecurity(prePostEnabled = true, mode = AdviceMode.PROXY)
 public class AdminConsoleConfig extends WebSecurityConfigurerAdapter {
 

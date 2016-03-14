@@ -11,21 +11,28 @@
  */
 package com.nemesis.platform.console.cms;
 
-import com.nemesis.console.common.AbstractCommonConsoleSeleniumInterationTest;
-import org.junit.AfterClass;
+import com.nemesis.console.cms.CmsConsoleApplication;
+import com.nemesis.console.common.AbstractCommonConsoleSeleniumIntegrationTest;
+import com.nemesis.console.common.CommonConsoleTestConfig;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.TestContext;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * A selenium test-case for the cms console.
@@ -33,11 +40,15 @@ import static org.junit.Assert.*;
  * @author Petar Tahchiev
  * @since 0.6
  */
-public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSeleniumInterationTest {
+@TestExecutionListeners(listeners = { CmsConsoleSeleniumIntegrationTest.class, DependencyInjectionTestExecutionListener.class })
+@SpringApplicationConfiguration(classes = { CommonConsoleTestConfig.class, CmsConsoleApplication.class })
+public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSeleniumIntegrationTest {
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-        AbstractCommonConsoleSeleniumInterationTest.setUpClass();
+    @Override
+    public void beforeTestClass(TestContext testContext) throws Exception {
+
+        super.webDriver = testContext.getApplicationContext().getBean(RemoteWebDriver.class);
+
         getWebDriver().manage().window().maximize();
         getWebDriver().get("http://localhost:8080/cms");
 
@@ -54,17 +65,28 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
 
         assertEquals("cms console | nemesis", getWebDriver().getTitle().toLowerCase());
 
+        super.wait = new WebDriverWait(getWebDriver(), 15, 200);
         waitForDom();
         waitForLoad();
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
+    }
+
+    @Override
+    public void afterTestClass(TestContext testContext) throws Exception {
+        super.webDriver = testContext.getApplicationContext().getBean(RemoteWebDriver.class);
+        getWebDriver().findElementById("app-header-logout").click();
+        assertEquals("Login Page", getWebDriver().getTitle());
+
+        getWebDriver().quit();
     }
 
     @Before
-    @Override
     public void setUp() {
-        super.setUp();
-        getWait().until(ExpectedConditions.not(input -> getWebDriver().executeScript("return Ext.Ajax.isLoading();")));
-        getWait().until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.id("website-iframe")));
-        getWebDriver().switchTo().parentFrame();
+        LOG.info(testName.getMethodName());
+        super.wait = new WebDriverWait(getWebDriver(), 15, 200);
+        waitForDom();
+        waitForLoad();
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
     }
 
     @Override
@@ -74,15 +96,6 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
         } catch (NoSuchElementException nsex) {
             //ignored
         }
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-        getWebDriver().findElementById("app-header-logout").click();
-        Thread.sleep(500);
-        assertEquals("Login Page", getWebDriver().getTitle());
-
-        getWebDriver().quit();
     }
 
     @Test
@@ -148,10 +161,10 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
     @Test
     public void testChangeSiteAndAutoSelectCorrespondingCatalogs() {
         getWebDriver().executeScript("var c = Ext.getCmp('site-combo'), " +
-                                         "store = c.getStore()," +
-                                         "record = store.findRecord('uid', 'nemesis');" +
-                                         "c.setValue(record.get('pk')); " +
-                                         "c.fireEvent('change', c, record.get('pk'));" );
+                                                     "store = c.getStore()," +
+                                                     "record = store.findRecord('uid', 'nemesis');" +
+                                                     "c.setValue(record.get('pk')); " +
+                                                     "c.fireEvent('change', c, record.get('pk'));");
 
         // Waiting for Catalogs Combo change listeners to be called and change the iframe url.
         getWait().until((WebDriver input) -> input.findElement(By.id("website-iframe")).getAttribute("src").endsWith("catalogs=nemesisContent"));

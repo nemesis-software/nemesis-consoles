@@ -11,13 +11,14 @@
  */
 package com.nemesis.console.backend.storefront;
 
+import com.nemesis.platform.consoles.common.core.ConsoleProperties;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -27,15 +28,12 @@ import java.net.URLConnection;
 @Controller
 public class BackendConsoleController {
 
-    @Resource(name = "websiteBaseUrl")
-    private String websiteBaseUrl;
-
-    @Resource(name = "restBaseUrl")
-    private String restBaseUrl;
+    @Autowired
+    private ConsoleProperties consoleProperties;
 
     @RequestMapping(value = { "/", "/console" }, method = RequestMethod.GET)
     public String home(final Model model, final HttpServletRequest request) {
-        model.addAttribute("restBaseUrl", restBaseUrl);
+        model.addAttribute("restBaseUrl", consoleProperties.getRestBaseUrl());
         return "index";
     }
 
@@ -46,8 +44,8 @@ public class BackendConsoleController {
 
     @RequestMapping(value = { "/media/**" }, method = RequestMethod.GET)
     public void media(final HttpServletRequest request, HttpServletResponse response) throws IOException {
-        StringBuilder stringUrl = new StringBuilder(websiteBaseUrl);
-        if (!websiteBaseUrl.endsWith("/")) {
+        StringBuilder stringUrl = new StringBuilder(consoleProperties.getWebsiteBaseUrl());
+        if (!consoleProperties.getWebsiteBaseUrl().endsWith("/")) {
             stringUrl.append("/");
         }
 
@@ -55,7 +53,6 @@ public class BackendConsoleController {
                         request.getRequestURI().substring(request.getRequestURI().indexOf(request.getContextPath()) + request.getContextPath().length() + 1);
 
         stringUrl.append(mediaUrl);
-
 
         final URL url = new URL(stringUrl.toString());
         final URLConnection uc = url.openConnection();

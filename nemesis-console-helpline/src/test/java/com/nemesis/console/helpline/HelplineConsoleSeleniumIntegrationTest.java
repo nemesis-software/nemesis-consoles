@@ -11,15 +11,20 @@
  */
 package com.nemesis.console.helpline;
 
-import com.nemesis.console.common.AbstractCommonConsoleSeleniumInterationTest;
-import org.junit.AfterClass;
+import com.nemesis.console.common.AbstractCommonConsoleSeleniumIntegrationTest;
+import com.nemesis.console.common.CommonConsoleTestConfig;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.TestContext;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -31,11 +36,15 @@ import static org.junit.Assert.assertTrue;
  * @author Petar Tahchiev
  * @since 0.6
  */
-public class HelplineConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSeleniumInterationTest {
+@TestExecutionListeners(listeners = { HelplineConsoleSeleniumIntegrationTest.class, DependencyInjectionTestExecutionListener.class })
+@SpringApplicationConfiguration(classes = { CommonConsoleTestConfig.class, HelplineConsoleApplication.class })
+public class HelplineConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSeleniumIntegrationTest {
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-        AbstractCommonConsoleSeleniumInterationTest.setUpClass();
+    @Override
+    public void beforeTestClass(TestContext testContext) throws Exception {
+
+        super.webDriver = testContext.getApplicationContext().getBean(RemoteWebDriver.class);
+
         getWebDriver().manage().window().maximize();
         getWebDriver().get("http://localhost:8080/helpline");
 
@@ -52,29 +61,37 @@ public class HelplineConsoleSeleniumIntegrationTest extends AbstractCommonConsol
 
         assertEquals("helpline console | nemesis", getWebDriver().getTitle().toLowerCase());
 
-        waitForDom();
-        waitForLoad();
-    }
-
-    @Before
-    public void setUp() {
+        super.wait = new WebDriverWait(getWebDriver(), 15, 200);
         waitForDom();
         waitForLoad();
         getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
     }
 
     @Override
-    protected void tearDown() {
-
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
+    public void afterTestClass(TestContext testContext) throws Exception {
+        super.webDriver = testContext.getApplicationContext().getBean(RemoteWebDriver.class);
         getWebDriver().findElementById("app-header-logout").click();
-        Thread.sleep(500);
         assertEquals("Login Page", getWebDriver().getTitle());
 
         getWebDriver().quit();
+    }
+
+    @Before
+    public void setUp() {
+        LOG.info(testName.getMethodName());
+        super.wait = new WebDriverWait(getWebDriver(), 15, 200);
+        waitForDom();
+        waitForLoad();
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
+    }
+
+    @Override
+    public void tearDown() {
+        try {
+            getWebDriver().findElementByCssSelector("div[id^='w_id_'].x-window img.x-tool-close").click();
+        } catch (NoSuchElementException nsex) {
+            //ignored
+        }
     }
 
     @Test

@@ -9,7 +9,7 @@
  * Information and shall use it only in accordance with the terms of the
  * license agreement you entered into with nemesis.
  */
-package com.nemesis.console.backend.config;
+package com.nemesis.console.cms.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -22,8 +22,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackages = { "com.nemesis.console.backend.storefront" })
-public class BackendConsoleMVCConfig extends WebMvcConfigurerAdapter {
+@ComponentScan(basePackages = { "com.nemesis.console.cms.storefront" })
+public class CmsConsoleMvcConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

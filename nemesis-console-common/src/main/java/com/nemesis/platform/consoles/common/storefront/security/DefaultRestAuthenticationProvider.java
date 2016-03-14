@@ -37,7 +37,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.AuthorityUtils;
 
-import javax.annotation.Resource;
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -46,14 +45,18 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * @version $Id$
+ * @author Petar Tahchiev
+ * @since 0.6
  */
 public class DefaultRestAuthenticationProvider implements AuthenticationProvider {
 
     protected final Logger LOG = LogManager.getLogger(getClass());
 
-    @Resource(name = "restBaseUrl")
     private String restBaseUrl;
+
+    public DefaultRestAuthenticationProvider(final String restBaseUrl) {
+        this.restBaseUrl = restBaseUrl;
+    }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -73,9 +76,9 @@ public class DefaultRestAuthenticationProvider implements AuthenticationProvider
             /**
              * It can't be POST because the CSRF is triggered.
              */
-            HttpGet httpGet = new HttpGet(getRestBaseUrl() + "auth");
+            HttpGet httpGet = new HttpGet(restBaseUrl + "auth");
 
-            LOG.debug("Calling: " + getRestBaseUrl() + "auth");
+            LOG.debug("Calling: " + restBaseUrl + "auth");
 
             httpGet.setHeader("X-Nemesis-Username", username);
             httpGet.setHeader("X-Nemesis-Password", password);
@@ -106,15 +109,5 @@ public class DefaultRestAuthenticationProvider implements AuthenticationProvider
     @Override
     public boolean supports(Class<?> aClass) {
         return true;
-    }
-
-    /* getters/setters */
-
-    public String getRestBaseUrl() {
-        return restBaseUrl;
-    }
-
-    public void setRestBaseUrl(String restBaseUrl) {
-        this.restBaseUrl = restBaseUrl;
     }
 }

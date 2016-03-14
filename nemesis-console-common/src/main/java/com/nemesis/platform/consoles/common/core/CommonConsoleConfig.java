@@ -11,11 +11,11 @@
  */
 package com.nemesis.platform.consoles.common.core;
 
+import com.nemesis.platform.consoles.common.storefront.SessionTimeoutCookieFilter;
 import com.nemesis.platform.consoles.common.storefront.security.DefaultRestAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jndi.JndiObjectFactoryBean;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -36,7 +36,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @version $Id$
+ * @author Petar Tahchiev
+ * @since 0.6
  */
 @Configuration
 public class CommonConsoleConfig {
@@ -69,29 +70,17 @@ public class CommonConsoleConfig {
     }
 
     @Bean(name = { "defaultAuthenticationManager", "authenticationManager" })
-    public AuthenticationManager defaultAuthenticationManager() throws Exception {
-        return new AuthenticationManagerBuilder(opp).authenticationProvider(defaultRestAuthenticationProvider()).build();
+    public AuthenticationManager defaultAuthenticationManager(AuthenticationProvider restAuthenticationProvider) throws Exception {
+        return new AuthenticationManagerBuilder(opp).authenticationProvider(restAuthenticationProvider).build();
     }
 
     @Bean(name = { "defaultRestAuthenticationProvider", "restAuthenticationProvider" })
-    public AuthenticationProvider defaultRestAuthenticationProvider() throws NamingException {
-        DefaultRestAuthenticationProvider result = new DefaultRestAuthenticationProvider();
-        result.setRestBaseUrl((String) restBaseUrl().getObject());
-
-        return result;
+    public AuthenticationProvider defaultRestAuthenticationProvider(final ConsoleProperties consoleProperties) throws NamingException {
+        return new DefaultRestAuthenticationProvider(consoleProperties.getRestBaseUrl());
     }
 
-    @Bean(name = "websiteBaseUrl")
-    public JndiObjectFactoryBean websiteBaseUrl() throws NamingException {
-        JndiObjectFactoryBean jofb = new JndiObjectFactoryBean();
-        jofb.setJndiName("java:comp/env/websiteBaseUrl");
-        return jofb;
-    }
-
-    @Bean(name = "restBaseUrl")
-    public JndiObjectFactoryBean restBaseUrl() throws NamingException {
-        JndiObjectFactoryBean jofb = new JndiObjectFactoryBean();
-        jofb.setJndiName("java:comp/env/restBaseUrl");
-        return jofb;
+    @Bean
+    public SessionTimeoutCookieFilter defaultSessionTimeoutCookieFilter() {
+        return new SessionTimeoutCookieFilter();
     }
 }

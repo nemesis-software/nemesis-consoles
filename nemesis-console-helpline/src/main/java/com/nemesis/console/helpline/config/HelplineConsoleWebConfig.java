@@ -34,7 +34,7 @@ public class HelplineConsoleWebConfig implements WebApplicationInitializer {
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         AnnotationConfigWebApplicationContext webCtx = new AnnotationConfigWebApplicationContext();
-        webCtx.register(HelplineConsoleMVCConfig.class);
+        webCtx.register(HelplineConsoleMvcConfig.class);
         webCtx.register(HelplineConsoleConfig.class);
 
 

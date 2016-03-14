@@ -9,11 +9,13 @@
  * Information and shall use it only in accordance with the terms of the
  * license agreement you entered into with nemesis.
  */
-package com.nemesis.console.cms.config;
+package com.nemesis.platform.console.admin.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -22,15 +24,20 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackages = { "com.nemesis.console.cms.storefront" })
-public class CMSConsoleMVCConfig extends WebMvcConfigurerAdapter {
+@ComponentScan(basePackages = { "com.nemesis.platform.console.admin.storefront" })
+public class AdminConsoleMvcConfig extends WebMvcConfigurerAdapter {
+
+    @Bean
+    public MultipartResolver multipartResolver() {
+        return new CommonsMultipartResolver();
+    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(31556926);
-        registry.addResourceHandler("/webjars/**").addResourceLocations("/webjars/");
         registry.addResourceHandler("/favicon.ico").addResourceLocations("/");
         registry.addResourceHandler("/robots.txt").addResourceLocations("/");
+        registry.addResourceHandler("/webjars/**").addResourceLocations("/webjars/");
     }
 
     @Bean(name = { "defaultViewResolver", "viewResolver" })
@@ -44,3 +51,4 @@ public class CMSConsoleMVCConfig extends WebMvcConfigurerAdapter {
         return viewResolver;
     }
 }
+

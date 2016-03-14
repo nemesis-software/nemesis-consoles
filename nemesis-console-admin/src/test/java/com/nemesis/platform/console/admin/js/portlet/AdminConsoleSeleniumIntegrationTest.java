@@ -11,16 +11,22 @@
  */
 package com.nemesis.platform.console.admin.js.portlet;
 
-import com.nemesis.console.common.AbstractCommonConsoleSeleniumInterationTest;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import com.nemesis.console.common.AbstractCommonConsoleSeleniumIntegrationTest;
+import com.nemesis.console.common.CommonConsoleTestConfig;
+import com.nemesis.platform.console.admin.AdminConsoleApplication;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.TestContext;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import java.util.List;
 
@@ -31,13 +37,18 @@ import static org.junit.Assert.assertTrue;
 /**
  * Master selenium test-case for the admin console.
  *
- * @version $Id$
+ * @author Petar Tahchiev
+ * @since 0.6
  */
-public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSeleniumInterationTest {
+@TestExecutionListeners(listeners = { AdminConsoleSeleniumIntegrationTest.class, DependencyInjectionTestExecutionListener.class })
+@SpringApplicationConfiguration(classes = { CommonConsoleTestConfig.class, AdminConsoleApplication.class })
+public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSeleniumIntegrationTest {
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-        AbstractCommonConsoleSeleniumInterationTest.setUpClass();
+    @Override
+    public void beforeTestClass(TestContext testContext) throws Exception {
+
+        super.webDriver = testContext.getApplicationContext().getBean(RemoteWebDriver.class);
+
         getWebDriver().manage().window().maximize();
         getWebDriver().get("http://localhost:8080/admin");
 
@@ -54,22 +65,28 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
 
         assertEquals("admin console | nemesis", getWebDriver().getTitle().toLowerCase());
 
+        super.wait = new WebDriverWait(getWebDriver(), 15, 200);
         waitForDom();
         waitForLoad();
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
     }
 
     @Override
-    protected void tearDown() {
-
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
+    public void afterTestClass(TestContext testContext) throws Exception {
+        super.webDriver = testContext.getApplicationContext().getBean(RemoteWebDriver.class);
         getWebDriver().findElementById("app-header-logout").click();
-        Thread.sleep(500);
         assertEquals("Login Page", getWebDriver().getTitle());
 
         getWebDriver().quit();
+    }
+
+    @Before
+    public void setUp() {
+        LOG.info(testName.getMethodName());
+        super.wait = new WebDriverWait(getWebDriver(), 15, 200);
+        waitForDom();
+        waitForLoad();
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
     }
 
     @Test
@@ -279,5 +296,10 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
         getWebDriver().findElementById("dropDownMenu").click();
         getWebDriver().findElementById("platformTestsPortletBtn").click();
         Thread.sleep(500);
+    }
+
+    @Override
+    public void tearDown() {
+
     }
 }

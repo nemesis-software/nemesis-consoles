@@ -9,41 +9,28 @@
  * Information and shall use it only in accordance with the terms of the
  * license agreement you entered into with nemesis.
  */
-package com.nemesis.platform.console.admin.config;
+package com.nemesis.console.helpline.config;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import javax.annotation.Resource;
-
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackages = { "com.nemesis.platform.console.admin.storefront" })
-public class AdminConsoleMVCConfig extends WebMvcConfigurerAdapter {
-
-    @Resource
-    public ApplicationContext context;
-
-    @Bean
-    public MultipartResolver multipartResolver() {
-        return new CommonsMultipartResolver();
-    }
+@ComponentScan(basePackages = { "com.nemesis.console.helpline.storefront" })
+public class HelplineConsoleMvcConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(31556926);
+        registry.addResourceHandler("/webjars/**").addResourceLocations("/webjars/");
         registry.addResourceHandler("/favicon.ico").addResourceLocations("/");
         registry.addResourceHandler("/robots.txt").addResourceLocations("/");
-        registry.addResourceHandler("/webjars/**").addResourceLocations("/webjars/");
     }
 
     @Bean(name = { "defaultViewResolver", "viewResolver" })
@@ -57,4 +44,3 @@ public class AdminConsoleMVCConfig extends WebMvcConfigurerAdapter {
         return viewResolver;
     }
 }
-

@@ -12,6 +12,7 @@
 package com.nemesis.platform.console.admin.storefront.controller;
 
 import com.nemesis.platform.console.admin.storefront.UploadFileData;
+import com.nemesis.platform.consoles.common.core.ConsoleProperties;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -25,6 +26,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,7 +36,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,16 +47,13 @@ public class AdminConsoleController {
 
     protected final Logger LOG = LogManager.getLogger(getClass());
 
-    @Resource(name = "restBaseUrl")
-    private String restBaseUrl;
-
-    @Resource(name = "websiteBaseUrl")
-    private String websiteBaseUrl;
+    @Autowired
+    private ConsoleProperties consoleProperties;
 
     @RequestMapping(value = { "/", "/console" }, method = RequestMethod.GET)
     public String home(final Model model, final HttpServletRequest request) {
-        model.addAttribute("restBaseUrl", restBaseUrl);
-        model.addAttribute("websiteBaseUrl", websiteBaseUrl);
+        model.addAttribute("restBaseUrl", consoleProperties.getRestBaseUrl());
+        model.addAttribute("websiteBaseUrl", consoleProperties.getWebsiteBaseUrl());
         return "index";
     }
 
@@ -66,7 +64,8 @@ public class AdminConsoleController {
 
     @ResponseBody
     @RequestMapping(value = { "/upload", "/console/upload" }, method = RequestMethod.POST, produces = "application/json")
-    public String fileUploaded(@ModelAttribute("uploadedFile") final UploadFileData uploadedFile, final BindingResult result) throws ClientProtocolException, IOException {
+    public String fileUploaded(@ModelAttribute("uploadedFile") final UploadFileData uploadedFile, final BindingResult result)
+                    throws ClientProtocolException, IOException {
 
         String res = "success";
 
@@ -91,7 +90,7 @@ public class AdminConsoleController {
 
         final CloseableHttpClient httpclient = HttpClientBuilder.create().build();
 
-        final HttpPost httpost = new HttpPost(restBaseUrl + "/platform/content");
+        final HttpPost httpost = new HttpPost(consoleProperties.getRestBaseUrl() + "/platform/content");
         final List<NameValuePair> nvps = new ArrayList<>();
         nvps.add(new BasicNameValuePair("content", csvContent));
         nvps.add(new BasicNameValuePair("validate", "false"));

@@ -11,9 +11,9 @@
  */
 package com.nemesis.console.backend;
 
-import com.nemesis.console.common.AbstractCommonConsoleSeleniumInterationTest;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import com.nemesis.console.common.AbstractCommonConsoleSeleniumIntegrationTest;
+import com.nemesis.console.common.CommonConsoleTestConfig;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -21,8 +21,13 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.TestContext;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,11 +47,15 @@ import static org.junit.Assert.assertTrue;
  * @author Petar Tahchiev
  * @since 0.6
  */
-public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSeleniumInterationTest {
+@TestExecutionListeners(listeners = { BackendConsoleSeleniumIntegrationTest.class, DependencyInjectionTestExecutionListener.class })
+@SpringApplicationConfiguration(classes = { CommonConsoleTestConfig.class, BackendConsoleApplication.class })
+public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSeleniumIntegrationTest {
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-        AbstractCommonConsoleSeleniumInterationTest.setUpClass();
+    @Override
+    public void beforeTestClass(TestContext testContext) throws Exception {
+
+        super.webDriver = testContext.getApplicationContext().getBean(RemoteWebDriver.class);
+
         getWebDriver().manage().window().maximize();
         getWebDriver().get("http://localhost:8080/backend");
 
@@ -57,35 +66,39 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         getWebDriver().findElement(By.cssSelector("input[name=submit]")).click();
 
         // Wait for the page to load, timeout after 10 seconds
-        getWait().until((WebDriver d) -> {
+        (new WebDriverWait(getWebDriver(), 10)).until((WebDriver d) -> {
             return d.getTitle().toLowerCase().startsWith("backend console | nemesis");
         });
 
         assertEquals("backend console | nemesis", getWebDriver().getTitle().toLowerCase());
 
+        super.wait = new WebDriverWait(getWebDriver(), 15, 200);
         waitForDom();
         waitForLoad();
-
-        getWait().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("div#navigation-tree table.x-grid-item")));
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
     }
 
-    public void tearDown() {
-        try {
-            closeWindowAndTab();
-            clearNavTreeFilter();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
+    @Override
+    public void afterTestClass(TestContext testContext) throws Exception {
+        super.webDriver = testContext.getApplicationContext().getBean(RemoteWebDriver.class);
         getWebDriver().findElementById("app-header-logout").click();
-        getWait().until((WebDriver d) -> {
-            return d.getTitle().equals("Login Page");
-        });
+        assertEquals("Login Page", getWebDriver().getTitle());
 
         getWebDriver().quit();
+    }
+
+    @Before
+    public void setUp() {
+        LOG.info(testName.getMethodName());
+        super.wait = new WebDriverWait(getWebDriver(), 15, 200);
+        waitForDom();
+        waitForLoad();
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("app-header-logout")));
+    }
+
+    @Override
+    public void tearDown() {
+
     }
 
     @Test
@@ -1762,5 +1775,4 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     private WebElement searchForm(String entityId) {
         return getWebDriver().findElement(By.cssSelector("#" + entityId + "-search-form-body"));
     }
-
 }
