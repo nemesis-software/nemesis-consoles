@@ -626,3 +626,7 @@
 .pdfexport {
     background-image: url(images/export-pdf.png);
 }
+
+.x-form-simple-collection-trigger {
+    display:none;
+}

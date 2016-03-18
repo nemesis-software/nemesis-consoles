@@ -966,6 +966,30 @@ Ext.define('console.view.field.NemesisMediaField', {
     }
 });
 
+Ext.define('console.view.field.NemesisSimpleCollectionField', {
+    extend: 'Ext.form.field.Tag',
+    dirtyCls: 'dirty',
+    xtype: 'nemesisSimpleCollectionField',
+    columnWidth: .5,
+    width: '95%',
+    //queryMode: 'local',
+    //filterPickList: true,
+    createNewOnEnter: true,
+    createNewOnBlur: true,
+    initComponent: function () {
+        var me = this;
+        me.triggers['picker'].cls = 'x-form-simple-collection-trigger';
+        var data = [];
+        //for (var i = 0; i < me.values.length; i++) {
+        //    data.push(me.values[i]);
+        //}
+        Ext.apply(me, {
+            store: data
+        });
+        me.callParent(arguments);
+    }
+});
+
 Ext.define('console.view.field.NemesisEnumerationField', {
     extend: 'Ext.form.field.ComboBox',
     dirtyCls: 'dirty',
