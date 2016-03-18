@@ -113,9 +113,6 @@ Ext.application({
                 var sessionExpiry = Math.abs(Ext.util.Cookies.get('sessionExpiry'));
                 var timeOffset = Math.abs(Ext.util.Cookies.get('clientTimeOffset'));
 
-                console.log("SE: " + sessionExpiry);
-                console.log("TO: " + timeOffset);
-
                 var localTime = (new Date()).getTime();
                 if (localTime - timeOffset > (sessionExpiry + 15000)) { // 15 extra seconds to make sure
                     Ext.TaskManager.stop(task);
