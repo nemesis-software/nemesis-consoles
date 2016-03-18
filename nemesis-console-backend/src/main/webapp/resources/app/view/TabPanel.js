@@ -70,6 +70,7 @@ Ext.define('console.view.TabPanel', {
                         var entityConfiguration = Ext.create("console.markup." + entityDataId);
                         window = viewport.createWindow({
                             id: recordUid,
+                            operation: 'edit',
                             iconCls: 'default-icon ' + entityDataId,
                             entity: Ext.create('console.model.Entity', {
                                 id: entityDataId,

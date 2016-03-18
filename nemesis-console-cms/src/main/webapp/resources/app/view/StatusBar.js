@@ -28,6 +28,7 @@ Ext.define('console.view.StatusBar', {
                             console.log(me.items.items[1].html);
                             var window = Ext.getCmp('cms-viewport').createWindow({
                                 id: me.page.uid,
+                                operation: 'edit',
                                 title: '[' + me.page.title + ']',
                                 iconCls: 'abstract_page',
                                 entity: Ext.create('console.model.Entity', {
