@@ -145,6 +145,8 @@ Ext.define('console.controller.content.search.SearchFormController', {
             	if (searchGrid.getStore().proxy.extraParams) {
             		delete searchGrid.getStore().proxy.extraParams;
             	}
+                var params = {projection: 'search'};
+                searchGrid.getStore().proxy.extraParams = params;
             	searchGrid.getStore().reload();
             	searchGrid.setLoading(false);
             }
