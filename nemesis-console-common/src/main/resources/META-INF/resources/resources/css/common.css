@@ -628,5 +628,5 @@
 }
 
 .x-form-simple-collection-trigger {
-    display:none;
+    display:none !important;
 }
