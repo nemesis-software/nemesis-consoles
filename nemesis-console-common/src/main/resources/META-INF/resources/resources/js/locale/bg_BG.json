@@ -8,10 +8,12 @@
   'Filter...': 'Филтър...',
   core: 'Основни',
   catalogfolder: 'Каталог',
+  filterfolder: 'Филтър',
   commercefolder: 'Търговия',
   commercecatalogfolder: 'Каталог',
   cms: 'Съдържание',
   reportfolder: 'Репорт',
+  personalizationfolder: 'Персонализация',
   batch: 'Бач',
   pricefolder: 'Цена',
   orderfolder: 'Поръчки',
@@ -26,6 +28,7 @@
   sitemapmodule: 'Карта на сайта',
   vouchermodule: 'Ваучер',
   storelocatormodule: 'Магазин локатор',
+  navigationmodule: 'Навигация',
   customerreviewmodule: 'Ревю',
   wishlistmodule: 'Любим списък',
   promotionmodule: 'Промоция',
@@ -45,6 +48,8 @@
   stock_level: 'Наличност',
   keyword: 'Ключова дума',
   price: 'Цена',
+  //filter
+  abstract_filter: 'Филтър',
   //wishlist
   wishlist: 'Любим списък',
   wishlist_entry: 'Любими единици',
@@ -101,6 +106,8 @@
   opening_schedule: 'Работно време',
   storefinder_configuration: 'Конфигурация магазинлокатор',
   abstract_page: 'Страница',
+  //navigation
+  navigation_node: 'Навигационни единици',
   //blog
   blog: 'Блог',
   blog_entry: 'Блог',
@@ -123,6 +130,11 @@
   //report
   report: 'Репорт',
   report_restriction: 'Репортови Ограничения',
+  //personalization
+  acl_entry: 'ACL Entry',
+  acl_object_identity: 'ACL Object Identity',
+  acl_class: 'ACL Class',
+  acl_mask: 'ACL Mask',
   //settings
   email_message: 'Имейл',
   social_configuration: 'Социална',

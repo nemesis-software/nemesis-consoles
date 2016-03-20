@@ -60,7 +60,7 @@ Ext.define('console.view.content.search.SearchField', {
                     xtype: this.inputType,
                     values: this.values, // case when we have enum, it needs possible values in order to be displayed
                     entityId: this.entityId, //case when we have entity relation
-                    width: '30%',
+                    width: 300,
                     listeners: {
                     	specialkey: function(field, event) {
                     		if (event.getKey() == event.ENTER) {

@@ -8,11 +8,13 @@
   'Filter...': 'Filter...',
   core: 'Core',
   catalogfolder: 'Catalog',
+  filterfolder: 'Filter',
   commercefolder: 'Commerce',
   commercecatalogfolder: 'Catalog',
   commercei18nfolder: 'Internationalization',
   cms: 'CMS',
   reportfolder: 'Report',
+  personalizationfolder: 'Personalization',
   batch: 'Batch',
   pricefolder: 'Price',
   orderfolder: 'Order',
@@ -27,6 +29,7 @@
   sitemapmodule: 'Sitemap',
   vouchermodule: 'Voucher',
   storelocatormodule: 'Store Locator',
+  navigationmodule: 'Navigation',
   customerreviewmodule: 'Customer review',
   wishlistmodule: 'Wishlist',
   promotionmodule: 'Promotion',
@@ -46,6 +49,8 @@
   product_reference: 'Product Reference',
   keyword: 'Keyword',
   price: 'Price',
+  //filter
+  abstract_filter: 'Filter',
   //wishlist
   wishlist: 'Wishlist',
   wishlist_entry: 'Wishlist entry',
@@ -101,6 +106,8 @@
   opening_schedule: 'Opening schedule',
   storefinder_configuration: 'Storefinder configuration',
   abstract_page: 'Page',
+  //navigation
+  navigation_node: 'Navigation Node',
   //blog
   blog: 'Blog',
   blog_entry: 'Blog Entry',
@@ -123,6 +130,11 @@
   //report
   report: 'Report',
   report_restriction: 'Report Restriction',
+  //personalization
+  acl_entry: 'ACL Entry',
+  acl_object_identity: 'ACL Object Identity',
+  acl_class: 'ACL Class',
+  acl_mask: 'ACL Mask',
   //settings
   email_message: 'Email',
   social_configuration: 'Social',

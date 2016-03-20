@@ -595,6 +595,26 @@
     background-image: url(images/restriction.png);
 }
 
+.acl_class {
+    background-image: url(images/acl_class.png);
+}
+
+.acl_entry {
+    background-image: url(images/acl_entry.png);
+}
+
+.acl_object_identity {
+    background-image: url(images/acl_object_identity.png);
+}
+
+.acl_mask {
+    background-image: url(images/acl_mask.png);
+}
+
+.acl_sid {
+    background-image: url(images/acl_sid.png);
+}
+
 .cronjob {
     background-image: url(images/cronjob.png);
 }
