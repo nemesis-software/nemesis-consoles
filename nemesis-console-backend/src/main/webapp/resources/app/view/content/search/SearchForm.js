@@ -63,7 +63,7 @@ Ext.define('console.view.content.search.SearchForm', function () {
                 }
                 console.log(xtype);
                 backendSearchFields.push(Ext.create("console.view.content.search.SearchField", {
-                    fieldLabel: field,
+                    fieldLabel: filter.fieldLabel,
                     entity: self.entity,
                     emptyTxt: field.charAt(0).toLowerCase() + field.slice(1),
                     searchRestrictions: searchFields[field],
