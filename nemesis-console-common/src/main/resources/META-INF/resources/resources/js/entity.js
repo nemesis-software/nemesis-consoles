@@ -143,16 +143,9 @@ Ext.define('console.view.content.EntityPopupWindow', {
     border: false,
     layout: 'border',
     config: null,
-    statics: {
-    	getWindowId: function(uid, catalogVersion) {
-    		return 'w_id_' + (uid ? uid.replace(/@/g, '_AT_').replace(/\./g, '_DOT_') + (catalogVersion ? '_' + catalogVersion.replace(/:/g, '_DOTS_') : '' ) : '')
-    	}
-    },
     initComponent: function () {
 		  
-        var uid = this.config.data ? this.config.data.uid : this.config.entity.id;
         Ext.apply(this, {
-            id: console.view.content.EntityPopupWindow.getWindowId(uid, this.config.data && this.config.data.catalogVersion),
             iconCls: 'default-icon ' + this.config.iconCls
         });
 
@@ -160,7 +153,6 @@ Ext.define('console.view.content.EntityPopupWindow', {
         if (this.config.operation === 'edit') {
             method = 'PATCH';
         }
-
 
         var entityPopupForm = Ext.create("console.view.content.entity.EntityPopupForm", {
             entity: this.config.entity,

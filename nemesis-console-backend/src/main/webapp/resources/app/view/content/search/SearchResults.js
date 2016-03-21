@@ -282,7 +282,6 @@ Ext.define('console.view.content.search.SearchResults', {
                 var entityConfiguration = Ext.create("console.markup." + record.data.entityName);
                 window = Ext.getCmp(parentCmpId).createWindow({
                     operation: 'edit',
-                    data: record.data,
                     catalogVersion: record.data.catalogVersion,
                     iconCls: record.data.entityName ? record.data.entityName : this.entity.data.id,
                     entity: Ext.create('console.model.Entity', {

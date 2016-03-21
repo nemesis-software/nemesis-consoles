@@ -177,7 +177,7 @@ Ext.define('console.view.Viewport', {
     },
 
     getWindow: function (id, catalogVersion) {
-        return this.windows.get(console.view.content.EntityPopupWindow.getWindowId(id, catalogVersion));
+        return this.windows.get('w_pk_' + id.replace(/@/g, '_AT_'));
     },
 
     restoreWindow: function (win) {
