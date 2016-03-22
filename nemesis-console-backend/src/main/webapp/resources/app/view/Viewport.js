@@ -176,8 +176,8 @@ Ext.define('console.view.Viewport', {
         me.updateActiveWindow();
     },
 
-    getWindow: function (id, catalogVersion) {
-        return this.windows.get('w_id_' + id.replace(/@/g, '_AT_'));
+    getWindow: function (pk) {
+        return this.windows.get('w_pk_' + pk);
     },
 
     restoreWindow: function (win) {

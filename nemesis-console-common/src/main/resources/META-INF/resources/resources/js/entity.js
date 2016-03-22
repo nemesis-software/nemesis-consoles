@@ -146,7 +146,8 @@ Ext.define('console.view.content.EntityPopupWindow', {
     initComponent: function () {
 		  
         Ext.apply(this, {
-            iconCls: 'default-icon ' + this.config.iconCls
+            iconCls: 'default-icon ' + this.config.iconCls,
+            id: 'w_pk_' + this.config.entity.data.pk
         });
 
         var method = 'POST';

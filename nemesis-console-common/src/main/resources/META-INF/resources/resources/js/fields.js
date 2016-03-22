@@ -191,7 +191,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                             handler: function () {
                                 var record = selected[0],
                                     viewport = Ext.ComponentQuery.query('viewport')[0],
-                                    win = viewport.getWindow(record.data.uid, record.data.catalogVersion);
+                                    win = viewport.getWindow(record.data.pk);
 
                                 if (!win) {
                                     var entityConfiguration = Ext.create("console.markup." + record.data.name);
@@ -609,7 +609,7 @@ Ext.define('console.view.field.NemesisEntityField', {
             	catalogVersion = me.rawValue.substring(entityUid.length + sep.length);
             }
             console.log(entity.data); //you need to initialize the entity from the url
-            var win = Ext.ComponentQuery.query('viewport')[0].getWindow(entityUid, catalogVersion);
+            var win = Ext.ComponentQuery.query('viewport')[0].getWindow(entity.data.pk);
             if (!win) {
                 Ext.Ajax.request({
                     url: entity.data.url || entity.data._links.self.href,

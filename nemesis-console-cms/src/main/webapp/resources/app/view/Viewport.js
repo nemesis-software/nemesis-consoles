@@ -49,8 +49,8 @@ Ext.define('console.view.Viewport', {
         }
     ],
 
-    getWindow: function (id) {
-        return this.windows.get('w_id_' + id.replace(/@/g, '_AT_'));
+    getWindow: function (pk) {
+        return this.windows.get('w_pk_' + pk);
     },
 
     createWindow: function (config) {
