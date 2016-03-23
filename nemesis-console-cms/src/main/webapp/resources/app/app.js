@@ -213,124 +213,127 @@ Ext.application({
 
                 window.widgetContextMenu = Ext.create('Ext.menu.Menu', {
                     cls: 'widget-context-menu',
-                    items: [
-                        {
-                            itemId: 'edit-widget',
-                            text: 'Edit Widget',
-                            iconCls: 'widget_edit',
-                            hidden: !event.data.selection.contentElement,
-                            handler: function () {
-                                var entityConfiguration = Ext.create("console.markup." + event.data.selection.contentElementEntityName);
-                                var window = Ext.getCmp('cms-viewport').createWindow({
-                                    operation: 'edit',
-                                    id: event.data.selection.contentElement,
-                                    title: '[Widget]',
-                                    iconCls: event.data.selection.contentElementEntityName,
-                                    entity: Ext.create('console.model.Entity', {
-                                        id: event.data.selection.contentElementEntityName,
-                                        pk: event.data.selection.contentElement,
-                                        name: event.data.selection.contentElementEntityName,
-                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + event.data.selection.contentElementEntityName + '/' + event.data.selection.contentElement,
-                                        synchronizable: entityConfiguration.synchronizable
-                                    }),
-                                    sections: entityConfiguration.sections
-                                });
-                                window.show();
-                            }
-                        },
-                        {
-                            itemId: 'removeWidget',
-                            text: 'Remove Widget',
-                            iconCls: 'widget_remove',
-                            hidden: !event.data.selection.contentElement,
-                            handler: function () {
-                                var contentSlotPk = event.data.selection.contentSlot;
-                                var contentElementPk = event.data.selection.contentElement;
-                                //get SLOT
-                                var url = document.getElementById('rest-base-url').getAttribute('url') + 'content_slot/' + contentSlotPk + '/widgets';
-                                Ext.Ajax.request({
-                                    url: url,
-                                    method: 'GET',
-                                    headers: {'Content-Type': 'application/json'},
-                                    params: {},
-                                    success: function (response) {
-                                        var json = JSON.parse(response.responseText);
-                                        var foundWidgetToRemove = false;
-                                        for (var x in json._embedded) {
-                                            var items = json._embedded[x];
-                                            var newWidgets = [];
-                                            for (var i = 0; i < items.length; i++) {
-                                                if (contentElementPk != items[i].pk) {
-                                                    newWidgets.push(items[i].pk);
-                                                } else {
-                                                    foundWidgetToRemove = true;
-                                                }
-                                            }
-                                        }
-
-                                        if (!foundWidgetToRemove) {
-                                            Ext.MessageBox.alert("Status", "Unable to remove widget. <br/> Maybe it is a child in another widget?<br/> If so remove the whole parent or edit the parent.");
-                                        }
-
-                                        var contentSlotPatchData = {};
-                                        contentSlotPatchData['widgets'] = newWidgets;
-
-                                        Ext.Ajax.request({
-                                            url: document.getElementById('rest-base-url').getAttribute('url') + 'content_slot/' + contentSlotPk,
-                                            method: 'PATCH',
-                                            headers: {'Content-Type': 'application/json', Accept: 'application/json'},
-                                            params: Ext.encode(contentSlotPatchData),
-                                            success: function (response) {
-                                                if (foundWidgetToRemove) {
-                                                    Ext.get('website-iframe').dom.src = Ext.get('website-iframe').dom.src;
-                                                    Ext.MessageBox.alert("Status", "Widget removed successfully");
-                                                }
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                        },
-                        {
-                            itemId: 'pasteWidget    ',
-                            text: 'Paste Widget',
-                            iconCls: 'widget_add',
-                            handler: function () {
-                                var copyWidget = Ext.getCmp('cms-viewport').clipboard;
-                                if (!copyWidget) {
-                                    Ext.MessageBox.alert('Unable to copy', 'First select a widget for coping');
-                                    return;
-                                }
-                                console.app.addWidgetToSlot(copyWidget.data.pk, event.data.selection.contentSlot);
-                            }
-                        },
-                        '-',
-                        {
-                            itemId: 'editSlot',
-                            text: 'Edit Slot',
-                            iconCls: 'content_slot_edit',
-                            handler: function () {
-                                var entityConfiguration = Ext.create("console.markup.content_slot");
-                                var window = Ext.getCmp('cms-viewport').createWindow({
-                                    operation: 'edit',
-                                    id: event.data.selection.contentSlot,
-                                    title: '[ContentSlot]',
-                                    iconCls: 'content_slot',
-                                    entity: Ext.create('console.model.Entity', {
-                                        id: 'content_slot',
-                                        pk: event.data.selection.contentSlot,
-                                        name: 'content_slot',
-                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/' + event.data.selection.contentSlot,
-                                        synchronizable: entityConfiguration.synchronizable
-                                    }),
-                                    sections: entityConfiguration.sections,
-                                    synchronizable: entityConfiguration.synchronizable
-                                });
-                                window.show();
-
-                            }
+                    items: [{
+                        itemId: 'addWidgetMenu',
+                        text: 'Add Widget',
+                        iconCls: 'widget_add',
+                        handler: function(menu) {
+                            menu.fireEvent('addWidget');
                         }
-                    ]
+                    }, {
+                        itemId: 'edit-widget',
+                        text: 'Edit Widget',
+                        iconCls: 'widget_edit',
+                        hidden: !event.data.selection.contentElement,
+                        handler: function () {
+                            var entityConfiguration = Ext.create("console.markup." + event.data.selection.contentElementEntityName);
+                            var window = Ext.getCmp('cms-viewport').createWindow({
+                                operation: 'edit',
+                                id: event.data.selection.contentElement,
+                                title: '[Widget]',
+                                iconCls: event.data.selection.contentElementEntityName,
+                                entity: Ext.create('console.model.Entity', {
+                                    id: event.data.selection.contentElementEntityName,
+                                    pk: event.data.selection.contentElement,
+                                    name: event.data.selection.contentElementEntityName,
+                                    url: Ext.get('rest-base-url').dom.getAttribute('url') + event.data.selection.contentElementEntityName + '/' + event.data.selection.contentElement,
+                                    synchronizable: entityConfiguration.synchronizable
+                                }),
+                                sections: entityConfiguration.sections
+                            });
+                            window.show();
+                        }
+                    }, {
+                        itemId: 'removeWidget',
+                        text: 'Remove Widget',
+                        iconCls: 'widget_remove',
+                        hidden: !event.data.selection.contentElement,
+                        handler: function () {
+                            var contentSlotPk = event.data.selection.contentSlot;
+                            var contentElementPk = event.data.selection.contentElement;
+                            //get SLOT
+                            var url = document.getElementById('rest-base-url').getAttribute('url') + 'content_slot/' + contentSlotPk + '/widgets';
+                            Ext.Ajax.request({
+                                url: url,
+                                method: 'GET',
+                                headers: {'Content-Type': 'application/json'},
+                                params: {},
+                                success: function (response) {
+                                    var json = JSON.parse(response.responseText);
+                                    var foundWidgetToRemove = false;
+                                    for (var x in json._embedded) {
+                                        var items = json._embedded[x];
+                                        var newWidgets = [];
+                                        for (var i = 0; i < items.length; i++) {
+                                            if (contentElementPk != items[i].pk) {
+                                                newWidgets.push(items[i].pk);
+                                            } else {
+                                                foundWidgetToRemove = true;
+                                            }
+                                        }
+                                    }
+
+                                    if (!foundWidgetToRemove) {
+                                        Ext.MessageBox.alert("Status", "Unable to remove widget. <br/> Maybe it is a child in another widget?<br/> If so remove the whole parent or edit the parent.");
+                                    }
+
+                                    var contentSlotPatchData = {};
+                                    contentSlotPatchData['widgets'] = newWidgets;
+
+                                    Ext.Ajax.request({
+                                        url: document.getElementById('rest-base-url').getAttribute('url') + 'content_slot/' + contentSlotPk,
+                                        method: 'PATCH',
+                                        headers: {'Content-Type': 'application/json', Accept: 'application/json'},
+                                        params: Ext.encode(contentSlotPatchData),
+                                        success: function (response) {
+                                            if (foundWidgetToRemove) {
+                                                Ext.get('website-iframe').dom.src = Ext.get('website-iframe').dom.src;
+                                                Ext.MessageBox.alert("Status", "Widget removed successfully");
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }, {
+                        itemId: 'pasteWidget    ',
+                        text: 'Paste Widget',
+                        iconCls: 'widget_add',
+                        handler: function () {
+                            var copyWidget = Ext.getCmp('cms-viewport').clipboard;
+                            if (!copyWidget) {
+                                Ext.MessageBox.alert('Unable to copy', 'First select a widget for coping');
+                                return;
+                            }
+                            console.app.addWidgetToSlot(copyWidget.data.pk, event.data.selection.contentSlot);
+                        }
+                    },
+                    '-',
+                    {
+                        itemId: 'editSlot',
+                        text: 'Edit Slot',
+                        iconCls: 'content_slot_edit',
+                        handler: function () {
+                            var entityConfiguration = Ext.create("console.markup.content_slot");
+                            var window = Ext.getCmp('cms-viewport').createWindow({
+                                operation: 'edit',
+                                id: event.data.selection.contentSlot,
+                                title: '[ContentSlot]',
+                                iconCls: 'content_slot',
+                                entity: Ext.create('console.model.Entity', {
+                                    id: 'content_slot',
+                                    pk: event.data.selection.contentSlot,
+                                    name: 'content_slot',
+                                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/' + event.data.selection.contentSlot,
+                                    synchronizable: entityConfiguration.synchronizable
+                                }),
+                                sections: entityConfiguration.sections,
+                                synchronizable: entityConfiguration.synchronizable
+                            });
+                            window.show();
+
+                        }
+                    }]
                 });
 
 

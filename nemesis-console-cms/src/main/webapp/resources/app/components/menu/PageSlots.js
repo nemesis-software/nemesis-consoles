@@ -4,6 +4,10 @@ Ext.define('console.components.menu.PageSlots', {
 
     alias: 'widget.components-menu-pageslots',
 
+    requires: [
+        'console.model.Slot'
+    ],
+
     initComponent: function() {
         var me = this;
 
@@ -106,10 +110,7 @@ Ext.define('console.components.menu.PageSlots', {
                         autoSync: false,
                         autoScroll: true,
                         pageSize: 10,
-                        model: Ext.define('name', {
-                            extend: 'Ext.data.Model',
-                            fields: ["uid", "position", "previewCanvas"]
-                        }),
+                        model: 'console.model.Slot',
                         proxy: {
                             type: 'rest',
                             url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/search/findByPageOrTemplate',

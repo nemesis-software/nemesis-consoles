@@ -50,36 +50,43 @@ Ext.define('console.components.window.AddWidget', {
 				xtype: 'fieldcontainer',
 				layout: 'hbox',
 				items: [{
-					xtype: 'combobox',
-					itemId: 'addWidgetCmb',
-					fieldLabel: "Add Widget",
-					labelWidth: 80,
+					xtype: 'textfield',
+					itemId: 'addWidgetInput',
+					enableKeyEvents: true,
+					minLength: 3,
 					width: 300,
-					minChars: 2,
-					margin: "5 0 5 5",
-					hideTrigger: true,
-					store: me.store,
-					displayField: 'name',
-					valueField: 'pk',
-					autoSelect: true,
-					typeAhead: true,
-					queryMode: 'local'
+					margin: '5 5 5 5',
+					listeners: {
+						specialkey: function (f, e) {
+							var storeWidgets = me.store;
+
+							if (e.getKey() == e.ENTER) {
+								var input = f.getValue();
+								if (input) {
+									storeWidgets.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input + "%25&catalogVersionUid=Staged";
+									storeWidgets.load();
+								} else {
+									storeWidgets.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCatalogVersionUid?catalogVersionUid=Staged';
+									storeWidgets.load();
+								}
+							}
+						}
+					}
 				}, {
 					xtype: 'button',
 					text: 'Filter',
 					margin: '5 15 5 5',
 					width: 60,
 					handler: function (btn) {
-						var me = this,
-							cmb = btn.up('fieldcontainer').down('combo'),
-							addWidgetDataViewStore = me.up('window').down('#addwidget-dataview').store;
+						var storeWidgets = me.store,
+							input = btn.up('window').down('#addWidgetInput').getValue();
 
-						if (addWidgetDataViewStore.isFiltered()) {
-							addWidgetDataViewStore.clearFilter();
-						}
-
-						if (!Ext.isEmpty(cmb.getValue())) {
-							addWidgetDataViewStore.filter('pk', cmb.getValue());
+						if (input) {
+							storeWidgets.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input + "%25&catalogVersionUid=Staged";
+							storeWidgets.load();
+						} else {
+							storeWidgets.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCatalogVersionUid?catalogVersionUid=Staged';
+							storeWidgets.load();
 						}
 					}
 				}]
@@ -118,7 +125,7 @@ Ext.define('console.components.window.AddWidget', {
 					select: function(myself, record, index, eOpts){
 						Ext.MessageBox.confirm('Confirm', 'Are you sure you want to add this widget to the selected slots?', function(btn, text){
 							if(btn === 'yes') {
-								alert('the widget will be added to the slot soon.');
+								alert('Add widget functionality will be implemented soon.');
 								me.destroy();
 							} else {
 								var storeWidgets = myself.store;
@@ -133,9 +140,7 @@ Ext.define('console.components.window.AddWidget', {
 			}]
 		});
 
-		if(me.store.isFiltered()) {
-			me.store.clearFilter();
-		}
+		me.store.load();
 
 		me.callParent(arguments);
 	}

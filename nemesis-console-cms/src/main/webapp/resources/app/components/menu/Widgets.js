@@ -33,14 +33,16 @@ Ext.define('console.components.menu.Widgets', {
                         width: '79%',
                         listeners: {
                             specialkey: function (f, e) {
+                                var storeWidgets = Ext.getCmp('widgets-dataview').getStore();
+
                                 if (e.getKey() == e.ENTER) {
                                     var input = Ext.getCmp('widgets-filter').getValue();
                                     if (input) {
-                                        Ext.getCmp('widgets-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input + "%25&catalogVersionUid=Staged";
-                                        Ext.getCmp('widgets-dataview').getStore().load();
+                                        storeWidgets.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input + "%25&catalogVersionUid=Staged";
+                                        storeWidgets.load();
                                     } else {
-                                        Ext.getCmp('widgets-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCatalogVersionUid?catalogVersionUid=Staged';
-                                        Ext.getCmp('widgets-dataview').getStore().load();
+                                        storeWidgets.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCatalogVersionUid?catalogVersionUid=Staged';
+                                        storeWidgets.load();
                                     }
                                 }
                             }
