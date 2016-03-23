@@ -65,7 +65,7 @@ Ext.define('console.view.TabPanel', {
                     var entityClassName = decodeURIComponent(parts[4]);
                     var entityPk = decodeURIComponent(parts[5]);
                     var entityHref = !Ext.isGecko ? decodeURIComponent(parts[6]) : token.substring(token.lastIndexOf(':http') + 1);
-                    var window = viewport.getWindow(recordUid);
+                    var window = viewport.getWindow(entityPk);
                     if (!window) {
                         var entityConfiguration = Ext.create("console.markup." + entityDataId);
                         window = viewport.createWindow({
