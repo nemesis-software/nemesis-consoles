@@ -531,7 +531,6 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                     minWidth: 400
                 });
 
-
                 if(entityPopupForm.method === 'POST') {
                     //this was creation of new object
                     entityPopupForm.method = 'PATCH'; //change it to PATCH since it is now saved
@@ -546,11 +545,11 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
 
                     //refresh the toolbar
                     //In future we should make an REST CALL here to get the new toolbar. Then we should do me.destory() and re-add the new toolbar to the parent window (this)
-                    me.entity.data.id = entity.id;
                     me.entity.data = result;
+                    me.entity.data.id = entity.id;
+                    me.entity.data.synchronizable = Ext.create("console.markup." + entity.id).synchronizable;
                     me.initComponent();
                 }
-
 
             },
             failure: function (responseObject) {
