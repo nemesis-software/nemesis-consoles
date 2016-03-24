@@ -87,8 +87,6 @@ Ext.define('console.controller.content.search.SearchFormController', {
                         value = "'" + value + "'";
                     }
 
-                    debugger;
-
                     if (restriction === 'StartingWith' && value) {
                         //startswith(field, 'Karl') eq true
                         filter = this.appendFilter(filter, "startswith(" + field  + ", " + value + ") eq true");
