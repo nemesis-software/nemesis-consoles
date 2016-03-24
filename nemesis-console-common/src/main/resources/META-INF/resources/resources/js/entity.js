@@ -314,12 +314,16 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                     me.onsaveandcloseClicked(me.entity, me.entityPopupForm);
                 }
             },
-            '-',
+            {
+                xtype: 'tbseparator',
+                hidden: me.entity.data.isNew
+            },
             {
                 text: 'Delete',
                 cls: 'delete-btn',
                 iconCls: 'delete',
-                disabled: me.entity == null,
+                hidden: me.entity.data.isNew,
+                disabled: me.entity.data.isNew,
                 handler: function () {
                     Ext.MessageBox.confirm('Delete', 'Are you sure you want to delete it?', function (btn) {
                         if (btn === 'yes') {
@@ -330,12 +334,16 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                     });
                 }
             },
-            '-',
+            {
+                xtype: 'tbseparator',
+                hidden: me.entity.data.isNew
+            },
             {
                 text: 'Refresh',
                 cls: 'refresh-btn',
                 iconCls: 'refresh',
-                disabled: me.entity == null,
+                hidden: me.entity.data.isNew,
+                disabled: me.entity.data.isNew,
                 handler: function () {
                     console.log(me.entity.data.url);
                     Ext.Ajax.request({
@@ -358,7 +366,10 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                     });
                 }
             },
-            '-',
+            {
+                xtype: 'tbseparator',
+                hidden: me.entity.data.synchronizable != true
+            },
             {
                 text: 'Synchronize',
                 cls: 'synchronize-btn',
@@ -436,6 +447,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
             {
                 xtype: 'component',
                 id: 'url-' + this.id,
+                hidden: me.entity.data.isNew,
                 autoEl: {
                     tag: 'a',
                     href: me.entity != null ? me.entity.data.url : '',
@@ -489,6 +501,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
         } else {
         	me.submitFormData(entity, entityPopupForm, closeWindow);
         }
+
         if(Ext.get('website-iframe')){ //we have an website as an iframe, then refresh
             Ext.get('website-iframe').dom.src = Ext.get('website-iframe').dom.src;
         }
@@ -518,12 +531,27 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                     minWidth: 400
                 });
 
-                entityPopupForm.getForm().getFields().each(function (field) {
-                    field.resetOriginalValue();
-                });
-                Ext.each(entityPopupForm.query('nemesisCollectionField'), function (field) {
-                    field.isDirty = false;
-                })
+
+                if(entityPopupForm.method === 'POST') {
+                    //this was creation of new object
+                    entityPopupForm.method = 'PATCH'; //change it to PATCH since it is now saved
+                    //refresh the form
+                    var result = Ext.decode(responseObject.responseText); //should contain the new entity data
+                    entityPopupForm.populateForm(entityPopupForm.convertResult(result));
+
+                    if(!result.url) {//the URL is NOT returned from the server for now, so we need to add it
+                        var url = me.entity.data.url + "/" + result.pk;
+                        result.url = url;
+                    }
+
+                    //refresh the toolbar
+                    //In future we should make an REST CALL here to get the new toolbar. Then we should do me.destory() and re-add the new toolbar to the parent window (this)
+                    me.entity.data.id = entity.id;
+                    me.entity.data = result;
+                    me.initComponent();
+                }
+
+
             },
             failure: function (responseObject) {
                 Ext.MessageBox.show({
