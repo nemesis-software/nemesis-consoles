@@ -129,9 +129,9 @@ Ext.define('console.controller.content.search.SearchFormController', {
                 //params[field] = value;
                 params['$filter'] = filter;
                 params['projection'] = 'search';
-                params['page'] = 1;
 
                 searchGrid.setLoading(true);
+                searchGrid.getStore().loadPage(1);
                 //searchGrid.getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + entityId + '/search/findBy' + field.charAt(0).toUpperCase() + field.slice(1) + restriction;
                 searchGrid.getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + entityId + '/';
                 searchGrid.getStore().proxy.extraParams = params;
