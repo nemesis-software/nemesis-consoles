@@ -14,7 +14,10 @@
     <c:set var="currentLocale" value="${not empty param.lang ? param.lang : 'en'}"/>
     <link href="webjars/extjs/5.1.1-light/build/packages/ext-theme-gray/build/resources/ext-theme-gray-all.css"
           rel="stylesheet"/>
+    <link href="webjars/extjs/5.1.1-light/build/packages/ext-ux/build/classic/resources/ext-ux-all.css"
+          rel="stylesheet"/>
     <script type="text/javascript" src="webjars/extjs/5.1.1-light/build/ext-all.js"></script>
+    <script type="text/javascript" src="webjars/extjs/5.1.1-light/build/packages/ext-ux/build/ext-ux.js"></script>
     <script type="text/javascript"
             src="webjars/extjs/5.1.1-light/build/packages/ext-locale/build/ext-locale-${currentLocale}.js"></script>
 

@@ -76,7 +76,7 @@ Ext.define('console.view.field.NemesisTextField', {
 });
 
 Ext.define('console.view.field.NemesisColorpickerField', {
-    extend: 'Ext.form.field.Text',
+    extend: 'Ext.ux.colorpick.Field',
     xtype: 'nemesisColorpickerField',
     emptyText: this.name,
     dirtyCls: 'dirty',
@@ -87,6 +87,12 @@ Ext.define('console.view.field.NemesisColorpickerField', {
         var me = this;
         me.emptyText = me.name;
         me.callParent(arguments);
+    },
+    getSubmitValue: function () {
+        //by default the color submits the value as 00FFFF but we expect it to be #00FFFF
+        if(this.getValue() && !this.getValue().startsWith("#")) {
+            return "#" + this.getValue();
+        }
     }
 });
 
