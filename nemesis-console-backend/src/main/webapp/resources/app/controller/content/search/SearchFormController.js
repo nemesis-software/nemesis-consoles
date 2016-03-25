@@ -131,11 +131,10 @@ Ext.define('console.controller.content.search.SearchFormController', {
                 params['projection'] = 'search';
 
                 searchGrid.setLoading(true);
-                searchGrid.getStore().loadPage(1);
                 //searchGrid.getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + entityId + '/search/findBy' + field.charAt(0).toUpperCase() + field.slice(1) + restriction;
                 searchGrid.getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + entityId + '/';
                 searchGrid.getStore().proxy.extraParams = params;
-                searchGrid.getStore().reload();
+                searchGrid.getStore().loadPage(1);
                 searchGrid.setLoading(false);
             } else {
             	searchGrid.setLoading(true);
