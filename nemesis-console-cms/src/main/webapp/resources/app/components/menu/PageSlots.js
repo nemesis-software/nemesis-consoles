@@ -19,7 +19,58 @@ Ext.define('console.components.menu.PageSlots', {
             border: false,
             items: [
                 {
+                    xtype: 'toolbar',
+                    border: true,
+                    baseCls: 'subMenu',
+                    cls: 'effect1',
+                    dock: 'top',
+                    height: 25,
+                    items: [
+                        {
+                            id: 'content-slot-filter',
+                            xtype: 'textfield',
+                            name: 'SearchDownload',
+                            itemId: 'SearchDownload',
+                            enableKeyEvents: true,
+                            allowBlank: true,
+                            minLength: 3,
+                            width: '79%',
+                            listeners: {
+                                specialkey: function (f, e) {
+                                    if (e.getKey() == e.ENTER) {
+                                        var input = Ext.getCmp('content-slot-filter').getValue();
+                                        if (input) {
+                                            Ext.getCmp('content-slot-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/search/findByUidLikeAndCatalogVersionUidAndPageOrTemplate?uid=%25' + input + '%25&catalogVersionUid=Staged';
+                                            Ext.getCmp('content-slot-dataview').getStore().load();
+                                        } else {
+                                            Ext.getCmp('content-slot-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/search/findByCatalogVersionUidAndPageOrTemplate?catalogVersionUid=Staged';
+                                            Ext.getCmp('content-slot-dataview').getStore().load();
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        '->',
+                        {
+                            xtype: 'button',
+                            cls: 'x-btn-default-small',
+                            text: 'Filter',
+                            width: '20%',
+                            handler: function () {
+                                var input = Ext.getCmp('content-slot-filter').getValue();
+                                if (input) {
+                                    Ext.getCmp('content-slot-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/search/findByUidLikeAndCatalogVersionUidAndPageOrTemplate?uid=%25' + input + '%25&catalogVersionUid=Staged';
+                                    Ext.getCmp('content-slot-dataview').getStore().load();
+                                } else {
+                                    Ext.getCmp('content-slot-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/search/findByCatalogVersionUidAndPageOrTemplate?catalogVersionUid=Staged';
+                                    Ext.getCmp('content-slot-dataview').getStore().load();
+                                }
+                            }
+                        }]
+                },
+                {
                     bodyPadding: 0,
+                    id: 'content-slot-dataview',
                     xtype: 'dataview',
                     scroll: 'vertical',
                     trackOver: true,
@@ -72,7 +123,7 @@ Ext.define('console.components.menu.PageSlots', {
                                 text: 'Add Widget',
                                 iconCls: 'widget_add',
                                 handler: function(menu) {
-                                    menu.fireEvent('addWidget');
+                                    menu.fireEvent('addWidget', record.data.pk);
                                 }
                             }, {
                                 itemId: 'edit',
@@ -113,7 +164,7 @@ Ext.define('console.components.menu.PageSlots', {
                         model: 'console.model.Slot',
                         proxy: {
                             type: 'rest',
-                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/search/findByPageOrTemplate',
+                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/search/findByCatalogVersionUidAndPageOrTemplate?catalogVersionUid=Staged',
                             limitParam: 'size',
                             useDefaultXhrHeader: false,
                             cors: true,
