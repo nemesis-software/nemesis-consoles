@@ -91,6 +91,8 @@ Ext.application({
             if (Ext.get('website-base-url').dom.getAttribute('url').indexOf(event.origin) !== 0) return;
             if (event.data.type === 'PAGE_LOADED') {
 
+                //the idea of this functionality is to HIGHLIGHT the current PAGE and current TEMPLATE based on the page you are watching.
+                //however since we display ONLY 20 items with paging it is not possible to just scroll to some element so the current proof of concept cannot be applied
                 Ext.Ajax.request({
                     url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/',
                     method: 'GET',
@@ -127,7 +129,7 @@ Ext.application({
                     }
                 });
 
-
+                /*
                 var template = Ext.get('template-' + event.data.page.template_id);
                 if (template) {
                     template.dom.scrollIntoView();
@@ -142,13 +144,21 @@ Ext.application({
                     }
                     this.previousTemplateId = 'template-' + event.data.page.template_id;
                 }
+                */
 
                 Ext.getCmp('content-panel-status-bar').updateContent(event.data.page);
-                Ext.getCmp('page-slot-store').items.items[0].store.proxy.extraParams = {
+
+                var contentSlotFilter = Ext.getCmp('content-slot-filter').getValue();
+                if(contentSlotFilter) {
+                    Ext.getCmp('page-slot-store').items.items[1].store.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/search/findByUidLikeAndCatalogVersionUidAndPageOrTemplate?uid=%25' + contentSlotFilter + "%25&catalogVersionUid=Staged";
+                } else {
+                    Ext.getCmp('page-slot-store').items.items[1].store.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/search/findByCatalogVersionUidAndPageOrTemplate?catalogVersionUid=Staged';
+                }
+                Ext.getCmp('page-slot-store').items.items[1].store.proxy.extraParams = {
                     'abstract_page': event.data.page.pk,
                     'page_template': event.data.page.template
                 };
-                Ext.getCmp('page-slot-store').items.items[0].store.reload();
+                Ext.getCmp('page-slot-store').items.items[1].store.reload();
 
                 var canvases = "";
 
@@ -211,6 +221,7 @@ Ext.application({
                     delete window.widgetContextMenu;
                 }
 
+                var contentSlotPk = event.data.selection.contentSlot;
                 window.widgetContextMenu = Ext.create('Ext.menu.Menu', {
                     cls: 'widget-context-menu',
                     items: [{
@@ -218,7 +229,8 @@ Ext.application({
                         text: 'Add Widget',
                         iconCls: 'widget_add',
                         handler: function(menu) {
-                            menu.fireEvent('addWidget');
+                            console.log(contentSlot);
+                            menu.fireEvent('addWidget', contentSlotPk);
                         }
                     }, {
                         itemId: 'edit-widget',
