@@ -76,7 +76,7 @@ Ext.define('console.components.menu.Pages', {
                         '<tpl for=".">',
                         '<div id="page-{uid}" class="top-carousel-item">',
                         '<div class="carousel-picture">',
-                        '<a><img src="' + Ext.get('website-base-url').dom.getAttribute('url') + 'media/content/{uid}/{uid}.png"></a>',
+                        '<a><img width="100" src="' + Ext.get('website-base-url').dom.getAttribute('url') + 'media/content/{uid}/{uid}.png" onerror="this.src='+"'resources/img/page.svg'"+ ';this.onerror=null;"></a>',
                         '<rect width="124" height="185" fill = "none" stroke-width = "1" stroke = "#000000" />',
                         '{[this.getPageCanvas()]}',
                         '{previewCanvas}',

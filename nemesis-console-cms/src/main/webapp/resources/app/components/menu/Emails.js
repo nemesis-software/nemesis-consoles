@@ -20,30 +20,31 @@ Ext.define('console.components.menu.Emails', {
                     cls: 'effect1',
                     dock: 'top',
                     height: 25,
-                    items: [{
-                        id: 'emails-filter',
-                        xtype: 'textfield',
-                        name: 'SearchDownload',
-                        itemId: 'SearchDownload',
-                        enableKeyEvents: true,
-                        allowBlank: true,
-                        minLength: 3,
-                        width: '79%',
-                        listeners: {
-                            specialkey: function (f, e) {
-                                if (e.getKey() == e.ENTER) {
-                                    var input = Ext.getCmp('emails-filter').getValue();
-                                    if (input) {
-                                        Ext.getCmp('emails-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'email_page/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input + "%25&catalogVersionUid=Staged";
-                                        Ext.getCmp('emails-dataview').getStore().load();
-                                    } else {
-                                        Ext.getCmp('emails-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'email_page/search/findByCatalogVersionUid?catalogVersionUid=Staged';
-                                        Ext.getCmp('emails-dataview').getStore().load();
+                    items: [
+                        {
+                            id: 'emails-filter',
+                            xtype: 'textfield',
+                            name: 'SearchDownload',
+                            itemId: 'SearchDownload',
+                            enableKeyEvents: true,
+                            allowBlank: true,
+                            minLength: 3,
+                            width: '79%',
+                            listeners: {
+                                specialkey: function (f, e) {
+                                    if (e.getKey() == e.ENTER) {
+                                        var input = Ext.getCmp('emails-filter').getValue();
+                                        if (input) {
+                                            Ext.getCmp('emails-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'email_page/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input + "%25&catalogVersionUid=Staged";
+                                            Ext.getCmp('emails-dataview').getStore().load();
+                                        } else {
+                                            Ext.getCmp('emails-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'email_page/search/findByCatalogVersionUid?catalogVersionUid=Staged';
+                                            Ext.getCmp('emails-dataview').getStore().load();
+                                        }
                                     }
                                 }
                             }
-                        }
-                    },
+                        },
                         '->',
                         {
                             xtype: 'button',
@@ -71,18 +72,18 @@ Ext.define('console.components.menu.Emails', {
                     overItemCls: 'x-item-over',
                     emptyText: 'No emails available',
                     itemSelector: 'div.top-carousel-item',
-                    tpl: [
+                    tpl: new Ext.XTemplate(
                         '<tpl for=".">',
                         '<div id="page-{uid}" class="top-carousel-item">',
                         '<div class="carousel-picture">',
-                        '<a><img src="' + Ext.get('website-base-url').dom.getAttribute('url') + 'media/content/{uid}/{uid}.png"></a>',
+                        '<a><img width="100" src="' + Ext.get('website-base-url').dom.getAttribute('url') + 'media/content/{uid}/{uid}.png" onerror="this.src='+"'resources/img/email.svg'"+ ';this.onerror=null;"></a>',
                         '</div>',
                         '<div class="carousel-item">',
                         '<div class="widget-description">{name}</div>',
                         '<div class="carousel-item-header">{uid}</div>',
                         '</div>',
                         '</div>',
-                        '</tpl>'],
+                        '</tpl>'),
                     store: Ext.create('Ext.data.Store',{
                         id: 'emails-store',
                         autoLoad: true,
