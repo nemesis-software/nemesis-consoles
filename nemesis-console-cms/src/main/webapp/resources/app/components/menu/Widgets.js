@@ -151,7 +151,6 @@ Ext.define('console.components.menu.Widgets', {
                     ),
                     listeners: {
                         select: function (view) {
-                            debugger;
                             //alert('selected ' + view.getSelection()[0].data.pk);
                         },
                         afterrender: function (p) {
