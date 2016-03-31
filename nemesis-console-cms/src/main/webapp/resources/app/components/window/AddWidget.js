@@ -1,6 +1,7 @@
 Ext.define('console.components.window.AddWidget', {
 	extend: 'Ext.window.Window',
 
+	contentSlot: null,
 	store: Ext.create('Ext.data.Store',{
 		id: 'addwidgets-store',
 		autoLoad: true,
@@ -122,10 +123,10 @@ Ext.define('console.components.window.AddWidget', {
 					}
 				),
 				listeners: {
-					select: function(myself, record, index, eOpts){
-						Ext.MessageBox.confirm('Confirm', 'Are you sure you want to add this widget to the selected slots?', function(btn, text){
+					select: function(myself){
+						Ext.MessageBox.confirm('Confirm', 'Are you sure you want to add this widget to the selected slot?', function(btn, text){
 							if(btn === 'yes') {
-								alert('Add widget functionality will be implemented soon.');
+								console.app.addWidgetToSlot(myself.getSelection()[0].data.pk, me.contentSlot);
 								me.destroy();
 							} else {
 								var storeWidgets = myself.store;
@@ -134,10 +135,19 @@ Ext.define('console.components.window.AddWidget', {
 								}
 							}
 						}, this);
+					},
+					afterrender: function (p) {
+						Ext.getCmp('add-widget-pager').setStore(this.getStore());
 					}
 				},
 				store: me.store
-			}]
+			}],
+			bbar: {
+				id: 'add-widget-pager',
+				xtype: 'pagingtoolbar',
+				store: null,   // will be set in after renderer of the dataview
+				displayInfo: false
+			}
 		});
 
 		me.store.load();
