@@ -1,1 +1,55 @@
-<svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1152 640q0-106-75-181t-181-75-181 75-75 181 75 181 181 75 181-75 75-181zm256 0q0 109-33 179l-364 774q-16 33-47.5 52t-67.5 19-67.5-19-46.5-52l-365-774q-33-70-33-179 0-212 150-362t362-150 362 150 150 362z"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="100"
+   height="100"
+   viewBox="0 0 1792 1792"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="googlemap_widget.svg">
+  <metadata
+     id="metadata10">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs8" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1535"
+     inkscape:window-height="876"
+     id="namedview6"
+     showgrid="false"
+     inkscape:zoom="2.97995"
+     inkscape:cx="31.894792"
+     inkscape:cy="35.324276"
+     inkscape:window-x="65"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <path
+     d="m 1100.885,730.20286 q 0,-74.87532 -52.9778,-127.85314 -52.97779,-52.97781 -127.8531,-52.97781 -74.87532,0 -127.85314,52.97781 -52.97782,52.97782 -52.97782,127.85314 0,74.87531 52.97782,127.85311 52.97782,52.9778 127.85314,52.9778 74.87531,0 127.8531,-52.9778 52.9778,-52.9778 52.9778,-127.85311 z m 180.831,0 q 0,76.99441 -23.3102,126.44041 l -257.1191,546.73113 q -11.30188,23.3102 -33.55257,36.7313 -22.25068,13.421 -47.68003,13.421 -25.42936,0 -47.68004,-13.421 -22.25068,-13.4211 -32.84625,-36.7313 L 581.70243,856.64327 q -23.31024,-49.446 -23.31024,-126.44041 0,-149.75063 105.95564,-255.70627 105.95563,-105.95564 255.70627,-105.95564 149.7506,0 255.7063,105.95564 105.9556,105.95564 105.9556,255.70627 z"
+     id="path4"
+     inkscape:connector-curvature="0"
+     style="fill:#555555" />
+</svg>
