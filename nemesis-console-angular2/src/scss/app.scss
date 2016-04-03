@@ -1,0 +1,53 @@
+@import 'bootstrap';
+
+html {
+  body {
+    margin: 90px 0 50px;
+  }
+}
+
+.router-link-active {
+  @extend .nav-link.active;
+}
+
+// --------------
+// Login Component
+// --------------
+
+.login-item-text {
+  display: block;
+  padding: .435rem .8rem;
+  text-transform: capitalize;
+}
+
+.login-item-input {
+  @extend .form-control;
+}
+
+.login-item-select {
+  display: none;
+  margin: 13px 0 0;
+}
+
+.login-item-delete {
+  @extend .btn;
+  @extend .btn-danger;
+  @extend .pull-xs-right;
+  display: none;
+}
+
+.login-item {
+  &:hover {
+    .login-item-select,
+    .login-item-delete {
+      display: block;
+    }
+  }
+
+  &.completed {
+    .login-item-text {
+      color: $gray-lighter;
+      text-decoration: line-through;
+    }
+  }
+}

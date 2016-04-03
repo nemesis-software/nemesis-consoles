@@ -1,171 +1,103 @@
-# angular2-seed & ng2-bootstrap & SB Admin 2.0
+# Angular 2 - Seed Project
 
-Integration showcase of [angular2-seed-ng2-bootstrap](https://github.com/ludohenin/angular2-seed-ng2-bootstrap) (Itself an integration of [ng2-bootstrap](http://valor-software.github.io/ng2-bootstrap/) with [angular2-seed](https://mgechev.github.io/angular2-seed)) and [SB Admin 2.0](http://startbootstrap.com/template-overviews/sb-admin-2/).
+[![Build Status](https://travis-ci.org/ghpabs/angular2-seed-project.svg?branch=master)](https://travis-ci.org/ghpabs/angular2-seed-project)
+[![Join the chat at https://gitter.im/ghpabs/angular2-seed-project](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ghpabs/angular2-seed-project)
 
-[![Dependency Status](https://david-dm.org/AngularShowcase/ng2-bootstrap-sbadmin.svg)](https://david-dm.org/AngularShowcase/ng2-bootstrap-sbadmin)
-[![devDependency Status](https://david-dm.org/AngularShowcase/ng2-bootstrap-sbadmin/dev-status.svg)](https://david-dm.org/AngularShowcase/ng2-bootstrap-sbadmin#info=devDependencies)
-[![Build Status](https://travis-ci.org/AngularShowcase/ng2-bootstrap-sbadmin.svg?branch=master)](https://travis-ci.org/AngularShowcase/ng2-bootstrap-sbadmin)
+<img src="http://i.imgur.com/gM0tsOZ.png" width="250px">
 
-# What is it?
+## Stack
+- [Gulp 4](http://gulpjs.com/)
+- [Angular 2](https://angular.io/)
+- [TypeScript](http://www.typescriptlang.org/)
+- [Typings](https://github.com/typings/typings)
+- [Sass](http://sass-lang.com/)
+- [Karma](http://karma-runner.github.io/)
+- [Protractor](http://www.protractortest.org/)
 
-This template combines the famous StartBootstrap Admin v2.0 template with an Angular 2.0 template by Minko Gechev. Ludovic Henin did the initial integration of NG-Bootstrap, a set of controller components for Bootstrap written for Angular 2.0. 
+## Workflow Features
+- **Gulp** fully automated workflow.
+- **Development** and **production** environment targets.
+- **Unit** and **E2E** test samples.
+- **Code coverage** report with TypeScript mapping.
+- **TypeScript** definition manager, linting, sourcemaps and transpilation (ES5).
+- **Sass** linting, sourcemaps and transpilation.
+- **TypeDoc** documentation generator.
+- **Change Log** generated based on Git metadata.
 
-**Note:** Angular 2.0 is not production ready yet! This seed project is perfect for playing around with the latest versions but do not start new projects with it since a lot of new changes are going to be introduced until the framework is officially released.
+## Angular 2 Features
+- Directives
+- Pipes
+- Services
+- Router
+- REST API
+- Template Cache
+- Modular Components
+- Dependency Injection
+- Custom Events
 
-Submissions are welcome. There are a lot of opportunities to get this template into better shape. Hopefully we can help improve the dependency projects in the process. 
+## Global Dependencies
 
-# How to start
+| Dependency | Version | Install                               |
+| ---------- | ------- | ------------------------------------- |
+| NodeJS     | 5.x.x   | [http://node.org](http://nodejs.org/) |
+| npm        | 3.x.x   | [http://node.org](http://nodejs.org/) |
+| Gulp CLI   | 0.4.x   | `npm install gulpjs/gulp-cli#4.0 -g`  |
+| Typings    | 0.6.x   | `npm install typings -g`              |
 
-**Note** that this seed project requires node v4.x.x or higher and npm 3.x.x.
-
-```bash
-git clone https://github.com/AngularShowcase/ng2-bootstrap-sbadmin.git
-cd ng2-bootstrap-sbadmin
-npm install   # clean npm cache & delete node_modules folder if you get an error
-npm start     # start with --env dev
-npm run docs      # api document for app
+## Install
 ```
-_Does not rely on any global dependencies._
-
-# Directory Structure
-
-```
-.
-├── LICENSE
-├── README.md
-├── app
-│   ├── bootstrap.ts
-│   ├── components
-│   │   ├── about
-│   │   │   ├── about.html
-│   │   │   ├── about.ts
-│   │   │   └── about_spec.ts
-│   │   ├── app
-│   │   │   ├── app.css
-│   │   │   ├── app.html
-│   │   │   ├── app.ts
-│   │   │   └── app_spec.ts
-│   │   └── home
-│   │       ├── home.css
-│   │       ├── home.html
-│   │       ├── home.ts
-│   │       └── home_spec.ts
-│   ├── index.html
-│   ├── services
-│   │   ├── name_list.ts
-│   │   └── name_list_spec.ts
-│   ├── system.config.js
-│   └── typings.d.ts
-├── gulpfile.ts
-├── karma.conf.js
-├── package.json
-├── test
-│   ├── components
-│   │   ├── about
-│   │   │   ├── about.js
-│   │   │   └── about_spec.js
-│   │   ├── app
-│   │   │   ├── app.js
-│   │   │   └── app_spec.js
-│   │   └── home
-│   │       ├── home.js
-│   │       └── home_spec.js
-│   └── services
-│       ├── name_list.js
-│       └── name_list_spec.js
-├── test-main.js
-├── tools
-│   ├── config.ts
-│   ├── preinstall.js
-│   ├── tasks
-│   │   ├── build.csslib.dev.ts
-│   │   ├── build.docs.ts
-│   │   ├── build.fonts.ts
-│   │   ├── build.index.dev.ts
-│   │   ├── build.js.dev.ts
-│   │   ├── build.jslib.dev.ts
-│   │   ├── build.sass.dev.ts
-│   │   ├── build.test.ts
-│   │   ├── clean.ts
-│   │   ├── karma.start.ts
-│   │   ├── npm.ts
-│   │   ├── server.docs.ts
-│   │   ├── server.start.ts
-│   │   ├── tsd.ts
-│   │   ├── tslint.ts
-│   │   ├── watch.dev.ts
-│   │   ├── watch.serve.ts
-│   │   └── watch.test.ts
-│   ├── typings
-│   │   ├── connect-livereload.d.ts
-│   │   ├── gulp-load-plugins.d.ts
-│   │   ├── karma.d.ts
-│   │   ├── tiny-lr.d.ts
-│   │   ├── ng2_test.d.ts
-│   │   ├── open.d.ts
-│   │   ├── run-sequence.d.ts
-│   │   ├── slash.d.ts
-│   │   └── yargs.d.ts
-│   ├── utils
-│   │   ├── server.ts
-│   │   ├── tasks-tools.ts
-│   │   ├── template-injectables.ts
-│   │   └── template-locals.ts
-│   └── utils.ts
-├── tsconfig.json
-├── tsd.json
-└── tslint.json
+$ git clone https://github.com/ghpabs/angular2-seed-project.git && cd angular2-seed-project
+$ npm install
+$ typings install
+$ gulp build serve
 ```
 
-# Configuration
+Note: the `serve` task won't automatically launch the browser for you.
+To view the app please open a new tab and go to `http://localhost:8080/`.
 
-Default application server configuration
+## Usage
+### Tasks
+- `$ gulp clean`: Remove generated folders - `build`, `docs` and `coverage`.
+- `$ gulp unit`: Run Karma against all `src/scripts/**/*.spec.js` files.
+- `$ gulp e2e`: Run Protractor against all `e2e/**/*.spec.js` files. The project must be being served before running end-to-end tests.
+- `$ gulp build`: Create distribution package.
+- `$ gulp serve`: Start web-server and live-reload.
+- `$ gulp docs`: Generate documentation.
+- `$ gulp changelog`: Generate `CHANGELOG.md` file from Git metadata. See [Change Log](#change-log) for more info.
 
-```javascript
-var PORT             = 5555;
-var LIVE_RELOAD_PORT = 4002;
-var DOCS_PORT        = 4003;
-var APP_BASE         = '/';
-```
+### Environments
+Default: `NODE_ENV=development` and `PORT=8080`.
 
-Configure at runtime
+#### Development:
+- `$ gulp build serve` is equivalent to
+`$ NODE_ENV=development PORT=8080 gulp build serve`.
 
-```bash
-npm start -- --port 8080 --reload-port 4000 --base /my-app/
-```
+#### Production
+- `$ NODE_ENV=production gulp build serve`.
 
-# Now to extend?
+## Ecosystem
+You might have noticed that we have quite a few files in our `root` folder. You might also be wondering why we need them and whether they are applicable to your use case. Here is a brief explanation:
 
-If you want to use your custom libraries:
+- **.travis.yml**: Travis is our Continuos Integration (CI) server and this is its configuration file. We have added hooks to GitHub so automated tests will kick in after each commit.
+- **karma.shim.js**: Unit testing Angular2 apps is still in its early days and this file helps us setup the test runner - Karma.
 
-```bash
-npm install my-library --save
-vim tools/config.js
-```
-Add reference to the installed library in `PATH.src.jslib` (or whatever you like).
+## Change Log
+This project generates the `CHANGELOG.md` from Git metadata using the [conventional-changelog](https://github.com/ajoslin/conventional-changelog) library. The commit message must follow the [Angular conventions][angular-commit-message-format] for this feature to work.
 
-# Running test
+### Recommended Workflow
+- Make changes
+- Commit those changes
+- Make sure Travis turns green
+- Bump version in `package.json`
+- Run `gulp changelog`
+- Commit `package.json` and `CHANGELOG.md` files
+- Tag
+- Push
 
-```bash
-npm test
+## Contributing
+In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. When submitting a PR, make sure that the commit messages match the [Angular conventions][angular-commit-message-format].
 
-# Debug - In two different shell windows
-npm run build.test.watch      # 1st window
-npm run karma.start           # 2nd window
-```
-
-# Presentations
-
-Rocky Mountain Angular Users Group 10-Nov-2015: [Transitioning from Server Side to Client Side Web Development with Angular 2](http://angularshowcase.github.io/ng2-bootstrap-sbadmin/slides/20151110/index.html)
-
-# Contributing
-
-Please see the [CONTRIBUTING](https://github.com/AngularShowcase/ng2-bootstrap-sbadmin/blob/master/CONTRIBUTING.md) file for guidelines.
-
-# Change Log
-
-You can follow the [Angular 2 change log here](https://github.com/angular/angular/blob/master/CHANGELOG.md).
-
-# License
-
+## License
 MIT
+
+[angular-commit-message-format]: https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit-message-format
