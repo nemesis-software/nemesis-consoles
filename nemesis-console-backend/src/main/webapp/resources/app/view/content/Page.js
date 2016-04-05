@@ -5,8 +5,7 @@ Ext.define('console.view.content.Page', {
     layout: 'border',
     requires: [
         'console.view.content.search.SearchForm',
-        'console.view.content.search.SearchResults',
-        'console.view.TaskBar'
+        'console.view.content.search.SearchResults'
     ],
     initComponent: function () {
         this.items = [

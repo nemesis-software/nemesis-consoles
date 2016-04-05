@@ -239,21 +239,24 @@ Ext.application({
                         hidden: !event.data.selection.contentElement,
                         handler: function () {
                             var entityConfiguration = Ext.create("console.markup." + event.data.selection.contentElementEntityName);
-                            var window = Ext.getCmp('cms-viewport').createWindow({
-                                operation: 'edit',
-                                id: event.data.selection.contentElement,
-                                title: '[Widget]',
-                                iconCls: event.data.selection.contentElementEntityName,
-                                entity: Ext.create('console.model.Entity', {
-                                    id: event.data.selection.contentElementEntityName,
-                                    pk: event.data.selection.contentElement,
-                                    name: event.data.selection.contentElementEntityName,
-                                    url: Ext.get('rest-base-url').dom.getAttribute('url') + event.data.selection.contentElementEntityName + '/' + event.data.selection.contentElement,
-                                    synchronizable: entityConfiguration.synchronizable
-                                }),
-                                sections: entityConfiguration.sections
-                            });
-                            window.show();
+                            var window = Ext.getCmp('cms-viewport').getWindow(event.data.selection.contentElement);
+                            if (!window) {
+                                window = Ext.getCmp('cms-viewport').createWindow({
+                                    operation: 'edit',
+                                    id: event.data.selection.contentElement,
+                                    title: '[Widget]',
+                                    iconCls: event.data.selection.contentElementEntityName,
+                                    entity: Ext.create('console.model.Entity', {
+                                        id: event.data.selection.contentElementEntityName,
+                                        pk: event.data.selection.contentElement,
+                                        name: event.data.selection.contentElementEntityName,
+                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + event.data.selection.contentElementEntityName + '/' + event.data.selection.contentElement,
+                                        synchronizable: entityConfiguration.synchronizable
+                                    }),
+                                    sections: entityConfiguration.sections
+                                });
+                            }
+                            Ext.getCmp('cms-viewport').restoreWindow(window);
                         }
                     }, {
                         itemId: 'removeWidget',
@@ -323,26 +326,28 @@ Ext.application({
                     '-',
                     {
                         itemId: 'editSlot',
-                        text: 'Edit Slot',
+                        text: (event.data.selection.contentSlot ? 'Edit Slot': 'Create Slot'),
                         iconCls: 'content_slot_edit',
                         handler: function () {
                             var entityConfiguration = Ext.create("console.markup.content_slot");
-                            var window = Ext.getCmp('cms-viewport').createWindow({
-                                operation: 'edit',
-                                id: event.data.selection.contentSlot,
-                                title: '[ContentSlot]',
-                                iconCls: 'content_slot',
-                                entity: Ext.create('console.model.Entity', {
-                                    id: 'content_slot',
-                                    pk: event.data.selection.contentSlot,
-                                    name: 'content_slot',
-                                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/' + event.data.selection.contentSlot,
-                                    synchronizable: entityConfiguration.synchronizable
-                                }),
-                                sections: entityConfiguration.sections,
-                                synchronizable: entityConfiguration.synchronizable
-                            });
-                            window.show();
+                            var window = Ext.getCmp('cms-viewport').getWindow(event.data.selection.contentSlot);
+                            if (!window) {
+                                window = Ext.getCmp('cms-viewport').createWindow({
+                                    operation: (event.data.selection.contentSlot ? 'edit' : 'new'),
+                                    id: event.data.selection.contentSlot,
+                                    title: '[ContentSlot]',
+                                    iconCls: 'content_slot',
+                                    entity: Ext.create('console.model.Entity', {
+                                        id: 'content_slot',
+                                        pk: event.data.selection.contentSlot,
+                                        name: 'content_slot',
+                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/' + event.data.selection.contentSlot,
+                                        isNew: (event.data.selection.contentSlot ? false : true)
+                                    }),
+                                    sections: entityConfiguration.sections
+                                });
+                            }
+                            Ext.getCmp('cms-viewport').restoreWindow(window);
 
                         }
                     }]

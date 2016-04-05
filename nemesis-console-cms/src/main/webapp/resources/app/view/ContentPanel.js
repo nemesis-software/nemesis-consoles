@@ -11,7 +11,8 @@ Ext.define('console.view.ContentPanel', {
     },
 
     requires: [
-        'console.view.StatusBar'
+        'console.view.StatusBar',
+        'console.view.TaskBar'
     ],
 
     initComponent: function () {
@@ -401,6 +402,10 @@ Ext.define('console.view.ContentPanel', {
                 region: 'south',
                 xtype: 'statusBar',
                 height: 27
+            },
+            {
+                region: 'south',
+                xtype: 'taskbar'
             }
         ];
 

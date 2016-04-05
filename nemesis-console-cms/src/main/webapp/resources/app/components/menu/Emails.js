@@ -150,20 +150,23 @@ Ext.define('console.components.menu.Emails', {
 
                         var entityConfiguration = Ext.create("console.markup." + record.data.entityName);
                         console.log(record);
-                        var window = Ext.getCmp(parentCmpId).createWindow({
-                            operation: 'edit',
-                            id: record.data.uid,
-                            iconCls: record.data.entityName ? record.data.entityName : 'widget',
-                            entity: Ext.create('console.model.Entity', {
-                                id: record.data.entityName,
-                                pk: record.data.pk,
-                                name: record.data.entityName,
-                                url: record.data._links['self'].href,
-                                synchronizable: entityConfiguration.synchronizable
-                            }),
-                            sections: entityConfiguration.sections
-                        });
-                        window.show();
+                        var window = Ext.getCmp('cms-viewport').getWindow(record.data.pk);
+                        if (!window) {
+                            window = Ext.getCmp(parentCmpId).createWindow({
+                                operation: 'edit',
+                                id: record.data.uid,
+                                iconCls: record.data.entityName ? record.data.entityName : 'widget',
+                                entity: Ext.create('console.model.Entity', {
+                                    id: record.data.entityName,
+                                    pk: record.data.pk,
+                                    name: record.data.entityName,
+                                    url: record.data._links['self'].href,
+                                    synchronizable: entityConfiguration.synchronizable
+                                }),
+                                sections: entityConfiguration.sections
+                            });
+                        }
+                        Ext.getCmp('cms-viewport').restoreWindow(window);
                     }
                 }
             ],

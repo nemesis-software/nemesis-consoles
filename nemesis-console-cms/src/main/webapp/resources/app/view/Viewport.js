@@ -49,6 +49,64 @@ Ext.define('console.view.Viewport', {
         }
     ],
 
+    updateActiveWindow: function () {
+        var me = this, activeWindow = me.getActiveWindow(), last = me.lastActiveWindow;
+
+        if (last && last.isDestroyed) {
+            me.lastActiveWindow = null;
+            return;
+        }
+
+        if (activeWindow === last) {
+            return;
+        }
+
+        if (last) {
+            if (last.el.dom) {
+                last.addCls(me.inactiveWindowCls);
+                last.removeCls(me.activeWindowCls);
+            }
+            last.active = false;
+        }
+
+        me.lastActiveWindow = activeWindow;
+
+        if (activeWindow) {
+            activeWindow.addCls(me.activeWindowCls);
+            activeWindow.removeCls(me.inactiveWindowCls);
+            activeWindow.minimized = false;
+            activeWindow.active = true;
+        }
+
+        Ext.getCmp('taskbar').setActiveButton(activeWindow && activeWindow.taskButton);
+    },
+
+    getActiveWindow: function () {
+        var win = null,
+            zmgr = this.getDesktopZIndexManager();
+
+        if (zmgr) {
+            // We cannot rely on activate/deactive because that fires against non-Window
+            // components in the stack.
+
+            zmgr.eachTopDown(function (comp) {
+                if (comp.isWindow && !comp.hidden) {
+                    win = comp;
+                    return false;
+                }
+                return true;
+            });
+        }
+
+        return win;
+    },
+
+    getDesktopZIndexManager: function () {
+        var windows = this.windows;
+        // TODO - there has to be a better way to get this...
+        return (windows.getCount() && windows.getAt(0).zIndexManager) || null;
+    },
+
     getWindow: function (pk) {
         return this.windows.get('w_pk_' + pk);
     },
@@ -61,8 +119,55 @@ Ext.define('console.view.Viewport', {
                 modal: true
             });
         me.windows.add(win);
+        win.taskButton = Ext.getCmp('taskbar').addTaskButton(win);
+        win.animateTarget = win.taskButton.el;
+        win.on({
+            activate: me.updateActiveWindow,
+            beforeshow: me.updateActiveWindow,
+            deactivate: me.updateActiveWindow,
+            minimize: me.minimizeWindow,
+            destroy: me.onWindowClose,
+            scope: me
+        });
+
+        win.on({
+            boxready: function () {
+                win.dd.xTickSize = me.xTickSize;
+                win.dd.yTickSize = me.yTickSize;
+
+                if (win.resizer) {
+                    win.resizer.widthIncrement = me.xTickSize;
+                    win.resizer.heightIncrement = me.yTickSize;
+                }
+            },
+            single: true
+        });
+
+        win.doClose = function () {
+            win.doClose = Ext.emptyFn; // dblclick can call again...
+            win.el.disableShadow();
+            win.el.fadeOut({
+                listeners: {
+                    afteranimate: function () {
+                        win.destroy();
+                    }
+                }
+            });
+        };
 
         return win;
+    },
+
+    minimizeWindow: function (win) {
+        win.minimized = true;
+        win.hide();
+    },
+
+    onWindowClose: function (win) {
+        var me = this;
+        me.windows.remove(win);
+        Ext.getCmp('taskbar').removeTaskButton(win.taskButton);
+        me.updateActiveWindow();
     },
 
     restoreWindow: function (win) {
