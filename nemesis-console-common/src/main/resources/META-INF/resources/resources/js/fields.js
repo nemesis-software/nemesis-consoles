@@ -517,8 +517,8 @@ Ext.define('console.view.field.NemesisEntityField', {
     dirtyCls: 'dirty',
     queryMode: 'remote',
     forceSelection: true,
-    displayField: 'uid',
-    valueField: 'uid',
+    //displayField: 'uid',
+    //valueField: 'uid',
     minChars: 1,
     isFormField: true,
     multiSelect: false,
@@ -773,11 +773,7 @@ Ext.define('console.view.field.NemesisEntityField', {
                     me.entityHref = result._links.self.href;
                     me.jsonValue = resultData.uid;
                     me.setRawValue(me.getUidToDisplay(resultData));
-                    if (!me.initialized) {
-                        me.originalValue = me.rawValue;
-                        me.initialized = true;
-                    }
-                    
+
                     if (loadStore && !me.store.isLoaded()) {
                     	me.store.load({
                     		params: {
@@ -814,7 +810,6 @@ Ext.define('console.view.field.NemesisEntityField', {
             });
         } else {
             me.entity = null;
-            me.initialized = true;
         }
         return me;
     },

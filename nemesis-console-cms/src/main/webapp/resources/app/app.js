@@ -228,6 +228,7 @@ Ext.application({
                         itemId: 'addWidgetMenu',
                         text: 'Add Widget',
                         iconCls: 'widget_add',
+                        hidden: (event.data.selection.contentSlot ? false : true),
                         handler: function(menu) {
                             console.log(contentSlot);
                             menu.fireEvent('addWidget', contentSlotPk);
@@ -314,6 +315,7 @@ Ext.application({
                         itemId: 'pasteWidget    ',
                         text: 'Paste Widget',
                         iconCls: 'widget_add',
+                        hidden: (event.data.selection.contentSlot ? false : true),
                         handler: function () {
                             var copyWidget = Ext.getCmp('cms-viewport').clipboard;
                             if (!copyWidget) {
@@ -323,7 +325,10 @@ Ext.application({
                             console.app.addWidgetToSlot(copyWidget.data.pk, event.data.selection.contentSlot);
                         }
                     },
-                    '-',
+                    {
+                        xtype: 'menuseparator',
+                        hidden: (event.data.selection.contentSlot ? false : true)
+                    },
                     {
                         itemId: 'editSlot',
                         text: (event.data.selection.contentSlot ? 'Edit Slot': 'Create Slot'),
@@ -348,7 +353,22 @@ Ext.application({
                                 });
                             }
                             Ext.getCmp('cms-viewport').restoreWindow(window);
-
+                            if(!event.data.selection.contentSlot && event.data.selection.contentSlotPosition) {
+                                window.getEntityPopupForm().getForm().getFields().each(function (field) {
+                                    if (field.name == 'position' && !field.dirty) {
+                                        field.setValue(event.data.selection.contentSlotPosition);
+                                    } else if (field.name == 'entity-page' && !field.dirty) {
+                                        field.setValue({
+                                            id : "page",
+                                            data: {
+                                                id: "page",
+                                                url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/' + event.data.page.pk
+                                            }
+                                        }, true);
+                                        field.checkDirty();
+                                    }
+                                });
+                            }
                         }
                     }]
                 });

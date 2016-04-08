@@ -143,6 +143,7 @@ Ext.define('console.view.content.EntityPopupWindow', {
     border: false,
     layout: 'border',
     config: null,
+    entityPopupForm: null,
     initComponent: function () {
 		  
         Ext.apply(this, {
@@ -155,13 +156,13 @@ Ext.define('console.view.content.EntityPopupWindow', {
             method = 'PATCH';
         }
 
-        var entityPopupForm = Ext.create("console.view.content.entity.EntityPopupForm", {
+        this.entityPopupForm = Ext.create("console.view.content.entity.EntityPopupForm", {
             entity: this.config.entity,
             method: method,
             entityFields: this.config.sections
         });
 
-        var entityPopupToolbar = Ext.create("console.view.content.entity.EntityPopupToolbar", {entity: this.config.entity, entityPopupForm: entityPopupForm});
+        var entityPopupToolbar = Ext.create("console.view.content.entity.EntityPopupToolbar", {entity: this.config.entity, entityPopupForm: this.entityPopupForm});
 
         this.items = [
             {
@@ -172,11 +173,14 @@ Ext.define('console.view.content.EntityPopupWindow', {
             {
                 region: 'center',
                 scrollable: 'y',
-                items: entityPopupForm
+                items: this.entityPopupForm
             }
         ];
 
         this.callParent();
+    },
+    getEntityPopupForm: function() {
+        return this.entityPopupForm;
     }
 });
 
