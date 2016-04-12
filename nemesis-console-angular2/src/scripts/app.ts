@@ -1,26 +1,28 @@
-import {Component} from 'angular2/core';
+import {Component/*, ViewEncapsulation*/} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router';
 
 import {LoginComponent} from './login/login.component';
+import {TopNavCmp} from './widgets/topnav/components/topnav';
+
+//  import {LoginCmp} from '../../../pages/login/components/login';
+
+import {DashboardCmp} from './dashboard/components/dashboard';
 
 @Component({
 	selector: 'app',
 	providers: [
 		ROUTER_PROVIDERS
 	],
-	directives: [ROUTER_DIRECTIVES],
+	directives: [ROUTER_DIRECTIVES, TopNavCmp],
 	template: `
-		<div>
-			<ul class="nav nav-pills">
-				<li class="nav-item"><a class="nav-link" [routerLink]="['Login']">Login</a></li>
-			</ul>
-			<hr>
-			<router-outlet></router-outlet>
-		</div>
+		<topnav></topnav>
+		<router-outlet></router-outlet>
 	`
+
 })
 @RouteConfig([
-	{ path: '/login', name: 'Login', component: LoginComponent, useAsDefault: true }
+	{path: '/', name: 'Login', component: LoginComponent, useAsDefault: true},
+	{path: '/dashboard/...', component: DashboardCmp, as: 'Dashboard'}
 ])
 export class AppComponent {
 	/**

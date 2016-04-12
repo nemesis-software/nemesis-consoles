@@ -7,36 +7,34 @@ import {Http, Request, Response, RequestMethod, RequestOptions, BaseRequestOptio
 export class RestOptions extends BaseRequestOptions {
 	constructor() {
 		super();
-		this.url = 'http://localhost:3000';
-		// this.url = '//solarapparel.com/rest';
+		// this.url = 'http://localhost:3000';
+		this.url = '//solarapparel.com/rest';
 		this.headers.append('Content-Type', 'application/json');
 	}
 }
 
 @Injectable()
 export class RestService {
-	constructor(
-		private http: Http,
-		private restOptions: RestOptions
-	) {}
+	constructor(private http:Http, private restOptions:RestOptions) {
+	}
 
-	create(path: string, body: Object): Observable<Response> {
+	create(path:string, body:Object):Observable<Response> {
 		return this.request(path, RequestMethod.Post, body);
 	}
 
-	read(path: string, search?: Object): Observable<Response> {
+	read(path:string, search?:Object):Observable<Response> {
 		return this.request(path, RequestMethod.Get, null, search);
 	}
 
-	update(path: string, body: Object): Observable<Response> {
+	update(path:string, body:Object):Observable<Response> {
 		return this.request(path, RequestMethod.Put, body);
 	}
 
-	delete(path: string): Observable<Response> {
+	delete(path:string):Observable<Response> {
 		return this.request(path, RequestMethod.Delete);
 	}
 
-	private request(path: string, method: RequestMethod, body?: Object, search?: Object): Observable<Response> {
+	private request(path:string, method:RequestMethod, body?:Object, search?:Object):Observable<Response> {
 		let options = new RequestOptions(this.restOptions.merge({
 			method: method,
 			url: this.restOptions.url + path,
@@ -47,7 +45,7 @@ export class RestService {
 		return this.http.request(new Request(options));
 	}
 
-	private serialize(obj: Object): string {
+	private serialize(obj:Object):string {
 		var str = [];
 
 		for (let p in obj) {
