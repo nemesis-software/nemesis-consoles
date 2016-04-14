@@ -49,6 +49,10 @@
   product_reference: 'Product Reference',
   keyword: 'Keyword',
   price: 'Price',
+  // social
+  socialfolder: 'Social',
+  social_preference: 'Social Preference',
+  social_connection: 'Social Connection',
   //filter
   abstract_filter: 'Filter',
   //wishlist

@@ -623,11 +623,15 @@
     background-image: url(images/cronjob.png);
 }
 
-.social_configuration {
-    background-image: url(images/social_configuration.png);
+.social_preference {
+    background-image: url(images/social_preference.png);
 }
 
-.storage_configuration {
+.social_connection {
+    background-image: url(images/social_connection.png);
+}
+
+.storage_connection {
     background-image: url(images/storage_configuration.png);
 }
 

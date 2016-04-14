@@ -48,6 +48,10 @@
   stock_level: 'Наличност',
   keyword: 'Ключова дума',
   price: 'Цена',
+  // social
+  socialfolder: 'Социални',
+  social_preference: 'Социални преференции',
+  social_connection: 'Социално връзки',
   //filter
   abstract_filter: 'Филтър',
   //wishlist
