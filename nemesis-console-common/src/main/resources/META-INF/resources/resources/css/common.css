@@ -575,6 +575,10 @@
     background-image: url(images/wishlist_entry.png);
 }
 
+.rule {
+    background-image: url(images/rule.png);
+}
+
 .promotion {
     background-image: url(images/promotion.png);
 }
