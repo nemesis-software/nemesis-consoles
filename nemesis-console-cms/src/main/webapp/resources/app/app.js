@@ -347,7 +347,8 @@ Ext.application({
                                         pk: event.data.selection.contentSlot,
                                         name: 'content_slot',
                                         url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/' + event.data.selection.contentSlot,
-                                        isNew: (event.data.selection.contentSlot ? false : true)
+                                        isNew: (event.data.selection.contentSlot ? false : true),
+                                        synchronizable: entityConfiguration.synchronizable
                                     }),
                                     sections: entityConfiguration.sections
                                 });
