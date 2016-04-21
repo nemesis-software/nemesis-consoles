@@ -75,6 +75,10 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
     public void afterTestClass(TestContext testContext) throws Exception {
         super.webDriver = testContext.getApplicationContext().getBean(RemoteWebDriver.class);
         getWebDriver().findElementById("app-header-logout").click();
+
+        //We need this otherwise selenium will not wait for the logout to happen and the next assert will fail
+        getWait().until(ExpectedConditions.titleIs("Login Page"));
+
         assertEquals("Login Page", getWebDriver().getTitle());
 
         getWebDriver().quit();
