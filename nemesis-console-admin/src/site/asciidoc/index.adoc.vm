@@ -1,0 +1,122 @@
+= Welcome
+Petar Tahchiev <https://github.com/ptahchiev[@ptahchiev]>;
+:resources-code: $project.getBasedir()/src/main/resources
+
+== Introduction
+Nemesis Admin Console is an link:ExtJS[https://www.sencha.com/products/extjs/] application that connects with the Nemesis Platform over REST, and can be used to provide an easy-to-use interface for administering your installation. It communicates with the Spring Boot Platform Actuators part of the 
+nemesis platform, and some helper controllers that we have created.
+
+To start the console, first you need to know the address of the nemesis platform instance that you want to administer. Usually it's `localhost`, but it could be also installed on some other server. Once you know the address,
+you can go on and change the properies in the `appplication.properties` file to point to address where the nemesis platform instance is installed:
+
+[source, properties]
+.application.properties
+----
+include::{resources-code}/application.properties[]
+----
+
+After that you are ready to start the server.
+
+[source, bash]
+----
+mvn spring-boot:run
+----
+
+It doesn't take that long and the server will be started. The server is started once you see the following line in the command prompt:
+
+[source, bash]
+----
+INFO : Started AdminConsoleApplication in 4.007 seconds (JVM running for 21.906)
+----
+
+== Login
+Once the server is started you can navigate you browser to `http://localhost:8080/admin` and the login screen will be presented to you.
+
+[.center.text-center]
+.Nemesis Admin Console Login Screen
+image::login.png[Nemesis Admin Console Login Screen]
+
+The username/password are configured in the Nemesis Platform Instance towards which you are connected, with the default being `admin/nimda`.
+
+== Overall Look
+Once you are logged in you will be presented with the main screen of the console.
+
+[.center.text-center]
+.Nemesis Admin Console Main Screen
+image::main.png[Nemesis Admin Console Main Screen]
+
+It consists of a **Portlet Selector** in the top right corner <1> and a **Portlet Area** in the center <2>. The portlet view presents a number of portlets which will allow you to perform different administrative tasks on the platform.
+The **Portlet Selector** on the other hand will let you easily configure which portlets to be visible next time you login.
+
+== Application Health Portlet
+The **Application Health Portlet** allows you to quickly monitor the state of your application, and all the services that it requires (Database, Solr, RabbitMQ, Redis, etc.).
+
+[.center.text-center]
+.Nemesis Admin Console Platform Health Portlet
+image::platform-health.png[Nemesis Admin Console Platform Health Portlet]
+
+It shows a table with each row being a single service and green-red indicator to show if the health status of the service.
+
+== PK Decode Portlet
+The **PK Decode Portlet** allows you to discover the type-code (and therefore the entity) behind a given PK.
+
+[.center.text-center]
+.Nemesis Admin Console Platform PK Decode Portlet
+image::pk-decode.png[Nemesis Admin Console PK Decode Portlet]
+
+== Platform Actions Portlet
+The **Platform Actions Portlet** allows you to perform fundamental operations like `Initialize Platform`, `Update Platform`, but also `Thread Dump`.
+
+[.center.text-center]
+.Nemesis Admin Console Platform Actions Portlet
+image::platform-actions.png[Nemesis Admin Console Platform Actions Portlet]
+
+WARNING: Platform initialization is a dangerous action! It will delete all of your data! Please be careful with this action!
+
+== Query Portlet
+The **Query Portlet** allows you to execute `SQL` and `HQL` queries on the underlying database.
+
+[.center.text-center]
+.Nemesis Admin Console Query Portlet
+image::query.png[Nemesis Admin Console Query Portlet]
+
+When you write your query, simply click on the `Execute` button and the result will appear in a new popup window.
+
+WARNING: Please be careful with the queries you write! The **Query Portlet** executes only read queries, but even so you can significantly decrease the performance of your server if your query is slow.
+
+== Import Portlet
+The **Import Portlet** allows you to execute CSV imports on the platform. These platform can contain any statements, so you can import new data, but you can also delete existing data too.
+
+[.center.text-center]
+.Nemesis Admin Console Import Portlet
+image::import.png[Nemesis Admin Console Import Portlet]
+
+You can upload your file, or paste your CSV in the text-area and hit `Import`.
+
+== Logger Portlet
+The **Logger portlet** allows you to view and change the log levels that are defined in your Nemesis Platform installation.
+
+[.center.text-center]
+.Nemesis Admin Console Logger Portlet
+image::logger.png[Nemesis Admin Console Logger Portlet]
+
+You can change the settings and click `Save` to apply them on the server. It also gives you the option to tail the log in real time, so you can follow what's happening with your server.
+
+== System Properties Portlet
+The **System Properties Portlet** allows you to view the system properties that are defined in the system.
+
+[.center.text-center]
+.Nemesis Admin Console System Portlet
+image::system-properties.png[Nemesis Admin Console System Properties Portlet]
+
+The view shows you not only the properties that are defined, but also from which type they are.
+
+== Spring Beans Portlet
+The **Sping Beans Portlet** allows you to view all the different beans that are defined in the platform.
+
+[.center.text-center]
+.Nemesis Admin Console Spring Beans Portlet
+image::spring-beans.png[Nemesis Admin Console Spring Beans Portlet]
+
+It shows you also in which configuration this bean has been defined.
+

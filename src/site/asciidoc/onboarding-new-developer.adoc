@@ -21,25 +21,15 @@ git clone https://github.com/nemesis-software/nemesis-consoles.git
 ----
 
 === Configure the console you want to use.
-Each console speaks to a REST endpoint. To configure the address where the REST endpoint is, simply change the file `jetty-end.xml` in the root folder of the console:
-[source,xml]
+Each console speaks to a REST endpoint. To configure the address where the REST endpoint is, simply change the file `application.properties` in the `src/main/resources` folder of the console:
+[source,properties]
 ----
-<?xml version="1.0" encoding="UTF-8"?>
-<Configure class="org.eclipse.jetty.webapp.WebAppContext">
-    <New id="websiteBaseUrl" class="org.eclipse.jetty.plus.jndi.EnvEntry">
-        <Arg>websiteBaseUrl</Arg>
-        <Arg type="java.lang.String">https://localhost:8112/storefront/</Arg>
-        <Arg type="boolean">true</Arg>
-    </New>
+server.contextPath=/admin
+console.restBaseUrl=https://localhost:8112/storefront/rest/
+console.websiteBaseUrl=https://localhost:8112/storefront/
 
-    <New id="restBaseUrl" class="org.eclipse.jetty.plus.jndi.EnvEntry">
-        <Arg>restBaseUrl</Arg>
-        <Arg type="java.lang.String">https://localhost:8112/storefront/rest/</Arg>
-        <Arg type="boolean">true</Arg>
-    </New>
-</Configure>
 ----
-By default the two properties point to localhost, but if you don't have the REST endpoint running locally, you can also point them at `https://solarapparel.com:8112/storefront` and `https://solarapparel.com:8112/storefront/rest`.
+By default the two properties point to localhost, but if you don't have the REST endpoint running locally, you can also point them at `https://www.solarapparel.com/` and `https://www.solarapparel.com/rest/`.
 
 == Install Java
 At the moment the nemesis platform requires version of the JDK at least `1.8.0`, so go to the Oracle website and download the latest version of the JDK. Please note that we use `maven-enforcer-plugin` so smaller version will simply not build the project.
@@ -89,7 +79,7 @@ NOTE: Please be patient - the first build might take even an hour, as Maven is d
 Now that you have all this configured you can go to any of the consoles and start it with the following command:
 [source,bash]
 ----
- $ mvn jetty:run
+ $ mvn spring-boot:run
 ----
 
 after a few seconds the console will be up and running on link:http://localhost:8080/admin[http://localhost:8080/{console_id}] (username: admin, password: nimda).

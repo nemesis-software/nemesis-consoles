@@ -1,0 +1,117 @@
+= Welcome
+Petar Tahchiev <https://github.com/ptahchiev[@ptahchiev]>;
+:resources-code: $project.getBasedir()/src/main/resources
+
+== Introduction
+Nemesis Cms Console is an link:ExtJS[https://www.sencha.com/products/extjs/] application that connects with the Nemesis Platform over REST, and can be used to provide an easy-to-use interface for administering the Cms parts of your installation. It communicates with the Spring Data REST part of the 
+nemesis platform, and some helper controllers that we have created.
+
+To start the console, first you need to know the address of the nemesis platform instance that you want to administer. Usually it's `localhost`, but it could be also installed on some other server. Once you know the address,
+you can go on and change the properies in the `appplication.properties` file to point to address where the nemesis platform instance is installed:
+
+[source, properties]
+.application.properties
+----
+include::{resources-code}/application.properties[]
+----
+
+The two properties specify where the rest can be found, and also where the storefront of the platform can be found.
+
+After that you are ready to start the server.
+
+[source, bash]
+----
+mvn spring-boot:run
+----
+
+It doesn't take that long and the server will be started. The server is started once you see the following line in the command prompt:
+
+[source, bash]
+----
+INFO : Started CmsConsoleApplication in 4.007 seconds (JVM running for 21.906)
+----
+
+== Login
+Once the server is started you can navigate you browser to `http://localhost:8080/cms` and the login screen will be presented to you.
+
+[.center.text-center]
+.Nemesis Cms Console Login Screen
+image::login.png[Nemesis Cms Console Login Screen]
+
+The username/password are configured in the Nemesis Platform Instance towards which you are connected, with the default being `admin/nimda`.
+
+== Overall Look
+Once you are logged in you will be presented with the main screen of the console.
+
+[.center.text-center]
+.Nemesis Cms Console Main Screen
+image::main.png[Nemesis Cms Console Main Screen]
+
+It consists of a **Entity Accordion** on the left <1> and a **Live-edit Area** on the right <2>. The accordion allows you to search and navigate through the different cms entities of the Nemesis Platform.
+
+== Page Templates
+When you expand the `Page Templates` section of the **Entity Accordion** (fig.2), you will be presented with a search form and a list of all the page templates that are defined in the platform.
+
+== Pages
+When you expand the `Pages` section of the **Entity Accordion**, you will be presented with a search form and a list of all the pages that are defined in the platform. You can right-click any of them 
+
+[.center.text-center]
+.Nemesis Cms Console Pages
+image::pages.png[Nemesis Cms Console Pages]
+
+== Slots
+When you expand the `Slots` section of the **Entity Accordion**, you will be presented with a search form and a list of all the slots that are defined in the platform.
+
+[.center.text-center]
+.Nemesis Cms Console Slots
+image::slots.png[Nemesis Cms Console Slots]
+
+== Widgets
+When you expand the `Widgets` section of the **Entity Accordion**, you will be presented with a search form and a list of all the widgets that are defined in the platform.
+
+[.center.text-center]
+.Nemesis Cms Console Widgets
+image::widgets.png[Nemesis Cms Console Widgets]
+
+== Emails
+When you expand the Emails section of the **Entity Accordion**, you will be presented with a search form and a list of all the emails that are defined in the platform.
+
+[.center.text-center]
+.Nemesis Cms Console Emails
+image::emails.png[Nemesis Cms Console Emails]
+
+== Live-edit Area
+The **Live-edit Area** allows you to view your cms pages together with the content slots on this page, and the widgets in the content slots. All of the content slots are surrounded by a blue dotted box <1> and all of the widgets in the
+content slots are surrounded by a green dotted box <2>:
+
+[.center.text-center]
+.Nemesis Cms Console Live-edit Area
+image::live-edit.png[Nemesis CmsConsole Live-edit Area]
+
+You have the option to right click on any widget and any slot. If you select to right click on a widget a new context menu appears:
+
+[.center.text-center]
+.Nemesis Cms Console Live-edit Widget Menu
+image::live-edit-widget.png[Nemesis Cms Console Live-edit Widget Menu]
+
+This module will allow you to `Edit` <1>, `Remove` <2>, or ... the given widget. Alternatively you can right-click on a slot and then a similar menu will appear, only this time you will operate on the slot:
+
+[.center.text-center]
+.Nemesis Cms Console Live-edit Slot Menu
+image::live-edit-slot.png[Nemesis Cms Console Live-edit Slot Menu]
+
+== Drag-and-drop
+So far we have been editing widgets in slots via `Copy` and `Paste`. This works, however, it is not the easiest way to operate with widgets. The Nemesis Cms Console supports drag-and-drop of features in slots. All you have to do is
+open the widget section from the  **Entity Accordion**, search or select for the widget you want to place in your slot and drag it to the slot. 
+
+[.center.text-center]
+.Nemesis Cms Console Drag-and-drop
+image::drag-and-drop.png[Nemesis Cms Console Drag-and-drop]
+
+After the widget has been added there will be a popup window confirming the operation:
+
+[.center.text-center]
+.Nemesis Cms Console Drag-and-drop confirm
+image::drag-and-drop-confirm.png[Nemesis Cms Console Drag-and-drop confirm]
+
+You can learn more on how to setup the drag-and-drop link:drag-and-drop.html[here].
