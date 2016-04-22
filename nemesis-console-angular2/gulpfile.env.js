@@ -12,8 +12,13 @@ let baseLibs = [
 	'node_modules/angular2/bundles/angular2.dev.js',
 	'node_modules/angular2/bundles/router.dev.js',
 	'node_modules/angular2/bundles/http.dev.js',
-	'node_modules/lodash/index.js'
+	'node_modules/lodash/index.js',
+	'node_modules/jquery/dist/jquery.js',
+	'node_modules/highcharts/highcharts.js',
+	'node_modules/moment/moment.js',
+	'node_modules/ng2-bootstrap/bundles/ng2-bootstrap.js'
 ];
+
 
 var paths = {
 	typings: [

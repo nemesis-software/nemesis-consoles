@@ -7,10 +7,13 @@
 		"module": "system",
 		"moduleResolution": "node",
 		"removeComments": true,
-		"sourceMap": false
+		"sourceMap": true,
+		"listFiles": true,
+		"noImplicitAny": false
 	},
 	"exclude": [
 		"node_modules",
-		"src/scripts/shared/bootstrap.ts"
+		"typings/browser.d.ts",
+		"build"
 	]
 }

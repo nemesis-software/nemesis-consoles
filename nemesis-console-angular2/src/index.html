@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Angular 2 Seed</title>
+	<title>Nemesis Console Angular2</title>
 
 	<!-- inject:js -->
 	<!-- endinject -->
@@ -14,18 +14,7 @@
 	<!-- endinject -->
 </head>
 <body>
-	<!--<nav class="navbar navbar-fixed-top navbar-dark bg-primary">
-		<a class="navbar-brand" href="#"><img src="images/angular2-seed-logo.png" width="28"></a>
-		<a class="navbar-brand" href="http://angular2-seed.io">Admin Console Angular2</a>
-
-		<div class="nav navbar-nav pull-xs-right">
-			<a class="nav-item nav-link" href="#">Right Menu</a>
-		</div>
-	</nav>-->
-
-	<div class="container">
-		<app>Loading...</app>
-	</div>
+	<app><div class="loader"></div></app>
 
 	<script>
 		<!-- @if isDev -->
@@ -33,6 +22,19 @@
 		 * The package name `js` matches the folder structure inside `/build`.
 		 * And the `main` property points to the app entry file - `bootstrap.js`.
 		 */
+
+        System.config({
+            packages: {
+                app: {
+                    format: 'register',
+                    defaultExtension: 'js'
+                }
+            },
+            map: {
+                moment: '/libs/node_modules/moment/moment.js'
+            }
+        });
+
 		System.config({
 			packages: { 'js': { main: 'bootstrap.js' } }
 		});

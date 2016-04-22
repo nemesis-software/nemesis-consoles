@@ -4,10 +4,9 @@ var gulp = require('gulp'),
 	plugins = require('gulp-load-plugins')(),
 	env = require('./../gulpfile.env');
 
-module.exports = function typedoc() {
+gulp.task('typedoc', () => {
 	return gulp.src([
-		'src/scripts/**/*.ts',
-		'!src/scripts/**/*.spec.ts',
+		'src/scripts/**/!(*.spec).ts',
 		...env.typings
 	]).pipe(plugins.typedoc({
 		module: 'commonjs',
@@ -15,4 +14,4 @@ module.exports = function typedoc() {
 		experimentalDecorators: true,
 		out: 'docs'
 	}));
-};
+});
