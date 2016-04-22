@@ -166,8 +166,16 @@ Ext.define('console.components.menu.Widgets', {
                     },
                     buildCtxMenu: function (view, record, item, index, event) {
                         var me = this;
-                        return Ext.create('Ext.menu.Menu', {
+                        var menu = Ext.create('Ext.menu.Menu', {
                             items: [
+                                {
+                                    itemId: 'create',
+                                    handler: function () {
+                                        me.onCreateSelected(view, record, item, index, event);
+                                    },
+                                    text: 'Create',
+                                    iconCls: 'add'
+                                },
                                 {
                                     itemId: 'edit',
                                     handler: function () {
@@ -187,6 +195,54 @@ Ext.define('console.components.menu.Widgets', {
                                 }
                             ]
                         });
+
+                        if (cmsEntriesData['widget'].childNodes !== null && cmsEntriesData['widget'].childNodes.length > 0) {
+                            var submenu = Ext.create('Ext.menu.Menu');
+                            Ext.each(cmsEntriesData['widget'].childNodes,
+                                function (item) {
+                                    submenu.add({
+                                        text: item.text,
+                                        iconCls: item.iconCls,
+                                        itemId: item.text,
+                                        handler: function () {
+                                            var entityConfiguration = Ext.create("console.markup." + item.id);
+                                            var window = Ext.getCmp('cms-viewport').createWindow({
+                                                id: null,
+                                                title: '[' + item.text + ']',
+                                                iconCls: item.iconCls,
+                                                entity: Ext.create('console.model.Entity', {
+                                                    name: item.text,
+                                                    url: Ext.get('rest-base-url').dom.getAttribute('url') + item.id
+                                                }),
+                                                sections: entityConfiguration.sections
+                                            });
+                                            Ext.getCmp('cms-viewport').restoreWindow(window);
+                                        }
+                                    })
+                                }
+                            );
+
+                            menu.items.items[0].setMenu(submenu);
+                        }
+
+                        return menu;
+                    },
+                    onCreateSelected: function (view, record, item, index, event) {
+                        var entityConfiguration = Ext.create("console.markup." + record.get('entityName'));
+                        var entity = Ext.create('console.model.Entity', {
+                            id: record.get('text'),
+                            name: record.get('text'),
+                            url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('entityName'),
+                            isNew: true
+                        });
+                        var window = Ext.getCmp('cms-viewport').createWindow({
+                            id: "",
+                            title: '[' + record.get('entityName') + ']',
+                            iconCls: record.get('entityName'),
+                            entity: entity,
+                            sections: entityConfiguration.sections
+                        });
+                        Ext.getCmp('cms-viewport').restoreWindow(window);
                     },
                     onEditSelected: function (view, record, item, index, event) {
                         var parentCmpId = 'cms-viewport';
