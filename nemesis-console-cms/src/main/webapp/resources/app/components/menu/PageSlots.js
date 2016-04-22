@@ -117,23 +117,81 @@ Ext.define('console.components.menu.PageSlots', {
                     },
                     buildCtxMenu: function (view, record, item, index, event) {
                         var me = this;
-                        return Ext.create('Ext.menu.Menu', {
-                            items: [{
-                                itemId: 'addWidgetMenu',
-                                text: 'Add Widget',
-                                iconCls: 'widget_add',
-                                handler: function(menu) {
-                                    menu.fireEvent('addWidget', record.data.pk);
-                                }
-                            }, {
-                                itemId: 'edit',
-                                text: 'Edit/Create slot',
-                                iconCls: 'edit',
-                                handler: function () {
-                                    me.onEditSelected(view, record, item, index, event);
-                                }
-                            }]
+                        var menu = Ext.create('Ext.menu.Menu', {
+                            items: [
+                                {
+                                    itemId: 'create',
+                                    handler: function () {
+                                        me.onCreateSelected(view, record, item, index, event);
+                                    },
+                                    text: 'Create',
+                                    iconCls: 'add'
+                                },
+                                {
+                                    itemId: 'edit',
+                                    text: 'Edit/Create slot',
+                                    iconCls: 'edit',
+                                    handler: function () {
+                                        me.onEditSelected(view, record, item, index, event);
+                                    }
+                                },
+                                {
+                                    itemId: 'addWidgetMenu',
+                                    text: 'Add Widget',
+                                    iconCls: 'widget_add',
+                                    handler: function (menu) {
+                                        menu.fireEvent('addWidget', record.data.pk);
+                                    }
+                                }]
                         });
+
+                        if (cmsEntriesData['content_slot'].childNodes !== null && cmsEntriesData['content_slot'].childNodes.length > 0) {
+                            var submenu = Ext.create('Ext.menu.Menu');
+                            Ext.each(cmsEntriesData['content_slot'].childNodes,
+                                function (item) {
+                                    submenu.add({
+                                        text: item.text,
+                                        iconCls: item.iconCls,
+                                        itemId: item.text,
+                                        handler: function () {
+                                            var entityConfiguration = Ext.create("console.markup." + item.id);
+                                            var window = Ext.getCmp('cms-viewport').createWindow({
+                                                id: null,
+                                                title: '[' + item.text + ']',
+                                                iconCls: item.iconCls,
+                                                entity: Ext.create('console.model.Entity', {
+                                                    name: item.text,
+                                                    url: Ext.get('rest-base-url').dom.getAttribute('url') + item.id
+                                                }),
+                                                sections: entityConfiguration.sections
+                                            });
+                                            Ext.getCmp('cms-viewport').restoreWindow(window);
+                                        }
+                                    })
+                                }
+                            );
+
+                            menu.items.items[0].setMenu(submenu);
+                        }
+
+                        return menu;
+                    },
+                    onCreateSelected: function (view, record, item, index, event) {
+                        var entityConfiguration = Ext.create("console.markup." + record.get('entityName'));
+                        var entity = Ext.create('console.model.Entity', {
+                            id: record.get('text'),
+                            name: record.get('text'),
+                            url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('entityName'),
+                            isNew: true
+                        });
+                        var window = Ext.getCmp('cms-viewport').createWindow({
+                            id: "",
+                            title: '[' + record.get('entityName') + ']',
+                            iconCls: record.get('entityName'),
+                            entity: entity,
+                            sections: entityConfiguration.sections
+                        });
+                        Ext.getCmp('cms-viewport').restoreWindow(window);
                     },
                     onEditSelected: function (view, record, item, index, event) {
                         var parentCmpId = 'cms-viewport';

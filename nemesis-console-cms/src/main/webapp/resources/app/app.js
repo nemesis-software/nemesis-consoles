@@ -50,6 +50,17 @@ Ext.application({
             }
         });
 
+        Ext.Ajax.request({
+            method: 'GET',
+            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'backend/cms-entries',
+            success: function (response) {
+                cmsEntriesData = Ext.util.JSON.decode(response.responseText);
+            },
+            failure: function () {
+                console.error('Cannot load backend/cms-entries resource from the server!');
+            }
+        });
+
         // Create the actual viewport in body
         Ext.create('console.view.Viewport', {
             renderTo: Ext.getBody(),
