@@ -5,11 +5,17 @@ import {Injectable} from 'angular2/core';
 import {Http, Request, Response, RequestMethod, RequestOptions, BaseRequestOptions} from 'angular2/http';
 
 export class RestOptions extends BaseRequestOptions {
+	token: string;
+
 	constructor() {
 		super();
 		// this.url = '//jsonplaceholder.typicode.com';
 		this.url = 'http://localhost:3000';
 		this.headers.append('Content-Type', 'application/json');
+		this.token = localStorage.getItem('token');
+		if(this.token) {
+			this.headers.append('x-security-token', this.token);
+		}
 	}
 }
 
