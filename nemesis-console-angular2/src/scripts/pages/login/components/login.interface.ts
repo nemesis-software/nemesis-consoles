@@ -1,6 +1,4 @@
-export interface ILogin  {
-	id: number;
+export interface ILogin {
 	user: string;
 	password: string;
-	completed: boolean;
 }

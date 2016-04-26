@@ -2,7 +2,7 @@ import {HTTP_PROVIDERS} from 'angular2/http';
 import {Component} from 'angular2/core';
 
 import {LoginService} from './login.service';
-import {LoginListComponent} from './login-list.component';
+// import {LoginListComponent} from './login-list.component';
 import {LoginInputComponent} from './login-input.component';
 
 import {RestOptions, RestService} from '../../../shared/services/rest.service';
@@ -15,14 +15,14 @@ import {RestOptions, RestService} from '../../../shared/services/rest.service';
 		RestService,
 		LoginService
 	],
-	directives: [LoginInputComponent, LoginListComponent],
+	directives: [LoginInputComponent /* , LoginListComponent*/],
 	template: `
 		<div class="login-page">
 			<div class="row">
 				<div class="col-lg-4 col-lg-offset-4">
 					<login-input></login-input>
 					<br>
-					<login-list></login-list>
+					<!--<login-list></login-list>-->
 				</div>
 			</div>
 		</div>

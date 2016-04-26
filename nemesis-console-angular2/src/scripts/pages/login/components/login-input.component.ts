@@ -26,8 +26,8 @@ export class LoginInputComponent {
 		if (!login.user) {
 			return;
 		}
-		this.loginService.create(login);
-		this.login = new Login();
+		this.loginService.login(login);
+		// this.login = new Login();
 	}
 	gotoDashboard() {
 		this._router.navigate(['Dashboard']);
