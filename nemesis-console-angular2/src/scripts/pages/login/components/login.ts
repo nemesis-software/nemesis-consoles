@@ -1,19 +1,14 @@
-	import {Component} from 'angular2/core';
-import {Router} from 'angular2/router';
-@Component({
-	selector: 'login',
-	templateUrl: './login.html'
-})
+import {ILogin} from './login.interface';
 
-export class LoginCmp {
-	constructor(private _router:Router) {
-	}
+export class Login implements ILogin {
+	public id:number;
+	public user:string;
+	public password:string;
+	public completed:boolean;
 
-	gotoDashboard() {
-		this._router.navigate(['Dashboard']);
-	}
-
-	gotoSignup() {
-		this._router.navigate(['Signup']);
+	constructor(user?:string, password?:string) {
+		this.id = Math.floor(Math.random() * 11);
+		this.user = user;
+		this.password = password;
 	}
 }

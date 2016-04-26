@@ -4,7 +4,7 @@ import {
 	ROUTER_DIRECTIVES
 } from 'angular2/router';
 
-import {LoginCmp} from '../../../pages/login/components/login';
+import {LoginComponent} from '../../../pages/login/components/login.component';
 import {SignupCmp} from '../../../pages/signup/components/signup';
 import {DashboardCmp} from '../../dashboard/components/dashboard';
 
@@ -16,7 +16,7 @@ import {DashboardCmp} from '../../dashboard/components/dashboard';
 	directives: [ROUTER_DIRECTIVES]
 })
 @RouteConfig([
-	{path: '/', component: LoginCmp, as: 'Login', useAsDefault: true},
+	{path: '/', component: LoginComponent, as: 'Login', useAsDefault: true},
 	{path: '/signup', component: SignupCmp, as: 'Signup'},
 	{path: '/dashboard/...', component: DashboardCmp, as: 'Dashboard'}
 ])

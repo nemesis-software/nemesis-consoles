@@ -1,0 +1,21 @@
+{
+  "auth": [
+    {
+      "id": 1,
+      "email": "admin@admin.com",
+      "password": "admin",
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
