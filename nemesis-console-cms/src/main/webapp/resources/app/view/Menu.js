@@ -26,8 +26,8 @@ Ext.define('console.view.Menu', {
                 Ext.create('console.components.menu.PageTemplates'),
                 Ext.create('console.components.menu.Pages'),
                 Ext.create('console.components.menu.PageSlots'),
-                Ext.create('console.components.menu.Widgets'),
-                Ext.create('console.components.menu.Emails')
+                Ext.create('console.components.menu.Widgets')/*,
+                Ext.create('console.components.menu.Emails')*/
             ]
         });
 
