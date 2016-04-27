@@ -32,8 +32,5 @@ Ext.define('console.view.Menu', {
         });
 
         me.callParent();
-    },
-    somefn: function (uid) {
-        alert(uid);
     }
 });
