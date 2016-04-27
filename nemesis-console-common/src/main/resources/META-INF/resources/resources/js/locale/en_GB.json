@@ -9,6 +9,7 @@
   core: 'Core',
   catalogfolder: 'Catalog',
   filterfolder: 'Filter',
+  b2bcommercefolder: 'Business',
   commercefolder: 'Commerce',
   commercecatalogfolder: 'Catalog',
   commercei18nfolder: 'Internationalization',

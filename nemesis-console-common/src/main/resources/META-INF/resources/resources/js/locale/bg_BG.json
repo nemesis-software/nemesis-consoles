@@ -9,6 +9,7 @@
   core: 'Основни',
   catalogfolder: 'Каталог',
   filterfolder: 'Филтър',
+  b2bcommercefolder: 'Бизнес',
   commercefolder: 'Търговия',
   commercecatalogfolder: 'Каталог',
   cms: 'Съдържание',
