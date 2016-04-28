@@ -14,5 +14,5 @@ or you can read more about any of the consoles below:
 
 [cols="^,^,^"]
 |===
-|link:nemesis-console-admin/index.html[Admin]|link:nemesis-platform-backend/index.html[Backend]|link:nemesis-console-cms/index.html[CMS]
+|link:nemesis-console-admin/index.html[Admin]|link:nemesis-console-backend/index.html[Backend]|link:nemesis-console-cms/index.html[CMS]
 |===
