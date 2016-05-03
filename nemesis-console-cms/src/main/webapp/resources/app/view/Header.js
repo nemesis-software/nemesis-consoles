@@ -24,6 +24,16 @@ Ext.define('console.view.Header', {
                 }
             },
             {
+                xtype: 'component',
+                id: 'app-header-website-base-url',
+                cls: 'x-target',
+                autoEl: {
+                    tag: 'a',
+                    href: Ext.get('website-base-url').dom.getAttribute('url'),
+                    html: 'Editing staging version of '+ Ext.get('website-base-url').dom.getAttribute('url')
+                }
+            },
+            {
                 id: 'logout-form',
                 border: false,
                 frame: false,
