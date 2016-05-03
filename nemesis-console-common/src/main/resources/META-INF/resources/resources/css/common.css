@@ -123,6 +123,12 @@
     text-shadow: 1px 1px 8px white;
 }
 
+#app-header .x-target {
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
 #logout-form-body {
     background: none;
 }
