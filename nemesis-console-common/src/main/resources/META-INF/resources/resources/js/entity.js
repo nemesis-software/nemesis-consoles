@@ -557,9 +557,23 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
 
             },
             failure: function (responseObject) {
+                var messageText = '';
+                var result = Ext.decode(responseObject.responseText);
+                var serverErrors = result.errors;
+                if(serverErrors){
+                    //convert errors to extjs specific json
+                    var errors = {};
+                    for (var i = 0; i < serverErrors.length; i++) {
+                        errors[serverErrors[i].property] = serverErrors[i].message;
+                        //TODO workaround for entity- fields
+                        errors['entity-' + serverErrors[i].property] = serverErrors[i].message;
+                        messageText = messageText + serverErrors[i].property + ": " + serverErrors[i].message + '<br/>';
+                    }
+                    entityPopupForm.getForm().markInvalid(errors);
+                }
                 Ext.MessageBox.show({
-                    title: 'Error',
-                    msg: responseObject.statusText,
+                    title: 'Error - ' + responseObject.statusText,
+                    msg: messageText || responseObject.statusText,
                     buttons: Ext.MessageBox.OK,
                     icon: Ext.MessageBox.ERROR
                 });
