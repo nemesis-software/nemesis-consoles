@@ -1112,6 +1112,15 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
                     flex: 1,
                     height: 180,
                     listeners: {
+                        render: function(){
+                            //workaround since editing sourceArea is not changing the value
+                            var sourceTextArea = Ext.get(this.id + "-inputCmp-textareaEl");
+                            sourceTextArea.on('keydown', function() {
+                                var lang = me.fieldSet.items.items[0].getValue();
+                                var value = sourceTextArea.getValue()
+                                me.langValuePairs[lang] = {"value": value};
+                            }, this, { buffer: 500 });
+                        },
                         change: function () {
                             if (me.fieldSet) {
                                 //save the input value in me.langValuePairs
