@@ -33,6 +33,7 @@ public class BackendConsoleController {
 
     @RequestMapping(value = { "/", "/console" }, method = RequestMethod.GET)
     public String home(final Model model, final HttpServletRequest request) {
+        model.addAttribute("websiteBaseUrl", consoleProperties.getWebsiteBaseUrl());
         model.addAttribute("restBaseUrl", consoleProperties.getRestBaseUrl());
         return "index";
     }
