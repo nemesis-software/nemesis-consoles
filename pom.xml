@@ -70,16 +70,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.nemesis.platform</groupId>
-            <artifactId>nemesis-platform-util</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.flywaydb</groupId>
-                    <artifactId>flyway-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <optional>true</optional>
