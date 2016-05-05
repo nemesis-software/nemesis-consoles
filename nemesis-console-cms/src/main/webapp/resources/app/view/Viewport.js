@@ -116,7 +116,7 @@ Ext.define('console.view.Viewport', {
         var me = this,
             win = Ext.create('console.view.content.EntityPopupWindow', {
                 config: config,
-                modal: true
+                modal: false
             });
         me.windows.add(win);
         win.taskButton = Ext.getCmp('taskbar').addTaskButton(win);
