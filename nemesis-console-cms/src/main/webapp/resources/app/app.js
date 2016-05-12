@@ -407,9 +407,17 @@ Ext.application({
                 this.previousContentSlotId = 'slot-' + event.data.selection.contentSlot;
                 this.previousContentElementId = 'widget-' + event.data.selection.contentElement;
             } else if (event.data.type === 'DROP') {
-                var widgetPk = Ext.get(Ext.Element.getActiveElement()).id.substring(7);
+                var widgetPk = event.data.contentElement;
                 var contentSlotPk = event.data.contentSlot;
-                console.app.addWidgetToSlot(widgetPk, contentSlotPk);
+                if(!widgetPk) {//not drag and drop between two slots
+                    //take the active element then
+                    Ext.get(Ext.Element.getActiveElement()).id.substring(7);
+                }
+                console.app.addWidgetToSlot(widgetPk, contentSlotPk, function() {
+                    if(event.data.oldContentSlot) {
+                        console.app.removeWidgetFromSlot(widgetPk, event.data.oldContentSlot);
+                    }
+                });
             }
 
         }, false);
@@ -449,7 +457,7 @@ Ext.application({
 
         return 'en';
     },
-    addWidgetToSlot:function(widgetPk, contentSlotPk){
+    addWidgetToSlot:function(widgetPk, contentSlotPk, successCallback){
         //get slot
         //add element to widgets
         //patch slot
@@ -483,6 +491,49 @@ Ext.application({
                     success: function (response) {
                         Ext.get('website-iframe').dom.src = Ext.get('website-iframe').dom.src;
                         Ext.MessageBox.alert("Status", "Widget added successfully");
+                        if(successCallback) {
+                            successCallback(response);
+                        }
+                    }
+                });
+            }
+        });
+    },
+    removeWidgetFromSlot:function(widgetPk, contentSlotPk, successCallback){
+        //get slot
+        //add element to widgets
+        //patch slot
+        //refresh
+        //get SLOT
+        var url = document.getElementById('rest-base-url').getAttribute('url') + 'content_slot/' + contentSlotPk + '/widgets';
+        Ext.Ajax.request({
+            url: url,
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'},
+            params: {},
+            success: function (response) {
+                var json = JSON.parse(response.responseText);
+                var newWidgets = [];
+                for (var x in json._embedded) {
+                    var items = json._embedded[x];
+                    for (var i = 0; i < items.length; i++) {
+                        if(items[i].pk !== widgetPk)
+                            newWidgets.push(items[i].pk);
+                    }
+                }
+
+                var contentSlotPatchData = {};
+                contentSlotPatchData['widgets'] = newWidgets;
+
+                Ext.Ajax.request({
+                    url: document.getElementById('rest-base-url').getAttribute('url') + 'content_slot/' + contentSlotPk,
+                    method: 'PATCH',
+                    headers: {'Content-Type': 'application/json', Accept: 'application/json'},
+                    params: Ext.encode(contentSlotPatchData),
+                    success: function (response) {
+                        if(successCallback) {
+                            successCallback(response);
+                        }
                     }
                 });
             }
