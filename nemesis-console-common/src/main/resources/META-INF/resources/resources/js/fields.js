@@ -1,3 +1,24 @@
+Ext.define('console.view.TooltipMixin', {
+    extend: 'Ext.Mixin',
+
+    mixinConfig: {
+        id: 'tooltipmixin'
+    },
+    listeners: {
+        render: function(c) {
+            Ext.QuickTips.register({
+                target: c.getEl(),
+                text: 'my tooltip goes here for ' + this.name, //this here is the component class that uses the mixing itself.. you can imagine this method is writen on each component
+                enabled: true,
+                showDelay: 10,
+                trackMouse: true,
+                autoShow: true
+            });
+        }
+    }
+});
+
+
 Ext.define('console.view.NemesisEntitySection', {
     extend: 'Ext.panel.Panel',
     xtype: 'nemesisEntitySection',
@@ -22,6 +43,7 @@ Ext.define('console.view.NemesisEntitySection', {
 Ext.define('console.view.field.NemesisBooleanField', {
     extend: 'Ext.form.RadioGroup',
     xtype: 'nemesisBooleanField',
+    mixins: ['console.view.TooltipMixin'],
     emptyText: this.id,
     columnWidth: .5,
     width: '95%',
@@ -62,6 +84,7 @@ Ext.define('console.view.field.NemesisBooleanField', {
 
 Ext.define('console.view.field.NemesisTextField', {
     extend: 'Ext.form.field.Text',
+    mixins: ['console.view.TooltipMixin'],
     xtype: 'nemesisTextField',
     emptyText: this.name,
     dirtyCls: 'dirty',
@@ -77,6 +100,7 @@ Ext.define('console.view.field.NemesisTextField', {
 
 Ext.define('console.view.field.NemesisColorpickerField', {
     extend: 'Ext.ux.colorpick.Field',
+    mixins: ['console.view.TooltipMixin'],
     xtype: 'nemesisColorpickerField',
     emptyText: this.name,
     dirtyCls: 'dirty',
@@ -164,6 +188,7 @@ Ext.define('console.view.field.NemesisColorpickerField', {
 
 Ext.define('console.view.field.NemesisCollectionField', {
     extend: 'Ext.view.MultiSelector',
+    mixins: ['console.view.TooltipMixin'],
     xtype: 'nemesisCollectionField',
     cls: 'nemesis-collection-field',
     dirtyCls: 'dirty',
@@ -371,6 +396,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
 
 Ext.define('console.view.field.NemesisLocalizedTextField', {
     extend: 'Ext.form.field.Base',
+    mixins: ['console.view.TooltipMixin'],
     dirtyCls: 'dirty',
     xtype: 'nemesisLocalizedTextField',
     cls: 'nemesis-localized-field',
@@ -467,6 +493,7 @@ Ext.define('console.view.field.NemesisLocalizedTextField', {
 
 Ext.define('console.view.field.NemesisDateField', {
     extend: 'Ext.form.DateField',
+    mixins: ['console.view.TooltipMixin'],
     dirtyCls: 'dirty',
     xtype: 'nemesisDateField',
     format: 'd-m-Y H:i:s',
@@ -481,6 +508,7 @@ Ext.define('console.view.field.NemesisDateField', {
 
 Ext.define('console.view.field.NemesisTextareaField', {
     extend: 'Ext.form.field.TextArea',
+    mixins: ['console.view.TooltipMixin'],
     dirtyCls: 'dirty',
     width: '95%',
     columnWidth: .5,
@@ -494,6 +522,7 @@ Ext.define('console.view.field.NemesisTextareaField', {
 
 Ext.define('console.view.field.NemesisDecimalField', {
     extend: 'Ext.form.NumberField',
+    mixins: ['console.view.TooltipMixin'],
     xtype: 'nemesisDecimalField',
     dirtyCls: 'dirty',
     emptyText: this.id,
@@ -591,9 +620,17 @@ Ext.define('console.view.field.NemesisEntityField', {
         var inputValue = Ext.get(e.combo.id + "-inputEl").getValue();
         e.query = inputValue;
     },
-    render: function (e) {
+    render: function (c) {
         //show trigger 1 ( the edit )
         this.triggerEl.elements[1].show();
+        Ext.QuickTips.register({
+            target: c.getEl(),
+            text: 'my tooltip goes here for ' + this.name, //this here is the component class that uses the mixing itself.. you can imagine this method is writen on each component
+            enabled: true,
+            showDelay: 10,
+            trackMouse: true,
+            autoShow: true
+        });
     },
     triggers: {
         edit: {
@@ -746,7 +783,7 @@ Ext.define('console.view.field.NemesisEntityField', {
     	var me = this;
     	return (me.entityId == 'catalog_version' ? resultData.catalogVersion : me.jsonValue ? me.jsonValue + (me.synchronizable ? ' - ' + resultData.catalogVersion : '') : me.jsonValue);
     },
-    setValue: function (record, loadStore) {
+    setValue: function (record, loadStore, forceDirty) {
         var me = this;
         var entity;
         //in extjs 5 the setValue can be multiselect and can support multiple values
@@ -773,6 +810,11 @@ Ext.define('console.view.field.NemesisEntityField', {
                     me.entityHref = result._links.self.href;
                     me.jsonValue = resultData.uid;
                     me.setRawValue(me.getUidToDisplay(resultData));
+
+                    if (!forceDirty && !me.initialized) {
+                        me.originalValue = me.rawValue;
+                        me.initialized = true;
+                    }
 
                     if (loadStore && !me.store.isLoaded()) {
                     	me.store.load({
@@ -810,6 +852,7 @@ Ext.define('console.view.field.NemesisEntityField', {
             });
         } else {
             me.entity = null;
+            me.callParent(arguments);
         }
         return me;
     },
@@ -825,11 +868,17 @@ Ext.define('console.view.field.NemesisEntityField', {
         var record = this.store.getById(this.rawValue);
         // we must return something in the form of {"theme" : "https://localhost:8112/storefront/rest/site_theme/70933224484926368"}
         return record ? record.data._links.self.href : this.entityHref;
+    },
+    reset: function () {
+        this.clearValue();
+        // this.applyEmptyText();
+        // this.getPicker().getSelectionModel().doMultiSelect([], false);
     }
 });
 
 Ext.define('console.view.field.NemesisMediaField', {
     xtype: 'nemesisMediaField',
+    mixins: ['console.view.TooltipMixin'],
     extend: 'Ext.form.FieldContainer',
     mixins: {
         field: 'Ext.form.field.Field'
@@ -969,6 +1018,7 @@ Ext.define('console.view.field.NemesisMediaField', {
 
 Ext.define('console.view.field.NemesisSimpleCollectionField', {
     extend: 'Ext.form.field.Tag',
+    mixins: ['console.view.TooltipMixin'],
     dirtyCls: 'dirty',
     xtype: 'nemesisSimpleCollectionField',
     columnWidth: .5,
@@ -993,6 +1043,7 @@ Ext.define('console.view.field.NemesisSimpleCollectionField', {
 
 Ext.define('console.view.field.NemesisEnumerationField', {
     extend: 'Ext.form.field.ComboBox',
+    mixins: ['console.view.TooltipMixin'],
     dirtyCls: 'dirty',
     xtype: 'nemesisEnumField',
     columnWidth: .5,
@@ -1013,6 +1064,7 @@ Ext.define('console.view.field.NemesisEnumerationField', {
 
 Ext.define('console.view.field.NemesisHtmlEditor', {
     extend: 'Ext.form.field.HtmlEditor',
+    mixins: ['console.view.TooltipMixin'],
     xtype: 'nemesisHtmlEditor',
     dirtyCls: 'dirty',
     id: '',
@@ -1029,6 +1081,7 @@ Ext.define('console.view.field.NemesisHtmlEditor', {
 
 Ext.define('console.view.field.NemesisIntegerField', {
     extend: 'Ext.form.NumberField',
+    mixins: ['console.view.TooltipMixin'],
     xtype: 'nemesisIntegerField',
     dirtyCls: 'dirty',
     emptyText: this.id,
@@ -1042,6 +1095,7 @@ Ext.define('console.view.field.NemesisIntegerField', {
 
 Ext.define('console.view.field.NemesisLocalizedRichtextField', {
     extend: 'Ext.form.field.Base',
+    mixins: ['console.view.TooltipMixin'],
     cls: 'nemesis-localized-richtext-field',
     xtype: 'nemesisLocalizedRichtextField',
     requires: ['Ext.util.Format', 'Ext.XTemplate'],
@@ -1157,6 +1211,7 @@ Ext.define('console.view.field.NemesisLocalizedRichtextField', {
 
 Ext.define('console.view.field.NemesisPasswordField', {
     extend: 'Ext.form.field.Text',
+    mixins: ['console.view.TooltipMixin'],
     xtype: 'nemesisPasswordField',
     dirtyCls: 'dirty',
     emptyText: this.name,

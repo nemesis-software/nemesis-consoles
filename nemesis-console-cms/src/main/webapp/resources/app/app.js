@@ -376,7 +376,7 @@ Ext.application({
                                                 id: "page",
                                                 url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/' + event.data.page.pk
                                             }
-                                        }, true);
+                                        }, true, true);
                                         field.checkDirty();
                                     }
                                 });
