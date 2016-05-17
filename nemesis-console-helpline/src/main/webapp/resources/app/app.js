@@ -36,9 +36,9 @@ Ext.application({
 
         Ext.Ajax.request({
             method: 'GET',
-            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'markup/results/all',
+            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'markup/search/all',
             success: function (response) {
-                eval(response.responseText);
+                searchAllData = Ext.util.JSON.decode(response.responseText);
             },
             failure: function () {
                 console.error('Cannot load markup/results/all resource from the server!');

@@ -73,7 +73,7 @@ Ext.define('HelplineConsole.controller.MenuController', {
 				autoSync: false,
 				pageSize: pageSize,
 				model: Ext.create('Ext.data.Model', {
-					fields: searchData['userSearchResultMarkupStore']
+					fields: searchAllData['user'].result
 				}),
 				proxy: {
 					type: 'rest',
@@ -104,7 +104,7 @@ Ext.define('HelplineConsole.controller.MenuController', {
 				items: [{
 					xtype: 'grid',
 					store: store,
-					columns: searchData['customerSearchResultMarkup'],
+					columns: searchAllData['customer'].result,
 					bbar: {
 						xtype: 'pagingtoolbar',
 						pageSize: 10,
@@ -144,7 +144,7 @@ Ext.define('HelplineConsole.controller.MenuController', {
 				autoSync: false,
 				pageSize: pageSize,
 				model: Ext.create('Ext.data.Model', {
-					fields: searchData['abstract_orderSearchResultMarkupStore']
+					fields: searchAllData['abstract_order'].result
 				}),
 				proxy: {
 					type: 'rest',
@@ -175,7 +175,7 @@ Ext.define('HelplineConsole.controller.MenuController', {
 				items: [{
 					xtype: 'grid',
 					store: store,
-					columns: searchData['abstract_orderSearchResultMarkup'],
+					columns: searchAllData['abstract_order'].result,
 					bbar: {
 						xtype: 'pagingtoolbar',
 						pageSize: 10,

@@ -36,16 +36,21 @@ Ext.define('console.view.content.search.SearchResults', {
         'Ext.toolbar.Paging'
     ],
     initComponent: function () {
-        var fields = searchData[this.entity.data.id + 'SearchResultMarkupStore'];
+        var fields = searchAllData[this.entity.data.id].result;
+        var fieldsMapping = [];
         for (var i = 0; i < fields.length; i++) {
-            if (-1 != fields[i].name.indexOf('.en_GB')) {
-                fields[i].mapping = Ext.bind(function (data) {
-                    var fieldName = this.name.substring(0, this.name.indexOf('.'));
+            fieldsMapping.push({});
+            fieldsMapping[i].name = fields[i].dataIndex;
+            if (-1 != fields[i].dataIndex.indexOf('.en_gb')) {
+                fieldsMapping[i].mapping = Ext.bind(function (data) {
+                    var fieldName = this.dataIndex.substring(0, this.dataIndex.indexOf('.'));
                     return data[fieldName][globalLang] && data[fieldName][globalLang].value || '';
                 }, fields[i]);
+            } else {
+                fieldsMapping[i].mapping = fieldsMapping[i].name;
             }
         }
-        var columns = searchData[this.entity.data.id + 'SearchResultMarkup'];
+        var columns = searchAllData[this.entity.data.id].result;
         var store = Ext.create('Ext.data.Store', {
             autoLoad: true,
             autoSync: false,
@@ -53,7 +58,7 @@ Ext.define('console.view.content.search.SearchResults', {
             remoteSort: true,
             model: Ext.define('name', {
                 extend: 'Ext.data.Model',
-                fields: fields
+                fields: fieldsMapping
             }),
             proxy: {
                 type: 'rest',

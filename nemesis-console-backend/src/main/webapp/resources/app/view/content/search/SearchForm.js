@@ -39,7 +39,7 @@ Ext.define('console.view.content.search.SearchForm', function () {
 
             restrictions['nemesisCollectionField'] = ["Not-Supported"];
 
-            var filters = searchFilterData[self.entity.data.id].filter;
+            var filters = searchAllData[self.entity.data.id].filter;
             var searchFields = {};
             var backendSearchFields = [];
             for(var i in filters){
