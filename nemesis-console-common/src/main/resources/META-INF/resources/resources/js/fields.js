@@ -7,7 +7,7 @@ Ext.define('console.view.TooltipMixin', {
     listeners: {
         render: function(c) {
             Ext.QuickTips.register({
-                target: c.getEl(),
+                target: c.getEl().child('label'),
                 text: 'my tooltip goes here for ' + this.name, //this here is the component class that uses the mixing itself.. you can imagine this method is writen on each component
                 enabled: true,
                 showDelay: 10,
@@ -559,7 +559,7 @@ Ext.define('console.view.field.NemesisEntityField', {
         //show trigger 1 ( the edit )
         this.triggerEl.elements[1].show();
         Ext.QuickTips.register({
-            target: c.getEl(),
+            target: c.getEl().child('label'),
             text: 'my tooltip goes here for ' + this.name, //this here is the component class that uses the mixing itself.. you can imagine this method is writen on each component
             enabled: true,
             showDelay: 10,
