@@ -36,69 +36,71 @@ Ext.define('AdminConsole.controller.portlets.DBSearchPortletController', {
 
 	onRunClick: function() {
 		Ext.Ajax.request({
-			url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/database/hql?query=' + codeMirrorDBTextArea.getValue(),
+			url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/database/jpql?query=' + codeMirrorDBTextArea.getValue(),
 			method: 'GET',
 			success: function(responseObject) {
 				if (responseObject.responseText != '') {
 					var result = Ext.decode(responseObject.responseText);
 					if (result.results != undefined) {
 						// TODO: display information to user when json from back-end is ready
-						// var fieldDefs = new Array();
-						// var columnDefs = new Array({
-						// 	xtype: 'rownumberer'
-						// });
-						// for (cl in result.value[0]) {
-						// 	var fieldDef = {};
-						// 	var columnDef = {};
-						// 	columnDef["id"] = result.value[0][cl];
-						// 	columnDef["header"] = result.value[0][cl];
-						// 	columnDef["dataIndex"] = result.value[0][cl];
-						// 	columnDef["flex"] = 1;
-						// 	columnDefs.push(columnDef);
+						 var fieldDefs = new Array();
+						 var columnDefs = new Array({
+						 	xtype: 'rownumberer'
+						 });
+						 for (var key in result.results[0]) {
+						 	var fieldDef = {};
+						 	var columnDef = {};
+						 	columnDef["id"] = key;
+						 	columnDef["header"] = key;
+						 	columnDef["dataIndex"] = 'dataIndex';
+						 	columnDef["flex"] = 1;
+						 	columnDefs.push(columnDef);
 
-						// 	fieldDef['name'] = result.value[0][cl];
-						// 	fieldDef['mapping'] = cl;
-						// 	fieldDefs.push(fieldDef);
-						// }
+						 	fieldDef['name'] = key;
+						 	fieldDef['mapping'] = key;
+						 	fieldDefs.push(fieldDef);
+						 }
 
-						// var values = new Array();
+						 var values = new Array();
 
-						// for (var i = 1; i < result.value.length; i++) {
-						// 	var val = new Array();
-						// 	for (var j = 0; j < result.value[i].length; j++) {
-						// 		val.push(result.value[i][j]);
-						// 	}
-						// 	values.push(val);
-						// }
+						 for (var i = 0; i < result.results.length; i++) {
+						 	var val = new Array();
+						 	for (var key in result.results[i]) {
+						 	   if (result.results[i].hasOwnProperty(key)) {
+                                  val.push(result.results[i][key]);
+                               }
+						 	}
+						 	values.push(val);
+						 }
 
-						// var store = Ext.create('Ext.data.ArrayStore', {
-						// 	storeId: 'myStore',
-						// 	autoLoad: true,
-						// 	fields: fieldDefs,
-						// 	data: values
-						// });
-						// console.log(values);
+						 var store = Ext.create('Ext.data.ArrayStore', {
+						 	storeId: 'myStore',
+						 	autoLoad: true,
+						 	fields: fieldDefs,
+						 	data: values
+						 });
+						 console.log(values);
 
-						// var window = Ext.create("Ext.Window", {
-						// 	title: 'Results',
-						// 	modal: true,
-						// 	maximizable: true,
-						// 	width: 800,
-						// 	height: 200,
-						// 	layout: 'fit',
-						// 	items: {
-						// 		height: this.height,
-						// 		xtype: 'grid',
-						// 		title: 'result',
-						// 		columnLines: true,
-						// 		stripeRows: true,
-						// 		autoScroll: true,
-						// 		columns: columnDefs,
-						// 		store: store,
-						// 		layout: 'fit'
-						// 	}
-						// });
-						// window.show();
+						 var window = Ext.create("Ext.Window", {
+						 	title: 'Results',
+						 	modal: true,
+						 	maximizable: true,
+						 	width: 800,
+						 	height: 200,
+						 	layout: 'fit',
+						 	items: {
+						 		height: this.height,
+						 		xtype: 'grid',
+						 		title: 'result',
+						 		columnLines: true,
+						 		stripeRows: true,
+						 		autoScroll: true,
+						 		columns: columnDefs,
+						 		store: store,
+						 		layout: 'fit'
+						 	}
+						 });
+						 window.show();
 					} else if (result.result != undefined) {
 						Ext.toast({
 							title: 'Error',
