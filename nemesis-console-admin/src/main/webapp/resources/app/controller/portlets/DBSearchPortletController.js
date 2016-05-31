@@ -52,7 +52,7 @@ Ext.define('AdminConsole.controller.portlets.DBSearchPortletController', {
 						 	var columnDef = {};
 						 	columnDef["id"] = key;
 						 	columnDef["header"] = key;
-						 	columnDef["dataIndex"] = 'dataIndex';
+						 	columnDef["dataIndex"] = key;
 						 	columnDef["flex"] = 1;
 						 	columnDefs.push(columnDef);
 
@@ -67,7 +67,7 @@ Ext.define('AdminConsole.controller.portlets.DBSearchPortletController', {
 						 	var val = new Array();
 						 	for (var key in result.results[i]) {
 						 	   if (result.results[i].hasOwnProperty(key)) {
-                                  val.push(result.results[i][key]);
+						 	      val[key] = result.results[i][key];
                                }
 						 	}
 						 	values.push(val);
@@ -91,7 +91,7 @@ Ext.define('AdminConsole.controller.portlets.DBSearchPortletController', {
 						 	items: {
 						 		height: this.height,
 						 		xtype: 'grid',
-						 		title: 'result',
+						 		title: codeMirrorDBTextArea.getValue(),
 						 		columnLines: true,
 						 		stripeRows: true,
 						 		autoScroll: true,
