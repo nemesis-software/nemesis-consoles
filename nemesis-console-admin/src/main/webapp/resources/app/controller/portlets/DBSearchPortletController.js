@@ -36,7 +36,7 @@ Ext.define('AdminConsole.controller.portlets.DBSearchPortletController', {
 
 	onRunClick: function() {
 		Ext.Ajax.request({
-			url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/database/hql?query=' + codeMirrorDBTextArea.getValue(),
+			url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/database/jpql?query=' + codeMirrorDBTextArea.getValue(),
 			method: 'GET',
 			success: function(responseObject) {
 				if (responseObject.responseText != '') {

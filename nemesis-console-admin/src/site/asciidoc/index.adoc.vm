@@ -74,7 +74,7 @@ image::platform-actions.png[Nemesis Admin Console Platform Actions Portlet]
 WARNING: Platform initialization is a dangerous action! It will delete all of your data! Please be careful with this action!
 
 == Query Portlet
-The **Query Portlet** allows you to execute `SQL` and `HQL` queries on the underlying database.
+The **Query Portlet** allows you to execute `SQL` and `JPQL` queries on the underlying database.
 
 [.center.text-center]
 .Nemesis Admin Console Query Portlet
