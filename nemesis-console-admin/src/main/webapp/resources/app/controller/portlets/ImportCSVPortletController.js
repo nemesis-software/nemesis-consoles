@@ -72,6 +72,20 @@ Ext.define('AdminConsole.controller.portlets.ImportCSVPortletController', {
                     });
 				}
 			});
+		} else {
+			var form = Ext.getCmp('csv-import-form');
+			if (form.isValid()) {
+				form.submit({
+					headers: {
+						'X-Nemesis-Token': Ext.get('token').dom.getAttribute('value')
+					},
+					url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/content/file-import',
+					waitMsg: 'Importing...',
+					success: function(fp, o) {
+						msg('Success', 'Processed file "' + o.result.file + '" on the server');
+					}
+				});
+			}
 		}
 	}
 
