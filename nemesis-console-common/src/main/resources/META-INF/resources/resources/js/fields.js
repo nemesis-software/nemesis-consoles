@@ -813,11 +813,8 @@ Ext.define('console.view.field.NemesisEntityField', {
 
 Ext.define('console.view.field.NemesisMediaField', {
     xtype: 'nemesisMediaField',
-    mixins: ['console.view.TooltipMixin'],
+    mixins: ['console.view.TooltipMixin', 'Ext.form.field.Field'],
     extend: 'Ext.form.FieldContainer',
-    mixins: {
-        field: 'Ext.form.field.Field'
-    },
     dirtyCls: 'dirty',
     tooltip: 'This is media',
     labelWidth: 50,
