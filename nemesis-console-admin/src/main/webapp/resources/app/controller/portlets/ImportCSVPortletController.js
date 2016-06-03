@@ -9,7 +9,10 @@ Ext.define('AdminConsole.controller.portlets.ImportCSVPortletController', {
 				afterrender: this.applyCodeMirror
 			},
 			'#adminDashboard #importCSVPortletId #importCsvBtn': {
-				click: this.importContent
+				click: this.importCsv
+			},
+			'#adminDashboard #importCSVPortletId #validateCsvBtn': {
+				click: this.validateCsv
 			}
 		});
 	},
@@ -29,15 +32,20 @@ Ext.define('AdminConsole.controller.portlets.ImportCSVPortletController', {
 		codeMirrorCSVTextArea.setSize(null, height);
 		document.getElementById("csvContent-inputWrap").style.display = "none";
 	},
-
-	importContent: function() {
+	importCsv:function(){
+		this.import(false);
+	},
+	validateCsv:function(){
+		this.import(true);
+	},
+	import: function(validateOnly) {
 		var stringContent = codeMirrorCSVTextArea.getValue();
 		var data = {
 			"csv": stringContent
 		};
 		if (stringContent) {
 			Ext.Ajax.request({
-				url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/content/import',
+				url: Ext.get('rest-base-url').dom.getAttribute('url') + (validateOnly ? 'platform/content/validate' : 'platform/content/import'),
 				method: 'POST',
 				jsonData: JSON.stringify(data),
 				headers: {
@@ -47,7 +55,7 @@ Ext.define('AdminConsole.controller.portlets.ImportCSVPortletController', {
 					var result = Ext.decode(responseObject.responseText);
 					if (result.message === 'success') {
 						Ext.toast({
-							html: 'Import started',
+							html: 'Import successful',
 							closable: false,
 							align: 't',
 							slideInDuration: 400,
@@ -55,7 +63,7 @@ Ext.define('AdminConsole.controller.portlets.ImportCSVPortletController', {
 						});
 					} else {
 						Ext.toast({
-							html: 'Import failed to start',
+							html: 'Import failed',
 							closable: false,
 							align: 't',
 							slideInDuration: 400,
@@ -81,7 +89,7 @@ Ext.define('AdminConsole.controller.portlets.ImportCSVPortletController', {
 			// the dom file directly from the input element!!!
 			formData.append('file', csvFile.getEl().down('input[type=file]').dom.files[0]);
 			var req = new XMLHttpRequest();
-			req.open("POST", Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/content/file-import', true);
+			req.open("POST", Ext.get('rest-base-url').dom.getAttribute('url') + (validateOnly ?  'platform/content/file-validate' : 'platform/content/file-import'), true);
 			// set headers and mime-type appropriately
 			req.setRequestHeader('X-Nemesis-Token', Ext.get('token').dom.getAttribute('value'));
 			req.onload = function() {
@@ -92,13 +100,13 @@ Ext.define('AdminConsole.controller.portlets.ImportCSVPortletController', {
 					req.hasError = true;
 					Ext.MessageBox.show({
 						title: 'Error',
-						msg: 'There was problem uploading the file.',
+						msg: 'There was problem with the file. Import failed.',
 						buttons: Ext.MessageBox.OK,
 						icon: Ext.MessageBox.ERROR
 					});
 				} else if(req.readyState == 4 && req.status == 200) {
 					Ext.toast({
-						html: 'Import started',
+						html: 'Import successful.',
 						closable: false,
 						align: 't',
 						slideInDuration: 400,

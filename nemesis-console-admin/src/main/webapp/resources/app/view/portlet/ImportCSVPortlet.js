@@ -35,9 +35,9 @@ Ext.define('AdminConsole.view.portlet.ImportCSVPortlet', {
         text: 'Import',
         iconCls: 'database-csv-image',
         itemId: 'importCsvBtn'
-    }/*, {
+    }, {
         text: 'Validate',
         iconCls: 'validate-image',
         itemId: 'validateCsvBtn'
-    }*/]
+    }]
 });
