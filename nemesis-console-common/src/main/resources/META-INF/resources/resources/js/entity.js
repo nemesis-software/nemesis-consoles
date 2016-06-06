@@ -147,9 +147,18 @@ Ext.define('console.view.content.EntityPopupWindow', {
     initComponent: function () {
 		  
         Ext.apply(this, {
-            iconCls: 'default-icon ' + this.config.iconCls,
-            id: 'w_pk_' + this.config.entity.data.pk
+            iconCls: 'default-icon ' + this.config.iconCls
         });
+
+        if(this.config.entity.data.pk){ //use the entity pk if possible
+            Ext.apply(this, {
+                id: 'w_pk_' + this.config.entity.data.pk
+            });
+        } else { //use the config.entity.id since it is a new entity
+            Ext.apply(this, { //else use the entity pk
+                id: 'w_pk_' + this.config.entity.id + "_" + Ext.id()
+            });
+        }
 
         var method = 'POST';
         if (this.config.operation === 'edit') {
@@ -357,7 +366,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                         success: function (responseObject) {
                             var result = Ext.decode(responseObject.responseText);
                             console.log(me.entityPopupForm);
-                            me.entityPopupForm.populateForm(result);
+                            me.entityPopupForm.populateForm(me.entityPopupForm.convertResult(result));
                         },
                         failure: function (responseObject) {
                             Ext.MessageBox.show({

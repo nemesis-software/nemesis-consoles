@@ -136,7 +136,7 @@ Ext.define('console.view.NavigationTree', function () {
                                 isNew: true
                             });
                             var window = Ext.getCmp('backend-viewport').createWindow({
-                                id: "",
+                                id: null,
                                 title: '[' + record.get('text') + ']',
                                 iconCls: record.get('id'),
                                 entity: entity,
@@ -166,6 +166,7 @@ Ext.define('console.view.NavigationTree', function () {
                                     title: '[' + item.text + ']',
                                     iconCls: item.iconCls,
                                     entity: Ext.create('console.model.Entity', {
+                                        id: item.text,
                                         name: item.text,
                                         url: Ext.get('rest-base-url').dom.getAttribute('url') + item.id
                                     }),
