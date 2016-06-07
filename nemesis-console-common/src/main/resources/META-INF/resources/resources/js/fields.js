@@ -107,15 +107,31 @@ Ext.define('console.view.field.NemesisColorpickerField', {
     name: null,
     width: '95%',
     columnWidth: .5,
+    defaultValue: 'FFFFFF',
     initComponent: function () {
         var me = this;
         me.emptyText = me.name;
+
+        //override the default color, since in ext-ux.js the default value is RED
+        Ext.apply(me, {
+            value: me.defaultValue,
+            color: me.defaultValue
+        });
+
         me.callParent(arguments);
     },
     getSubmitValue: function () {
         //by default the color submits the value as 00FFFF but we expect it to be #00FFFF
         if(this.getValue() && !this.getValue().startsWith("#")) {
             return "#" + this.getValue();
+        }
+    },
+    setValue: function () {
+        var me = this;
+        if(arguments && arguments[0]) {
+            me.callParent(arguments);
+        } else { //use default value in case of null
+            me.callParent([me.defaultValue]);
         }
     }
 });
