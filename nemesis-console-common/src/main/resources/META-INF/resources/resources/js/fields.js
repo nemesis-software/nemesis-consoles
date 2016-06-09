@@ -248,7 +248,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                 }),
                 proxy: {
                     type: 'rest',
-                    url: Ext.get('rest-base-url').dom.getAttribute('url') + me.entityId + "/search/findByUidIsStartingWith/",
+                    url: Ext.get('rest-base-url').dom.getAttribute('url') + me.entityId + "/search/findByUidIsStartingWithIgnoreCase/",
                     limitParam: 'size',
                     useDefaultXhrHeader: false,
                     cors: true,
@@ -517,7 +517,8 @@ Ext.define('console.view.field.NemesisEntityField', {
         me.emptyText = me.entityId;
         me.triggers['edit'].cls = 'x-form-entity-trigger ' + ' default-icon ' + me.entityId;
         me.synchronizable = Ext.create("console.markup." +  me.entityId).synchronizable;
-        
+
+        var restUrl = me.entityId == 'catalog_version' ? Ext.get('rest-base-url').dom.getAttribute('url') + me.entityId + "/search/findByCatalogUidIsStartingWithIgnoreCase/" : Ext.get('rest-base-url').dom.getAttribute('url') + me.entityId + "/search/findByUidIsStartingWithIgnoreCase/";
         var store = Ext.create('Ext.data.Store', {
             autoLoad: false,
             autoSync: true,
@@ -529,10 +530,12 @@ Ext.define('console.view.field.NemesisEntityField', {
             }),
             proxy: {
                 type: 'rest',
-                url: Ext.get('rest-base-url').dom.getAttribute('url') + me.entityId + "/search/findByUidIsStartingWith/",
+                url: restUrl,
                 limitParam: 'size',
                 useDefaultXhrHeader: false,
-                extraParams: {projection:'search'},
+                extraParams: {
+                    projection:'search'
+                },
                 cors: true,
                 reader: {
                     type: 'json',
