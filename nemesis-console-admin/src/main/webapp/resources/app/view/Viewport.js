@@ -9,7 +9,6 @@ Ext.define('AdminConsole.view.Viewport', {
         'AdminConsole.view.portlet.PlatformActionsPortlet',
         'AdminConsole.view.portlet.PlatformInfoPortlet',
         'AdminConsole.view.portlet.PlatformHealthPortlet',
-        'AdminConsole.view.portlet.PlatformTestsPortlet',
         'AdminConsole.view.portlet.SystemLoggersPortlet',
         'AdminConsole.view.portlet.LogViewerPortlet',
         'AdminConsole.view.portlet.JdbcLogPortlet',
@@ -91,15 +90,7 @@ Ext.define('AdminConsole.view.Viewport', {
             id: "portlet-log4j-levels"
         };
 
-        defaultContent[parseInt("portlet-platform-tests" in persistedState ? persistedState["portlet-platform-tests"].position : 2)] = {
-            type: 'platformTestsPortlet',
-            columnIndex: parseInt("portlet-platform-tests" in persistedState ? persistedState["portlet-platform-tests"].column : 0),
-            height: 300,
-            hidden: "portlet-platform-tests" in persistedState ? persistedState["portlet-platform-tests"].hidden : false,
-            id: "portlet-platform-tests"
-        };
-
-        defaultContent[parseInt("portlet-platform-actions" in persistedState ? persistedState["portlet-platform-actions"].position : 3)] = {
+        defaultContent[parseInt("portlet-platform-actions" in persistedState ? persistedState["portlet-platform-actions"].position : 2)] = {
             type: 'platformActionsPortlet',
             columnIndex: parseInt("portlet-platform-actions" in persistedState ? persistedState["portlet-platform-actions"].column : 1),
             height: 20,
@@ -107,7 +98,7 @@ Ext.define('AdminConsole.view.Viewport', {
             id: "portlet-platform-actions"
         };
 
-        defaultContent[parseInt("portlet-pk-analyzer" in persistedState ? persistedState["portlet-pk-analyzer"].position : 4)] = {
+        defaultContent[parseInt("portlet-pk-analyzer" in persistedState ? persistedState["portlet-pk-analyzer"].position : 3)] = {
             type: 'pkAnalyzerPortlet',
             columnIndex: parseInt("portlet-pk-analyzer" in persistedState ? persistedState["portlet-pk-analyzer"].column : 1),
             height: 20,
@@ -115,7 +106,7 @@ Ext.define('AdminConsole.view.Viewport', {
             id: "portlet-pk-analyzer"
         };
 
-        defaultContent[parseInt("portlet-platform-info" in persistedState ? persistedState["portlet-platform-info"].position : 5)] = {
+        defaultContent[parseInt("portlet-platform-info" in persistedState ? persistedState["portlet-platform-info"].position : 4)] = {
             type: 'platformInfoPortlet',
             columnIndex: parseInt("portlet-platform-info" in persistedState ? persistedState["portlet-platform-info"].column : 1),
             height: 340,
@@ -123,7 +114,7 @@ Ext.define('AdminConsole.view.Viewport', {
             id: "portlet-platform-info"
         };
 
-        defaultContent[parseInt("portlet-memory-usage" in persistedState ? persistedState["portlet-memory-usage"].position : 6)] = {
+        defaultContent[parseInt("portlet-memory-usage" in persistedState ? persistedState["portlet-memory-usage"].position : 5)] = {
             type: 'momoryUsagePortlet',
             columnIndex: parseInt("portlet-memory-usage" in persistedState ? persistedState["portlet-memory-usage"].column : 2),
             height: 300,
@@ -131,7 +122,7 @@ Ext.define('AdminConsole.view.Viewport', {
             id: "portlet-memory-usage"
         };
 
-        defaultContent[parseInt("portlet-platform-health" in persistedState ? persistedState["portlet-platform-health"].position : 7)] = {
+        defaultContent[parseInt("portlet-platform-health" in persistedState ? persistedState["portlet-platform-health"].position : 6)] = {
             type: 'platformHealthPortlet',
             columnIndex: parseInt("portlet-platform-health" in persistedState ? persistedState["portlet-platform-health"].column : 2),
             height: 120,
@@ -139,7 +130,7 @@ Ext.define('AdminConsole.view.Viewport', {
             id: "portlet-platform-health"
         };
 
-        defaultContent[parseInt("portlet-spring-beans" in persistedState ? persistedState["portlet-spring-beans"].position : 8)] = {
+        defaultContent[parseInt("portlet-spring-beans" in persistedState ? persistedState["portlet-spring-beans"].position : 7)] = {
             type: 'springBeansPortlet',
             columnIndex: parseInt("portlet-spring-beans" in persistedState ? persistedState["portlet-spring-beans"].column : 2),
             height: 300,
@@ -147,7 +138,7 @@ Ext.define('AdminConsole.view.Viewport', {
             id: "portlet-spring-beans"
         };
 
-        defaultContent[parseInt("portlet-csv-import" in persistedState ? persistedState["portlet-csv-import"].position : 9)] = {
+        defaultContent[parseInt("portlet-csv-import" in persistedState ? persistedState["portlet-csv-import"].position : 8)] = {
             type: 'importCSVPortlet',
             columnIndex: parseInt("portlet-csv-import" in persistedState ? persistedState["portlet-csv-import"].column : 2),
             height: 300,
@@ -155,7 +146,7 @@ Ext.define('AdminConsole.view.Viewport', {
             id: "portlet-csv-import"
         };
 
-        defaultContent[parseInt("portlet-db-search" in persistedState ? persistedState["portlet-db-search"].position : 10)] = {
+        defaultContent[parseInt("portlet-db-search" in persistedState ? persistedState["portlet-db-search"].position : 9)] = {
             type: 'sqlSearchPortlet',
             columnIndex: parseInt("portlet-db-search" in persistedState ? persistedState["portlet-db-search"].column : 2),
             height: 300,
@@ -348,27 +339,6 @@ Ext.define('AdminConsole.view.Viewport', {
                                 close: function(panel, eOpts) {
                                     if (Ext.getCmp('platformHealthPortletBtn')) {
                                         var btn = Ext.getCmp('platformHealthPortletBtn');
-                                        btn.enable();
-                                    }
-                                }
-                            }
-                        }
-                    },
-
-                    platformTestsPortlet: {
-                        viewTemplate: {
-                            id: 'portlet-platform-tests',
-                            title: 'Platform tests',
-                            iconCls: 'junit',
-                            closeAction: 'hide',
-                            tools: this.getTools(),
-                            items: [{
-                                xtype: 'platformTestsPortlet'
-                            }],
-                            listeners: {
-                                close: function(panel, eOpts) {
-                                    if (Ext.getCmp('platformTestsPortletBtn')) {
-                                        var btn = Ext.getCmp('platformTestsPortletBtn');
                                         btn.enable();
                                     }
                                 }
