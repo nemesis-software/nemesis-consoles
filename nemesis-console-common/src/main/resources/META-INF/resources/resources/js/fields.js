@@ -518,7 +518,7 @@ Ext.define('console.view.field.NemesisEntityField', {
         me.triggers['edit'].cls = 'x-form-entity-trigger ' + ' default-icon ' + me.entityId;
         me.synchronizable = Ext.create("console.markup." +  me.entityId).synchronizable;
 
-        var restUrl = me.entityId == 'catalog_version' ? Ext.get('rest-base-url').dom.getAttribute('url') + me.entityId + "/search/findByCatalogUidIsStartingWithIgnoreCase/" : Ext.get('rest-base-url').dom.getAttribute('url') + me.entityId + "/search/findByUidIsStartingWithIgnoreCase/";
+        var restUrl = me.entityId == 'catalog_version' ? Ext.get('rest-base-url').dom.getAttribute('url') + me.entityId + "/search/findByUidIsStartingWithIgnoreCaseOrCatalogUidIsStartingWithIgnoreCase/" : Ext.get('rest-base-url').dom.getAttribute('url') + me.entityId + "/search/findByUidIsStartingWithIgnoreCase/";
         var store = Ext.create('Ext.data.Store', {
             autoLoad: false,
             autoSync: true,
@@ -565,7 +565,9 @@ Ext.define('console.view.field.NemesisEntityField', {
 
         this.on('beforequery', this.beforequery);
         this.on('render', this.render);
-        //this.on('change', function() {alert(this.getValue())})
+        this.on('change', function() {
+            this.store.proxy.extraParams.catalogUid = this.getValue();
+        })
 
         me.callParent(arguments);
     },
