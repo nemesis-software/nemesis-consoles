@@ -496,9 +496,6 @@ Ext.define('console.view.field.NemesisEntityField', {
     cls: 'nemesis-entity-field',
     dirtyCls: 'dirty',
     queryMode: 'remote',
-    forceSelection: true,
-    //displayField: 'uid',
-    //valueField: 'uid',
     minChars: 1,
     isFormField: true,
     multiSelect: false,
@@ -565,9 +562,6 @@ Ext.define('console.view.field.NemesisEntityField', {
 
         this.on('beforequery', this.beforequery);
         this.on('render', this.render);
-        this.on('change', function() {
-            this.store.proxy.extraParams.catalogUid = this.getValue();
-        })
 
         me.callParent(arguments);
     },
@@ -575,6 +569,8 @@ Ext.define('console.view.field.NemesisEntityField', {
         //take the input value... otherwise the query will pass the .getRawValue which doesn't work in this case.
         var inputValue = Ext.get(e.combo.id + "-inputEl").getValue();
         e.query = inputValue;
+        //also set the value as catalogUid in case we search method that needs both the catalogUid and the uid, this will pass extra param
+        this.store.proxy.extraParams.catalogUid = inputValue;
     },
     render: function (c) {
         //show trigger 1 ( the edit )
