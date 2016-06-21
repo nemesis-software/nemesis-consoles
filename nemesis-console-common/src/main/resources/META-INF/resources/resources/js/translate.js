@@ -195,7 +195,8 @@ function retranslate(lang, w, isRootCmp) {
 
     Ext.each(w.query('searchField'), function (n) {
         translateObj(n);
-        translateObj(n.fieldSet.down('textfield(true)'));
+        //before all fields where simple textfield now they are not and the next line creates issue and doesn't work.
+        // translateObj(n.fieldSet.down('textfield(true)'));
     });
 
     var navigationTree = Ext.getCmp('navigation-tree');
