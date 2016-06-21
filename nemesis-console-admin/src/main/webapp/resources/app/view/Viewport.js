@@ -29,11 +29,6 @@ Ext.define('AdminConsole.view.Viewport', {
                     owner.setLoading(false);
                 }, 2000);
             }
-        }, {
-            xtype: 'tool',
-            type: 'maximize',
-            tooltip: 'Maximize portlet',
-            callback: function(event, toolEl, panelHeader) {}
         }];
     },
     contentCookieName: "nemesis-admin-portlets-layout",
