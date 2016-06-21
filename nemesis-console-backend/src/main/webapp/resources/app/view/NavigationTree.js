@@ -85,7 +85,7 @@ Ext.define('console.view.NavigationTree', function () {
 
                                 // Visibility of leaf nodes is whether they pass the test.
                                 // Visibility of branch nodes depends on them having visible children.
-                                    visible = node.isLeaf() ? v.test(node.get('text')) : false;
+                                    visible = node.isLeaf() ? v.test(translate(node.get('text'))) : false;
 
                                 // We're visible if one of our child nodes is visible.
                                 // No loop body here. We are looping only while the visible flag remains false.
