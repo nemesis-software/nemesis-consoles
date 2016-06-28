@@ -865,6 +865,7 @@ Ext.define('console.view.field.NemesisMediaField', {
             allowBlank: me.allowBlank,
             buttonText: me.buttonText,
             buttonOnly: true,
+            inputId: Ext.id(),
             listeners: {
                 change: function (input, value, opts) {
                     // can't get the file path directly from the component due to browser security that does not allow for
