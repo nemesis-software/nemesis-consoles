@@ -405,6 +405,14 @@
     background-image: url(images/search_facet.png);
 }
 
+.search_keyword_destination {
+    background-image: url(images/keyword_destination.png);
+}
+
+.search_keyword_redirect {
+    background-image: url(images/keyword_redirect.png);
+}
+
 .employee {
     background-image: url(images/employee.png);
 }

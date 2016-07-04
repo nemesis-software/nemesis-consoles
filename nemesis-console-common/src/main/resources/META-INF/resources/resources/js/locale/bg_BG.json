@@ -21,6 +21,7 @@
   mediafolder: 'Медия',
   searchfolder: 'Търсене',
   searchfacetfolder: 'Фасети',
+  searchkeywordfolder: 'Ключови думи',
   userfolder: 'Потребител',
   i18nfolder: 'Интернационализации',
   marketingfolder: 'Маркетинг',
@@ -88,6 +89,8 @@
   //search
   search_server_config: 'Search server config',
   search_facet: 'Фасет',
+  search_keyword_destination: 'Кл. думи дестинация',
+  search_keyword_redirect: 'Кл. думи препрадки',
   customer: 'Клиент',
   //user
   employee: 'Служител',
