@@ -105,6 +105,7 @@
   voucher: 'Voucher',
   voucher_invalidation: 'Voucher invalidation',
   //marketing
+  notification_settings: 'Notification Settings',
   customer_review: 'Customer review',
   newsletter_subscriber: 'Newsletter subscriber',
   warehouse: 'Warehouse',

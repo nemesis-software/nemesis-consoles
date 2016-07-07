@@ -105,6 +105,7 @@
   voucher: 'Ваучер',
   voucher_invalidation: 'Използвани ваучери',
   //marketing
+  notification_settings: 'Настройки за нотификации',
   customer_review: 'Ревю',
   newsletter_subscriber: 'Нюзлетър абонати',
   warehouse: 'Складове',

@@ -633,6 +633,10 @@
     background-image: url(images/acl_sid.png);
 }
 
+.notification_settings {
+    background-image: url(images/notification_settings.png);
+}
+
 .cronjob {
     background-image: url(images/cronjob.png);
 }
