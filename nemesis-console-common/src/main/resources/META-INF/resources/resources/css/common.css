@@ -353,6 +353,10 @@
     background-image: url(images/packaging.png);
 }
 
+.manufacturer {
+    background-image: url(images/manufacturer.png);
+}
+
 .abstract_order_entry {
     background-image: url(images/abstract_order_entry.png);
 }

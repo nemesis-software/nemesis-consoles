@@ -39,6 +39,7 @@
   widgetsfolder: 'Widgets',
   settingsfolder: 'Settings',
   product: 'Product',
+  manufacturer: 'Manufacturer',
   deeplinkfolder: 'Deeplink',
   //samplestore
   productmaterial: 'Material',
