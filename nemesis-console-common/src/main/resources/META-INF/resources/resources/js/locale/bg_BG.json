@@ -12,6 +12,7 @@
   b2bcommercefolder: 'Бизнес',
   commercefolder: 'Търговия',
   commercecatalogfolder: 'Каталог',
+  leasingfolder: 'Лизинг',
   cms: 'Съдържание',
   reportfolder: 'Репорт',
   personalizationfolder: 'Персонализация',
@@ -38,6 +39,7 @@
   widgetsfolder: 'Джиджафки',
   settingsfolder: 'Настройки',
   deeplinkfolder: 'Връзки',
+  bundlefolder: 'Групиране',
   product: 'Продукт',
   manufacturer: 'Производител',
   //samplestore
@@ -51,6 +53,9 @@
   stock_level: 'Наличност',
   keyword: 'Ключова дума',
   price: 'Цена',
+  leasing_scheme: 'Лизингова схема',
+  leasing_provider: 'Компания за лизинг',
+  leasing_payment: 'Лизингово плащане',
   // social
   socialfolder: 'Социални',
   social_preference: 'Социални преференции',
@@ -122,10 +127,15 @@
   blog: 'Блог',
   blog_entry: 'Блог',
   blog_category: 'Блог Категория',
+  //bundle
+  bundle_selection: 'Подбор',
+  bundle_price:'Цени',
+  bundle_template: 'Темплейти',
   //classification
   classification: 'Класификация',
   classification_category: 'Класификационна категория',
-  classification_feature: 'Класификационно поле',
+  classification_attribute: 'Класификационно поле',
+  classification_value: 'Класификационнa стойност',
   classification_system: 'Класификационна система',
   //deeplink
   deeplink_url: 'Връзка',

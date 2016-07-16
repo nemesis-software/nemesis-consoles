@@ -13,6 +13,7 @@
   commercefolder: 'Commerce',
   commercecatalogfolder: 'Catalog',
   commercei18nfolder: 'Internationalization',
+  leasingfolder: 'Leasing',
   cms: 'CMS',
   reportfolder: 'Report',
   personalizationfolder: 'Personalization',
@@ -41,6 +42,7 @@
   product: 'Product',
   manufacturer: 'Manufacturer',
   deeplinkfolder: 'Deeplink',
+  bundlefolder: 'Bundles',
   //samplestore
   productmaterial: 'Material',
   //catalog
@@ -52,6 +54,9 @@
   product_reference: 'Product Reference',
   keyword: 'Keyword',
   price: 'Price',
+  leasing_scheme: 'Leasing Scheme',
+  leasing_provider: 'Leasing Provider',
+  leasing_payment: 'Leasing Payment',
   // social
   socialfolder: 'Social',
   social_preference: 'Social Preference',
@@ -122,10 +127,15 @@
   blog: 'Blog',
   blog_entry: 'Blog Entry',
   blog_category: 'Blog Category',
+  //bundle
+  bundle_selection: 'Bundle Selection',
+  bundle_price: 'Bundle Price',
+  bundle_template: 'Bundle Template',
   //classification
   classification: 'Classification',
   classification_category: 'Classification Category',
-  classification_feature: 'Classification Feature',
+  classification_attribute: 'Classification Attribute',
+  classification_value: 'Classification Value',
   classification_system: 'Classification System',
   //deeplink
   deeplink_url: 'Deeplink Url',
