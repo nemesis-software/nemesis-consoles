@@ -42,6 +42,7 @@
   bundlefolder: 'Групиране',
   product: 'Продукт',
   manufacturer: 'Производител',
+  creditaccountfolder: 'Кредитен депозит',
   //samplestore
   productmaterial: 'Материал',
   //catalog
@@ -137,6 +138,8 @@
   classification_attribute: 'Класификационно поле',
   classification_value: 'Класификационнa стойност',
   classification_system: 'Класификационна система',
+  //credit account
+  credit_account_balance: 'Кредитен баланс',
   //deeplink
   deeplink_url: 'Връзка',
   deeplink_url_rule: 'Правило за връзка',

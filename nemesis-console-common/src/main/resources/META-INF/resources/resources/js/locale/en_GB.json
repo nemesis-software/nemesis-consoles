@@ -43,6 +43,7 @@
   manufacturer: 'Manufacturer',
   deeplinkfolder: 'Deeplink',
   bundlefolder: 'Bundles',
+  creditaccountfolder: 'Credit Account',
   //samplestore
   productmaterial: 'Material',
   //catalog
@@ -140,6 +141,8 @@
   //deeplink
   deeplink_url: 'Deeplink Url',
   deeplink_url_rule: 'Deeplink Url Rule',
+  //credit account
+  credit_account_balance: 'Credit Account Balance',
   //cms
   abstract_template: 'Page template',
   content_slot: 'Content slot',
