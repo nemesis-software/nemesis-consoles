@@ -411,7 +411,7 @@ Ext.application({
                 var contentSlotPk = event.data.contentSlot;
                 if(!widgetPk) {//not drag and drop between two slots
                     //take the active element then
-                    Ext.get(Ext.Element.getActiveElement()).id.substring(7);
+                    widgetPk = Ext.get(Ext.Element.getActiveElement()).id.substring(7);
                 }
                 console.app.addWidgetToSlot(widgetPk, contentSlotPk, function() {
                     if(event.data.oldContentSlot) {
