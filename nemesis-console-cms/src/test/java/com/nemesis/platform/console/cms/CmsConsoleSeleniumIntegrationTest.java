@@ -166,7 +166,7 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
     public void testChangeSiteAndAutoSelectCorrespondingCatalogs() {
         getWebDriver().executeScript("var c = Ext.getCmp('site-combo'), " +
                                                      "store = c.getStore()," +
-                                                     "record = store.findRecord('uid', 'nemesis');" +
+                                                     "record = store.findRecord('code', 'nemesis');" +
                                                      "c.setValue(record.get('pk')); " +
                                                      "c.fireEvent('change', c, record.get('pk'));");
 

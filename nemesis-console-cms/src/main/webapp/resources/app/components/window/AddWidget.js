@@ -10,11 +10,11 @@ Ext.define('console.components.window.AddWidget', {
 		pageSize: 10,
 		model: Ext.define('name', {
 			extend: 'Ext.data.Model',
-			fields: ["uid", "name", "_links"]
+			fields: ["code", "name", "_links"]
 		}),
 		proxy: {
 			type: 'rest',
-			url: Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCatalogVersionUid?catalogVersionUid=Staged',
+			url: Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCatalogVersionCode?catalogVersionCode=Staged',
 			limitParam: 'size',
 			useDefaultXhrHeader: false,
 			cors: true,
@@ -64,10 +64,10 @@ Ext.define('console.components.window.AddWidget', {
 							if (e.getKey() == e.ENTER) {
 								var input = f.getValue();
 								if (input) {
-									storeWidgets.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input + "%25&catalogVersionUid=Staged";
+									storeWidgets.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCodeLikeAndCatalogVersionCode?code=%25' + input + "%25&catalogVersionCode=Staged";
 									storeWidgets.load();
 								} else {
-									storeWidgets.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCatalogVersionUid?catalogVersionUid=Staged';
+									storeWidgets.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCatalogVersionCode?catalogVersionCode=Staged';
 									storeWidgets.load();
 								}
 							}
@@ -83,10 +83,10 @@ Ext.define('console.components.window.AddWidget', {
 							input = btn.up('window').down('#addWidgetInput').getValue();
 
 						if (input) {
-							storeWidgets.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input + "%25&catalogVersionUid=Staged";
+							storeWidgets.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCodeLikeAndCatalogVersionCode?code=%25' + input + "%25&catalogVersionCode=Staged";
 							storeWidgets.load();
 						} else {
-							storeWidgets.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCatalogVersionUid?catalogVersionUid=Staged';
+							storeWidgets.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCatalogVersionCode?catalogVersionCode=Staged';
 							storeWidgets.load();
 						}
 					}
@@ -110,7 +110,7 @@ Ext.define('console.components.window.AddWidget', {
 					'</div>',
 					'<div class="carousel-item">',
 					'<div class="widget-description">{name}</div>',
-					'<div class="carousel-item-header">{uid}</div>',
+					'<div class="carousel-item-header">{code}</div>',
 					'</div>',
 					'</div>',
 					'</tpl>',

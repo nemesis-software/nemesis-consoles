@@ -24,7 +24,7 @@ Ext.define('HelplineConsole.controller.MenuController', {
 		var self = this;
 		var id = this.getUserSearchField().getValue();
 		Ext.Ajax.request({
-			url: Ext.get('rest-base-url').dom.getAttribute('url') + 'user/search/findByUidLike?uid=' + id,
+			url: Ext.get('rest-base-url').dom.getAttribute('url') + 'user/search/findByCodeLike?code=' + id,
 			method: 'GET',
 			success: function(responseObject) {
 				var json = Ext.decode(responseObject.responseText);
@@ -45,7 +45,7 @@ Ext.define('HelplineConsole.controller.MenuController', {
 		var self = this;
 		var id = this.getOrderSearchField().getValue();
 		Ext.Ajax.request({
-			url: Ext.get('rest-base-url').dom.getAttribute('url') + 'abstract_order/search/findByUidEquals?uid=' + id,
+			url: Ext.get('rest-base-url').dom.getAttribute('url') + 'abstract_order/search/findByCodeEquals?code=' + id,
 			method: 'GET',
 			success: function(responseObject) {
 				var json = Ext.decode(responseObject.responseText);
@@ -77,7 +77,7 @@ Ext.define('HelplineConsole.controller.MenuController', {
 				}),
 				proxy: {
 					type: 'rest',
-					url: Ext.get('rest-base-url').dom.getAttribute('url') + 'user/search/findByUidLike?uid=' + this.getUserSearchField().getValue(),
+					url: Ext.get('rest-base-url').dom.getAttribute('url') + 'user/search/findByCodeLike?code=' + this.getUserSearchField().getValue(),
 					limitParam: 'size',
 					useDefaultXhrHeader: false,
 					cors: true,
@@ -148,7 +148,7 @@ Ext.define('HelplineConsole.controller.MenuController', {
 				}),
 				proxy: {
 					type: 'rest',
-					url: Ext.get('rest-base-url').dom.getAttribute('url') + 'abstract_order/search/findByUidEquals?uid=' + this.getOrderSearchField().getValue(),
+					url: Ext.get('rest-base-url').dom.getAttribute('url') + 'abstract_order/search/findByCodeEquals?code=' + this.getOrderSearchField().getValue(),
 					limitParam: 'size',
 					useDefaultXhrHeader: false,
 					cors: true,

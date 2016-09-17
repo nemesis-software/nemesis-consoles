@@ -101,7 +101,7 @@ Ext.define('console.view.content.search.SearchForm', function () {
                     var result = Ext.decode(responseObject.responseText);
                     if (Object.keys(result._links).length > 0) {
                         for (var _link in result._links) {
-                            var fieldRel = Ext.util.Format.substr(_link, self.entity.data.id + 1, _link.length);  //voucher.findByUidStartingWith
+                            var fieldRel = Ext.util.Format.substr(_link, self.entity.data.id + 1, _link.length);  //voucher.findByCodeStartingWith
                             var fieldRestriction = fieldRel.substring(6);
                             var field = null;
                             var restriction = "";

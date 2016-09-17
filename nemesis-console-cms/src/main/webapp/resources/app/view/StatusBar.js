@@ -29,7 +29,7 @@ Ext.define('console.view.StatusBar', {
                             var window = Ext.getCmp('cms-viewport').getWindow(me.page.pk);
                             if (!window) {
                                 window = Ext.getCmp(parentCmpId).createWindow({
-                                    id: me.page.uid,
+                                    id: me.page.code,
                                     operation: 'edit',
                                     title: '[' + me.page.title + ']',
                                     iconCls: 'abstract_page',

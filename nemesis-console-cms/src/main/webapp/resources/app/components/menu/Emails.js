@@ -35,10 +35,10 @@ Ext.define('console.components.menu.Emails', {
                                     if (e.getKey() == e.ENTER) {
                                         var input = Ext.getCmp('emails-filter').getValue();
                                         if (input) {
-                                            Ext.getCmp('emails-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'email_page/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input + "%25&catalogVersionUid=Staged";
+                                            Ext.getCmp('emails-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'email_page/search/findByCodeLikeAndCatalogVersionCode?code=%25' + input + "%25&catalogVersionCode=Staged";
                                             Ext.getCmp('emails-dataview').getStore().load();
                                         } else {
-                                            Ext.getCmp('emails-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'email_page/search/findByCatalogVersionUid?catalogVersionUid=Staged';
+                                            Ext.getCmp('emails-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'email_page/search/findByCatalogVersionCode?catalogVersionCode=Staged';
                                             Ext.getCmp('emails-dataview').getStore().load();
                                         }
                                     }
@@ -54,10 +54,10 @@ Ext.define('console.components.menu.Emails', {
                             handler: function () {
                                 var input = Ext.getCmp('emails-filter').getValue();
                                 if (input) {
-                                    Ext.getCmp('emails-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'email_page/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input + "%25&catalogVersionUid=Staged";
+                                    Ext.getCmp('emails-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'email_page/search/findByCodeLikeAndCatalogVersionCode?code=%25' + input + "%25&catalogVersionCode=Staged";
                                     Ext.getCmp('emails-dataview').getStore().load();
                                 } else {
-                                    Ext.getCmp('emails-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'email_page/search/findByCatalogVersionUid?catalogVersionUid=Staged';
+                                    Ext.getCmp('emails-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'email_page/search/findByCatalogVersionCode?catalogVersionCode=Staged';
                                     Ext.getCmp('emails-dataview').getStore().load();
                                 }
                             }
@@ -74,13 +74,13 @@ Ext.define('console.components.menu.Emails', {
                     itemSelector: 'div.top-carousel-item',
                     tpl: new Ext.XTemplate(
                         '<tpl for=".">',
-                        '<div id="page-{uid}" class="top-carousel-item">',
+                        '<div id="page-{code}" class="top-carousel-item">',
                         '<div class="carousel-picture">',
-                        '<a><img width="100" src="' + Ext.get('website-base-url').dom.getAttribute('url') + 'media/content/{uid}/{uid}.png" onerror="this.src='+"'resources/img/email.svg'"+ ';this.onerror=null;"></a>',
+                        '<a><img width="100" src="' + Ext.get('website-base-url').dom.getAttribute('url') + 'media/content/{code}/{code}.png" onerror="this.src='+"'resources/img/email.svg'"+ ';this.onerror=null;"></a>',
                         '</div>',
                         '<div class="carousel-item">',
                         '<div class="widget-description">{name}</div>',
-                        '<div class="carousel-item-header">{uid}</div>',
+                        '<div class="carousel-item-header">{code}</div>',
                         '</div>',
                         '</div>',
                         '</tpl>'),
@@ -92,11 +92,11 @@ Ext.define('console.components.menu.Emails', {
                         pageSize: 30,
                         model: Ext.define('name', {
                             extend: 'Ext.data.Model',
-                            fields: ["uid", "name", "title"]
+                            fields: ["code", "name", "title"]
                         }),
                         proxy: {
                             type: 'rest',
-                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'email_page/search/findByCatalogVersionUid?catalogVersionUid=Staged',
+                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'email_page/search/findByCatalogVersionCode?catalogVersionCode=Staged',
                             limitParam: 'size',
                             useDefaultXhrHeader: false,
                             cors: true,
@@ -115,7 +115,7 @@ Ext.define('console.components.menu.Emails', {
                     }),
                     listeners: {
                         itemclick: function (view, record, item, index, e, eOpts) {
-                            Ext.get('website-iframe').dom.src = Ext.get('website-base-url').dom.getAttribute('url') + "/email/page/" + record.data.uid + "?subject=" + record.data.name + "&live_edit_view=true&site=" + ((Ext.getCmp('site-combo').getSelection() != null) ? Ext.getCmp('site-combo').getSelection().data.uid : 'solar');
+                            Ext.get('website-iframe').dom.src = Ext.get('website-base-url').dom.getAttribute('url') + "/email/page/" + record.data.code + "?subject=" + record.data.name + "&live_edit_view=true&site=" + ((Ext.getCmp('site-combo').getSelection() != null) ? Ext.getCmp('site-combo').getSelection().data.code : 'solar');
                             view.el.setStyle('background', '#DDDDDD');
                             view.el.setStyle('border-color', '#000');
                         },
@@ -154,7 +154,7 @@ Ext.define('console.components.menu.Emails', {
                         if (!window) {
                             window = Ext.getCmp(parentCmpId).createWindow({
                                 operation: 'edit',
-                                id: record.data.uid,
+                                id: record.data.code,
                                 iconCls: record.data.entityName ? record.data.entityName : 'widget',
                                 entity: Ext.create('console.model.Entity', {
                                     id: record.data.entityName,

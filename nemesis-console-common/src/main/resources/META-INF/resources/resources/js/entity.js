@@ -133,7 +133,7 @@ Ext.define('console.view.content.EntityPopupWindow', {
     isWindow: true,
     constrainHeader: true,
     constructTitle: function () {
-        return '[' + (this.config.data ? this.config.data.uid + ' - ' + translate(this.config.entity.data.id) : this.config.entity.id) + ']';
+        return '[' + (this.config.data ? this.config.data.code + ' - ' + translate(this.config.entity.data.id) : this.config.entity.id) + ']';
     },
     minimizable: true,
     maximizable: true,

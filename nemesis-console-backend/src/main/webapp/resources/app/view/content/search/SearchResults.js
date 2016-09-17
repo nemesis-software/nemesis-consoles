@@ -279,7 +279,7 @@ Ext.define('console.view.content.search.SearchResults', {
         var parentCmpId = 'backend-viewport';
         var currentToken = Ext.util.History.getToken();
         var href = Ext.isGecko ? record.data._links['self'].href : encodeURIComponent(record.data._links['self'].href);
-        var newToken = encodeURIComponent(parentCmpId) + ':' + encodeURIComponent(record.data.uid) + ":" + encodeURIComponent(this.entity.data.name) + ":" + encodeURIComponent(this.entity.data.id) + ":" +  encodeURIComponent(this.entity.data.className) + ":" +  encodeURIComponent(record.data.pk) + ":" + href;
+        var newToken = encodeURIComponent(parentCmpId) + ':' + encodeURIComponent(record.data.code) + ":" + encodeURIComponent(this.entity.data.name) + ":" + encodeURIComponent(this.entity.data.id) + ":" +  encodeURIComponent(this.entity.data.className) + ":" +  encodeURIComponent(record.data.pk) + ":" + href;
 
         if (currentToken === newToken) { //case when we click on a just closed window
             var window = Ext.getCmp(parentCmpId).getWindow(record.data.pk);
@@ -308,7 +308,7 @@ Ext.define('console.view.content.search.SearchResults', {
     onCopySelected: function (view, record, item, index, event) {
         Ext.getCmp('backend-viewport').clipboard = {
             data: {
-                id: record.data.uid,
+                id: record.data.code,
                 pk: record.data.pk,
                 name: this.entity.data.name,
                 url: record.data._links.self.href,

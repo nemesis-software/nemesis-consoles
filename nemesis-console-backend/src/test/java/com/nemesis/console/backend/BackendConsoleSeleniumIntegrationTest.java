@@ -220,9 +220,9 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertTrue(resultsGridItems(entityId).size() > 0);
 
         getWebDriver().executeScript("var c = Ext.getCmp('" + entityId
-                                                     + "-searchform-fieldset-restriction_uid'); c.setValue('Equals'); c.fireEvent('select', c, 'Equals');");
+                                                     + "-searchform-fieldset-restriction_code'); c.setValue('Equals'); c.fireEvent('select', c, 'Equals');");
 
-        getWebDriver().findElementByCssSelector("div#" + entityId + "-searchform-fieldset-query_uid input[type='text']").sendKeys("default");
+        getWebDriver().findElementByCssSelector("div#" + entityId + "-searchform-fieldset-query_code input[type='text']").sendKeys("default");
 
         getWebDriver().findElementsByCssSelector("div#" + entityId + "-search-form div.x-toolbar a.x-btn").iterator().next().click();
 
@@ -265,14 +265,14 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertNotNull(currencyFieldValue);
         assertFalse("".equals(currencyFieldValue));
 
-        WebElement uidField = getWait().until(ExpectedConditions.visibilityOf(entityWindow.findElement(By.cssSelector("[id^='nemesisTextField-'] > input"))));
-        assertNotNull(uidField);
-        uidField.click();
+        WebElement codeField = getWait().until(ExpectedConditions.visibilityOf(entityWindow.findElement(By.cssSelector("[id^='nemesisTextField-'] > input"))));
+        assertNotNull(codeField);
+        codeField.click();
 
         WebElement currencyInputField = getWait().until(ExpectedConditions.visibilityOf(entityWindow.findElement(By.cssSelector("[name='entity-currency']"))));
 
         currencyInputField.click();
-        uidField.click();
+        codeField.click();
         currencyInputField.click();
 
         currencyFieldValue = (String) getWebDriver().executeScript("function test() {var c = Ext.getCmp('" + id + "'); return c.getValue();}; return test();");
@@ -343,8 +343,8 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         WebElement searchForm = searchForm(entityId);
 
-        assertTrue(existsElement("[id^=" + entityId + "-searchform-fieldset-restriction_uid]"));
-        assertTrue(existsElement("#" + entityId + "-searchform-fieldset-query_uid"));
+        assertTrue(existsElement("[id^=" + entityId + "-searchform-fieldset-restriction_code]"));
+        assertTrue(existsElement("#" + entityId + "-searchform-fieldset-query_code"));
 
         List<WebElement> queryFields = searchForm.findElements(By.cssSelector("div[id^='" + entityId + "-searchform-fieldset-query'] input[type='text']"));
 
@@ -369,8 +369,8 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         searchForm = searchForm(entityId);
 
-        assertTrue(existsElement("[id^=" + entityId + "-searchform-fieldset-restriction_uid]"));
-        assertTrue(existsElement("#" + entityId + "-searchform-fieldset-query_uid"));
+        assertTrue(existsElement("[id^=" + entityId + "-searchform-fieldset-restriction_code]"));
+        assertTrue(existsElement("#" + entityId + "-searchform-fieldset-query_code"));
 
         List<WebElement> newQueryFields = searchForm.findElements(By.cssSelector("div[id^='" + entityId + "-searchform-fieldset-query'] input[type='text']"));
 
@@ -556,14 +556,14 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         WebElement searchForm = searchForm(entityId);
 
-        assertTrue(existsElement("[id^=" + entityId + "-searchform-fieldset-restriction_uid]"));
+        assertTrue(existsElement("[id^=" + entityId + "-searchform-fieldset-restriction_code]"));
 
         getWebDriver().executeScript("var c = Ext.getCmp('" + entityId
-                                                     + "-searchform-fieldset-restriction_uid'); c.setValue('Equals'); c.fireEvent('select', c, 'Equals');");
+                                                     + "-searchform-fieldset-restriction_code'); c.setValue('Equals'); c.fireEvent('select', c, 'Equals');");
 
-        assertTrue(existsElement("#" + entityId + "-searchform-fieldset-query_uid"));
+        assertTrue(existsElement("#" + entityId + "-searchform-fieldset-query_code"));
 
-        WebElement queryField = searchForm.findElement(By.cssSelector("div#" + entityId + "-searchform-fieldset-query_uid input[type='text']"));
+        WebElement queryField = searchForm.findElement(By.cssSelector("div#" + entityId + "-searchform-fieldset-query_code input[type='text']"));
 
         queryField.clear();
         queryField.sendKeys("africa-love-capri");
@@ -950,14 +950,14 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         WebElement searchForm = searchForm(entityId);
 
-        assertTrue(existsElement("[id^=" + entityId + "-searchform-fieldset-restriction_uid]"));
+        assertTrue(existsElement("[id^=" + entityId + "-searchform-fieldset-restriction_code]"));
 
         getWebDriver().executeScript("var c = Ext.getCmp('" + entityId
-                                                     + "-searchform-fieldset-restriction_uid'); c.setValue('Equals'); c.fireEvent('select', c, 'Equals');");
+                                                     + "-searchform-fieldset-restriction_code'); c.setValue('Equals'); c.fireEvent('select', c, 'Equals');");
 
-        assertTrue(existsElement("#" + entityId + "-searchform-fieldset-query_uid"));
+        assertTrue(existsElement("#" + entityId + "-searchform-fieldset-query_code"));
 
-        WebElement queryField = searchForm.findElement(By.cssSelector("div#" + entityId + "-searchform-fieldset-query_uid input[type='text']"));
+        WebElement queryField = searchForm.findElement(By.cssSelector("div#" + entityId + "-searchform-fieldset-query_code input[type='text']"));
 
         queryField.clear();
         queryField.sendKeys("solarapparel");
@@ -1098,7 +1098,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         assertNotNull(openedTab);
 
-        openedTab.findElement(By.cssSelector("input[name='uid']")).sendKeys("test-uid");
+        openedTab.findElement(By.cssSelector("input[name='code']")).sendKeys("test-code");
         openedTab.findElement(By.cssSelector(".nemesisLocalizedField input[name^='textfield-']")).sendKeys("test-name");
 
         //find the second tab
@@ -1168,17 +1168,17 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         WebElement searchForm = searchForm(entityId);
 
-        assertTrue(existsElement("[id^=" + entityId + "-searchform-fieldset-restriction_uid]"));
+        assertTrue(existsElement("[id^=" + entityId + "-searchform-fieldset-restriction_code]"));
 
         getWebDriver().executeScript("var c = Ext.getCmp('" + entityId
-                                                     + "-searchform-fieldset-restriction_uid'); c.setValue('Equals'); c.fireEvent('select', c, 'Equals');");
+                                                     + "-searchform-fieldset-restriction_code'); c.setValue('Equals'); c.fireEvent('select', c, 'Equals');");
 
-        assertTrue(existsElement("#" + entityId + "-searchform-fieldset-query_uid"));
+        assertTrue(existsElement("#" + entityId + "-searchform-fieldset-query_code"));
 
-        WebElement queryField = searchForm.findElement(By.cssSelector("div#" + entityId + "-searchform-fieldset-query_uid input[type='text']"));
+        WebElement queryField = searchForm.findElement(By.cssSelector("div#" + entityId + "-searchform-fieldset-query_code input[type='text']"));
 
         queryField.clear();
-        queryField.sendKeys("test-uid");
+        queryField.sendKeys("test-code");
         queryField.sendKeys(Keys.ENTER);
 
         sleep();
@@ -1205,8 +1205,8 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         assertNotNull(openedTab);
 
-        String uidId = openedTab.findElement(By.cssSelector("div[id^='nemesisTextField-']")).getAttribute("id");
-        assertEquals("test-uid", getWebDriver().executeScript("function test() {var c = Ext.getCmp('" + uidId + "'); return c.getValue();}; return test();"));
+        String codeId = openedTab.findElement(By.cssSelector("div[id^='nemesisTextField-']")).getAttribute("id");
+        assertEquals("test-code", getWebDriver().executeScript("function test() {var c = Ext.getCmp('" + codeId + "'); return c.getValue();}; return test();"));
         String nameId = openedTab.findElement(By.cssSelector(".nemesis-localized-field ")).getAttribute("id");
         assertEquals("{\"en_GB\":{\"value\":\"test-name\"}}",
                      getWebDriver().executeScript("function test() {var c = Ext.getCmp('" + nameId + "'); return c.getValue();}; return test();"));
@@ -1284,10 +1284,10 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         //        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id^='toast-']")));
         //        closeEntityWindow();
         //
-        //        queryField = searchForm.findElement(By.cssSelector("div#" + entityId + "-searchform-fieldset-query_uid input[type='text']"));
+        //        queryField = searchForm.findElement(By.cssSelector("div#" + entityId + "-searchform-fieldset-query_code input[type='text']"));
         //
         //        queryField.clear();
-        //        queryField.sendKeys("test-uid");
+        //        queryField.sendKeys("test-code");
         //        queryField.sendKeys(Keys.ENTER);
         //
         //        sleep();
@@ -1395,14 +1395,14 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         WebElement searchForm = searchForm(entityId);
 
-        assertTrue(existsElement("[id^=" + entityId + "-searchform-fieldset-restriction_uid]"));
+        assertTrue(existsElement("[id^=" + entityId + "-searchform-fieldset-restriction_code]"));
 
         getWebDriver().executeScript("var c = Ext.getCmp('" + entityId
-                                                     + "-searchform-fieldset-restriction_uid'); c.setValue('Equals'); c.fireEvent('select', c, 'Equals');");
+                                                     + "-searchform-fieldset-restriction_code'); c.setValue('Equals'); c.fireEvent('select', c, 'Equals');");
 
-        assertTrue(existsElement("#" + entityId + "-searchform-fieldset-query_uid"));
+        assertTrue(existsElement("#" + entityId + "-searchform-fieldset-query_code"));
 
-        WebElement queryField = searchForm.findElement(By.cssSelector("div#" + entityId + "-searchform-fieldset-query_uid input[type='text']"));
+        WebElement queryField = searchForm.findElement(By.cssSelector("div#" + entityId + "-searchform-fieldset-query_code input[type='text']"));
 
         queryField.clear();
         queryField.sendKeys("africa-love-capri");
@@ -1541,14 +1541,14 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         WebElement searchForm = searchForm(entityId);
 
-        assertTrue(existsElement("[id^=" + entityId + "-searchform-fieldset-restriction_uid]"));
+        assertTrue(existsElement("[id^=" + entityId + "-searchform-fieldset-restriction_code]"));
 
         getWebDriver().executeScript("var c = Ext.getCmp('" + entityId
-                                                     + "-searchform-fieldset-restriction_uid'); c.setValue('IsStartingWith'); c.fireEvent('select', c, 'IsStartingWith');");
+                                                     + "-searchform-fieldset-restriction_code'); c.setValue('IsStartingWith'); c.fireEvent('select', c, 'IsStartingWith');");
 
-        assertTrue(existsElement("#" + entityId + "-searchform-fieldset-query_uid"));
+        assertTrue(existsElement("#" + entityId + "-searchform-fieldset-query_code"));
 
-        WebElement queryField = searchForm.findElement(By.cssSelector("div#" + entityId + "-searchform-fieldset-query_uid input[type='text']"));
+        WebElement queryField = searchForm.findElement(By.cssSelector("div#" + entityId + "-searchform-fieldset-query_code input[type='text']"));
 
         queryField.clear();
         queryField.sendKeys("n");
@@ -1601,7 +1601,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         assertFalse(existsElement("[id^='toast-']"));
 
-        getWebDriver().findElementByCssSelector("input[id^='nemesisTextField-'][name='uid']").sendKeys("testA");
+        getWebDriver().findElementByCssSelector("input[id^='nemesisTextField-'][name='code']").sendKeys("testA");
 
         getWebDriver().findElement(By.cssSelector(".save-btn")).click();
 
@@ -1621,7 +1621,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         sleep();
 
-        WebElement input = getWebDriver().findElementByCssSelector("input[id^='nemesisTextField-'][name='uid']");
+        WebElement input = getWebDriver().findElementByCssSelector("input[id^='nemesisTextField-'][name='code']");
         input.clear();
         input.sendKeys("testB");
 

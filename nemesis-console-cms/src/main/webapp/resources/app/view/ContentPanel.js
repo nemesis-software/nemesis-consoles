@@ -56,7 +56,7 @@ Ext.define('console.view.ContentPanel', {
 		                                load: function(myself, records, successful, eOpts) {
 											if(successful) {
 												var comboSites = Ext.getCmp('site-combo');
-												comboSites.setValue(myself.findRecord('uid', 'solarapparel').get('pk'))
+												comboSites.setValue(myself.findRecord('code', 'solarapparel').get('pk'))
 											}
 		                                }
 	                                },
@@ -70,7 +70,7 @@ Ext.define('console.view.ContentPanel', {
                                         var siteContentCatalogsStore = Ext.create('Ext.data.ArrayStore', {
                                             autoLoad: true,
                                             autoSync: false,
-                                            fields: ['pk', 'uid'],
+                                            fields: ['pk', 'code'],
                                             proxy: {
                                                 type: 'rest',
                                                 url: cmb.getSelection().data._links.contentCatalogs.href,
@@ -101,7 +101,7 @@ Ext.define('console.view.ContentPanel', {
                                             currentQuery = currentUrl.split('?')[1],
                                             params = Ext.urlDecode(currentQuery);
 
-                                        params.site = cmb.getStore().findRecord('pk',newValue).get('uid');
+                                        params.site = cmb.getStore().findRecord('pk',newValue).get('code');
                                         params.clear = true;
                                         // Delete the param catalog from url because remains the catalogs from the previous
                                         // site which is wrong.
@@ -135,7 +135,7 @@ Ext.define('console.view.ContentPanel', {
                                     ],
                                     proxy: {
                                         type: 'rest',
-                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_catalog/search/findByCatalogVersionsUid?catalogVersionUid=Staged',
+                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_catalog/search/findByCatalogVersionsCode?catalogVersionCode=Staged',
                                         useDefaultXhrHeader: false,
                                         cors: true,
                                         reader: {
@@ -167,7 +167,7 @@ Ext.define('console.view.ContentPanel', {
 
 										// Gets selected catalogs UIDs
 	                                    cmb.valueCollection.items.forEach(function(item){
-		                                    catalogsUIDs.push(item.get('uid'));
+		                                    catalogsUIDs.push(item.get('code'));
 	                                    });
                                         params.catalogs = catalogsUIDs.join();
                                         params.clear = true;
@@ -182,12 +182,12 @@ Ext.define('console.view.ContentPanel', {
                                 id: 'catalogVersionsCombo',
                                 fieldLabel: 'Catalog Version',
                                 xtype: 'combo',
-                                valueField: 'uid',
-                                displayField: 'uid',
+                                valueField: 'code',
+                                displayField: 'code',
                                 store: Ext.create('Ext.data.ArrayStore', {
                                     autoLoad: false,
                                     autoSync: false,
-                                    fields: ['uid', 'name'],
+                                    fields: ['code', 'name'],
                                     proxy: {
                                         type: 'rest',
                                         url: null, //will be set by the catalog combo change event
@@ -206,7 +206,7 @@ Ext.define('console.view.ContentPanel', {
                                         var currentQuery = currentUrl.split('?')[1];
                                         var params = Ext.urlDecode(currentQuery);
                                         params.catalogs = Ext.getCmp('catalogsCombo').getValue().join();
-                                        params.catalogsVersion = record.get('uid');
+                                        params.catalogsVersion = record.get('code');
                                         params.clear = true;
                                         var newQuery = Ext.Object.toQueryString(params);
 
@@ -261,7 +261,7 @@ Ext.define('console.view.ContentPanel', {
                                             });
 
                                         } else {
-                                            var siteUrl = Ext.get('rest-base-url').dom.getAttribute('url') + 'site/search/findByUid?uid=solarapparel';
+                                            var siteUrl = Ext.get('rest-base-url').dom.getAttribute('url') + 'site/search/findByCode?code=solarapparel';
 
                                             Ext.Ajax.request({
                                                 url: siteUrl,
@@ -299,7 +299,7 @@ Ext.define('console.view.ContentPanel', {
                                         //var siteContentCatalogsStore = Ext.create('Ext.data.ArrayStore', {
                                         //    autoLoad: false,
                                         //    autoSync: false,
-                                        //    fields: ['uid', 'pk'],
+                                        //    fields: ['code', 'pk'],
                                         //    proxy: {
                                         //        type: 'rest',
                                         //        url: contentCatalogsForSiteUrl,

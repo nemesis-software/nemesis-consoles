@@ -38,10 +38,10 @@ Ext.define('console.components.menu.Widgets', {
                                 if (e.getKey() == e.ENTER) {
                                     var input = Ext.getCmp('widgets-filter').getValue();
                                     if (input) {
-                                        storeWidgets.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input + "%25&catalogVersionUid=Staged";
+                                        storeWidgets.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCodeLikeAndCatalogVersionCode?code=%25' + input + "%25&catalogVersionCode=Staged";
                                         storeWidgets.load();
                                     } else {
-                                        storeWidgets.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCatalogVersionUid?catalogVersionUid=Staged';
+                                        storeWidgets.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCatalogVersionCode?catalogVersionCode=Staged';
                                         storeWidgets.load();
                                     }
                                 }
@@ -57,7 +57,7 @@ Ext.define('console.components.menu.Widgets', {
                         handler: function () {
                             var input = Ext.getCmp('widgets-filter').getValue();
                             if (input) {
-                                Ext.getCmp('widgets-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input + "%25&catalogVersionUid=Staged";
+                                Ext.getCmp('widgets-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCodeLikeAndCatalogVersionCode?code=%25' + input + "%25&catalogVersionCode=Staged";
                                 Ext.getCmp('widgets-dataview').getStore().load({
                                     //drag-n-drop experiments https://docs.sencha.com/extjs/5.1/core_concepts/drag_drop.html
                                     //callback : function(records, options, success) {
@@ -114,7 +114,7 @@ Ext.define('console.components.menu.Widgets', {
                                     //}
                                 });
                             } else {
-                                Ext.getCmp('widgets-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCatalogVersionUid?catalogVersionUid=Staged';
+                                Ext.getCmp('widgets-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCatalogVersionCode?catalogVersionCode=Staged';
                                 Ext.getCmp('widgets-dataview').getStore().load();
                             }
                         }
@@ -137,7 +137,7 @@ Ext.define('console.components.menu.Widgets', {
                         '</div>',
                         '<div class="carousel-item">',
                         '<div class="widget-description">{name}</div>',
-                        '<div class="carousel-item-header">{uid}</div>',
+                        '<div class="carousel-item-header">{code}</div>',
                         '</div>',
                         '</div>',
                         '</tpl>',
@@ -253,7 +253,7 @@ Ext.define('console.components.menu.Widgets', {
                         if (!window) {
                             window = Ext.getCmp(parentCmpId).createWindow({
                                 operation: 'edit',
-                                id: record.data.uid,
+                                id: record.data.code,
                                 iconCls: record.data.entityName ? record.data.entityName : 'widget',
                                 entity: Ext.create('console.model.Entity', {
                                     id: record.data.entityName,
@@ -271,7 +271,7 @@ Ext.define('console.components.menu.Widgets', {
                         Ext.getCmp('cms-viewport').clipboard = {
                             data: {
                                 pk: record.data.pk,
-                                id: record.data.uid,
+                                id: record.data.code,
                                 name: record.data.entityName,
                                 url: record.data._links.self.href
                             }
@@ -285,11 +285,11 @@ Ext.define('console.components.menu.Widgets', {
                         pageSize: 10,
                         model: Ext.define('name', {
                             extend: 'Ext.data.Model',
-                            fields: ["uid", "name", "_links"]
+                            fields: ["code", "name", "_links"]
                         }),
                         proxy: {
                             type: 'rest',
-                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCatalogVersionUid?catalogVersionUid=Staged',
+                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'widget/search/findByCatalogVersionCode?catalogVersionCode=Staged',
                             limitParam: 'size',
                             useDefaultXhrHeader: false,
                             cors: true,

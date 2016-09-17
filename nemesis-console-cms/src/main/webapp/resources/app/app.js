@@ -115,7 +115,7 @@ Ext.application({
                         Ext.getStore('content-page-store').reload();
                         Ext.getStore('content-slot-store').reload();
 
-                        var page = Ext.get('page-' + event.data.page.uid);
+                        var page = Ext.get('page-' + event.data.page.code);
                         if (page) {
                             page.dom.scrollIntoView();
                             page.setStyle('background', '#DDDDDD');
@@ -127,7 +127,7 @@ Ext.application({
                                     previousPageEl.setStyle('border-color', '#DDDDDD');
                                 }
                             }
-                            this.previousPageId = 'template-' + event.data.page.uid;
+                            this.previousPageId = 'template-' + event.data.page.code;
                         }
                     },
                     failure: function (responseObject) {
@@ -161,9 +161,9 @@ Ext.application({
 
                 var contentSlotFilter = Ext.getCmp('content-slot-filter').getValue();
                 if(contentSlotFilter) {
-                    Ext.getCmp('page-slot-store').items.items[1].store.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/search/findByUidLikeAndCatalogVersionUidAndPageOrTemplate?uid=%25' + contentSlotFilter + "%25&catalogVersionUid=Staged";
+                    Ext.getCmp('page-slot-store').items.items[1].store.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/search/findByCodeLikeAndCatalogVersionCodeAndPageOrTemplate?code=%25' + contentSlotFilter + "%25&catalogVersionCode=Staged";
                 } else {
-                    Ext.getCmp('page-slot-store').items.items[1].store.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/search/findByCatalogVersionUidAndPageOrTemplate?catalogVersionUid=Staged';
+                    Ext.getCmp('page-slot-store').items.items[1].store.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/search/findByCatalogVersionCodeAndPageOrTemplate?catalogVersionCode=Staged';
                 }
                 Ext.getCmp('page-slot-store').items.items[1].store.proxy.extraParams = {
                     'abstract_page': event.data.page.pk,

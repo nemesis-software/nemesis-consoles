@@ -148,13 +148,13 @@ Ext.define('console.view.field.NemesisCollectionField', {
     entity: null,
     ddReorder: true,
     //isFormField: true,
-    fieldName: 'uid',
+    fieldName: 'code',
     viewConfig: {
         deferEmptyText: false,
         emptyText: 'No records'
     },
     search: {
-        field: 'uid'
+        field: 'code'
     },
     listeners: {
         el: {
@@ -179,7 +179,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                                     var entityConfiguration = Ext.create("console.markup." + record.data.name);
                                     win = viewport.createWindow({
                                         operation: 'edit',
-                                        id: record.data.uid,
+                                        id: record.data.code,
                                         iconCls: this.entityId,
                                         entity: Ext.create('console.model.Entity', {
                                             id: this.entityId,
@@ -210,7 +210,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                             handler: function () {
                                 var clipboard = Ext.getCmp('backend-viewport').clipboard;
                                 if (clipboard.data) {
-                                    var data = Ext.apply({uid: clipboard.data.id, pk: clipboard.data.pk}, clipboard.data)
+                                    var data = Ext.apply({code: clipboard.data.id, pk: clipboard.data.pk}, clipboard.data)
                                     this.store.insert(this.store.data.items.length, Ext.data.Record.create(data));
                                 }
                             }.bind(this.component)
@@ -243,12 +243,12 @@ Ext.define('console.view.field.NemesisCollectionField', {
                 pageSize: 10,
                 model: Ext.define('name', {
                     extend: 'Ext.data.Model',
-                    fields: ['uid'],
-                    idProperty: 'uid'
+                    fields: ['code'],
+                    idProperty: 'code'
                 }),
                 proxy: {
                     type: 'rest',
-                    url: Ext.get('rest-base-url').dom.getAttribute('url') + me.entityId + "/search/findByUidIsStartingWithIgnoreCase/",
+                    url: Ext.get('rest-base-url').dom.getAttribute('url') + me.entityId + "/search/findByCodeIsStartingWithIgnoreCase/",
                     limitParam: 'size',
                     useDefaultXhrHeader: false,
                     cors: true,
@@ -273,7 +273,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                 trigger.setHidden(!value);
                 this.getSearchStore().load({
                     params: {
-                        uid: value,
+                        code: value,
                         projection: 'search'
                     }
                 });
@@ -293,7 +293,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                 me.setStore(Ext.create('Ext.data.ArrayStore', {
                     autoLoad: true,
                     autoSync: false,
-                    fields: ['uid', 'pk', 'name', 'url'],
+                    fields: ['code', 'pk', 'name', 'url'],
                     proxy: {
                         type: 'rest',
                         url: entity.data.url,
@@ -308,7 +308,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                                         var record = o._embedded[key][inner];
                                         data = data.concat({
                                             'id': record.id,
-                                            'uid': record.uid,
+                                            'code': record.code,
                                             'pk': record.pk,
                                             'name': record.entityName,
                                             'url': record._links.self.href
@@ -504,9 +504,9 @@ Ext.define('console.view.field.NemesisEntityField', {
     columnWidth: .5,
     width: '95%',
     jsonValue: null,
-    displayField: 'uidToDisplay',
-    valueField: 'uidToDisplay',
-    queryParam: 'uid',
+    displayField: 'codeToDisplay',
+    valueField: 'codeToDisplay',
+    queryParam: 'code',
     entity: null,
     text: null,
     initComponent: function () {
@@ -515,15 +515,15 @@ Ext.define('console.view.field.NemesisEntityField', {
         me.triggers['edit'].cls = 'x-form-entity-trigger ' + ' default-icon ' + me.entityId;
         me.synchronizable = Ext.create("console.markup." +  me.entityId).synchronizable;
 
-        var restUrl = me.entityId == 'catalog_version' ? Ext.get('rest-base-url').dom.getAttribute('url') + me.entityId + "/search/findByUidIsStartingWithIgnoreCaseOrCatalogUidIsStartingWithIgnoreCase/" : Ext.get('rest-base-url').dom.getAttribute('url') + me.entityId + "/search/findByUidIsStartingWithIgnoreCase/";
+        var restUrl = me.entityId == 'catalog_version' ? Ext.get('rest-base-url').dom.getAttribute('url') + me.entityId + "/search/findByCodeIsStartingWithIgnoreCaseOrCatalogCodeIsStartingWithIgnoreCase/" : Ext.get('rest-base-url').dom.getAttribute('url') + me.entityId + "/search/findByCodeIsStartingWithIgnoreCase/";
         var store = Ext.create('Ext.data.Store', {
             autoLoad: false,
             autoSync: true,
             pageSize: 10,
             model: Ext.define('name', {
                 extend: 'Ext.data.Model',
-                fields: ['uidToDisplay'],
-                idProperty: 'uidToDisplay'
+                fields: ['codeToDisplay'],
+                idProperty: 'codeToDisplay'
             }),
             proxy: {
                 type: 'rest',
@@ -542,7 +542,7 @@ Ext.define('console.view.field.NemesisEntityField', {
                             data = data.concat(o._embedded[key]);
                         }
                         for(var i=0; i<data.length; i++) {
-                        	data[i].uidToDisplay = me.entityId == 'catalog_version' ? data[i].catalogVersion : data[i].uid + (me.synchronizable ? ' - ' + data[i].catalogVersion : '');
+                        	data[i].codeToDisplay = me.entityId == 'catalog_version' ? data[i].catalogVersion : data[i].code + (me.synchronizable ? ' - ' + data[i].catalogVersion : '');
                         }
                         return data;
                     },
@@ -569,8 +569,8 @@ Ext.define('console.view.field.NemesisEntityField', {
         //take the input value... otherwise the query will pass the .getRawValue which doesn't work in this case.
         var inputValue = Ext.get(e.combo.id + "-inputEl").getValue();
         e.query = inputValue;
-        //also set the value as catalogUid in case we search method that needs both the catalogUid and the uid, this will pass extra param
-        this.store.proxy.extraParams.catalogUid = inputValue;
+        //also set the value as catalogCode in case we search method that needs both the catalogCode and the code, this will pass extra param
+        this.store.proxy.extraParams.catalogCode = inputValue;
     },
     render: function (c) {
         //show trigger 1 ( the edit )
@@ -595,13 +595,13 @@ Ext.define('console.view.field.NemesisEntityField', {
         var me = this;
         var entity = me.getEntity();
         if (entity) {
-            var entityUid = me.jsonValue;
-            if (!entityUid) return;
+            var entityCode = me.jsonValue;
+            if (!entityCode) return;
             
             var catalogVersion = null;
             var sep = ' - ';
-            if (me.rawValue && 0 == me.rawValue.indexOf(entityUid + sep)) {
-            	catalogVersion = me.rawValue.substring(entityUid.length + sep.length);
+            if (me.rawValue && 0 == me.rawValue.indexOf(entityCode + sep)) {
+            	catalogVersion = me.rawValue.substring(entityCode.length + sep.length);
             }
             console.log(entity.data); //you need to initialize the entity from the url
             var win = Ext.ComponentQuery.query('viewport')[0].getWindow(entity.data.pk);
@@ -618,7 +618,7 @@ Ext.define('console.view.field.NemesisEntityField', {
                         win = Ext.getCmp('backend-viewport').createWindow({
                                 operation: 'edit',
                                 data: content,
-                                title: '[' + entityUid + ' - ' + entity.data.name + ']',
+                                title: '[' + entityCode + ' - ' + entity.data.name + ']',
                                 iconCls: me.entityId,
                                 sections: Ext.create("console.markup." + me.entityId).sections,
                                 entity: Ext.create('console.model.Entity', {
@@ -731,7 +731,7 @@ Ext.define('console.view.field.NemesisEntityField', {
             }
         }
     },
-    getUidToDisplay: function(resultData) {
+    getCodeToDisplay: function(resultData) {
     	var me = this;
     	return (me.entityId == 'catalog_version' ? resultData.catalogVersion : me.jsonValue ? me.jsonValue + (me.synchronizable ? ' - ' + resultData.catalogVersion : '') : me.jsonValue);
     },
@@ -746,8 +746,8 @@ Ext.define('console.view.field.NemesisEntityField', {
         }
         if (entity && typeof entity.data !== 'undefined') {
             me.entity = entity;
-        	if (entity.data.uidToDisplay) {
-        		me.setRawValue(me.getUidToDisplay(record.data));
+        	if (entity.data.codeToDisplay) {
+        		me.setRawValue(me.getCodeToDisplay(record.data));
         		return;
         	}
             var entityUrl = record instanceof Array ? entity.data._links.self.href : entity.data.url;
@@ -760,8 +760,8 @@ Ext.define('console.view.field.NemesisEntityField', {
                     var result = Ext.decode(res.responseText);
                     var resultData = Ext.isObject(result.content) ? result.content : result;
                     me.entityHref = result._links.self.href;
-                    me.jsonValue = resultData.uid;
-                    me.setRawValue(me.getUidToDisplay(resultData));
+                    me.jsonValue = resultData.code;
+                    me.setRawValue(me.getCodeToDisplay(resultData));
 
                     if (!forceDirty && !me.initialized) {
                         me.originalValue = me.rawValue;
@@ -771,7 +771,7 @@ Ext.define('console.view.field.NemesisEntityField', {
                     if (loadStore && !me.store.isLoaded()) {
                     	me.store.load({
                     		params: {
-                    			uid: me.jsonValue
+                    			code: me.jsonValue
                     		}
                     	});
                     }

@@ -42,7 +42,7 @@ Ext.define('console.controller.content.search.SearchFormController', {
                     var field = fields.items[i].emptyTxt;
                     //for UID searches use the not unique method which is without Equals suffix
                     //TODO check why is that after we use $filter
-                    //if (field === 'uid' && restriction === 'Equals') {
+                    //if (field === 'code' && restriction === 'Equals') {
                     //    restriction = '';
                     //}
 
@@ -93,7 +93,7 @@ Ext.define('console.controller.content.search.SearchFormController', {
                     } else if (restriction === 'EndingWith' && value) {
                         filter = this.appendFilter(filter, "endswith(" + field  + ", " + value + ") eq true");
                     } else if (restriction === 'Contains' && value) {
-                        //(indexof(uid, 'lowrider') ge 0)
+                        //(indexof(code, 'lowrider') ge 0)
                         filter = this.appendFilter(filter, "(indexof(" + field + ", " + value + ") ge 0)");
                     } else if (restriction === 'After' && value) {
                         //field gt datetime'2011-12-03T10:15:30'

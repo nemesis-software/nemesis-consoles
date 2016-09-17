@@ -35,10 +35,10 @@ Ext.define('console.components.menu.Pages', {
                                 if (e.getKey() == e.ENTER) {
                                     var input = Ext.getCmp('content-page-filter').getValue();
                                     if (input) {
-                                        Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input + "%25&catalogVersionUid=Staged";
+                                        Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByCodeLikeAndCatalogVersionCode?code=%25' + input + "%25&catalogVersionCode=Staged";
                                         Ext.getCmp('content-page-dataview').getStore().load();
                                     } else {
-                                        Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByCatalogVersionUid?catalogVersionUid=Staged';
+                                        Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByCatalogVersionCode?catalogVersionCode=Staged';
                                         Ext.getCmp('content-page-dataview').getStore().load();
                                     }
                                 }
@@ -54,10 +54,10 @@ Ext.define('console.components.menu.Pages', {
                         handler: function () {
                             var input = Ext.getCmp('content-page-filter').getValue();
                             if (input) {
-                                Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByUidLikeAndCatalogVersionUid?uid=%25' + input + "%25&catalogVersionUid=Staged";
+                                Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByCodeLikeAndCatalogVersionCode?code=%25' + input + "%25&catalogVersionCode=Staged";
                                 Ext.getCmp('content-page-dataview').getStore().load();
                             } else {
-                                Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByCatalogVersionUid?catalogVersionUid=Staged';
+                                Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByCatalogVersionCode?catalogVersionCode=Staged';
                                 Ext.getCmp('content-page-dataview').getStore().load();
                             }
                         }
@@ -74,16 +74,16 @@ Ext.define('console.components.menu.Pages', {
                     emptyText: 'No pages available',
                     tpl: new Ext.XTemplate(
                         '<tpl for=".">',
-                        '<div id="page-{uid}" class="top-carousel-item">',
+                        '<div id="page-{code}" class="top-carousel-item">',
                         '<div class="carousel-picture">',
-                        '<a><img width="100" src="' + Ext.get('website-base-url').dom.getAttribute('url') + 'media/content/{uid}/{uid}.png" onerror="this.src='+"'resources/img/page.svg'"+ ';this.onerror=null;"></a>',
+                        '<a><img width="100" src="' + Ext.get('website-base-url').dom.getAttribute('url') + 'media/content/{code}/{code}.png" onerror="this.src='+"'resources/img/page.svg'"+ ';this.onerror=null;"></a>',
                         '<rect width="124" height="185" fill = "none" stroke-width = "1" stroke = "#000000" />',
                         '{[this.getPageCanvas()]}',
                         '{previewCanvas}',
                         '</div>',
                         '<div class="carousel-item">',
                         '<div class="widget-description">{name}</div>',
-                        '<div class="carousel-item-header">{uid}</div>',
+                        '<div class="carousel-item-header">{code}</div>',
                         '</div>',
                         '</div>',
                         '</tpl>',
@@ -188,7 +188,7 @@ Ext.define('console.components.menu.Pages', {
                         if (!window) {
                             window = Ext.getCmp(parentCmpId).createWindow({
                                 operation: 'edit',
-                                id: record.data.uid,
+                                id: record.data.code,
                                 iconCls: 'content_page',
                                 entity: Ext.create('console.model.Entity', {
                                     id: record.data.entityName,
@@ -210,11 +210,11 @@ Ext.define('console.components.menu.Pages', {
                         pageSize: 10,
                         model: Ext.define('name', {
                             extend: 'Ext.data.Model',
-                            fields: ["uid", "name", "title"]
+                            fields: ["code", "name", "title"]
                         }),
                         proxy: {
                             type: 'rest',
-                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByCatalogVersionUid?catalogVersionUid=Staged',
+                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByCatalogVersionCode?catalogVersionCode=Staged',
                             limitParam: 'size',
                             useDefaultXhrHeader: false,
                             cors: true,

@@ -59,7 +59,7 @@ Ext.define('console.view.TabPanel', {
                     }
                 } else if (cmpId === 'backend-viewport') {
                     var viewport = Ext.getCmp(cmpId);
-                    var recordUid = decodeURIComponent(parts[1]);
+                    var recordCode = decodeURIComponent(parts[1]);
                     var entityDataName = decodeURIComponent(parts[2]);
                     var entityDataId = decodeURIComponent(parts[3]);
                     var entityClassName = decodeURIComponent(parts[4]);
@@ -69,7 +69,7 @@ Ext.define('console.view.TabPanel', {
                     if (!window) {
                         var entityConfiguration = Ext.create("console.markup." + entityDataId);
                         window = viewport.createWindow({
-                            id: recordUid,
+                            id: recordCode,
                             operation: 'edit',
                             iconCls: 'default-icon ' + entityDataId,
                             entity: Ext.create('console.model.Entity', {
