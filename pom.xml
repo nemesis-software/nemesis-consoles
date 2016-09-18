@@ -16,7 +16,7 @@
     <parent>
         <groupId>com.nemesis</groupId>
         <artifactId>bom</artifactId>
-        <version>1.2.0.BUILD-SNAPSHOT</version>
+        <version>1.2.0.RELEASE</version>
     </parent>
 
     <groupId>com.nemesis.platform.console</groupId>
@@ -40,7 +40,7 @@
         <connection>scm:git:git@github.com:nemesis-software/nemesis-consoles.git</connection>
         <developerConnection>scm:git:git@github.com:nemesis-software/nemesis-consoles.git</developerConnection>
         <url>https://github.com/nemesis-software/nemesis-consoles.git</url>
-        <tag>master</tag>
+        <tag>1.2.0.RELEASE</tag>
     </scm>
 
     <repositories>
