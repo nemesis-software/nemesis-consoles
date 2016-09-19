@@ -28,6 +28,6 @@
     <skin>
         <groupId>com.nemesis.tools</groupId>
         <artifactId>nemesis-maven-skin</artifactId>
-        <version>${project.version}</version>
+        <version>1.2.0.RELEASE</version>
     </skin>
 </project>

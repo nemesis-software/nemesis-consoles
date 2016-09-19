@@ -486,7 +486,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
         	var formData = new FormData();
         	formData.append('file', dirtyFileField.file);
         	var req = new XMLHttpRequest();
-        	req.open("POST", Ext.get('rest-base-url').dom.getAttribute('url') + '/media/' + dirtyFileField.up('entityPopupForm').entity.data.pk + '/upload', true);
+        	req.open("POST", Ext.get('rest-base-url').dom.getAttribute('url') + '/upload/media/' + dirtyFileField.up('entityPopupForm').entity.data.pk, true);
         	// set headers and mime-type appropriately
         	req.setRequestHeader('X-Nemesis-Token', Ext.get('token').dom.getAttribute('value'));
         	req.setRequestHeader('X-Nemesis-Username', Ext.get('username').dom.getAttribute('value'));
