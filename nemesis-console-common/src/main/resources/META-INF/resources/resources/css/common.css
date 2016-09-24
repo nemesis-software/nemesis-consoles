@@ -257,8 +257,8 @@
     background-image: url(images/productmaterial.png);
 }
 
-.content_slot {
-    background-image: url(images/content_slot.png);
+.cms_slot {
+    background-image: url(images/cms_slot.png);
 }
 
 .widget {
@@ -497,8 +497,8 @@
     background-image: url(images/storefinder_configuration.png);
 }
 
-.content_page {
-    background-image: url(images/content_page.png);
+.cms_page {
+    background-image: url(images/cms_page.png);
 }
 
 .category_page {

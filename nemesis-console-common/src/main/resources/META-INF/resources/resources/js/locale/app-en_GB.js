@@ -52,7 +52,7 @@ Ext.define("console.locale.en.view.Header", {
  storefinder_configuration: 'Storefinder configuration',
  abstract_page: 'Page',                                     //cms
  abstract_template: 'Page template',
- content_slot: 'Content slot',
+ cms_slot: 'Cms slot',
  site: 'Site',
  widget: 'CMS Widget',
  cronjob: 'Cronjob',                                        //settings

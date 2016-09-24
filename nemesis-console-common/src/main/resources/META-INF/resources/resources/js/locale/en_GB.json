@@ -145,7 +145,7 @@
   credit_account_balance: 'Credit Account Balance',
   //cms
   abstract_template: 'Page template',
-  content_slot: 'Content slot',
+  cms_slot: 'Cms slot',
   site: 'Site',
   widget: 'Widget',
   site_theme: 'Themes',

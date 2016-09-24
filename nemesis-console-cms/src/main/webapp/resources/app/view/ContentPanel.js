@@ -135,7 +135,7 @@ Ext.define('console.view.ContentPanel', {
                                     ],
                                     proxy: {
                                         type: 'rest',
-                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_catalog/search/findByCatalogVersionsCode?catalogVersionCode=Staged',
+                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'cms_catalog/search/findByCatalogVersionsCode?catalogVersionCode=Staged',
                                         useDefaultXhrHeader: false,
                                         cors: true,
                                         reader: {

@@ -87,8 +87,8 @@ div.carousel-item-header {
     height: 100%;
 }
 
-.content_slot_edit {
-    background-image: url(images/content_slot_edit.png);
+.cms_slot_edit {
+    background-image: url(images/cms_slot_edit.png);
 }
 
 .widget_add {

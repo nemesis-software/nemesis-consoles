@@ -12,7 +12,7 @@ Ext.define("console.controller.Header", {
 
         var cmbCatalogs = Ext.getCmp('catalogsCombo'),
             storeCatalogs = cmbCatalogs.getStore(),
-            menuPagesDataView = Ext.getCmp('content-page-dataview'),
+            menuPagesDataView = Ext.getCmp('cms-page-dataview'),
             storeContentPage = menuPagesDataView.getStore(),
             menuWidgetsDataView = Ext.getCmp('widgets-dataview'),
             storeWidgets = menuWidgetsDataView.getStore();

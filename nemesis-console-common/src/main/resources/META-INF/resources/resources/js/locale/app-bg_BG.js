@@ -52,7 +52,7 @@ Ext.define("console.locale.en.view.Header", {
     storefinder_configuration: 'Търсачка на магазини',
     abstract_page: 'Страница',                                 //cms
     abstract_template: 'Макет на страница',
-    content_slot: 'Място на страница',
+    cms_slot: 'Място на страница',
     site: 'Сайт',
     widget: 'Уйджет',
     cronjob: 'Задача',                                         //settings

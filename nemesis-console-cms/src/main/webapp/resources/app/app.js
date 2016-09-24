@@ -105,15 +105,15 @@ Ext.application({
                 //the idea of this functionality is to HIGHLIGHT the current PAGE and current TEMPLATE based on the page you are watching.
                 //however since we display ONLY 20 items with paging it is not possible to just scroll to some element so the current proof of concept cannot be applied
                 Ext.Ajax.request({
-                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/',
+                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'cms_page/',
                     method: 'GET',
                     params: {},
                     success: function (responseObject) {
                         var result = Ext.decode(responseObject.responseText);
-                        canvases += result._embedded.contentPageEntities[0].previewCanvas;
+                        canvases += result._embedded.cmsPageEntities[0].previewCanvas;
                         Ext.getCmp('cmsconsole-menu').pageCanvas = canvases;
-                        Ext.getStore('content-page-store').reload();
-                        Ext.getStore('content-slot-store').reload();
+                        Ext.getStore('cms-page-store').reload();
+                        Ext.getStore('cms-slot-store').reload();
 
                         var page = Ext.get('page-' + event.data.page.code);
                         if (page) {
@@ -159,11 +159,11 @@ Ext.application({
 
                 Ext.getCmp('content-panel-status-bar').updateContent(event.data.page);
 
-                var contentSlotFilter = Ext.getCmp('content-slot-filter').getValue();
+                var contentSlotFilter = Ext.getCmp('cms-slot-filter').getValue();
                 if(contentSlotFilter) {
-                    Ext.getCmp('page-slot-store').items.items[1].store.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/search/findByCodeLikeAndCatalogVersionCodeAndPageOrTemplate?code=%25' + contentSlotFilter + "%25&catalogVersionCode=Staged";
+                    Ext.getCmp('page-slot-store').items.items[1].store.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'cms_slot/search/findByCodeLikeAndCatalogVersionCodeAndPageOrTemplate?code=%25' + contentSlotFilter + "%25&catalogVersionCode=Staged";
                 } else {
-                    Ext.getCmp('page-slot-store').items.items[1].store.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/search/findByCatalogVersionCodeAndPageOrTemplate?catalogVersionCode=Staged';
+                    Ext.getCmp('page-slot-store').items.items[1].store.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'cms_slot/search/findByCatalogVersionCodeAndPageOrTemplate?catalogVersionCode=Staged';
                 }
                 Ext.getCmp('page-slot-store').items.items[1].store.proxy.extraParams = {
                     'abstract_page': event.data.page.pk,
@@ -189,7 +189,7 @@ Ext.application({
                                 var result = Ext.decode(responseObject.responseText);
                                 canvases += result.previewCanvas;
                                 Ext.getCmp('cmsconsole-menu').templateCanvas = canvases;
-                                Ext.getStore('content-slot-store').reload();
+                                Ext.getStore('cms-slot-store').reload();
                             },
                             failure: function (responseObject) {
                                 Ext.MessageBox.show({
@@ -279,7 +279,7 @@ Ext.application({
                             var contentSlotPk = event.data.selection.contentSlot;
                             var contentElementPk = event.data.selection.contentElement;
                             //get SLOT
-                            var url = document.getElementById('rest-base-url').getAttribute('url') + 'content_slot/' + contentSlotPk + '/widgets';
+                            var url = document.getElementById('rest-base-url').getAttribute('url') + 'cms_slot/' + contentSlotPk + '/widgets';
                             Ext.Ajax.request({
                                 url: url,
                                 method: 'GET',
@@ -308,7 +308,7 @@ Ext.application({
                                     contentSlotPatchData['widgets'] = newWidgets;
 
                                     Ext.Ajax.request({
-                                        url: document.getElementById('rest-base-url').getAttribute('url') + 'content_slot/' + contentSlotPk,
+                                        url: document.getElementById('rest-base-url').getAttribute('url') + 'cms_slot/' + contentSlotPk,
                                         method: 'PATCH',
                                         headers: {'Content-Type': 'application/json', Accept: 'application/json'},
                                         params: Ext.encode(contentSlotPatchData),
@@ -343,21 +343,21 @@ Ext.application({
                     {
                         itemId: 'editSlot',
                         text: (event.data.selection.contentSlot ? 'Edit Slot': 'Create Slot'),
-                        iconCls: 'content_slot_edit',
+                        iconCls: 'cms_slot_edit',
                         handler: function () {
-                            var entityConfiguration = Ext.create("console.markup.content_slot");
+                            var entityConfiguration = Ext.create("console.markup.cms_slot");
                             var window = Ext.getCmp('cms-viewport').getWindow(event.data.selection.contentSlot);
                             if (!window) {
                                 window = Ext.getCmp('cms-viewport').createWindow({
                                     operation: (event.data.selection.contentSlot ? 'edit' : 'new'),
                                     id: event.data.selection.contentSlot,
-                                    title: '[ContentSlot]',
-                                    iconCls: 'content_slot',
+                                    title: '[CmsSlot]',
+                                    iconCls: 'cms_slot',
                                     entity: Ext.create('console.model.Entity', {
-                                        id: 'content_slot',
+                                        id: 'cms_slot',
                                         pk: event.data.selection.contentSlot,
-                                        name: 'content_slot',
-                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/' + event.data.selection.contentSlot,
+                                        name: 'cms_slot',
+                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'cms_slot/' + event.data.selection.contentSlot,
                                         isNew: (event.data.selection.contentSlot ? false : true),
                                         synchronizable: (event.data.selection.contentSlot && entityConfiguration.synchronizable)
                                     }),
@@ -374,7 +374,7 @@ Ext.application({
                                             id : "page",
                                             data: {
                                                 id: "page",
-                                                url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/' + event.data.page.pk
+                                                url: Ext.get('rest-base-url').dom.getAttribute('url') + 'cms_page/' + event.data.page.pk
                                             }
                                         }, true, true);
                                         field.checkDirty();
@@ -463,7 +463,7 @@ Ext.application({
         //patch slot
         //refresh
         //get SLOT
-        var url = document.getElementById('rest-base-url').getAttribute('url') + 'content_slot/' + contentSlotPk + '/widgets';
+        var url = document.getElementById('rest-base-url').getAttribute('url') + 'cms_slot/' + contentSlotPk + '/widgets';
         Ext.Ajax.request({
             url: url,
             method: 'GET',
@@ -484,7 +484,7 @@ Ext.application({
                 contentSlotPatchData['widgets'] = newWidgets;
 
                 Ext.Ajax.request({
-                    url: document.getElementById('rest-base-url').getAttribute('url') + 'content_slot/' + contentSlotPk,
+                    url: document.getElementById('rest-base-url').getAttribute('url') + 'cms_slot/' + contentSlotPk,
                     method: 'PATCH',
                     headers: {'Content-Type': 'application/json', Accept: 'application/json'},
                     params: Ext.encode(contentSlotPatchData),
@@ -505,7 +505,7 @@ Ext.application({
         //patch slot
         //refresh
         //get SLOT
-        var url = document.getElementById('rest-base-url').getAttribute('url') + 'content_slot/' + contentSlotPk + '/widgets';
+        var url = document.getElementById('rest-base-url').getAttribute('url') + 'cms_slot/' + contentSlotPk + '/widgets';
         Ext.Ajax.request({
             url: url,
             method: 'GET',
@@ -526,7 +526,7 @@ Ext.application({
                 contentSlotPatchData['widgets'] = newWidgets;
 
                 Ext.Ajax.request({
-                    url: document.getElementById('rest-base-url').getAttribute('url') + 'content_slot/' + contentSlotPk,
+                    url: document.getElementById('rest-base-url').getAttribute('url') + 'cms_slot/' + contentSlotPk,
                     method: 'PATCH',
                     headers: {'Content-Type': 'application/json', Accept: 'application/json'},
                     params: Ext.encode(contentSlotPatchData),

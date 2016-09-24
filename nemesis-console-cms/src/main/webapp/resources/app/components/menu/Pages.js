@@ -22,7 +22,7 @@ Ext.define('console.components.menu.Pages', {
                     dock: 'top',
                     height: 25,
                     items: [{
-                        id: 'content-page-filter',
+                        id: 'cms-page-filter',
                         xtype: 'textfield',
                         name: 'SearchDownload',
                         itemId: 'SearchDownload',
@@ -33,13 +33,13 @@ Ext.define('console.components.menu.Pages', {
                         listeners: {
                             specialkey: function (f, e) {
                                 if (e.getKey() == e.ENTER) {
-                                    var input = Ext.getCmp('content-page-filter').getValue();
+                                    var input = Ext.getCmp('cms-page-filter').getValue();
                                     if (input) {
-                                        Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByCodeLikeAndCatalogVersionCode?code=%25' + input + "%25&catalogVersionCode=Staged";
-                                        Ext.getCmp('content-page-dataview').getStore().load();
+                                        Ext.getCmp('cms-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'cms_page/search/findByCodeLikeAndCatalogVersionCode?code=%25' + input + "%25&catalogVersionCode=Staged";
+                                        Ext.getCmp('cms-page-dataview').getStore().load();
                                     } else {
-                                        Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByCatalogVersionCode?catalogVersionCode=Staged';
-                                        Ext.getCmp('content-page-dataview').getStore().load();
+                                        Ext.getCmp('cms-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'cms_page/search/findByCatalogVersionCode?catalogVersionCode=Staged';
+                                        Ext.getCmp('cms-page-dataview').getStore().load();
                                     }
                                 }
                             }
@@ -52,20 +52,20 @@ Ext.define('console.components.menu.Pages', {
                         text: 'Filter',
                         width: '20%',
                         handler: function () {
-                            var input = Ext.getCmp('content-page-filter').getValue();
+                            var input = Ext.getCmp('cms-page-filter').getValue();
                             if (input) {
-                                Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByCodeLikeAndCatalogVersionCode?code=%25' + input + "%25&catalogVersionCode=Staged";
-                                Ext.getCmp('content-page-dataview').getStore().load();
+                                Ext.getCmp('cms-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'cms_page/search/findByCodeLikeAndCatalogVersionCode?code=%25' + input + "%25&catalogVersionCode=Staged";
+                                Ext.getCmp('cms-page-dataview').getStore().load();
                             } else {
-                                Ext.getCmp('content-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByCatalogVersionCode?catalogVersionCode=Staged';
-                                Ext.getCmp('content-page-dataview').getStore().load();
+                                Ext.getCmp('cms-page-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'cms_page/search/findByCatalogVersionCode?catalogVersionCode=Staged';
+                                Ext.getCmp('cms-page-dataview').getStore().load();
                             }
                         }
                     }]
                 },
                 {
                     bodyPadding: 0,
-                    id: 'content-page-dataview',
+                    id: 'cms-page-dataview',
                     xtype: 'dataview',
                     scroll: 'vertical',
                     trackOver: true,
@@ -98,6 +98,7 @@ Ext.define('console.components.menu.Pages', {
                             //alert('selected ' + view.getSelection()[0].data.pk);
                         },
                         afterrender: function (p) {
+                            console.log(this.getStore());
                             Ext.getCmp('pages-pager').setStore(this.getStore());
                         },
                         itemcontextmenu: function (view, record, item, index, event) {
@@ -189,7 +190,7 @@ Ext.define('console.components.menu.Pages', {
                             window = Ext.getCmp(parentCmpId).createWindow({
                                 operation: 'edit',
                                 id: record.data.code,
-                                iconCls: 'content_page',
+                                iconCls: 'cms_page',
                                 entity: Ext.create('console.model.Entity', {
                                     id: record.data.entityName,
                                     pk: record.data.pk,
@@ -203,7 +204,7 @@ Ext.define('console.components.menu.Pages', {
                         Ext.getCmp('cms-viewport').restoreWindow(window);
                     },
                     store: Ext.create('Ext.data.Store',{
-                        id: 'content-page-store',
+                        id: 'cms-page-store',
                         autoLoad: false,
                         autoSync: false,
                         autoScroll: true,
@@ -214,7 +215,7 @@ Ext.define('console.components.menu.Pages', {
                         }),
                         proxy: {
                             type: 'rest',
-                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_page/search/findByCatalogVersionCode?catalogVersionCode=Staged',
+                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'cms_page/search/findByCatalogVersionCode?catalogVersionCode=Staged',
                             limitParam: 'size',
                             useDefaultXhrHeader: false,
                             cors: true,

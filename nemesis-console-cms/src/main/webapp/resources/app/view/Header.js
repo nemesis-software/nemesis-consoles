@@ -27,6 +27,7 @@ Ext.define('console.view.Header', {
                 xtype: 'component',
                 id: 'app-header-website-base-url',
                 cls: 'x-target',
+                flex: 1,
                 autoEl: {
                     tag: 'a',
                     href: Ext.get('website-base-url').dom.getAttribute('url'),

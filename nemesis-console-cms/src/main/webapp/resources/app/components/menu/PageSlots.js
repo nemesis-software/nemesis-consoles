@@ -13,7 +13,7 @@ Ext.define('console.components.menu.PageSlots', {
 
         Ext.apply(me, {
             title: 'Slots For This Page',
-            iconCls: 'content_slot',
+            iconCls: 'cms_slot',
             id: 'page-slot-store',
             frame: false,
             border: false,
@@ -27,7 +27,7 @@ Ext.define('console.components.menu.PageSlots', {
                     height: 25,
                     items: [
                         {
-                            id: 'content-slot-filter',
+                            id: 'cms-slot-filter',
                             xtype: 'textfield',
                             name: 'SearchDownload',
                             itemId: 'SearchDownload',
@@ -38,13 +38,13 @@ Ext.define('console.components.menu.PageSlots', {
                             listeners: {
                                 specialkey: function (f, e) {
                                     if (e.getKey() == e.ENTER) {
-                                        var input = Ext.getCmp('content-slot-filter').getValue();
+                                        var input = Ext.getCmp('cms-slot-filter').getValue();
                                         if (input) {
-                                            Ext.getCmp('content-slot-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/search/findByCodeLikeAndCatalogVersionCodeAndPageOrTemplate?code=%25' + input + '%25&catalogVersionCode=Staged';
-                                            Ext.getCmp('content-slot-dataview').getStore().load();
+                                            Ext.getCmp('cms-slot-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'cms_slot/search/findByCodeLikeAndCatalogVersionCodeAndPageOrTemplate?code=%25' + input + '%25&catalogVersionCode=Staged';
+                                            Ext.getCmp('cms-slot-dataview').getStore().load();
                                         } else {
-                                            Ext.getCmp('content-slot-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/search/findByCatalogVersionCodeAndPageOrTemplate?catalogVersionCode=Staged';
-                                            Ext.getCmp('content-slot-dataview').getStore().load();
+                                            Ext.getCmp('cms-slot-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'cms_slot/search/findByCatalogVersionCodeAndPageOrTemplate?catalogVersionCode=Staged';
+                                            Ext.getCmp('cms-slot-dataview').getStore().load();
                                         }
                                     }
                                 }
@@ -57,20 +57,20 @@ Ext.define('console.components.menu.PageSlots', {
                             text: 'Filter',
                             width: '20%',
                             handler: function () {
-                                var input = Ext.getCmp('content-slot-filter').getValue();
+                                var input = Ext.getCmp('cms-slot-filter').getValue();
                                 if (input) {
-                                    Ext.getCmp('content-slot-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/search/findByCodeLikeAndCatalogVersionCodeAndPageOrTemplate?code=%25' + input + '%25&catalogVersionCode=Staged';
-                                    Ext.getCmp('content-slot-dataview').getStore().load();
+                                    Ext.getCmp('cms-slot-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'cms_slot/search/findByCodeLikeAndCatalogVersionCodeAndPageOrTemplate?code=%25' + input + '%25&catalogVersionCode=Staged';
+                                    Ext.getCmp('cms-slot-dataview').getStore().load();
                                 } else {
-                                    Ext.getCmp('content-slot-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/search/findByCatalogVersionCodeAndPageOrTemplate?catalogVersionCode=Staged';
-                                    Ext.getCmp('content-slot-dataview').getStore().load();
+                                    Ext.getCmp('cms-slot-dataview').getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'cms_slot/search/findByCatalogVersionCodeAndPageOrTemplate?catalogVersionCode=Staged';
+                                    Ext.getCmp('cms-slot-dataview').getStore().load();
                                 }
                             }
                         }]
                 },
                 {
                     bodyPadding: 0,
-                    id: 'content-slot-dataview',
+                    id: 'cms-slot-dataview',
                     xtype: 'dataview',
                     scroll: 'vertical',
                     trackOver: true,
@@ -145,9 +145,9 @@ Ext.define('console.components.menu.PageSlots', {
                                 }]
                         });
 
-                        if (cmsEntriesData['content_slot'].childNodes !== null && cmsEntriesData['content_slot'].childNodes.length > 0) {
+                        if (cmsEntriesData['cms_slot'].childNodes !== null && cmsEntriesData['cms_slot'].childNodes.length > 0) {
                             var submenu = Ext.create('Ext.menu.Menu');
-                            Ext.each(cmsEntriesData['content_slot'].childNodes,
+                            Ext.each(cmsEntriesData['cms_slot'].childNodes,
                                 function (item) {
                                     submenu.add({
                                         text: item.text,
@@ -203,7 +203,7 @@ Ext.define('console.components.menu.PageSlots', {
                             window = Ext.getCmp(parentCmpId).createWindow({
                                 operation: 'edit',
                                 id: record.data.code,
-                                iconCls: 'content_slot',
+                                iconCls: 'cms_slot',
                                 entity: Ext.create('console.model.Entity', {
                                     id: record.data.entityName,
                                     pk: record.data.pk,
@@ -217,7 +217,7 @@ Ext.define('console.components.menu.PageSlots', {
                         Ext.getCmp('cms-viewport').restoreWindow(window);
                     },
                     store: Ext.create('Ext.data.Store',{
-                        id: 'content-slot-store',
+                        id: 'cms-slot-store',
                         autoLoad: false,
                         autoSync: false,
                         autoScroll: true,
@@ -225,7 +225,7 @@ Ext.define('console.components.menu.PageSlots', {
                         model: 'console.model.Slot',
                         proxy: {
                             type: 'rest',
-                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'content_slot/search/findByCatalogVersionCodeAndPageOrTemplate?catalogVersionCode=Staged',
+                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'cms_slot/search/findByCatalogVersionCodeAndPageOrTemplate?catalogVersionCode=Staged',
                             limitParam: 'size',
                             useDefaultXhrHeader: false,
                             cors: true,

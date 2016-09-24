@@ -145,7 +145,7 @@
   deeplink_url_rule: 'Правило за връзка',
   //cms
   abstract_template: 'Макет',
-  content_slot: 'Процеп',
+  cms_slot: 'Процеп',
   site: 'Сайт',
   widget: 'Джиджафки',
   site_theme: 'Теми',
