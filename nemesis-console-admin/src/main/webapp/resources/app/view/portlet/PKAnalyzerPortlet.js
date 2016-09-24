@@ -27,7 +27,7 @@ Ext.define('AdminConsole.view.portlet.PKAnalyzerPortlet', {
 
     onDecodeClick: function () {
         Ext.Ajax.request({
-            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/typecode/' + Ext.getCmp('pk-input-field').getValue(),
+            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/idDiscriminator/' + Ext.getCmp('pk-input-field').getValue(),
             method: 'GET',
             params: {},
             success: function (responseObject) {
