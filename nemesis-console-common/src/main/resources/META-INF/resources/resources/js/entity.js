@@ -560,7 +560,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                     //In future we should make an REST CALL here to get the new toolbar. Then we should do me.destory() and re-add the new toolbar to the parent window (this)
                     me.entity.data = result;
                     me.entity.data.id = entity.id;
-                    me.entity.data.synchronizable = Ext.create("console.markup." + entity.id).synchronizable;
+                    me.entity.data.synchronizable = Ext.create("console.markup." + entity.data.entityName).synchronizable;
                     me.initComponent();
                 }
 
