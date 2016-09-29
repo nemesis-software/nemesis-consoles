@@ -168,6 +168,7 @@ Ext.define('console.view.NavigationTree', function () {
                                     entity: Ext.create('console.model.Entity', {
                                         id: item.text,
                                         name: item.text,
+                                        isNew: true,
                                         url: Ext.get('rest-base-url').dom.getAttribute('url') + item.id
                                     }),
                                     sections: entityConfiguration.sections
