@@ -173,7 +173,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                             handler: function () {
                                 var record = selected[0],
                                     viewport = Ext.ComponentQuery.query('viewport')[0],
-                                    win = viewport.getWindow(record.data.pk);
+                                    win = viewport.getWindow(record.data.id);
 
                                 if (!win) {
                                     var entityConfiguration = Ext.create("console.markup." + record.data.name);
@@ -182,10 +182,9 @@ Ext.define('console.view.field.NemesisCollectionField', {
                                         id: record.data.code,
                                         iconCls: this.entityId,
                                         entity: Ext.create('console.model.Entity', {
-                                            id: this.entityId,
-                                            pk: record.data.pk,
-                                            name: record.data.name,
-                                            className: this.entityId,
+                                            entityName: this.entityId,
+                                            entityId: record.data.id,
+                                            entityClassName: record.data.name,
                                             url: record.data.url,
                                             synchronizable: entityConfiguration.synchronizable
                                         }),
@@ -210,7 +209,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                             handler: function () {
                                 var clipboard = Ext.getCmp('backend-viewport').clipboard;
                                 if (clipboard.data) {
-                                    var data = Ext.apply({code: clipboard.data.id, pk: clipboard.data.pk}, clipboard.data)
+                                    var data = Ext.apply({code: clipboard.data.id, id: clipboard.data.id}, clipboard.data)
                                     this.store.insert(this.store.data.items.length, Ext.data.Record.create(data));
                                 }
                             }.bind(this.component)
@@ -293,7 +292,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                 me.setStore(Ext.create('Ext.data.ArrayStore', {
                     autoLoad: true,
                     autoSync: false,
-                    fields: ['code', 'pk', 'name', 'url'],
+                    fields: ['code', 'id', 'name', 'url'],
                     proxy: {
                         type: 'rest',
                         url: entity.data.url,
@@ -307,9 +306,8 @@ Ext.define('console.view.field.NemesisCollectionField', {
                                     for (inner in o._embedded[key]) {
                                         var record = o._embedded[key][inner];
                                         data = data.concat({
-                                            'id': record.id,
                                             'code': record.code,
-                                            'pk': record.pk,
+                                            'id': record.id,
                                             'name': record.entityName,
                                             'url': record._links.self.href
                                         });
@@ -337,7 +335,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
             var items = this.data.items;
             var fields = this.model.fields;
             for (var i = 0; i < items.length; i++) {
-                result.push("" + items[i].data.pk);
+                result.push("" + items[i].data.id);
             }
             return result;
         };
@@ -604,7 +602,7 @@ Ext.define('console.view.field.NemesisEntityField', {
             	catalogVersion = me.rawValue.substring(entityCode.length + sep.length);
             }
             console.log(entity.data); //you need to initialize the entity from the url
-            var win = Ext.ComponentQuery.query('viewport')[0].getWindow(entity.data.pk);
+            var win = Ext.ComponentQuery.query('viewport')[0].getWindow(entity.data.id);
             if (!win) {
                 Ext.Ajax.request({
                     url: entity.data.url || entity.data._links.self.href,
@@ -618,14 +616,13 @@ Ext.define('console.view.field.NemesisEntityField', {
                         win = Ext.getCmp('backend-viewport').createWindow({
                                 operation: 'edit',
                                 data: content,
-                                title: '[' + entityCode + ' - ' + entity.data.name + ']',
+                                title: '[' + entityCode + ' - ' + entity.data.entityName + ']',
                                 iconCls: me.entityId,
                                 sections: Ext.create("console.markup." + me.entityId).sections,
                                 entity: Ext.create('console.model.Entity', {
-                                    id: content.entityName,
-                                    pk: content.pk,
-                                    name: content.entityName,
-                                    className: '',
+                                    entityName: content.entityName,
+                                    entityId: content.id,
+                                    entityClassName: content.entityName,
                                     url: result._links.self.href,
                                     synchronizable: Ext.create("console.markup." + me.entityId).synchronizable
                                 })

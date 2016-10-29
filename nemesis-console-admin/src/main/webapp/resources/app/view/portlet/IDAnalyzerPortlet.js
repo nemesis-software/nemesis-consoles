@@ -1,15 +1,15 @@
-Ext.define('AdminConsole.view.portlet.PKAnalyzerPortlet', {
+Ext.define('AdminConsole.view.portlet.IDAnalyzerPortlet', {
     extend: 'Ext.toolbar.Toolbar',
-    xtype: 'pkAnalyzerPortlet',
+    xtype: 'idAnalyzerPortlet',
     iconCls: 'key',
     frame: true,
     initComponent: function () {
         Ext.apply(this, {
             items: [
                 {
-                    emptyText: 'Enter PK...',
+                    emptyText: 'Enter ID...',
                     xtype: 'textfield',
-                    id: 'pk-input-field',
+                    id: 'id-input-field',
                     width: '75%'
                 }
                 ,
@@ -17,7 +17,7 @@ Ext.define('AdminConsole.view.portlet.PKAnalyzerPortlet', {
                 {
                     text: 'Decode',
                     iconCls: 'key',
-                    id: 'decode-pk-button',
+                    id: 'decode-id-button',
                     handler: this.onDecodeClick
                 }
             ]
@@ -27,12 +27,12 @@ Ext.define('AdminConsole.view.portlet.PKAnalyzerPortlet', {
 
     onDecodeClick: function () {
         Ext.Ajax.request({
-            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/idDiscriminator/' + Ext.getCmp('pk-input-field').getValue(),
+            url: Ext.get('website-base-url').dom.getAttribute('url') + 'platform/idDiscriminator/' + Ext.getCmp('id-input-field').getValue(),
             method: 'GET',
             params: {},
             success: function (responseObject) {
                 var result = Ext.decode(responseObject.responseText);
-                Ext.getCmp('pk-input-field').setValue(result);
+                Ext.getCmp('id-input-field').setValue(result);
             },
             failure: function (responseObject) {
                 Ext.MessageBox.show({

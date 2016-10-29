@@ -167,8 +167,8 @@ public class CmsConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSele
         getWebDriver().executeScript("var c = Ext.getCmp('site-combo'), " +
                                                      "store = c.getStore()," +
                                                      "record = store.findRecord('code', 'nemesis');" +
-                                                     "c.setValue(record.get('pk')); " +
-                                                     "c.fireEvent('change', c, record.get('pk'));");
+                                                     "c.setValue(record.get('id')); " +
+                                                     "c.fireEvent('change', c, record.get('id'));");
 
         // Waiting for Catalogs Combo change listeners to be called and change the iframe url.
         getWait().until((WebDriver input) -> input.findElement(By.id("website-iframe")).getAttribute("src").endsWith("catalogs=nemesisContent"));

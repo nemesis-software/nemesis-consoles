@@ -107,8 +107,8 @@ Ext.define('console.view.Viewport', {
         return (windows.getCount() && windows.getAt(0).zIndexManager) || null;
     },
 
-    getWindow: function (pk) {
-        return this.windows.get('w_pk_' + pk);
+    getWindow: function (id) {
+        return this.windows.get('w_id_' + id);
     },
 
     createWindow: function (config) {

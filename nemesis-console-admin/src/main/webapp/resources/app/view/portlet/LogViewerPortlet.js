@@ -70,9 +70,9 @@ Ext.define('AdminConsole.view.portlet.LogViewerPortlet', {
     },
     subscribe: function () {
         var self = this;
-        //url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/stomp',
+        //url: Ext.get('website-base-url').dom.getAttribute('url') + 'platform/stomp',
 
-        this.stompClient = Stomp.over(new SockJS(Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/stomp'));
+        this.stompClient = Stomp.over(new SockJS(Ext.get('website-base-url').dom.getAttribute('url') + 'platform/stomp'));
 
         this.stompClient.connect(
             {},

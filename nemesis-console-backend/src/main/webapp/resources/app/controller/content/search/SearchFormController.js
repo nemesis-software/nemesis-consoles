@@ -25,7 +25,7 @@ Ext.define('console.controller.content.search.SearchFormController', {
     onSearchClicked: function (button) {
         var me = this;
         var contentSearchForm = button.up('contentSearchForm');
-        var entityId = contentSearchForm.entity.data.id;
+        var entityId = contentSearchForm.entity.data.entityName;
     	var searchGrid = Ext.getCmp(entityId + "-search-result");
     	searchGrid.setLoading(true);
         var fields = Ext.getCmp(entityId + '-searchform-fieldset').items;
@@ -73,9 +73,9 @@ Ext.define('console.controller.content.search.SearchFormController', {
                         //    ":" + minutes +
                         //    ":" +  seconds;
                     } else if (value && fields.items[i].fieldSet.items.items[1].xtype == 'nemesisEntityField') {
-                        //extract PK from a submitValue which looks like "https://solar.local:8112/storefront/rest/catalog_version/3379574895700592"
+                        //extract ID from a submitValue which looks like "https://solar.local:8112/storefront/rest/catalog_version/3379574895700592"
                         value = fields.items[i].fieldSet.items.items[1].getSubmitValue().substring(fields.items[i].fieldSet.items.items[1].getSubmitValue().lastIndexOf("/") + 1)  + "L";
-                        field = field.replace("entity-", "") + "/pk";
+                        field = field.replace("entity-", "") + "/id";
                     } else if (value && fields.items[i].fieldSet.items.items[1].xtype == 'nemesisBooleanField') {
                         for (var key in value) {
                             if (value.hasOwnProperty(key)) {
@@ -138,7 +138,7 @@ Ext.define('console.controller.content.search.SearchFormController', {
                 searchGrid.setLoading(false);
             } else {
             	searchGrid.setLoading(true);
-            	searchGrid.getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + contentSearchForm.entity.data.id;
+            	searchGrid.getStore().proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + contentSearchForm.entity.data.entityName;
             	if (searchGrid.getStore().proxy.extraParams) {
             		delete searchGrid.getStore().proxy.extraParams;
             	}

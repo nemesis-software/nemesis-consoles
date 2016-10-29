@@ -21,7 +21,7 @@
             src="webjars/extjs/5.1.1-light/build/packages/ext-locale/build/ext-locale-${currentLocale}.js"></script>
     <script type="text/javascript" src="webjars/extjs/5.1.1-light/build/packages/ext-charts/build/ext-charts.js"></script>
 
-    <script src="webjars/jquery/1.11.2/jquery.min.js"></script>
+    <script src="webjars/jquery/1.12.1/jquery.min.js"></script>
 
     <script type="text/javascript" src="webjars/codemirror/5.1/lib/codemirror.js"></script>
     <link rel="stylesheet" type="text/css" href="webjars/codemirror/5.1/lib/codemirror.css"/>

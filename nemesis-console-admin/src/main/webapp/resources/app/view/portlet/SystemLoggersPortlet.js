@@ -28,7 +28,7 @@ Ext.define('AdminConsole.view.portlet.SystemLoggersPortlet', {
             proxy: {
                 type: 'rest',
                 useDefaultXhrHeader: false,
-                url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/logger',
+                url: Ext.get('website-base-url').dom.getAttribute('url') + 'platform/logger',
                 reader: {
                     type: 'json'
                 },
@@ -82,7 +82,7 @@ Ext.define('AdminConsole.view.portlet.SystemLoggersPortlet', {
                             model: 'AdminConsole.model.LogLevel',
                             proxy: {
                                 type: 'rest',
-                                url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/loglevel',
+                                url: Ext.get('website-base-url').dom.getAttribute('url') + 'platform/loglevel',
                                 useDefaultXhrHeader: false,
                                 cors: true,
                                 reader: {

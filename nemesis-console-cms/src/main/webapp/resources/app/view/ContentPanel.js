@@ -66,24 +66,25 @@ Ext.define('console.view.ContentPanel', {
                                     change: function (cmb, newValue, oldValue, eOpts) {
 	                                    var catalogsCombo = Ext.getCmp('catalogsCombo');
 
+                                        debugger;
                                         //fetch data
-                                        var siteContentCatalogsStore = Ext.create('Ext.data.ArrayStore', {
+                                        var siteCmsCatalogsStore = Ext.create('Ext.data.ArrayStore', {
                                             autoLoad: true,
                                             autoSync: false,
                                             fields: ['pk', 'code'],
                                             proxy: {
                                                 type: 'rest',
-                                                url: cmb.getSelection().data._links.contentCatalogs.href,
+                                                url: cmb.getSelection().data._links.cmsCatalogs.href,
                                                 useDefaultXhrHeader: false,
                                                 cors: true,
                                                 reader: {
                                                     type: 'json',
-                                                    rootProperty: '_embedded.contentCatalogEntities'
+                                                    rootProperty: '_embedded.cmsCatalogEntities'
                                                 }
                                             }
                                         });
 
-                                        siteContentCatalogsStore.load({
+                                        siteCmsCatalogsStore.load({
                                             callback : function(records, options, success) {
                                                 if (success) {
 	                                                var selectedCatalogsPks = new Array();
@@ -140,7 +141,7 @@ Ext.define('console.view.ContentPanel', {
                                         cors: true,
                                         reader: {
                                             type: 'json',
-                                            rootProperty: '_embedded.contentCatalogEntities'
+                                            rootProperty: '_embedded.cmsCatalogEntities'
                                         }
                                     }
                                 }),
@@ -235,20 +236,20 @@ Ext.define('console.view.ContentPanel', {
                                         }
                                     } else {
                                         //get site catalogs
-                                        var contentCatalogsForSiteUrl = null;
+                                        var cmsCatalogsForSiteUrl = null;
                                         if(Ext.getCmp('site-combo').getSelection()) {//we have selected site
-                                            contentCatalogsForSiteUrl = Ext.getCmp('site-combo').getSelection().data._links.contentCatalogs.href
+                                            cmsCatalogsForSiteUrl = Ext.getCmp('site-combo').getSelection().data._links.cmsCatalogs.href
 
                                             Ext.Ajax.request({
-                                                url: contentCatalogsForSiteUrl,
+                                                url: cmsCatalogsForSiteUrl,
                                                 method: 'GET',
                                                 headers: {'Content-Type': 'application/json'},
                                                 params: {},
                                                 success: function (response) {
                                                     var site = JSON.parse(response.responseText);
-                                                    for(var i = 0; i < site._embedded.contentCatalogEntities.length; i++){
+                                                    for(var i = 0; i < site._embedded.cmsCatalogEntities.length; i++){
                                                         Ext.Ajax.request({
-                                                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'catalog/synchronize/' + site._embedded.contentCatalogEntities[i].pk,
+                                                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'catalog/synchronize/' + site._embedded.cmsCatalogEntities[i].pk,
                                                             method: 'POST',
                                                             headers: {'Content-Type': 'application/json'},
                                                             params: {},
@@ -270,19 +271,19 @@ Ext.define('console.view.ContentPanel', {
                                                 params: {},
                                                 success: function (response) {
                                                     var site = JSON.parse(response.responseText);
-                                                    contentCatalogsForSiteUrl = site._embedded.siteEntities[0]._links.contentCatalogs.href;
+                                                    cmsCatalogsForSiteUrl = site._embedded.siteEntities[0]._links.cmsCatalogs.href;
 
                                                     Ext.Ajax.request({
-                                                        url: contentCatalogsForSiteUrl,
+                                                        url: cmsCatalogsForSiteUrl,
                                                         method: 'GET',
                                                         headers: {'Content-Type': 'application/json'},
                                                         params: {},
                                                         success: function (response) {
                                                             var site = JSON.parse(response.responseText);
-                                                            for(var i = 0; i < site._embedded.contentCatalogEntities.length; i++){
-                                                                //DO POST on site._embedded.contentCatalogEntities[i].pk
+                                                            for(var i = 0; i < site._embedded.cmsCatalogEntities.length; i++){
+                                                                //DO POST on site._embedded.cmsCatalogEntities[i].pk
                                                                 Ext.Ajax.request({
-                                                                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'catalog/synchronize/' + site._embedded.contentCatalogEntities[i].pk,
+                                                                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'catalog/synchronize/' + site._embedded.cmsCatalogEntities[i].pk,
                                                                     method: 'POST',
                                                                     headers: {'Content-Type': 'application/json'},
                                                                     params: {},
@@ -296,22 +297,22 @@ Ext.define('console.view.ContentPanel', {
                                                 }
                                             });
                                         }
-                                        //var siteContentCatalogsStore = Ext.create('Ext.data.ArrayStore', {
+                                        //var siteCmsCatalogsStore = Ext.create('Ext.data.ArrayStore', {
                                         //    autoLoad: false,
                                         //    autoSync: false,
                                         //    fields: ['code', 'pk'],
                                         //    proxy: {
                                         //        type: 'rest',
-                                        //        url: contentCatalogsForSiteUrl,
+                                        //        url: cmsCatalogsForSiteUrl,
                                         //        useDefaultXhrHeader: false,
                                         //        cors: true,
                                         //        reader: {
                                         //            type: 'json',
-                                        //            rootProperty: '_embedded.contentCatalogEntities'
+                                        //            rootProperty: '_embedded.cmsCatalogEntities'
                                         //        }
                                         //    }
                                         //});
-                                        //siteContentCatalogsStore.load({
+                                        //siteCmsCatalogsStore.load({
                                         //    callback : function(records, options, success) {
                                         //        if (success) {
                                         //            debugger;

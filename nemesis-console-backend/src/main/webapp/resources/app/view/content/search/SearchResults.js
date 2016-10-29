@@ -36,7 +36,7 @@ Ext.define('console.view.content.search.SearchResults', {
         'Ext.toolbar.Paging'
     ],
     initComponent: function () {
-        var fields = searchAllData[this.entity.data.id].result;
+        var fields = searchAllData[this.entity.data.entityName].result;
         var fieldsMapping = [];
         for (var i = 0; i < fields.length; i++) {
             fieldsMapping.push({});
@@ -50,7 +50,7 @@ Ext.define('console.view.content.search.SearchResults', {
                 fieldsMapping[i].mapping = fieldsMapping[i].name;
             }
         }
-        var columns = searchAllData[this.entity.data.id].result;
+        var columns = searchAllData[this.entity.data.entityName].result;
         var store = Ext.create('Ext.data.Store', {
             autoLoad: true,
             autoSync: false,
@@ -62,7 +62,7 @@ Ext.define('console.view.content.search.SearchResults', {
             }),
             proxy: {
                 type: 'rest',
-                url: Ext.get('rest-base-url').dom.getAttribute('url') + this.entity.data.id + '?projection=search',
+                url: Ext.get('rest-base-url').dom.getAttribute('url') + this.entity.data.entityName + '?projection=search',
                 limitParam: 'size',
                 startParam: '',
                 simpleSortMode: true,
@@ -107,7 +107,7 @@ Ext.define('console.view.content.search.SearchResults', {
                     '-',
                     'Page size: ',
                     new Ext.form.ComboBox({
-                        id: me.entity.data.id + '-search-results-paging-size',
+                        id: me.entity.data.entityName + '-search-results-paging-size',
                         itemId: 'pagingCombo',
                         name: 'pageSize',
                         width: 55,
@@ -226,7 +226,7 @@ Ext.define('console.view.content.search.SearchResults', {
         if (view.getSelectionModel().getSelection().length > 0) {
             for (i = 0; i < view.getSelectionModel().getSelection().length; i++) {
                 entityNames.push(view.getSelectionModel().getSelection()[i].data.entityName);
-                selectedIds.push(view.getSelectionModel().getSelection()[i].data.pk);
+                selectedIds.push(view.getSelectionModel().getSelection()[i].data.id);
             }
         }
 
@@ -279,21 +279,20 @@ Ext.define('console.view.content.search.SearchResults', {
         var parentCmpId = 'backend-viewport';
         var currentToken = Ext.util.History.getToken();
         var href = Ext.isGecko ? record.data._links['self'].href : encodeURIComponent(record.data._links['self'].href);
-        var newToken = encodeURIComponent(parentCmpId) + ':' + encodeURIComponent(record.data.code) + ":" + encodeURIComponent(this.entity.data.name) + ":" + encodeURIComponent(this.entity.data.id) + ":" +  encodeURIComponent(this.entity.data.className) + ":" +  encodeURIComponent(record.data.pk) + ":" + href;
+        var newToken = encodeURIComponent(parentCmpId) + ':' + encodeURIComponent(record.data.code) + ":" + encodeURIComponent(this.entity.data.entityClassName) + ":" + encodeURIComponent(this.entity.data.entityName) + ":" +  encodeURIComponent(this.entity.data.entityClassName) + ":" +  encodeURIComponent(record.data.id) + ":" + href;
 
         if (currentToken === newToken) { //case when we click on a just closed window
-            var window = Ext.getCmp(parentCmpId).getWindow(record.data.pk);
+            var window = Ext.getCmp(parentCmpId).getWindow(record.data.id);
             if (!window) {
                 var entityConfiguration = Ext.create("console.markup." + record.data.entityName);
                 window = Ext.getCmp(parentCmpId).createWindow({
                     operation: 'edit',
                     catalogVersion: record.data.catalogVersion,
-                    iconCls: record.data.entityName ? record.data.entityName : this.entity.data.id,
+                    iconCls: record.data.entityName ? record.data.entityName : this.entity.data.entityName,
                     entity: Ext.create('console.model.Entity', {
-                        id: this.config.entity.data.id,
-                        pk: record.data.pk,
-                        name: this.entity.data.name,
-                        className: this.entity.data.className,
+                        entityName: this.config.entity.data.entityName,
+                        entityId: record.data.id,
+                        entityClassName: this.entity.data.entityClassName,
                         url: record.data._links['self'].href,
                         synchronizable: entityConfiguration.synchronizable
                     }),
@@ -308,11 +307,11 @@ Ext.define('console.view.content.search.SearchResults', {
     onCopySelected: function (view, record, item, index, event) {
         Ext.getCmp('backend-viewport').clipboard = {
             data: {
-                id: record.data.code,
-                pk: record.data.pk,
-                name: this.entity.data.name,
+                code: record.data.code,
+                id: record.data.id,
+                name: this.entity.data.entityClassName,
                 url: record.data._links.self.href,
-                className: this.entity.data.className
+                className: this.entity.data.entityClassName
             }
         };
     },

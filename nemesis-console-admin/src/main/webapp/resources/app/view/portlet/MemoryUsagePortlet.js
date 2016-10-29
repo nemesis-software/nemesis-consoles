@@ -15,7 +15,7 @@ Ext.define('AdminConsole.view.portlet.MemoryUsagePortlet', {
         var chart;
         var memory;
         Ext.Ajax.request({
-            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/metrics/mem',
+            url: Ext.get('website-base-url').dom.getAttribute('url') + 'platform/metrics/mem',
             method: 'GET',
             success: function (responseObject) {
                 memory = Ext.decode(responseObject.responseText)['mem'];
@@ -39,7 +39,7 @@ Ext.define('AdminConsole.view.portlet.MemoryUsagePortlet', {
                 data = data.slice();
 
                 Ext.Ajax.request({
-                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/metrics/mem.free',
+                    url: Ext.get('website-base-url').dom.getAttribute('url') + 'platform/metrics/mem.free',
                     method: 'GET',
                     success: function (responseObject) {
                         var result = Ext.decode(responseObject.responseText)['mem.free'];

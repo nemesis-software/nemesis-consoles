@@ -2,12 +2,11 @@
 Ext.define('console.model.Entity', {
     extend: 'Ext.data.Model',
     fields: [
-        {name: 'id'},                      // discount
-        {name: 'name'},                    // DiscountEntity
-        {name: 'pk'},                      // 123123213
-        {name: 'url'},                     // http://localhost:8080/rest/discount/12312312313
-        {name: 'className'},               // com.nemesis.platform.core.entity.price.DiscountEntity
-        {name: 'synchronizable'},          // true
+        {name: 'entityName'},                      // discount
+        {name: 'entityClassName'},                 // DiscountEntity
+        {name: 'entityId'},                        // 123123213
+        {name: 'url'},                             // http://localhost:8080/rest/discount/12312312313
+        {name: 'synchronizable'},                  // true
         {name: 'isNew'}
     ]
 });
@@ -43,7 +42,7 @@ Ext.define('console.view.content.ChartPopupWindow', {
             fields: ['key', 'value' ],
             proxy: {
                 type: 'ajax',
-                url: 'http://solar.local:8111/storefront/en/US/api/report/chart/' + me.config.pk ,
+                url: 'http://solar.local:8111/storefront/en/US/api/report/chart/' + me.config.id ,
                 reader: {
                     root: 'data',
                     type: 'json'
@@ -133,7 +132,7 @@ Ext.define('console.view.content.EntityPopupWindow', {
     isWindow: true,
     constrainHeader: true,
     constructTitle: function () {
-        return '[' + (this.config.data ? this.config.data.code + ' - ' + translate(this.config.entity.data.id) : this.config.entity.id) + ']';
+        return '[' + (this.config.data ? this.config.data.code + ' - ' + translate(this.config.entity.data.entityName) : this.config.entity.data.entityId + ' - ' + translate(this.config.entity.data.entityName)) + ']';
     },
     minimizable: true,
     maximizable: true,
@@ -150,13 +149,13 @@ Ext.define('console.view.content.EntityPopupWindow', {
             iconCls: 'default-icon ' + this.config.iconCls
         });
 
-        if(this.config.entity.data.pk){ //use the entity pk if possible
+        if(this.config.entity.data.entityId){ //use the entity entityId if possible
             Ext.apply(this, {
-                id: 'w_pk_' + this.config.entity.data.pk
+                id: 'w_id_' + this.config.entity.data.entityId
             });
         } else { //use the config.entity.id since it is a new entity
-            Ext.apply(this, { //else use the entity pk
-                id: 'w_pk_' + this.config.entity.id + "_" + Ext.id()
+            Ext.apply(this, { //else use the entity id
+                id: 'w_id_' + this.config.entity.entityId + "_" + Ext.id()
             });
         }
 
@@ -292,7 +291,7 @@ Ext.define('console.view.content.entity.EntityPopupForm', {
                     for (var _link in p[key]) {
                         if (_link != 'self') {
                             var propertyId = _link.substring(_link.lastIndexOf(".") + 1, _link.length);
-                            var value = Ext.create('console.model.Entity', {id: propertyId, url: p[key][_link].href});
+                            var value = Ext.create('console.model.Entity', {entityName: propertyId, url: p[key][_link].href});
                             result['entity-' + propertyId] = value;
                         }
                     }
@@ -393,14 +392,14 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                     console.log(me.entity.data.url);
 
                     me.up().up().setLoading(true);
-                    var pk = me.entity.data.pk;
-                    console.log(pk);
+                    var id = me.entity.data.entityId;
+                    console.log(id);
                     Ext.Ajax.request({
                         url: Ext.get('rest-base-url').dom.getAttribute('url') + "backend/synchronize",
                         method: 'GET',
                         params: {
-                            entityName: me.entity.data.id,
-                            pk: pk
+                            entityName: me.entity.data.entityName,
+                            id: id
                         },
                         success: function (responseObject) {
 //							var result = Ext.decode(responseObject.responseText);
@@ -486,7 +485,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
         	var formData = new FormData();
         	formData.append('file', dirtyFileField.file);
         	var req = new XMLHttpRequest();
-        	req.open("POST", Ext.get('rest-base-url').dom.getAttribute('url') + '/upload/media/' + dirtyFileField.up('entityPopupForm').entity.data.pk, true);
+        	req.open("POST", Ext.get('rest-base-url').dom.getAttribute('url') + '/upload/media/' + dirtyFileField.up('entityPopupForm').entity.data.id, true);
         	// set headers and mime-type appropriately
         	req.setRequestHeader('X-Nemesis-Token', Ext.get('token').dom.getAttribute('value'));
         	req.setRequestHeader('X-Nemesis-Username', Ext.get('username').dom.getAttribute('value'));
@@ -530,7 +529,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
             	if (closeWindow) {
             		me.up('window').close();
             	}
-                var searchRes = Ext.getCmp(entity.data.id + '-search-result');
+                var searchRes = Ext.getCmp(entity.data.entityName + '-search-result');
                 if (searchRes) {
                     searchRes.mask();
                     searchRes.getStore().reload();
@@ -552,7 +551,7 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
                     entityPopupForm.populateForm(entityPopupForm.convertResult(result));
 
                     if(!result.url) {//the URL is NOT returned from the server for now, so we need to add it
-                        var url = me.entity.data.url + "/" + result.pk;
+                        var url = me.entity.data.url + "/" + result.id;
                         result.url = url;
                     }
 
@@ -601,9 +600,9 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
             params: {},
             success: function (responseObject) {
                 me.up('window').close();
-                Ext.getCmp(entity.data.id + '-search-result').mask();
-                Ext.getCmp(entity.data.id + '-search-result').getStore().reload();
-                Ext.getCmp(entity.data.id + '-search-result').unmask();
+                Ext.getCmp(entity.data.entityName + '-search-result').mask();
+                Ext.getCmp(entity.data.entityName + '-search-result').getStore().reload();
+                Ext.getCmp(entity.data.entityName + '-search-result').unmask();
                 Ext.toast({
                     html: 'Successfully deleted!',
                     closable: false,

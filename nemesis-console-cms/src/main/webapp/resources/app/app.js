@@ -166,7 +166,7 @@ Ext.application({
                     Ext.getCmp('page-slot-store').items.items[1].store.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url') + 'cms_slot/search/findByCatalogVersionCodeAndPageOrTemplate?catalogVersionCode=Staged';
                 }
                 Ext.getCmp('page-slot-store').items.items[1].store.proxy.extraParams = {
-                    'abstract_page': event.data.page.pk,
+                    'abstract_page': event.data.page.id,
                     'page_template': event.data.page.template
                 };
                 Ext.getCmp('page-slot-store').items.items[1].store.reload();
@@ -182,7 +182,7 @@ Ext.application({
                         canvases = result.previewCanvas;
 
                         Ext.Ajax.request({
-                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'abstract_page/' + event.data.page.pk,
+                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'abstract_page/' + event.data.page.id,
                             method: 'GET',
                             params: {},
                             success: function (responseObject) {
@@ -259,9 +259,9 @@ Ext.application({
                                     title: '[Widget]',
                                     iconCls: event.data.selection.contentElementEntityName,
                                     entity: Ext.create('console.model.Entity', {
-                                        id: event.data.selection.contentElementEntityName,
-                                        pk: event.data.selection.contentElement,
-                                        name: event.data.selection.contentElementEntityName,
+                                        entityName: event.data.selection.contentElementEntityName,
+                                        entityId: event.data.selection.contentElement,
+                                        entityClassName: event.data.selection.contentElementEntityName,
                                         url: Ext.get('rest-base-url').dom.getAttribute('url') + event.data.selection.contentElementEntityName + '/' + event.data.selection.contentElement,
                                         synchronizable: entityConfiguration.synchronizable
                                     }),
@@ -292,8 +292,8 @@ Ext.application({
                                         var items = json._embedded[x];
                                         var newWidgets = [];
                                         for (var i = 0; i < items.length; i++) {
-                                            if (contentElementPk != items[i].pk) {
-                                                newWidgets.push(items[i].pk);
+                                            if (contentElementPk != items[i].id) {
+                                                newWidgets.push(items[i].id);
                                             } else {
                                                 foundWidgetToRemove = true;
                                             }
@@ -333,7 +333,7 @@ Ext.application({
                                 Ext.MessageBox.alert('Unable to copy', 'First select a widget for coping');
                                 return;
                             }
-                            console.app.addWidgetToSlot(copyWidget.data.pk, event.data.selection.contentSlot);
+                            console.app.addWidgetToSlot(copyWidget.data.id, event.data.selection.contentSlot);
                         }
                     },
                     {
@@ -354,9 +354,9 @@ Ext.application({
                                     title: '[CmsSlot]',
                                     iconCls: 'cms_slot',
                                     entity: Ext.create('console.model.Entity', {
-                                        id: 'cms_slot',
-                                        pk: event.data.selection.contentSlot,
-                                        name: 'cms_slot',
+                                        entityName: 'cms_slot',
+                                        entityId: event.data.selection.contentSlot,
+                                        entityClassName: 'cms_slot',
                                         url: Ext.get('rest-base-url').dom.getAttribute('url') + 'cms_slot/' + event.data.selection.contentSlot,
                                         isNew: (event.data.selection.contentSlot ? false : true),
                                         synchronizable: (event.data.selection.contentSlot && entityConfiguration.synchronizable)
@@ -374,7 +374,7 @@ Ext.application({
                                             id : "page",
                                             data: {
                                                 id: "page",
-                                                url: Ext.get('rest-base-url').dom.getAttribute('url') + 'cms_page/' + event.data.page.pk
+                                                url: Ext.get('rest-base-url').dom.getAttribute('url') + 'cms_page/' + event.data.page.id
                                             }
                                         }, true, true);
                                         field.checkDirty();
@@ -407,15 +407,15 @@ Ext.application({
                 this.previousContentSlotId = 'slot-' + event.data.selection.contentSlot;
                 this.previousContentElementId = 'widget-' + event.data.selection.contentElement;
             } else if (event.data.type === 'DROP') {
-                var widgetPk = event.data.contentElement;
-                var contentSlotPk = event.data.contentSlot;
-                if(!widgetPk) {//not drag and drop between two slots
+                var widgetId = event.data.contentElement;
+                var contentSlotId = event.data.contentSlot;
+                if(!widgetId) {//not drag and drop between two slots
                     //take the active element then
-                    widgetPk = Ext.get(Ext.Element.getActiveElement()).id.substring(7);
+                    widgetId = Ext.get(Ext.Element.getActiveElement()).id.substring(7);
                 }
-                console.app.addWidgetToSlot(widgetPk, contentSlotPk, function() {
+                console.app.addWidgetToSlot(widgetId, contentSlotId, function() {
                     if(event.data.oldContentSlot) {
-                        console.app.removeWidgetFromSlot(widgetPk, event.data.oldContentSlot);
+                        console.app.removeWidgetFromSlot(widgetId, event.data.oldContentSlot);
                     }
                 });
             }
@@ -457,13 +457,13 @@ Ext.application({
 
         return 'en';
     },
-    addWidgetToSlot:function(widgetPk, contentSlotPk, successCallback){
+    addWidgetToSlot:function(widgetId, contentSlotId, successCallback){
         //get slot
         //add element to widgets
         //patch slot
         //refresh
         //get SLOT
-        var url = document.getElementById('rest-base-url').getAttribute('url') + 'cms_slot/' + contentSlotPk + '/widgets';
+        var url = document.getElementById('rest-base-url').getAttribute('url') + 'cms_slot/' + contentSlotId + '/widgets';
         Ext.Ajax.request({
             url: url,
             method: 'GET',
@@ -475,16 +475,16 @@ Ext.application({
                 for (var x in json._embedded) {
                     var items = json._embedded[x];
                     for (var i = 0; i < items.length; i++) {
-                        newWidgets.push(items[i].pk);
+                        newWidgets.push(items[i].id);
                     }
                 }
-                newWidgets.push(widgetPk);
+                newWidgets.push(widgetId);
 
                 var contentSlotPatchData = {};
                 contentSlotPatchData['widgets'] = newWidgets;
 
                 Ext.Ajax.request({
-                    url: document.getElementById('rest-base-url').getAttribute('url') + 'cms_slot/' + contentSlotPk,
+                    url: document.getElementById('rest-base-url').getAttribute('url') + 'cms_slot/' + contentSlotId,
                     method: 'PATCH',
                     headers: {'Content-Type': 'application/json', Accept: 'application/json'},
                     params: Ext.encode(contentSlotPatchData),
@@ -499,13 +499,13 @@ Ext.application({
             }
         });
     },
-    removeWidgetFromSlot:function(widgetPk, contentSlotPk, successCallback){
+    removeWidgetFromSlot:function(widgetId, contentSlotId, successCallback){
         //get slot
         //add element to widgets
         //patch slot
         //refresh
         //get SLOT
-        var url = document.getElementById('rest-base-url').getAttribute('url') + 'cms_slot/' + contentSlotPk + '/widgets';
+        var url = document.getElementById('rest-base-url').getAttribute('url') + 'cms_slot/' + contentSlotId + '/widgets';
         Ext.Ajax.request({
             url: url,
             method: 'GET',
@@ -517,8 +517,8 @@ Ext.application({
                 for (var x in json._embedded) {
                     var items = json._embedded[x];
                     for (var i = 0; i < items.length; i++) {
-                        if(items[i].pk !== widgetPk)
-                            newWidgets.push(items[i].pk);
+                        if(items[i].id !== widgetId)
+                            newWidgets.push(items[i].id);
                     }
                 }
 
@@ -526,7 +526,7 @@ Ext.application({
                 contentSlotPatchData['widgets'] = newWidgets;
 
                 Ext.Ajax.request({
-                    url: document.getElementById('rest-base-url').getAttribute('url') + 'cms_slot/' + contentSlotPk,
+                    url: document.getElementById('rest-base-url').getAttribute('url') + 'cms_slot/' + contentSlotId,
                     method: 'PATCH',
                     headers: {'Content-Type': 'application/json', Accept: 'application/json'},
                     params: Ext.encode(contentSlotPatchData),

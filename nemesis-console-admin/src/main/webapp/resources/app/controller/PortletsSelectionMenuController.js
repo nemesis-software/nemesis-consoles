@@ -17,8 +17,8 @@ Ext.define('AdminConsole.controller.PortletsSelectionMenuController', {
 			'#app-header #dropDownMenu #momoryUsagePortletBtn': {
 				click: this.openMemoryUsagePortlet
 			},
-			'#app-header #dropDownMenu #pkAnalyzerPortletBtn': {
-				click: this.openPkAnalyzerPortlet
+			'#app-header #dropDownMenu #idAnalyzerPortletBtn': {
+				click: this.openIdAnalyzerPortlet
 			},
 			'#app-header #dropDownMenu #platformActionsPortletBtn': {
 				click: this.openPlatformActionsPortlet
@@ -71,8 +71,8 @@ Ext.define('AdminConsole.controller.PortletsSelectionMenuController', {
 		self.disable();
 	},
 
-	openPkAnalyzerPortlet: function(self) {
-		Ext.getCmp('portlet-pk-analyzer').show();
+	openIdAnalyzerPortlet: function(self) {
+		Ext.getCmp('portlet-id-analyzer').show();
 		self.disable();
 	},
 

@@ -14,7 +14,7 @@ Ext.define('AdminConsole.controller.portlets.PlatformInfoPortletController', {
 	getInfo: function() {
 		var self = this;
 		Ext.Ajax.request({
-			url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/info',
+			url: Ext.get('website-base-url').dom.getAttribute('url') + 'platform/info',
 			method: 'GET',
 			params: {},
 			success: function(responseObject) {

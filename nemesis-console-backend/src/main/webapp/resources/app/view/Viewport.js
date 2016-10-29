@@ -176,8 +176,8 @@ Ext.define('console.view.Viewport', {
         me.updateActiveWindow();
     },
 
-    getWindow: function (pk) {
-        return this.windows.get('w_pk_' + pk);
+    getWindow: function (id) {
+        return this.windows.get('w_id_' + id);
     },
 
     restoreWindow: function (win) {

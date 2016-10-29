@@ -81,7 +81,7 @@ Ext.define('AdminConsole.view.portlet.JdbcLogPortlet', {
     },
     enableJdbcLog: function () {
         var self = this;
-        Ext.Ajax.request({ url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/jdbc-log',
+        Ext.Ajax.request({ url: Ext.get('website-base-url').dom.getAttribute('url') + 'platform/jdbc-log',
             method: 'POST',
             params: { enable: true },
             success: function (responseObject) {
@@ -94,7 +94,7 @@ Ext.define('AdminConsole.view.portlet.JdbcLogPortlet', {
     subscribe: function () {
         var self = this;
 
-        this.stompClient = Stomp.over(new SockJS(Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/stomp'));
+        this.stompClient = Stomp.over(new SockJS(Ext.get('website-base-url').dom.getAttribute('url') + 'platform/stomp'));
 
         this.stompClient.connect(
             {},
@@ -121,7 +121,7 @@ Ext.define('AdminConsole.view.portlet.JdbcLogPortlet', {
             });
     },
     disableJdbcLog: function () {
-        Ext.Ajax.request({ url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/jdbc-log',
+        Ext.Ajax.request({ url: Ext.get('website-base-url').dom.getAttribute('url') + 'platform/jdbc-log',
             method: 'POST',
             params: { enable: false },
             success: function (responseObject) {

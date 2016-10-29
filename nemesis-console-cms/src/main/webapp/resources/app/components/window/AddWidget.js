@@ -104,7 +104,7 @@ Ext.define('console.components.window.AddWidget', {
 				height: 520,
 				tpl: new Ext.XTemplate(
 					'<tpl for=".">',
-					'<div class="top-carousel-item widget-dnd" id="widget-{pk}">',
+					'<div class="top-carousel-item widget-dnd" id="widget-{id}">',
 					'<div class="carousel-picture">',
 					'<a><img draggable="true" style="cursor: move;" src="{[this.getPreviewImage(values._links[\'self\'].href)]}" width="100"></a>',
 					'</div>',
@@ -126,7 +126,7 @@ Ext.define('console.components.window.AddWidget', {
 					select: function(myself){
 						Ext.MessageBox.confirm('Confirm', 'Are you sure you want to add this widget to the selected slot?', function(btn, text){
 							if(btn === 'yes') {
-								console.app.addWidgetToSlot(myself.getSelection()[0].data.pk, me.contentSlot);
+								console.app.addWidgetToSlot(myself.getSelection()[0].data.id, me.contentSlot);
 								me.destroy();
 							} else {
 								var storeWidgets = myself.store;

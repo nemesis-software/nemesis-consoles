@@ -26,7 +26,7 @@ Ext.define('console.view.StatusBar', {
                         click: function () {
                             var entityConfiguration = Ext.create("console.markup.abstract_page");
                             console.log(me.items.items[1].html);
-                            var window = Ext.getCmp('cms-viewport').getWindow(me.page.pk);
+                            var window = Ext.getCmp('cms-viewport').getWindow(me.page.id);
                             if (!window) {
                                 window = Ext.getCmp(parentCmpId).createWindow({
                                     id: me.page.code,
@@ -34,11 +34,10 @@ Ext.define('console.view.StatusBar', {
                                     title: '[' + me.page.title + ']',
                                     iconCls: 'abstract_page',
                                     entity: Ext.create('console.model.Entity', {
-                                        id: 'abstract_page',
-                                        pk: me.page.pk,
-                                        name: me.page.title,
-                                        className: '',
-                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'abstract_page/' + me.page.pk,
+                                        entityName: 'abstract_page',
+                                        entityId: me.page.id,
+                                        entityClassName: me.page.title,
+                                        url: Ext.get('rest-base-url').dom.getAttribute('url') + 'abstract_page/' + me.page.id,
                                         synchronizable: entityConfiguration.synchronizable
                                     }),
                                     sections: entityConfiguration.sections

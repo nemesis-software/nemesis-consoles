@@ -22,7 +22,7 @@ Ext.define('console.view.content.search.SearchField', {
         this.fieldSet = Ext.create('Ext.form.FieldSet', {
             items: [
                 {
-                    id: this.entity.data.id + '-searchform-fieldset-restriction_' + this.emptyTxt,
+                    id: this.entity.data.entityName + '-searchform-fieldset-restriction_' + this.emptyTxt,
                     isFormField: false,
                     submitValue: false,
                     xtype: 'combobox',
@@ -52,7 +52,7 @@ Ext.define('console.view.content.search.SearchField', {
                     }
                 },
                 {
-                    id: this.entity.data.id + '-searchform-fieldset-query_' + this.emptyTxt,
+                    id: this.entity.data.entityName + '-searchform-fieldset-query_' + this.emptyTxt,
                     name: this.fieldLabel,
                     isFormField: false,
                     submitValue: false,

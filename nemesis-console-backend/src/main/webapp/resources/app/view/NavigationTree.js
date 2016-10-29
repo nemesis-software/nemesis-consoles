@@ -43,15 +43,14 @@ Ext.define('console.view.NavigationTree', function () {
                     if (!tabCmp.getComponent(record.get('id'))) {
 
                         var entity = Ext.create("console.model.Entity", {
-                            id: record.get('id'),
-                            name: translate(record.get('id')),
-                            url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('id'),
-                            className: ''
+                            entityName: record.get('id'),
+                            entityClassName: translate(record.get('id')),
+                            url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('id')
                         });
 
                         tabCmp.add(Ext.create("console.view.content.Page", {
-                            itemId: entity.data.id,
-                            title: entity.data.id,
+                            itemId: entity.data.entityName,
+                            title: entity.data.entityName,
                             iconCls: record.get('iconCls'),
                             entity: entity,
                             contentPanel: this.contentPanel
@@ -130,8 +129,8 @@ Ext.define('console.view.NavigationTree', function () {
                         handler: function () {
                             var entityConfiguration = Ext.create("console.markup." + record.get('id'));
                             var entity = Ext.create('console.model.Entity', {
-                                id: record.get('text'),
-                                name: record.get('text'),
+                                entityName: record.get('text'),
+                                entityClassName: record.get('text'),
                                 url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('id'),
                                 isNew: true
                             });
@@ -166,8 +165,8 @@ Ext.define('console.view.NavigationTree', function () {
                                     title: '[' + item.text + ']',
                                     iconCls: item.iconCls,
                                     entity: Ext.create('console.model.Entity', {
-                                        id: item.text,
-                                        name: item.text,
+                                        entityName: item.text,
+                                        entityClassName: item.text,
                                         isNew: true,
                                         url: Ext.get('rest-base-url').dom.getAttribute('url') + item.id
                                     }),

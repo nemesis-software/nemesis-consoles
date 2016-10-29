@@ -95,7 +95,7 @@ Ext.define('console.components.menu.Pages', {
                     ),
                     listeners: {
                         select: function (view) {
-                            //alert('selected ' + view.getSelection()[0].data.pk);
+                            //alert('selected ' + view.getSelection()[0].data.id);
                         },
                         afterrender: function (p) {
                             console.log(this.getStore());
@@ -147,7 +147,7 @@ Ext.define('console.components.menu.Pages', {
                                                 title: '[' + item.text + ']',
                                                 iconCls: item.iconCls,
                                                 entity: Ext.create('console.model.Entity', {
-                                                    name: item.text,
+                                                    entityClassName: item.text,
                                                     url: Ext.get('rest-base-url').dom.getAttribute('url') + item.id
                                                 }),
                                                 sections: entityConfiguration.sections
@@ -166,8 +166,8 @@ Ext.define('console.components.menu.Pages', {
                     onCreateSelected: function (view, record, item, index, event) {
                         var entityConfiguration = Ext.create("console.markup." + record.get('entityName'));
                         var entity = Ext.create('console.model.Entity', {
-                            id: record.get('text'),
-                            name: record.get('text'),
+                            entityName: record.get('text'),
+                            entityClassName: record.get('text'),
                             url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('entityName'),
                             isNew: true
                         });
@@ -185,16 +185,16 @@ Ext.define('console.components.menu.Pages', {
 
                         var entityConfiguration = Ext.create("console.markup." + record.data.entityName);
                         console.log(record);
-                        var window = Ext.getCmp('cms-viewport').getWindow(record.data.pk);
+                        var window = Ext.getCmp('cms-viewport').getWindow(record.data.id);
                         if (!window) {
                             window = Ext.getCmp(parentCmpId).createWindow({
                                 operation: 'edit',
                                 id: record.data.code,
                                 iconCls: 'cms_page',
                                 entity: Ext.create('console.model.Entity', {
-                                    id: record.data.entityName,
-                                    pk: record.data.pk,
-                                    name: record.data.entityName,
+                                    entityName: record.data.entityName,
+                                    entityId: record.data.id,
+                                    entityClassName: record.data.entityName,
                                     url: record.data._links['self'].href,
                                     synchronizable: entityConfiguration.synchronizable
                                 }),

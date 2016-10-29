@@ -71,7 +71,7 @@ Ext.define('AdminConsole.view.portlet.PlatformActionsPortlet', {
     subscribe: function () {
         var self = this;
 
-        this.stompClient = Stomp.over(new SockJS(Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/stomp'));
+        this.stompClient = Stomp.over(new SockJS(Ext.get('website-base-url').dom.getAttribute('url') + 'platform/stomp'));
         this.stompClient.connect(
             {},
             function onSuccess() {
@@ -156,7 +156,7 @@ Ext.define('AdminConsole.view.portlet.PlatformActionsPortlet', {
         }).show();
 
         Ext.Ajax.request({
-            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform',
+            url: Ext.get('website-base-url').dom.getAttribute('url') + 'platform',
             method: 'POST',
             params: {'action': 'update'},
             success: function (responseObject) {
@@ -183,7 +183,7 @@ Ext.define('AdminConsole.view.portlet.PlatformActionsPortlet', {
             //groupField: 'threadName',
             proxy: {
                 type: 'rest',
-                url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/dump/',
+                url: Ext.get('website-base-url').dom.getAttribute('url') + 'platform/dump/',
                 useDefaultXhrHeader: false,
                 cors: true,
                 reader: {
@@ -263,7 +263,7 @@ Ext.define('AdminConsole.view.portlet.PlatformActionsPortlet', {
 
     onClearCacheClick: function () {
         Ext.Ajax.request({
-            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/cache/',
+            url: Ext.get('website-base-url').dom.getAttribute('url') + 'platform/cache/',
             method: 'DELETE',
             params: {},
             headers: {
@@ -328,7 +328,7 @@ Ext.define('AdminConsole.view.portlet.PlatformActionsPortlet', {
         }).show();
 
         Ext.Ajax.request({
-            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/',
+            url: Ext.get('website-base-url').dom.getAttribute('url') + 'platform/',
             method: 'POST',
             params: {'action': 'init'},
             success: function (responseObject) {

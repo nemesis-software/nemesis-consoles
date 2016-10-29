@@ -157,9 +157,9 @@ Ext.define('console.components.menu.Emails', {
                                 id: record.data.code,
                                 iconCls: record.data.entityName ? record.data.entityName : 'widget',
                                 entity: Ext.create('console.model.Entity', {
-                                    id: record.data.entityName,
-                                    pk: record.data.pk,
-                                    name: record.data.entityName,
+                                    entityName: record.data.entityName,
+                                    entityId: record.data.pk,
+                                    entityClassName: record.data.entityName,
                                     url: record.data._links['self'].href,
                                     synchronizable: entityConfiguration.synchronizable
                                 }),

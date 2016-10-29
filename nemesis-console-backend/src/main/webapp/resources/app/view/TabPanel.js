@@ -40,15 +40,14 @@ Ext.define('console.view.TabPanel', {
                     var iconCls = 'default-icon ' + decodeURIComponent(parts[2]);
                     if (!Ext.getCmp(cmpId).getComponent(recordId)) {
                         var entity = Ext.create("console.model.Entity", {
-                            id: recordId,
-                            name: recordId,
-                            url: Ext.get('rest-base-url').dom.getAttribute('url') + recordId,
-                            className: ''
+                            entityName: recordId,
+                            entityClassName: recordId,
+                            url: Ext.get('rest-base-url').dom.getAttribute('url') + recordId
                         });
 
                         Ext.getCmp(cmpId).add(Ext.create("console.view.content.Page", {
-                            itemId: entity.data.id,
-                            title: entity.data.name,
+                            itemId: entity.data.entityName,
+                            title: entity.data.entityClassName,
                             iconCls: 'default-icon ' + iconCls,
                             closable: true,
                             entity: entity,
@@ -73,10 +72,9 @@ Ext.define('console.view.TabPanel', {
                             operation: 'edit',
                             iconCls: 'default-icon ' + entityDataId,
                             entity: Ext.create('console.model.Entity', {
-                                id: entityDataId,
-                                pk: entityPk,
-                                name: entityDataName,
-                                className: entityClassName,
+                                entityName: entityDataId,
+                                entityId: entityPk,
+                                entityClassName: entityDataName,
                                 url: entityHref,
                                 synchronizable: entityConfiguration.synchronizable
                             }),

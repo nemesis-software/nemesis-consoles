@@ -64,11 +64,11 @@ public class NemesisAdminConsoleSeleniumIntegrationTest {
         selenium.clickAt("css=div#system-loggers-grid-body table.x-grid-item td.x-grid-cell", "");
         selenium.clickAt("id=system-loggers-delete-btn", "");
         assertEquals("2", selenium.getCssCount("css=div#system-loggers-grid-body table.x-grid-item"));
-        // PKAnalyzer portlet.
-        selenium.sendKeys("id=pk-input-field-inputEl", "123456");
-        selenium.clickAt("id=decode-pk-button", "");
+        // IDAnalyzer portlet.
+        selenium.sendKeys("id=id-input-field-inputEl", "123456");
+        selenium.clickAt("id=decode-id-button", "");
         Thread.sleep(500);
-        assertEquals("100", selenium.getValue("id=pk-input-field-inputEl"));
+        assertEquals("100", selenium.getValue("id=id-input-field-inputEl"));
         // Thread dump
         selenium.clickAt("id=platform-actions-thread-dump", "");
         Thread.sleep(500);

@@ -4,7 +4,7 @@ Ext.define('AdminConsole.view.Viewport', {
         'Ext.layout.container.Border',
         'Ext.layout.container.HBox',
         'Ext.dashboard.Dashboard',
-        'AdminConsole.view.portlet.PKAnalyzerPortlet',
+        'AdminConsole.view.portlet.IDAnalyzerPortlet',
         'AdminConsole.view.portlet.MemoryUsagePortlet',
         'AdminConsole.view.portlet.PlatformActionsPortlet',
         'AdminConsole.view.portlet.PlatformInfoPortlet',
@@ -93,12 +93,12 @@ Ext.define('AdminConsole.view.Viewport', {
             id: "portlet-platform-actions"
         };
 
-        defaultContent[parseInt("portlet-pk-analyzer" in persistedState ? persistedState["portlet-pk-analyzer"].position : 3)] = {
-            type: 'pkAnalyzerPortlet',
-            columnIndex: parseInt("portlet-pk-analyzer" in persistedState ? persistedState["portlet-pk-analyzer"].column : 1),
+        defaultContent[parseInt("portlet-id-analyzer" in persistedState ? persistedState["portlet-id-analyzer"].position : 3)] = {
+            type: 'idAnalyzerPortlet',
+            columnIndex: parseInt("portlet-id-analyzer" in persistedState ? persistedState["portlet-id-analyzer"].column : 1),
             height: 20,
-            hidden: "portlet-pk-analyzer" in persistedState ? persistedState["portlet-pk-analyzer"].hidden : false,
-            id: "portlet-pk-analyzer"
+            hidden: "portlet-id-analyzer" in persistedState ? persistedState["portlet-id-analyzer"].hidden : false,
+            id: "portlet-id-analyzer"
         };
 
         defaultContent[parseInt("portlet-platform-info" in persistedState ? persistedState["portlet-platform-info"].position : 4)] = {
@@ -258,20 +258,20 @@ Ext.define('AdminConsole.view.Viewport', {
                         }
                     },
 
-                    pkAnalyzerPortlet: {
+                    idAnalyzerPortlet: {
                         viewTemplate: {
-                            id: 'portlet-pk-analyzer',
-                            title: 'PK Analyzer',
+                            id: 'portlet-id-analyzer',
+                            title: 'ID Analyzer',
                             iconCls: 'key',
                             closeAction: 'hide',
                             tools: this.getTools(),
                             items: [{
-                                xtype: 'pkAnalyzerPortlet'
+                                xtype: 'idAnalyzerPortlet'
                             }],
                             listeners: {
                                 close: function(panel, eOpts) {
-                                    if (Ext.getCmp('pkAnalyzerPortletBtn')) {
-                                        var btn = Ext.getCmp('pkAnalyzerPortletBtn');
+                                    if (Ext.getCmp('idAnalyzerPortletBtn')) {
+                                        var btn = Ext.getCmp('idAnalyzerPortletBtn');
                                         btn.enable();
                                     }
                                 }

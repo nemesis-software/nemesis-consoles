@@ -86,8 +86,8 @@ public class StorefrontMockRestController {
 
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    @RequestMapping(value = "/idDiscriminator/{pk}", method = RequestMethod.GET, produces = "application/json")
-    public Integer getIdDiscriminatorForPK(@PathVariable(value = "pk") final Long pk) {
+    @RequestMapping(value = "/idDiscriminator/{id}", method = RequestMethod.GET, produces = "application/json")
+    public Integer getIdDiscriminatorForID(@PathVariable(value = "id") final Long id) {
         return 100;
     }
 

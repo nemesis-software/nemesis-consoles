@@ -16,7 +16,7 @@ Ext.define('AdminConsole.controller.portlets.PlatformHealthPortletController', {
 		var serviceList = [];
 		var statusList = [];
 		Ext.Ajax.request({
-			url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/health',
+			url: Ext.get('website-base-url').dom.getAttribute('url') + 'platform/health',
 			method: 'GET',
 			//params: {},
 			success: function(responseObject) {

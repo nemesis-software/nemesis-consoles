@@ -39,7 +39,7 @@ Ext.define('console.view.content.search.SearchForm', function () {
 
             restrictions['nemesisCollectionField'] = ["Not-Supported"];
 
-            var filters = searchAllData[self.entity.data.id].filter;
+            var filters = searchAllData[self.entity.data.entityName].filter;
             var searchFields = {};
             var backendSearchFields = [];
             for(var i in filters){
@@ -85,14 +85,14 @@ Ext.define('console.view.content.search.SearchForm', function () {
 
             //TODO strange but it looks the component is not yet available ?
             var task = new Ext.util.DelayedTask(function() {
-                Ext.getCmp(self.entity.data.id + '-searchform-fieldset').add(backendSearchFields);
+                Ext.getCmp(self.entity.data.entityName + '-searchform-fieldset').add(backendSearchFields);
             });
             task.delay(100);
 
 
             /*
             Ext.Ajax.request({
-                url: Ext.get('rest-base-url').dom.getAttribute('url') + self.entity.data.id + '/search/',
+                url: Ext.get('rest-base-url').dom.getAttribute('url') + self.entity.data.entityName + '/search/',
                 loadMask: true,
                 method: 'GET',
                 params: {'projection': 'search'},
@@ -101,7 +101,7 @@ Ext.define('console.view.content.search.SearchForm', function () {
                     var result = Ext.decode(responseObject.responseText);
                     if (Object.keys(result._links).length > 0) {
                         for (var _link in result._links) {
-                            var fieldRel = Ext.util.Format.substr(_link, self.entity.data.id + 1, _link.length);  //voucher.findByCodeStartingWith
+                            var fieldRel = Ext.util.Format.substr(_link, self.entity.data.entityName + 1, _link.length);  //voucher.findByCodeStartingWith
                             var fieldRestriction = fieldRel.substring(6);
                             var field = null;
                             var restriction = "";
@@ -163,7 +163,7 @@ Ext.define('console.view.content.search.SearchForm', function () {
                         }
 
                         console.log(backendSearchFields);
-                        Ext.getCmp(self.entity.data.id + '-searchform-fieldset').add(backendSearchFields);
+                        Ext.getCmp(self.entity.data.entityName + '-searchform-fieldset').add(backendSearchFields);
                     }
                 },
                 failure: function (responseObject) {
@@ -182,11 +182,11 @@ Ext.define('console.view.content.search.SearchForm', function () {
                     constructTitle: function () {
                         var searchForm = this.up('contentSearchForm');
                         var searchTitle = searchForm.initialConfig && searchForm.initialConfig.title || searchForm.title;
-                        return translate(searchTitle) + ' ' + translate(searchForm.entity.data.id);
+                        return translate(searchTitle) + ' ' + translate(searchForm.entity.data.entityName);
                     },
                     defaultType: 'textfield',
                     margin: '10%',
-                    id: this.entity.data.id + '-searchform-fieldset',
+                    id: this.entity.data.entityName + '-searchform-fieldset',
                     defaults: {
                         anchor: '100%'
                     },
@@ -206,7 +206,7 @@ Ext.define('console.view.content.search.SearchForm', function () {
                             iconCls: 'search-btn',
                             anchor: 'auto',
                             margin: '10%',
-                            itemId: this.entity.data.id + '-search-form-btn',
+                            itemId: this.entity.data.entityName + '-search-form-btn',
                             command: 'search'
                         },
                         {

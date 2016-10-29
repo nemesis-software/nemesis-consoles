@@ -95,10 +95,10 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
     }
 
     @Test
-    public void testPkAnalyzerPortlet() throws Exception {
-        getWebDriver().findElementById("pk-input-field-inputEl").sendKeys("563567378827168");
-        getWebDriver().findElementById("decode-pk-button").click();
-        getWait().until(ExpectedConditions.textToBePresentInElementValue(By.id("pk-input-field-inputEl"), "2"));
+    public void testIdAnalyzerPortlet() throws Exception {
+        getWebDriver().findElementById("id-input-field-inputEl").sendKeys("563567378827168");
+        getWebDriver().findElementById("decode-id-button").click();
+        getWait().until(ExpectedConditions.textToBePresentInElementValue(By.id("id-input-field-inputEl"), "2"));
     }
 
     @Test
@@ -247,7 +247,7 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
         getWebDriver().findElementById("platformActionsPortletBtn").click();
         Thread.sleep(500);
         getWebDriver().findElementById("dropDownMenu").click();
-        getWebDriver().findElementById("pkAnalyzerPortletBtn").click();
+        getWebDriver().findElementById("idAnalyzerPortletBtn").click();
         Thread.sleep(500);
 
         assertEquals("block", portlets.get(0).getCssValue("display"));
@@ -268,10 +268,10 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
         closeButtons.get(2).click();
         Thread.sleep(500);
 
-        // check that PK Analyzer Portlet is on its default position (second column)
-        assertNotNull(columns.get(1).findElement(By.id("portlet-pk-analyzer")));
+        // check that ID Analyzer Portlet is on its default position (second column)
+        assertNotNull(columns.get(1).findElement(By.id("portlet-id-analyzer")));
 
-        // move PK Analyzer Portlet above Resource Usage Portlet (in third column)
+        // move ID Analyzer Portlet above Resource Usage Portlet (in third column)
         (new Actions(getWebDriver())).dragAndDrop(portletHeaders.get(4), portletHeaders.get(6)).perform();
 
         // Refresh page
@@ -288,8 +288,8 @@ public class AdminConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSe
         assertEquals("block", portlets.get(3).getCssValue("display"));
         assertEquals("block", portlets.get(4).getCssValue("display"));
 
-        // Check that PK Analyzer Portlet is still in third column after page has reloaded
-        assertNotNull(columns.get(2).findElement(By.id("portlet-pk-analyzer")));
+        // Check that ID Analyzer Portlet is still in third column after page has reloaded
+        assertNotNull(columns.get(2).findElement(By.id("portlet-id-analyzer")));
 
         // open the closed portlets one by one before test is finished
         getWebDriver().findElementById("dropDownMenu").click();

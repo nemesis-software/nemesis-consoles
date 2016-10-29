@@ -14,7 +14,7 @@ Ext.define('AdminConsole.controller.portlets.SystemPropertiesPortletController',
 	loadData: function() {
 		var self = this;
 		Ext.Ajax.request({
-			url: Ext.get('rest-base-url').dom.getAttribute('url') + 'platform/env',
+			url: Ext.get('website-base-url').dom.getAttribute('url') + 'platform/env',
 			method: 'GET',
 			params: {},
 			success: function(responseObject) {
