@@ -8,10 +8,12 @@ This is the consoles module for the Nemesis Commerce Platform.
 To Build and Run the consoles Java and Maven are required.
 
 Java version required : 1.8.0+
+
 Maven version required: 3.3.0+
 
 
 to build the consoles please run
 `mvn clean install` from the root folder.
-ones this is finished go into any of the consoles like nemesis-console-backend and run `mvn spring-boot:run`
+
+Ones this is finished go into any of the consoles like nemesis-console-backend and run `mvn spring-boot:run`
 the consoles will be run on port 8080.
