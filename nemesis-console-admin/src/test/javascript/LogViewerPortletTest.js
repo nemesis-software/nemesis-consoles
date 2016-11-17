@@ -1,14 +1,4 @@
-/*
- * nemesis Platform - NExt-generation Multichannel E-commerce SYStem
- *
- * Copyright (c) 2010 - 2014 nemesis
- * All rights reserved.
- *
- * This software is the confidential and proprietary information of nemesis
- * ("Confidential Information"). You shall not disclose such Confidential
- * Information and shall use it only in accordance with the terms of the
- * license agreement you entered into with nemesis.
- */
+
 describe("LogViewerPortlet test spec", function () {
     var portlet, app;
 
