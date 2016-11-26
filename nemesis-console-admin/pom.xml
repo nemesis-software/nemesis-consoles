@@ -102,7 +102,7 @@
                     <jsSrcDir>${project.basedir}/src/main/webapp/resources</jsSrcDir>
                     <preloadSources>
                         <source>webjars/extjs/${extjs.webjars.version}/build/ext-all.js</source>
-                        <source>webjars/extjs/${extjs.webjars.version}/build/packages/ext-charts/build/ext-charts.js
+                        <source>webjars/extjs/${extjs.webjars.version}/build/packages/charts/classic/charts.js
                         </source>
                         <source>webjars/jquery/${jquery.webjars.version}/jquery.min.js</source>
                         <source>webjars/stomp-websocket/${stompwebsocket.webjars.version}/lib/stomp.js</source>

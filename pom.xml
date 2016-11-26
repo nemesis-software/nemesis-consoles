@@ -35,6 +35,7 @@
 
     <properties>
         <maven.rat.plugin.skip>true</maven.rat.plugin.skip>
+        <extjs.webjars.version>6.2.0</extjs.webjars.version>
     </properties>
 
     <repositories>

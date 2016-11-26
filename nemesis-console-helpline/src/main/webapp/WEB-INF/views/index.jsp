@@ -18,7 +18,7 @@
     <script type="text/javascript" src="webjars/extjs/5.1.1-light/build/ext-all.js"></script>
     <script type="text/javascript" src="webjars/extjs/5.1.1-light/build/packages/ext-ux/build/ext-ux.js"></script>
     <script type="text/javascript"
-            src="webjars/extjs/5.1.1-light/build/packages/ext-locale/build/ext-locale-${currentLocale}.js"></script>
+            src="webjars/extjs/6.2.0/build/classic/locale/locale-${currentLocale}.js"></script>
 
     <link rel="stylesheet" type="text/css" href="resources/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="resources/css/console.css"/>
