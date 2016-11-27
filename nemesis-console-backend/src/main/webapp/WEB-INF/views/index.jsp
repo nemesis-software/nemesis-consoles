@@ -21,8 +21,8 @@
             src="webjars/extjs/6.2.0/build/classic/locale/locale-${currentLocale}.js"></script>
 
 
-    <script type="text/javascript" src="webjars/extjs/5.1.1-light/build/packages/sencha-charts/build/sencha-charts.js"></script>
-    <link type="text/css" href="webjars/extjs/5.1.1-light/build/packages/sencha-charts/build/classic/resources/sencha-charts-all.css">
+    <script type="text/javascript" src="webjars/extjs/6.2.0/build/packages/charts/classic/charts.js"></script>
+    <link type="text/css" href="webjars/extjs/6.2.0/build/packages/charts/classic/classic/resources/charts-all.css">
 
 
 
