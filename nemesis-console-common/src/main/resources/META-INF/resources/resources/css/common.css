@@ -197,6 +197,10 @@
     margin-right: 20px;
 }
 
+.x-colorpicker-field-swatch {
+    z-index: 1;
+}
+
 .default-icon {
     background-image: url(images/default.gif);
 }
