@@ -12,6 +12,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestContext;
@@ -209,7 +210,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertTrue(resultsGridItems(entityName).size() > 0);
 
         getWebDriver().executeScript("var c = Ext.getCmp('" + entityName
-                                                     + "-searchform-fieldset-restriction_code'); c.setValue('Equals'); c.fireEvent('select', c, 'Equals');");
+                                                     + "-searchform-fieldset-restriction_code'); var valueObject = {data: {value: 'Equals'}}; c.setValue('Equals'); c.fireEvent('select', c, valueObject);");
 
         getWebDriver().findElementByCssSelector("div#" + entityName + "-searchform-fieldset-query_code input[type='text']").sendKeys("default");
 
@@ -218,6 +219,12 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         sleep();
 
         assertEquals(1, resultsGridItems(entityName).size());
+
+        getWebDriver().findElementByCssSelector("span.x-tab-close-btn").click();
+
+        assertEquals(0, getWebDriver().findElementsByCssSelector("div#tab-panel a.x-tab").size());
+
+        clearNavTreeFilter();
     }
 
     //#28 & #103
@@ -942,7 +949,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertTrue(existsElement("[id^=" + entityName + "-searchform-fieldset-restriction_code]"));
 
         getWebDriver().executeScript("var c = Ext.getCmp('" + entityName
-                                                     + "-searchform-fieldset-restriction_code'); c.setValue('Equals'); c.fireEvent('select', c, 'Equals');");
+                                                     + "-searchform-fieldset-restriction_code'); var valueObject = {data: {value: 'Equals'}}; c.setValue('Equals'); c.fireEvent('select', c, valueObject);");
 
         assertTrue(existsElement("#" + entityName + "-searchform-fieldset-query_code"));
 
