@@ -1,6 +1,26 @@
 Ext.define('console.view.NavigationTree', function () {
     var self;  // This is a variable to store "this"
 
+    function filterFunction(node, text) {
+        var regex = new RegExp(text, 'i');
+
+        if (node.isLeaf()) {
+            return regex.test(translate(node.get('text')));
+        }
+
+        var children = node.childNodes;
+        var childrenCount = children && children.length;
+
+        for (var i = 0; i < childrenCount; i++) {
+            if (filterFunction(children[i], text)) {
+                node.expand();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     return {
         extend: 'Ext.tree.Panel',
         xtype: 'backendconsoleTreeMenu',
@@ -74,30 +94,10 @@ Ext.define('console.view.NavigationTree', function () {
                     }
                 },
                 applyFilter: function (filter, value) {
-                    var v;
                     try {
-                        v = new RegExp(value, 'i');
                         this.filter({
                             filterFn: function (node) {
-                                var children = node.childNodes,
-                                    len = children && children.length,
-
-                                // Visibility of leaf nodes is whether they pass the test.
-                                // Visibility of branch nodes depends on them having visible children.
-                                    visible = node.isLeaf() ? v.test(translate(node.get('text'))) : false;
-
-                                // We're visible if one of our child nodes is visible.
-                                // No loop body here. We are looping only while the visible flag remains false.
-                                // Child nodes are filtered before parents, so we can check them here.
-                                // As soon as we find a visible child, this branch node must be visible.
-                                for (i = 0; i < len && !(visible = children[i].get('visible')); i++);
-
-                                //expand the nodes with visible children(s)
-                                if (!node.isLeaf() && visible) {
-                                    node.expand();
-                                }
-
-                                return visible;
+                                return filterFunction(node, value);
                             },
                             id: 'menuTreeTextFilter'
                         });

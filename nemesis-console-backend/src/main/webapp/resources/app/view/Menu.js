@@ -41,7 +41,7 @@ Ext.define('console.view.Menu', {
                 listeners: {
                     keyup: function () {
                         var tree = Ext.getCmp('navigation-tree');
-                        tree.getEl().mask("Loading...")
+                        tree.getEl().mask("Loading...");
                         var store = tree.getStore();
                         store.clearFilter();
                         if (this.value) {
