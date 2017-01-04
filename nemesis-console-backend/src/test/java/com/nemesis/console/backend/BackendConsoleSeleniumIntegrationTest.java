@@ -144,7 +144,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         assertTrue(navTreeItems().size() > 0);
 
-        filterNavTree("media_format");
+        filterNavTree("media format");
 
         int size = navTreeItems().size();
 
@@ -163,7 +163,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         assertTrue(navTreeItems().size() > 0);
 
-        filterNavTree(entityName);
+        filterNavTree("media container");
 
         int size = navTreeItems().size();
 
@@ -190,7 +190,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         assertTrue(navTreeItems().size() > 0);
 
-        filterNavTree(entityName);
+        filterNavTree("media container");
 
         assertTrue(navTreeItems().size() > 0);
 
@@ -202,9 +202,9 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         Thread.sleep(2500);
 
-        assertEquals(1, getWebDriver().findElementsByCssSelector("div#" + entityName + "-searchform-fieldset-body div.x-form-item .field-restriction").size());
+        assertEquals(2, getWebDriver().findElementsByCssSelector("div#" + entityName + "-searchform-fieldset-body div.x-form-item .field-restriction").size());
 
-        (new WebDriverWait(getWebDriver(), 10)).until(ExpectedConditions.visibilityOfAllElements(resultsGridItems("media_container")));
+        (new WebDriverWait(getWebDriver(), 10)).until(ExpectedConditions.visibilityOfAllElements(resultsGridItems(entityName)));
 
         assertTrue(resultsGridItems(entityName).size() > 0);
 
@@ -1046,13 +1046,13 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     @Test
     @Ignore("At the moment it is not possible to set solarContent:Staged as catalogVersion")
     public void testCreateNewBlogEntryMustCreateNewBlogEntry() throws InterruptedException {
-        String entityName = "blog_entry";
+        String entityName = "blog entry";
 
         getWait().until(ExpectedConditions.visibilityOfAllElements(navTreeItems()));
 
         assertTrue(navTreeItems().size() > 0);
 
-        filterNavTree(entityName);
+        filterNavTree("blog entry");
 
         openNavTreeItem(1);
 
@@ -1320,7 +1320,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         assertTrue(navTreeItems().size() > 0);
 
-        filterNavTree(entityName);
+        filterNavTree("blog entry");
 
         openNavTreeItem(1);
 
@@ -1430,7 +1430,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         assertTrue(navTreeItems().size() > 0);
 
-        filterNavTree(entityName);
+        filterNavTree("facet search config");
 
         openNavTreeItem(1);
 
