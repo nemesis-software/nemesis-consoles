@@ -26,7 +26,7 @@ Ext.define('console.view.StatusBar', {
                         click: function () {
                             var entityConfiguration = Ext.create("console.markup.abstract_page");
                             console.log(me.items.items[1].html);
-                            var window = Ext.getCmp('cms-viewport').getWindow(me.page.id);
+                            var window = Ext.getCmp('viewport').getWindow(me.page.id);
                             if (!window) {
                                 window = Ext.getCmp(parentCmpId).createWindow({
                                     id: me.page.code,
@@ -44,7 +44,7 @@ Ext.define('console.view.StatusBar', {
                                 });
                             }
 
-                            Ext.getCmp('cms-viewport').restoreWindow(window);
+                            Ext.getCmp('viewport').restoreWindow(window);
                         }
                     }
                 }

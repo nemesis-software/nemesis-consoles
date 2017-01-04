@@ -146,11 +146,11 @@ Ext.define('console.components.menu.Emails', {
                         });
                     },
                     onEditSelected: function (view, record, item, index, event) {
-                        var parentCmpId = 'cms-viewport';
+                        var parentCmpId = 'viewport';
 
                         var entityConfiguration = Ext.create("console.markup." + record.data.entityName);
                         console.log(record);
-                        var window = Ext.getCmp('cms-viewport').getWindow(record.data.id);
+                        var window = Ext.getCmp('viewport').getWindow(record.data.id);
                         if (!window) {
                             window = Ext.getCmp(parentCmpId).createWindow({
                                 operation: 'edit',
@@ -166,7 +166,7 @@ Ext.define('console.components.menu.Emails', {
                                 sections: entityConfiguration.sections
                             });
                         }
-                        Ext.getCmp('cms-viewport').restoreWindow(window);
+                        Ext.getCmp('viewport').restoreWindow(window);
                     }
                 }
             ],

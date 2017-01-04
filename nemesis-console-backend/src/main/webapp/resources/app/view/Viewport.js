@@ -1,6 +1,6 @@
 Ext.define('console.view.Viewport', {
     extend: 'Ext.container.Viewport',
-    id: 'backend-viewport',
+    id: 'viewport',
     requires: [
         'Ext.layout.container.Border',
         'Ext.layout.container.HBox',

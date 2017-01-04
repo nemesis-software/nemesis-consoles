@@ -134,7 +134,7 @@ Ext.define('console.view.NavigationTree', function () {
                                 url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('id'),
                                 isNew: true
                             });
-                            var window = Ext.getCmp('backend-viewport').createWindow({
+                            var window = Ext.getCmp('viewport').createWindow({
                                 id: null,
                                 title: '[' + record.get('text') + ']',
                                 iconCls: record.get('id'),
@@ -142,7 +142,7 @@ Ext.define('console.view.NavigationTree', function () {
                                 sections: entityConfiguration.sections,
                                 synchronizable: entityConfiguration.synchronizable
                             });
-                            Ext.getCmp('backend-viewport').restoreWindow(window);
+                            Ext.getCmp('viewport').restoreWindow(window);
                         },
                         text: 'Create',
                         iconCls: 'add'
@@ -160,7 +160,7 @@ Ext.define('console.view.NavigationTree', function () {
                             itemId: item.text,
                             handler: function () {
                                 var entityConfiguration = Ext.create("console.markup." + item.id);
-                                var window = Ext.getCmp('backend-viewport').createWindow({
+                                var window = Ext.getCmp('viewport').createWindow({
                                     id: null,
                                     title: '[' + item.text + ']',
                                     iconCls: item.iconCls,
@@ -172,7 +172,7 @@ Ext.define('console.view.NavigationTree', function () {
                                     }),
                                     sections: entityConfiguration.sections
                                 });
-                                Ext.getCmp('backend-viewport').restoreWindow(window);
+                                Ext.getCmp('viewport').restoreWindow(window);
                             }
                         })
                     }

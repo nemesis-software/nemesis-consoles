@@ -251,9 +251,9 @@ Ext.application({
                         hidden: !event.data.selection.contentElement,
                         handler: function () {
                             var entityConfiguration = Ext.create("console.markup." + event.data.selection.contentElementEntityName);
-                            var window = Ext.getCmp('cms-viewport').getWindow(event.data.selection.contentElement);
+                            var window = Ext.getCmp('viewport').getWindow(event.data.selection.contentElement);
                             if (!window) {
-                                window = Ext.getCmp('cms-viewport').createWindow({
+                                window = Ext.getCmp('viewport').createWindow({
                                     operation: 'edit',
                                     id: event.data.selection.contentElement,
                                     title: '[Widget]',
@@ -268,7 +268,7 @@ Ext.application({
                                     sections: entityConfiguration.sections
                                 });
                             }
-                            Ext.getCmp('cms-viewport').restoreWindow(window);
+                            Ext.getCmp('viewport').restoreWindow(window);
                         }
                     }, {
                         itemId: 'removeWidget',
@@ -328,7 +328,7 @@ Ext.application({
                         iconCls: 'widget_add',
                         hidden: (event.data.selection.contentSlot ? false : true),
                         handler: function () {
-                            var copyWidget = Ext.getCmp('cms-viewport').clipboard;
+                            var copyWidget = Ext.getCmp('viewport').clipboard;
                             if (!copyWidget) {
                                 Ext.MessageBox.alert('Unable to copy', 'First select a widget for coping');
                                 return;
@@ -346,9 +346,9 @@ Ext.application({
                         iconCls: 'cms_slot_edit',
                         handler: function () {
                             var entityConfiguration = Ext.create("console.markup.cms_slot");
-                            var window = Ext.getCmp('cms-viewport').getWindow(event.data.selection.contentSlot);
+                            var window = Ext.getCmp('viewport').getWindow(event.data.selection.contentSlot);
                             if (!window) {
-                                window = Ext.getCmp('cms-viewport').createWindow({
+                                window = Ext.getCmp('viewport').createWindow({
                                     operation: (event.data.selection.contentSlot ? 'edit' : 'new'),
                                     id: event.data.selection.contentSlot,
                                     title: '[CmsSlot]',
@@ -364,7 +364,7 @@ Ext.application({
                                     sections: entityConfiguration.sections
                                 });
                             }
-                            Ext.getCmp('cms-viewport').restoreWindow(window);
+                            Ext.getCmp('viewport').restoreWindow(window);
                             if(!event.data.selection.contentSlot && event.data.selection.contentSlotPosition) {
                                 window.getEntityPopupForm().getForm().getFields().each(function (field) {
                                     if (field.name == 'position' && !field.dirty) {

@@ -276,7 +276,7 @@ Ext.define('console.view.content.search.SearchResults', {
         this.doExport(view, record, item, index, event, 'pdf');
     },
     onEditSelected: function (view, record, item, index, event) {
-        var parentCmpId = 'backend-viewport';
+        var parentCmpId = 'viewport';
         var currentToken = Ext.util.History.getToken();
         var href = Ext.isGecko ? record.data._links['self'].href : encodeURIComponent(record.data._links['self'].href);
         var newToken = encodeURIComponent(parentCmpId) + ':' + encodeURIComponent(record.data.code) + ":" + encodeURIComponent(this.entity.data.entityClassName) + ":" + encodeURIComponent(this.entity.data.entityName) + ":" +  encodeURIComponent(this.entity.data.entityClassName) + ":" +  encodeURIComponent(record.data.id) + ":" + href;
@@ -305,7 +305,7 @@ Ext.define('console.view.content.search.SearchResults', {
         }
     },
     onCopySelected: function (view, record, item, index, event) {
-        Ext.getCmp('backend-viewport').clipboard = {
+        Ext.getCmp('viewport').clipboard = {
             data: {
                 code: record.data.code,
                 id: record.data.id,

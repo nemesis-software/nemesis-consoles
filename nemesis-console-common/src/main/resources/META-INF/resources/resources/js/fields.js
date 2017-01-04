@@ -207,7 +207,7 @@ Ext.define('console.view.field.NemesisCollectionField', {
                             text: 'Paste',
                             iconCls: 'paste',
                             handler: function () {
-                                var clipboard = Ext.getCmp('backend-viewport').clipboard;
+                                var clipboard = Ext.getCmp('viewport').clipboard;
                                 if (clipboard.data) {
                                     var data = Ext.apply({code: clipboard.data.id, id: clipboard.data.id}, clipboard.data)
                                     this.store.insert(this.store.data.items.length, Ext.data.Record.create(data));
@@ -601,19 +601,20 @@ Ext.define('console.view.field.NemesisEntityField', {
             if (me.rawValue && 0 == me.rawValue.indexOf(entityCode + sep)) {
             	catalogVersion = me.rawValue.substring(entityCode.length + sep.length);
             }
-            console.log(entity.data); //you need to initialize the entity from the url
-            var win = Ext.ComponentQuery.query('viewport')[0].getWindow(entity.data.id);
-            if (!win) {
-                Ext.Ajax.request({
-                    url: entity.data.url || entity.data._links.self.href,
-                    method: 'GET',
-                    params: {
-                    	projection: 'search'
-                    },
-                    success: function (responseObject) {
-                        var result = Ext.decode(responseObject.responseText);
-                        var content = result;
-                        win = Ext.getCmp('backend-viewport').createWindow({
+            Ext.Ajax.request({
+                url: entity.data.url || entity.data._links.self.href,
+                method: 'GET',
+                params: {
+                    projection: 'search'
+                },
+                success: function (responseObject) {
+                    var result = Ext.decode(responseObject.responseText);
+                    var content = result;
+                    var objectWindow = Ext.ComponentQuery.query('viewport')[0].getWindow(content.id);
+                    if (objectWindow) {
+                        Ext.getCmp('viewport').restoreWindow(objectWindow);
+                    } else {
+                        objectWindow = Ext.getCmp('viewport').createWindow({
                                 operation: 'edit',
                                 data: content,
                                 title: '[' + entityCode + ' - ' + entity.data.entityName + ']',
@@ -628,21 +629,18 @@ Ext.define('console.view.field.NemesisEntityField', {
                                 })
                             }
                         );
-                        Ext.getCmp('backend-viewport').restoreWindow(win);
-                    },
-                    failure: function (responseObject) {
-                        Ext.MessageBox.show({
-                            title: 'Error',
-                            msg: responseObject.responseText,
-                            buttons: Ext.MessageBox.OK,
-                            icon: Ext.MessageBox.ERROR
-                        });
+                        Ext.getCmp('viewport').restoreWindow(objectWindow);
                     }
-                });
-
-            } else {
-                Ext.getCmp('backend-viewport').restoreWindow(win);
-            }
+                },
+                failure: function (responseObject) {
+                    Ext.MessageBox.show({
+                        title: 'Error',
+                        msg: responseObject.responseText,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });
+                }
+            });
         }
     },
     validateValue: function (value) {
@@ -697,7 +695,7 @@ Ext.define('console.view.field.NemesisEntityField', {
                             {
                                 itemId: 'copy',
                                 handler: function () {
-                                    Ext.getCmp('backend-viewport').clipboard = Ext.getCmp(me.id).entity;
+                                    Ext.getCmp('viewport').clipboard = Ext.getCmp(me.id).entity;
                                 },
                                 text: 'Copy',
                                 iconCls: 'copy',
@@ -706,7 +704,7 @@ Ext.define('console.view.field.NemesisEntityField', {
                             {
                                 itemId: 'paste',
                                 handler: function () {
-                                    Ext.getCmp(me.id).setValue(Ext.getCmp('backend-viewport').clipboard, true);
+                                    Ext.getCmp(me.id).setValue(Ext.getCmp('viewport').clipboard, true);
                                 },
                                 text: 'Paste',
                                 iconCls: 'paste'

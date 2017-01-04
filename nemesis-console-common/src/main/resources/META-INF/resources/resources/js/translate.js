@@ -77,7 +77,7 @@ function translate(textId) {
     } else if (globalLangHash[globalLang][textId.toLowerCase()]) {
         return globalLangHash[globalLang][textId.toLowerCase()];
     } else {
-        console.log('missing localization for textId:', textId);
+        // console.log('missing localization for textId:', textId);
         return textId;
     }
 }

@@ -56,7 +56,7 @@ Ext.define('console.view.TabPanel', {
                     } else {
                         Ext.getCmp(cmpId).setActiveTab(recordId);
                     }
-                } else if (cmpId === 'backend-viewport') {
+                } else if (cmpId === 'viewport') {
                     var viewport = Ext.getCmp(cmpId);
                     var recordCode = decodeURIComponent(parts[1]);
                     var entityDataName = decodeURIComponent(parts[2]);

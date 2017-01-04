@@ -27,7 +27,7 @@ Ext.define('console.view.window.RestCheckWindow', {
                 listeners: {
                     click: function () {
                         this.up().close();
-                        Ext.getCmp('backend-viewport').setLoading(true);
+                        Ext.getCmp('viewport').setLoading(true);
                         location.reload();
                     }
                 }

@@ -137,7 +137,7 @@ Ext.define('console.components.menu.PageTemplates', {
                                         itemId: item.text,
                                         handler: function () {
                                             var entityConfiguration = Ext.create("console.markup." + item.id);
-                                            var window = Ext.getCmp('cms-viewport').createWindow({
+                                            var window = Ext.getCmp('viewport').createWindow({
                                                 id: null,
                                                 title: '[' + item.text + ']',
                                                 iconCls: item.iconCls,
@@ -147,7 +147,7 @@ Ext.define('console.components.menu.PageTemplates', {
                                                 }),
                                                 sections: entityConfiguration.sections
                                             });
-                                            Ext.getCmp('cms-viewport').restoreWindow(window);
+                                            Ext.getCmp('viewport').restoreWindow(window);
                                         }
                                     })
                                 }
@@ -166,21 +166,21 @@ Ext.define('console.components.menu.PageTemplates', {
                             url: Ext.get('rest-base-url').dom.getAttribute('url') + record.get('entityName'),
                             isNew: true
                         });
-                        var window = Ext.getCmp('cms-viewport').createWindow({
+                        var window = Ext.getCmp('viewport').createWindow({
                             id: "",
                             title: '[' + record.get('entityName') + ']',
                             iconCls: record.get('entityName'),
                             entity: entity,
                             sections: entityConfiguration.sections
                         });
-                        Ext.getCmp('cms-viewport').restoreWindow(window);
+                        Ext.getCmp('viewport').restoreWindow(window);
                     },
                     onEditSelected: function (view, record, item, index, event) {
-                        var parentCmpId = 'cms-viewport';
+                        var parentCmpId = 'viewport';
 
                         var entityConfiguration = Ext.create("console.markup." + record.data.entityName);
                         console.log(record);
-                        var window = Ext.getCmp('cms-viewport').getWindow(record.data.id);
+                        var window = Ext.getCmp('viewport').getWindow(record.data.id);
                         if (!window) {
                             window = Ext.getCmp(parentCmpId).createWindow({
                                 operation: 'edit',
@@ -196,7 +196,7 @@ Ext.define('console.components.menu.PageTemplates', {
                                 sections: entityConfiguration.sections
                             });
                         }
-                        Ext.getCmp('cms-viewport').restoreWindow(window);
+                        Ext.getCmp('viewport').restoreWindow(window);
                     },
                     store: Ext.create('Ext.data.Store',{
                         id: 'page-template-store',

@@ -441,8 +441,8 @@ Ext.define('console.view.content.entity.EntityPopupToolbar', {
 
                             console.log(result);
 
-                            var window = Ext.getCmp('backend-viewport').createWindow(result);
-                            Ext.getCmp('backend-viewport').restoreWindow(window);
+                            var window = Ext.getCmp('viewport').createWindow(result);
+                            Ext.getCmp('viewport').restoreWindow(window);
                         },
                         failure: function (responseObject) {
                             Ext.MessageBox.show({

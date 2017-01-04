@@ -132,7 +132,7 @@ Ext.application({
                     minHeight: 175,
                     icon: Ext.Msg.ERROR,
                     fn: function (btn) {
-                        Ext.getCmp('backend-viewport').setLoading(true);
+                        Ext.getCmp('viewport').setLoading(true);
                         location.reload();
                     }
                 });
