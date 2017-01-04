@@ -20,7 +20,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
 
@@ -35,7 +34,6 @@ import java.io.IOException;
  * @author Petar Tahchiev
  * @since 0.6
  */
-@WebIntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @Category(value = IntegrationTest.class)
 public abstract class AbstractCommonConsoleSeleniumIntegrationTest extends AbstractTestExecutionListener {

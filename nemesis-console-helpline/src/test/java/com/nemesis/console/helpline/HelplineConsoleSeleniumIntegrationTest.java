@@ -10,7 +10,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
@@ -26,7 +26,7 @@ import static org.junit.Assert.assertTrue;
  * @since 0.6
  */
 @TestExecutionListeners(listeners = { HelplineConsoleSeleniumIntegrationTest.class, DependencyInjectionTestExecutionListener.class })
-@SpringApplicationConfiguration(classes = { CommonConsoleTestConfig.class, HelplineConsoleApplication.class })
+@SpringBootTest(classes = { CommonConsoleTestConfig.class, HelplineConsoleApplication.class }, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class HelplineConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSeleniumIntegrationTest {
 
     @Override
@@ -63,7 +63,7 @@ public class HelplineConsoleSeleniumIntegrationTest extends AbstractCommonConsol
 
         //We need this otherwise selenium will not wait for the logout to happen and the next assert will fail
         getWait().until(ExpectedConditions.titleIs("Login Page"));
-        
+
         assertEquals("Login Page", getWebDriver().getTitle());
 
         getWebDriver().quit();

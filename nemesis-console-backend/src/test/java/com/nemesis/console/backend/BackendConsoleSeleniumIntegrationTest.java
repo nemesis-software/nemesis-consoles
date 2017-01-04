@@ -13,7 +13,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
@@ -37,7 +37,7 @@ import static org.junit.Assert.assertTrue;
  * @since 0.6
  */
 @TestExecutionListeners(listeners = { BackendConsoleSeleniumIntegrationTest.class, DependencyInjectionTestExecutionListener.class })
-@SpringApplicationConfiguration(classes = { CommonConsoleTestConfig.class, BackendConsoleApplication.class })
+@SpringBootTest(classes = { CommonConsoleTestConfig.class, BackendConsoleApplication.class }, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsoleSeleniumIntegrationTest {
 
     @Override
