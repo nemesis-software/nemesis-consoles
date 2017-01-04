@@ -796,6 +796,12 @@ Ext.define('console.view.field.NemesisEntityField', {
                 failure: function (responseObject) {
                     if (responseObject.status != 404) {
                         console.log(responseObject);
+                    } else {
+                        me.jsonValue = null;
+                        me.setRawValue(null);
+                        if (me.entityId === 'media') {
+                            me.tooltip.update(null);
+                        }
                     }
                 }
             });
