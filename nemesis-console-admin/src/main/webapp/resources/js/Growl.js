@@ -49,7 +49,7 @@ Ext.ux.Growl = Ext.extend(Ext.Component, {
     },
 
     onClick: function (e, element) {
-        if (Ext.fly(element).hasClass('x-growl-msg-close')) {
+        if (Ext.getCmp(element).hasClass('x-growl-msg-close')) {
             this.close();
         } else {
             e.stopPropagation();

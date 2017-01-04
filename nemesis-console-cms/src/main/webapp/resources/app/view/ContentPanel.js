@@ -36,12 +36,12 @@ Ext.define('console.view.ContentPanel', {
 	                            editable: false,
 	                            margin: '0 0 0 10',
                                 xtype: 'combo',
-                                valueField: 'pk',
+                                valueField: 'id',
                                 displayField: 'name',
 	                            queryMode: 'local',
                                 store: Ext.create('Ext.data.ArrayStore', {
                                     autoSync: false,
-                                    fields: ['pk', 'name'],
+                                    fields: ['id', 'name'],
                                     proxy: {
                                         type: 'rest',
                                         url: Ext.get('rest-base-url').dom.getAttribute('url') + 'site/',
@@ -56,7 +56,7 @@ Ext.define('console.view.ContentPanel', {
 		                                load: function(myself, records, successful, eOpts) {
 											if(successful) {
 												var comboSites = Ext.getCmp('site-combo');
-												comboSites.setValue(myself.findRecord('code', 'solarapparel').get('pk'))
+												comboSites.setValue(myself.findRecord('code', 'solarapparel').get('id'))
 											}
 		                                }
 	                                },
@@ -71,7 +71,7 @@ Ext.define('console.view.ContentPanel', {
                                         var siteCmsCatalogsStore = Ext.create('Ext.data.ArrayStore', {
                                             autoLoad: true,
                                             autoSync: false,
-                                            fields: ['pk', 'code'],
+                                            fields: ['id', 'code'],
                                             proxy: {
                                                 type: 'rest',
                                                 url: cmb.getSelection().data._links.cmsCatalogs.href,
@@ -87,12 +87,12 @@ Ext.define('console.view.ContentPanel', {
                                         siteCmsCatalogsStore.load({
                                             callback : function(records, options, success) {
                                                 if (success) {
-	                                                var selectedCatalogsPks = new Array();
+	                                                var selectedCatalogsIds = new Array();
                                                     for (var i = 0; i < records.length; i++) {
-                                                        selectedCatalogsPks.push(records[i].get('pk'))
+                                                        selectedCatalogsIds.push(records[i].get('id'))
                                                     }
 
-	                                                catalogsCombo.setValue(selectedCatalogsPks);
+	                                                catalogsCombo.setValue(selectedCatalogsIds);
                                                 }
                                             }
                                         });
@@ -102,7 +102,7 @@ Ext.define('console.view.ContentPanel', {
                                             currentQuery = currentUrl.split('?')[1],
                                             params = Ext.urlDecode(currentQuery);
 
-                                        params.site = cmb.getStore().findRecord('pk',newValue).get('code');
+                                        params.site = cmb.getStore().findRecord('id',newValue).get('code');
                                         params.clear = true;
                                         // Delete the param catalog from url because remains the catalogs from the previous
                                         // site which is wrong.
@@ -125,13 +125,13 @@ Ext.define('console.view.ContentPanel', {
 	                            queryMode: 'local',
                                 multiSelect: true, //should be true ones we fix the duplicate homepage issue
 	                            autoSelect: true,
-                                valueField: 'pk',
+                                valueField: 'id',
                                 displayField: 'catalogName',
                                 store: Ext.create('Ext.data.ArrayStore', {
                                     autoLoad: true,
                                     autoSync: false,
                                     fields: [
-	                                    'pk',
+	                                    'id',
 	                                    {name: 'catalogName', mapping: 'name.' + selectedLangCode + '.value'}
                                     ],
                                     proxy: {
@@ -149,13 +149,13 @@ Ext.define('console.view.ContentPanel', {
                                     //catalog versions will not be changable for now.. the combo will be removed
                                     //select: function (view, records) {
                                     //
-                                    //    var firstSelectedCatalogPK = records[0].data.pk;
+                                    //    var firstSelectedCatalogId = records[0].data.id;
                                     //    var catalogVersionsCombo = Ext.getCmp('catalogVersionsCombo');
                                     //    //clear old selection of catalogVersions
                                     //    Ext.getCmp('catalogVersionsCombo').clearValue();
                                     //    //fetch data
                                     //    catalogVersionsCombo.store.proxy.url = Ext.get('rest-base-url').dom.getAttribute('url')
-                                    //                                + 'catalog/' + firstSelectedCatalogPK + '/catalogVersions/';
+                                    //                                + 'catalog/' + firstSelectedCatalogId + '/catalogVersions/';
                                     //
                                     //    catalogVersionsCombo.store.load();
                                     //}
@@ -223,9 +223,9 @@ Ext.define('console.view.ContentPanel', {
                                     var catalogs = Ext.getCmp('catalogsCombo').getValue()
                                     if(catalogs && catalogs.length > 0){
                                         for(var i = 0; i < catalogs.length; i++){
-                                            var catalogPK = Ext.getCmp('catalogsCombo').findRecordByValue(catalogs[i]).get('pk');
+                                            var catalogId = Ext.getCmp('catalogsCombo').findRecordByValue(catalogs[i]).get('id');
                                             Ext.Ajax.request({
-                                                url: Ext.get('rest-base-url').dom.getAttribute('url') + 'catalog/synchronize/' + catalogPK,
+                                                url: Ext.get('rest-base-url').dom.getAttribute('url') + 'catalog/synchronize/' + catalogId,
                                                 method: 'POST',
                                                 headers: {'Content-Type': 'application/json'},
                                                 params: {},
@@ -249,7 +249,7 @@ Ext.define('console.view.ContentPanel', {
                                                     var site = JSON.parse(response.responseText);
                                                     for(var i = 0; i < site._embedded.cmsCatalogEntities.length; i++){
                                                         Ext.Ajax.request({
-                                                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'catalog/synchronize/' + site._embedded.cmsCatalogEntities[i].pk,
+                                                            url: Ext.get('rest-base-url').dom.getAttribute('url') + 'catalog/synchronize/' + site._embedded.cmsCatalogEntities[i].id,
                                                             method: 'POST',
                                                             headers: {'Content-Type': 'application/json'},
                                                             params: {},
@@ -281,9 +281,9 @@ Ext.define('console.view.ContentPanel', {
                                                         success: function (response) {
                                                             var site = JSON.parse(response.responseText);
                                                             for(var i = 0; i < site._embedded.cmsCatalogEntities.length; i++){
-                                                                //DO POST on site._embedded.cmsCatalogEntities[i].pk
+                                                                //DO POST on site._embedded.cmsCatalogEntities[i].id
                                                                 Ext.Ajax.request({
-                                                                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'catalog/synchronize/' + site._embedded.cmsCatalogEntities[i].pk,
+                                                                    url: Ext.get('rest-base-url').dom.getAttribute('url') + 'catalog/synchronize/' + site._embedded.cmsCatalogEntities[i].id,
                                                                     method: 'POST',
                                                                     headers: {'Content-Type': 'application/json'},
                                                                     params: {},
@@ -300,7 +300,7 @@ Ext.define('console.view.ContentPanel', {
                                         //var siteCmsCatalogsStore = Ext.create('Ext.data.ArrayStore', {
                                         //    autoLoad: false,
                                         //    autoSync: false,
-                                        //    fields: ['code', 'pk'],
+                                        //    fields: ['code', 'id'],
                                         //    proxy: {
                                         //        type: 'rest',
                                         //        url: cmsCatalogsForSiteUrl,
@@ -316,7 +316,7 @@ Ext.define('console.view.ContentPanel', {
                                         //    callback : function(records, options, success) {
                                         //        if (success) {
                                         //            debugger;
-                                        //            //records[0].data.pk
+                                        //            //records[0].data.id
                                         //        }
                                         //    }
                                         //});

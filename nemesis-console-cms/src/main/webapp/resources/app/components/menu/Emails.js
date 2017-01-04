@@ -150,7 +150,7 @@ Ext.define('console.components.menu.Emails', {
 
                         var entityConfiguration = Ext.create("console.markup." + record.data.entityName);
                         console.log(record);
-                        var window = Ext.getCmp('cms-viewport').getWindow(record.data.pk);
+                        var window = Ext.getCmp('cms-viewport').getWindow(record.data.id);
                         if (!window) {
                             window = Ext.getCmp(parentCmpId).createWindow({
                                 operation: 'edit',
@@ -158,7 +158,7 @@ Ext.define('console.components.menu.Emails', {
                                 iconCls: record.data.entityName ? record.data.entityName : 'widget',
                                 entity: Ext.create('console.model.Entity', {
                                     entityName: record.data.entityName,
-                                    entityId: record.data.pk,
+                                    entityId: record.data.id,
                                     entityClassName: record.data.entityName,
                                     url: record.data._links['self'].href,
                                     synchronizable: entityConfiguration.synchronizable
