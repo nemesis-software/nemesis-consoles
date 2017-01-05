@@ -82,6 +82,13 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         getWebDriver().quit();
     }
 
+    @Override
+    public void afterTestMethod(TestContext testContext) throws Exception {
+        this.closeAllTabs();
+        this.closeAllEntityWindows();
+        this.clearNavTreeFilter();
+    }
+
     @Before
     public void setUp() {
         LOG.info(testName.getMethodName());
@@ -265,7 +272,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertNotNull(codeField);
         codeField.click();
 
-        WebElement currencyInputField = getWait().until(ExpectedConditions.visibilityOf(entityWindow.findElement(By.cssSelector("[name='entity-currency']"))));
+        WebElement currencyInputField = getWait().until(ExpectedConditions.visibilityOf(entityWindow.findElement(By.cssSelector("[name='entity-product']"))));
 
         currencyInputField.click();
         codeField.click();
@@ -555,7 +562,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertTrue(existsElement("[id^=" + entityName + "-searchform-fieldset-restriction_code]"));
 
         getWebDriver().executeScript("var c = Ext.getCmp('" + entityName
-                                                     + "-searchform-fieldset-restriction_code'); c.setValue('Equals'); c.fireEvent('select', c, 'Equals');");
+                                                     + "-searchform-fieldset-restriction_code'); var valueObject = {data: {value: 'Equals'}}; c.setValue('Equals'); c.fireEvent('select', c, valueObject);");
 
         assertTrue(existsElement("#" + entityName + "-searchform-fieldset-query_code"));
 
@@ -788,7 +795,8 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertTrue(existsElement(".richtext-localized-iso-dropdown"));
 
         getWebDriver().executeScript(
-                        "var c = Ext.ComponentQuery.query('combobox[cls=localized-iso-dropdown]')[0]; c.setValue('bg_BG'); c.fireEvent('select', c, Ext.create('console.model.Language', {isoCode: 'bg_BG', language: 'Bulgarian' }));");
+                        "var c = Ext.get(Ext.select(\"div[id^='w_id_'] .localized-iso-dropdown\").elements[0]).component; c.setValue('bg_BG'); c.fireEvent('select', c, Ext.create('console.model.Language', {isoCode: 'bg_BG', language: 'Bulgarian' }));");
+
 
         String secondNameValue = nameField.findElement(By.cssSelector("input.x-form-text-default")).getAttribute("value");
 
@@ -1047,6 +1055,8 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
                         "function test() {var c = Ext.getCmp('" + nameFieldId + "'); return c.getValue();}; return test();");
 
         assertEquals("Solarapparel Nemesis Platform B2C Demo Store", nameFieldValue);
+
+        clearNavTreeFilter();
     }
 
     //#28 & #66 & #68 & #71
@@ -1447,6 +1457,15 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         assertTrue(1 <= resultsGridItems(entityName).size());
 
+        getWebDriver().executeScript("var c = Ext.getCmp('" + entityName
+                + "-searchform-fieldset-restriction_code'); var valueObject = {data: {value: 'StartingWith'}}; c.setValue('StartingWith'); c.fireEvent('select', c, valueObject);");
+
+        getWebDriver().findElementByCssSelector("div#" + entityName + "-searchform-fieldset-query_code input[type='text']").sendKeys("solar");
+
+        getWebDriver().findElementsByCssSelector("div#" + entityName + "-search-form div.x-toolbar a.x-btn").iterator().next().click();
+
+        sleep();
+
         //open it
 
         doubleClick(resultsGridInnerItems(entityName).get(0));
@@ -1492,15 +1511,17 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
         menuElements.get(0).findElement(By.cssSelector(".x-menu-item-text")).click();
 
-        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id^='w_id_product']")));
+        sleep();
 
-        assertTrue(existsElement("div[id^='w_id_product']"));
-        WebElement productWindow = getWebDriver().findElement(By.cssSelector("div[id^='w_id_product']"));
+        assertTrue(existsElement("div[id^='w_id_']"));
+        WebElement productWindow = getWebDriver().findElement(By.cssSelector("div[id^='w_id_']"));
         assertNotNull(productWindow);
 
         WebElement productGeneralTab = productWindow.findElement(By.cssSelector("[id^='nemesisEntitySection'].x-tabpanel-child:not(.x-hidden-offsets)"));
 
         assertNotNull(productGeneralTab);
+
+        productGeneralTab.click();
 
         assertTrue(existsElement("[id^=nemesisEntityField-].x-form-entity-trigger"));
 
@@ -1509,10 +1530,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertNotNull(searchFacetConfigFieldTrigger);
 
         searchFacetConfigFieldTrigger.click();
-
-        sleep();
-
-        getWebDriver().findElementByCssSelector("div[id^='w_id_product'].x-window img.x-tool-close").click();
     }
 
     //#95
@@ -1540,7 +1557,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertTrue(existsElement("[id^=" + entityName + "-searchform-fieldset-restriction_code]"));
 
         getWebDriver().executeScript("var c = Ext.getCmp('" + entityName
-                                                     + "-searchform-fieldset-restriction_code'); c.setValue('IsStartingWith'); c.fireEvent('select', c, 'IsStartingWith');");
+                                                     + "-searchform-fieldset-restriction_code'); var valueObject = {data: {value: 'StartingWith'}}; c.setValue('StartingWith'); c.fireEvent('select', c, valueObject);");
 
         assertTrue(existsElement("#" + entityName + "-searchform-fieldset-query_code"));
 
@@ -1683,18 +1700,28 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     private void closeEntityWindow() {
         try {
-            getWebDriver().findElementByCssSelector("div[id^='w_id_'].x-window img.x-tool-close").click();
+            getWebDriver().findElementByCssSelector("div[id^='w_id_'].x-window .x-tool-img.x-tool-close").click();
         } catch (NoSuchElementException nsex) {
             //ignored
         }
     }
 
+    private void closeAllEntityWindows() {
+        while(true) {
+            try {
+                getWebDriver().findElementByCssSelector("div[id^='w_id_'].x-window .x-tool-img.x-tool-close").click();
+            } catch (NoSuchElementException nsex) {
+                return;
+            }
+        }
+    }
+
     private void minimizeEntityWindow() {
-        getWebDriver().findElementByCssSelector("div.x-window img.x-tool-minimize").click();
+        getWebDriver().findElementByCssSelector("div.x-window .x-tool-img.x-tool-minimize").click();
     }
 
     private void maximizeEntityWindow() {
-        getWebDriver().findElementByCssSelector("div.x-window img.x-tool-maximize").click();
+        getWebDriver().findElementByCssSelector("div.x-window .x-tool-img.x-tool-maximize").click();
     }
 
     private void filterNavTree(String filterText) throws InterruptedException {
@@ -1775,5 +1802,18 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     private WebElement searchForm(String entityName) {
         return getWebDriver().findElement(By.cssSelector("#" + entityName + "-search-form-body"));
+    }
+
+    private void closeAllTabs() {
+        List<WebElement> elements = openedTabCloseButtons();
+
+        for (int i = 0; i < elements.size(); i++) {
+            elements.get(i).click();
+
+            try {
+                sleep();
+            } catch (Exception e) {
+            }
+        }
     }
 }
