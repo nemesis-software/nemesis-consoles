@@ -5,11 +5,7 @@ import com.nemesis.console.common.CommonConsoleTestConfig;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -83,10 +79,17 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
     }
 
     @Override
-    public void afterTestMethod(TestContext testContext) throws Exception {
-        this.closeAllTabs();
-        this.closeAllEntityWindows();
+    public void beforeTestMethod(TestContext testContext) throws Exception {
         this.clearNavTreeFilter();
+    }
+
+    @Override
+    public void afterTestMethod(TestContext testContext) throws Exception {
+        try {
+            this.closeAllTabs();
+            this.closeAllEntityWindows();
+        } catch (StaleElementReferenceException e) {
+        }
     }
 
     @Before
@@ -116,18 +119,6 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
 
     @Test
     public void testChangeLocale() throws InterruptedException {
-        /**
-         * TODO: it blows with
-         *
-         * org.openqa.selenium.WebDriverException: TypeError: this.dom is null
-         *
-         * if I don't do it on a clean-loaded page.         *
-         */
-        getWebDriver().get("http://localhost:8080/backend");
-        // Wait for the page to load, timeout after 10 seconds
-        getWait().until((WebDriver d) -> {
-            return d.getTitle().startsWith("Backend Console | Nemesis");
-        });
         waitForDom();
         waitForLoad();
 
@@ -1404,7 +1395,7 @@ public class BackendConsoleSeleniumIntegrationTest extends AbstractCommonConsole
         assertTrue(existsElement("[id^=" + entityName + "-searchform-fieldset-restriction_code]"));
 
         getWebDriver().executeScript("var c = Ext.getCmp('" + entityName
-                                                     + "-searchform-fieldset-restriction_code'); c.setValue('Equals'); c.fireEvent('select', c, 'Equals');");
+                                                     + "-searchform-fieldset-restriction_code'); var valueObject = {data: {value: 'Equals'}}; c.setValue('Equals'); c.fireEvent('select', c, valueObject);");
 
         assertTrue(existsElement("#" + entityName + "-searchform-fieldset-query_code"));
 
