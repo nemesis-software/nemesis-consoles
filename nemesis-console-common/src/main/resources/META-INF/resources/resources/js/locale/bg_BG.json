@@ -87,6 +87,7 @@
   delivery_mode: 'Метод на доставка',
   payment_mode: 'Метод на плащане',
   media: 'Медиа',
+  payment_transaction: 'Плащане транзакции',
   //media
   media_format: 'Медиа формат',
   media_folder: 'Медиа папка',

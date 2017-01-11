@@ -87,6 +87,7 @@
   delivery_mode: 'Delivery method',
   payment_mode: 'Payment mode',
   media: 'Media',
+  payment_transaction: 'Payment Transaction',
   //media
   media_format: 'Media format',
   media_folder: 'Media folder',
