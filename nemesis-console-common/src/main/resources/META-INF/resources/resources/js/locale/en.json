@@ -86,6 +86,7 @@
   invoice: 'Invoice',
   delivery_mode: 'Delivery method',
   payment_mode: 'Payment mode',
+  payment_transaction: 'Payment Transaction',
   media: 'Media',
   payment_transaction: 'Payment Transaction',
   //media

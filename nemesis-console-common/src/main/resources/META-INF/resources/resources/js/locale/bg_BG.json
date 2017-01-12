@@ -86,6 +86,7 @@
   invoice: 'Фактурои',
   delivery_mode: 'Метод на доставка',
   payment_mode: 'Метод на плащане',
+  payment_transaction: 'Транзакция',
   media: 'Медиа',
   payment_transaction: 'Плащане транзакции',
   //media
