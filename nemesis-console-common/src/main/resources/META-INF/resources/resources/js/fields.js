@@ -480,7 +480,7 @@ Ext.define('console.view.field.NemesisDecimalField', {
     anchor: '100%',
     autoWidth: true,
     allowDecimals: true,
-    decimalPrecision: 1,
+    decimalPrecision: 2,
     step: 0.1,
     initComponent: function () {
         var me = this;
