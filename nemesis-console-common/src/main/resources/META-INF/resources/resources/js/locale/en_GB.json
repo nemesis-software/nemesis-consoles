@@ -97,6 +97,9 @@
   //search
   search_facet_config: 'Facet search config',
   search_server_config: 'Search server config',
+  search_config: 'Search config',
+  search_indexed_type: 'Search Index Type',
+  search_indexed_property: 'Search Index Property',
   search_facet: 'Facet',
   search_keyword_destination: 'Keyword Destination',
   search_keyword_redirect: 'Keyword Redirect',

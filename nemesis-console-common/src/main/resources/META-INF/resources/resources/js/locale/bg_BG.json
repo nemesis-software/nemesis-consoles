@@ -97,6 +97,9 @@
   search_facet_config: 'Facet search config',
   //search
   search_server_config: 'Search server config',
+  search_config: 'Search config',
+  search_indexed_type: 'Search Index Type',
+  search_indexed_property: 'Search Index Property',
   search_facet: 'Фасет',
   search_keyword_destination: 'Кл. думи дестинация',
   search_keyword_redirect: 'Кл. думи препрадки',
@@ -132,7 +135,7 @@
   blog_category: 'Блог Категория',
   //bundle
   bundle_selection: 'Подбор',
-  bundle_price:'Цени',
+  bundle_price: 'Цени',
   bundle_template: 'Темплейти',
   //classification
   classification: 'Класификация',

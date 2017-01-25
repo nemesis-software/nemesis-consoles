@@ -385,6 +385,18 @@
     background-image: url(images/payment_transaction.png);
 }
 
+.search_config {
+    background-image: url(images/search_config.png);
+}
+
+.search_indexed_type {
+    background-image: url(images/search_indexed_type.png);
+}
+
+.search_indexed_property {
+    background-image: url(images/search_indexed_property.png);
+}
+
 .search_facet_config {
     background-image: url(images/search_facet_config.png);
 }
@@ -639,6 +651,18 @@
 
 .acl_sid {
     background-image: url(images/acl_sid.png);
+}
+
+.service_fee {
+    background-image: url(images/service_fee.png);
+}
+
+.rolling_reserve {
+    background-image: url(images/rolling_reserve.png);
+}
+
+.merchant {
+    background-image: url(images/merchant.png);
 }
 
 .notification_settings {
