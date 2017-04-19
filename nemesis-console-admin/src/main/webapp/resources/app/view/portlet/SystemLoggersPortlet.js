@@ -28,7 +28,7 @@ Ext.define('AdminConsole.view.portlet.SystemLoggersPortlet', {
             proxy: {
                 type: 'rest',
                 useDefaultXhrHeader: false,
-                url: Ext.get('website-base-url').dom.getAttribute('url') + 'platform/logger',
+                url: Ext.get('website-base-url').dom.getAttribute('url') + 'platform/loggers',
                 reader: {
                     type: 'json'
                 },
