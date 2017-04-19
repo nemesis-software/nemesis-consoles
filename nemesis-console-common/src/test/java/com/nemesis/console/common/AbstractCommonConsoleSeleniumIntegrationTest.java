@@ -1,10 +1,8 @@
 package com.nemesis.console.common;
 
-import com.nemesis.platform.util.test.IntegrationTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Rule;
-import org.junit.experimental.categories.Category;
 import org.junit.rules.MethodRule;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
@@ -35,7 +33,7 @@ import java.io.IOException;
  * @since 0.6
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@Category(value = IntegrationTest.class)
+//@Category(value = IntegrationTest.class)
 public abstract class AbstractCommonConsoleSeleniumIntegrationTest extends AbstractTestExecutionListener {
 
     protected final Logger LOG = LogManager.getLogger(getClass());
