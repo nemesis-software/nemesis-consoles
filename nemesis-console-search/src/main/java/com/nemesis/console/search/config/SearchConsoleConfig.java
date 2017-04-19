@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan(basePackages = { "com.nemesis.console.search", "com.nemesis.platform.util" })
+@ComponentScan(basePackages = { "com.nemesis.console.search" })
 @Import(value = CommonConsoleConfig.class)
 @EnableGlobalMethodSecurity(prePostEnabled = true, mode = AdviceMode.PROXY)
 public class SearchConsoleConfig extends WebSecurityConfigurerAdapter {

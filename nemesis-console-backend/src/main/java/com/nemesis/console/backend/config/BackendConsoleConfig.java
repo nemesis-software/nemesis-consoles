@@ -19,7 +19,7 @@ import javax.annotation.Resource;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan(basePackages = { "com.nemesis.console.backend", "com.nemesis.platform.util" })
+@ComponentScan(basePackages = { "com.nemesis.console.backend" })
 @Import(value = CommonConsoleConfig.class)
 @EnableConfigurationProperties(value = ConsoleProperties.class)
 @EnableGlobalMethodSecurity(prePostEnabled = true, mode = AdviceMode.PROXY)
