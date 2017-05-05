@@ -45,7 +45,7 @@ Ext.define('AdminConsole.controller.portlets.ImportCSVPortletController', {
 		};
 		if (stringContent) {
 			Ext.Ajax.request({
-				url: Ext.get('website-base-url').dom.getAttribute('url') + (validateOnly ? 'platform/content/validate' : 'platform/content/import'),
+				url: Ext.get('website-base-url').dom.getAttribute('url') + (validateOnly ? 'platform/csv/validate' : 'platform/csv/import'),
 				method: 'POST',
 				jsonData: JSON.stringify(data),
 				headers: {
@@ -89,7 +89,7 @@ Ext.define('AdminConsole.controller.portlets.ImportCSVPortletController', {
 			// the dom file directly from the input element!!!
 			formData.append('file', csvFile.getEl().down('input[type=file]').dom.files[0]);
 			var req = new XMLHttpRequest();
-			req.open("POST", Ext.get('website-base-url').dom.getAttribute('url') + (validateOnly ?  'platform/content/file-validate' : 'platform/content/file-import'), true);
+			req.open("POST", Ext.get('website-base-url').dom.getAttribute('url') + (validateOnly ?  'platform/csv/file-validate' : 'platform/csv/file-import'), true);
 			// set headers and mime-type appropriately
 			req.setRequestHeader('X-Nemesis-Token', Ext.get('token').dom.getAttribute('value'));
 			req.onload = function() {
