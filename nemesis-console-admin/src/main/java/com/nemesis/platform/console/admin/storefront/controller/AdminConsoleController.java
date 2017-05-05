@@ -79,7 +79,7 @@ public class AdminConsoleController {
 
         final CloseableHttpClient httpclient = HttpClientBuilder.create().build();
 
-        final HttpPost httpost = new HttpPost(consoleProperties.getRestBaseUrl() + "/platform/content");
+        final HttpPost httpost = new HttpPost(consoleProperties.getRestBaseUrl() + "/platform/csv");
         final List<NameValuePair> nvps = new ArrayList<>();
         nvps.add(new BasicNameValuePair("content", csvContent));
         nvps.add(new BasicNameValuePair("validate", "false"));

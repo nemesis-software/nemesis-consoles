@@ -17,6 +17,7 @@ Ext.define('AdminConsole.view.portlet.MemoryUsagePortlet', {
         Ext.Ajax.request({
             url: Ext.get('website-base-url').dom.getAttribute('url') + 'platform/metrics/mem',
             method: 'GET',
+            params: {},
             success: function (responseObject) {
                 memory = Ext.decode(responseObject.responseText)['mem'];
             },
@@ -41,6 +42,7 @@ Ext.define('AdminConsole.view.portlet.MemoryUsagePortlet', {
                 Ext.Ajax.request({
                     url: Ext.get('website-base-url').dom.getAttribute('url') + 'platform/metrics/mem.free',
                     method: 'GET',
+                    params: {},
                     success: function (responseObject) {
                         var result = Ext.decode(responseObject.responseText)['mem.free'];
                         var percentageMemoryUsage = (result / memory) * 100;

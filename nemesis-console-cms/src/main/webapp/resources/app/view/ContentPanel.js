@@ -56,7 +56,7 @@ Ext.define('console.view.ContentPanel', {
 		                                load: function(myself, records, successful, eOpts) {
 											if(successful) {
 												var comboSites = Ext.getCmp('site-combo');
-												comboSites.setValue(myself.findRecord('code', 'solarapparel').get('id'))
+												comboSites.setValue(myself.findRecord('code', 'samplestore-b2c').get('id'))
 											}
 		                                }
 	                                },
@@ -262,7 +262,7 @@ Ext.define('console.view.ContentPanel', {
                                             });
 
                                         } else {
-                                            var siteUrl = Ext.get('rest-base-url').dom.getAttribute('url') + 'site/search/findByCode?code=solarapparel';
+                                            var siteUrl = Ext.get('rest-base-url').dom.getAttribute('url') + 'site/search/findByCode?code=samplestore-b2c';
 
                                             Ext.Ajax.request({
                                                 url: siteUrl,
@@ -380,7 +380,7 @@ Ext.define('console.view.ContentPanel', {
                         cls: 'normal-iframe',
                         autoEl: {
                             tag: "iframe",
-                            src: Ext.get('website-base-url').dom.getAttribute('url') + '?site=solarapparel&live_edit_view=true&site_preference=normal',
+                            src: Ext.get('website-base-url').dom.getAttribute('url') + '?site=samplestore-b2c&live_edit_view=true&site_preference=normal',
                             allowtransparency: true
                         },
                         listeners: {
